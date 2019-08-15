@@ -1,0 +1,40 @@
+/**
+ * less 变量 & 函数库
+ * - 不要放样式，这里只定义变量、函数
+ * - 非通用变量、函数也不要放在这里
+ * @author zhangpeng
+ */
+
+/** 默认正文颜色（即设计文档中的「二级主字」） */
+@c-text: #00202d;
+
+/** 链接颜色（即设计文档中的「蓝色辅色」，某些突出展示的标题、文字也用这个颜色）*/
+@c-link: #3398db;
+
+/** 主按钮色（即设计文档中的「辅色/边框」） */
+@c-button: #3398db;
+
+/** 边框色 */
+@c-border: #bce2f0;
+
+/** 分割线 */
+@c-divider: #bce2f0;
+
+/** 置灰 */
+@c-disabled: #ddd;
+
+// 不考虑英文单词，全部断开，用于中文环境多的场景下
+.wrap() {
+  word-break: break-all;
+  word-wrap: break-word; // 用于英文断词
+  white-space: pre; // CSS 2.0
+  white-space: pre-wrap; // CSS 2.1
+  white-space: pre-line; // CSS 3.0
+}
+
+// keep text nowrap
+.nowrap() {
+  word-wrap: nowrap;
+  word-break: keep-all;
+  white-space: nowrap;
+}

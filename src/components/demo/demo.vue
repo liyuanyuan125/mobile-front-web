@@ -3,6 +3,7 @@
     <h1 class="title">{{title}}</h1>
 
     <Button type="primary">主要按钮</Button>
+    <Field />
 
     <h1 class="title">引入局部图片示意（多用）</h1>
     <div class="line">
@@ -27,11 +28,12 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import { Button } from 'vant'
+import { Button,Field } from 'vant'
 
 @Component({
   components: {
-    Button
+    Button,
+    Field
   }
 })
 export default class Demo extends Vue {

@@ -15,6 +15,6 @@ export default class Home extends Vue {
 <style lang="less" scoped>
 .home {
   text-align: center;
-  margin-top: 88px;
+  margin-top: 28px;
 }
 </style>

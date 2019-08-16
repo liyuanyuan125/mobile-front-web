@@ -20,7 +20,6 @@ export default class DemoPage extends Vue {
 
 <style lang="less" scoped>
 .demo-page {
-  width: 600px;
-  margin: auto;
+  padding: 20px;
 }
 </style>

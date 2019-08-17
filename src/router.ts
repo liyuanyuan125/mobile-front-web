@@ -22,6 +22,11 @@ export default new Router({
       path: '/apply',
       name: 'apply',
       component: () => import('./views/apply/index.vue')
+    },
+    {
+      path: '/form',
+      name: 'form',
+      component: () => import('./views/demo/index.vue')
     }
   ]
 })

@@ -1,33 +1,61 @@
 <template>
   <div class="apply">
-    <div class="tit">{{tit}}</div>
-    <div class="tip"><span>验证码已发送至</span><em>21313331</em></div>
-    <input type="text">
-    <button @click="changePage">获取验证码</button>
+
+
+    <div class="password" v-show="page3">
+      <input class="text" type="text" :value="password" placeholder="请输入6～16位新密码">
+      <i></i>
+    </div>
+    <NumPage
+            v-show="page1"
+            ref="getNum"
+            :changePage="changePage"
+    />
+    <YzPage
+            v-show="page2"
+            :phoneNum="phoneNum"
+            :pageOn="page2"
+            :changePage="changePage"
+    />
   </div>
 </template>
 
 <script lang="ts">
   import { Component,Prop,Vue } from 'vue-property-decorator'
+  import { PasswordInput, NumberKeyboard } from 'vant';
+  import NumPage from './numPage.vue'
+  import YzPage from './yzPage.vue'
 
-  @Component
+  @Component({
+    components: {
+      YzPage,
+      PasswordInput,
+      NumberKeyboard,
+      NumPage
+    }
+  })
   export default class Apply extends Vue {
-    checkPage = 1
-    tit: any = '输入手机号码'
+    page1 = true
+    page2 = false
+    page3 = false
+    showNum = false
+    showKeyboard = false
+    phoneNum: string = ''
+    password: string = ''
 
-    changePage(page: number) {
+    changePage(page:number) {
       switch (page) {
         case 1:
-          this.checkPage = 2
-            console.log(this.checkPage)
+          this.page1 = false
+          this.page2 = true
+          this.phoneNum = this.$refs.getNum.phoneNum
           break
         case 2:
-          this.checkPage = 3
-          console.log(this.checkPage)
+          this.page2 = false
+          this.page3 = true
           break
         case 3:
           this.$router.push({name: 'form'})
-          console.log(this.checkPage)
           break
       }
     }
@@ -37,7 +65,7 @@
 
 <style lang="less" scoped>
   .apply {
-    text-align: center;
-    margin-top: 28px;
+    position: relative;
+    padding: 50px 46px 0;
   }
 </style>

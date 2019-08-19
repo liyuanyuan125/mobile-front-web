@@ -1,14 +1,8 @@
 <template>
   <div class="apply">
-
-
-    <div class="password" v-show="page3">
-      <input class="text" type="text" :value="password" placeholder="请输入6～16位新密码">
-      <i></i>
-    </div>
     <NumPage
             v-show="page1"
-            ref="getNum"
+            @logNum="getNum"
             :changePage="changePage"
     />
     <YzPage
@@ -17,21 +11,27 @@
             :pageOn="page2"
             :changePage="changePage"
     />
+  <setPwdPage
+            v-show="page3"
+            :changePage="changePage"
+  />
   </div>
 </template>
 
 <script lang="ts">
-  import { Component,Prop,Vue } from 'vue-property-decorator'
-  import { PasswordInput, NumberKeyboard } from 'vant';
+  import { Component,Prop,Vue,Watch } from 'vue-property-decorator'
+  import { PasswordInput, NumberKeyboard } from 'vant'
   import NumPage from './numPage.vue'
   import YzPage from './yzPage.vue'
+  import setPwdPage from './setPwdPage.vue'
 
   @Component({
     components: {
       YzPage,
       PasswordInput,
       NumberKeyboard,
-      NumPage
+      NumPage,
+      setPwdPage
     }
   })
   export default class Apply extends Vue {
@@ -41,14 +41,16 @@
     showNum = false
     showKeyboard = false
     phoneNum: string = ''
-    password: string = ''
+
+    getNum(val: any) {
+      this.phoneNum = val
+    }
 
     changePage(page:number) {
       switch (page) {
         case 1:
           this.page1 = false
           this.page2 = true
-          this.phoneNum = this.$refs.getNum.phoneNum
           break
         case 2:
           this.page2 = false

@@ -21,7 +21,7 @@ export default new Router({
     {
       path: '/apply',
       name: 'apply',
-      component: () => import('./views/apply/index.vue')
+      component: () => import('./views/theater/apply/index.vue')
     },
     {
       path: '/form',

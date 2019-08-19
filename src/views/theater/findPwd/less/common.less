@@ -1,0 +1,62 @@
+@black: #404D66;
+@grey: #AFBED4;
+@but-color: #3C8EFF;
+@tip-color: #899AB3;
+@border: #DFEAF8 1px solid;
+
+input,button{
+  border: none;
+  padding: 0;
+}
+
+.tit{
+  margin-bottom: 60px;
+  line-height: 21px;
+  font-size: 21px;
+  color: @black;
+}
+
+.text{
+  width: 100%;
+  height: 42px;
+  line-height: 42px;
+  font-size: 15px;
+  color: @black;
+  border-bottom: @border;
+}
+.text::-webkit-input-placeholder{
+  color: @grey;
+}
+.text::-moz-placeholder{   /* Mozilla Firefox 19+ */
+  color: @grey;
+}
+.text:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+  color: @grey;
+}
+.text:-ms-input-placeholder{  /* Internet Explorer 10-11 */
+  color: @grey;
+}
+.button{
+  margin-top: 20px;
+  margin-bottom: 15px;
+  width: 100%;
+  height: 45px;
+  line-height: 45px;
+  font-size: 15px;
+  color: #fff;
+  border-radius: 25px;
+  background: @but-color;
+}
+
+.password{
+  position: relative;
+  .del{
+    position: absolute;
+    top: 13px;
+    right: 0;
+    width: 15px;
+    height: 15px;
+    background: url("../assets/del.png") no-repeat center;
+    background-size: cover;
+  }
+}

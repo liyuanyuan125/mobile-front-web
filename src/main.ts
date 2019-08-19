@@ -1,3 +1,6 @@
+// hooks 必须放在任何 vue 代码之前才有效
+import '@/util/hooks'
+
 import Vue from 'vue'
 import App from './app.vue'
 import router from './router'

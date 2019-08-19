@@ -2,7 +2,7 @@
   <div class="demo">
     <h1 class="title">{{title}}</h1>
 
-    <Button type="primary">主要按钮</Button>
+    <Button type="primary" @click="onCallNative">测试 CallNative</Button>
 
     <h1 class="title">引入局部图片示意（多用）</h1>
     <div class="line">
@@ -28,6 +28,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { Button } from 'vant'
+import { sayHi, registerCallMeInJs } from '@/util/native'
 
 @Component({
   components: {
@@ -39,6 +40,14 @@ export default class Demo extends Vue {
    * 属性示例
    */
   @Prop({ type: String, default: '' }) title!: string
+
+  onCallNative() {
+    sayHi('god is girl')
+  }
+
+  mounted() {
+    registerCallMeInJs()
+  }
 }
 </script>
 

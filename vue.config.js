@@ -5,11 +5,22 @@ const autoprefixer = require('autoprefixer')
 const pxtoviewport = require('postcss-px-to-viewport')
 
 module.exports = {
-  lintOnSave: false,
-
   devServer: {
-    host: 'h5.aiads-dev.com',
-    disableHostCheck: true
+    headers: {
+      'Access-Control-Allow-Origin': '*'
+    },
+    proxy: {
+      '/': {
+        target: 'http://fapi.aiads-dev.com',
+        changeOrigin: true,
+        ws: false,
+        bypass(req) {
+          if (req.headers.accept.indexOf('html') !== -1) {
+            return '/index.html'
+          }
+        },
+      }
+    }
   },
 
   chainWebpack: config => {

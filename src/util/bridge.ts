@@ -35,17 +35,31 @@ const makeCallback = (handler: BridgeHandler) => {
  * @param handler 调用函数
  */
 export function registerHandler(name: string, handler: BridgeHandler) {
-  if (name in win) {
+  if (name in win && !(name in jsBridge)) {
     devError(`window.${name} 已存在，请不要覆盖 window 现有属性`)
-  }
-  if (name in jsBridge) {
-    devError(`jsBridge.${name} 已存在，请不要重复注册`)
   }
 
   // 安卓的方案？TODO: android 不需要处理？？
   win[name] = handler
   // iOS 的方案
   jsBridge[name] = makeCallback(handler)
+}
+
+/**
+ * 判断名为 name 的 handler 是否存在
+ * @param name 方法名
+ */
+export function hasHandler(name: string) {
+  return name in win && name in jsBridge
+}
+
+/**
+ * 清除 native 注册的方法
+ * @param name 方法名
+ */
+export function clearHandler(name: string) {
+  delete win[name]
+  delete jsBridge[name]
 }
 
 /**
@@ -62,6 +76,8 @@ export async function callNative(name: string, data: any = {}) {
 
     // 自动注册回调
     registerHandler(callbackName, param => {
+      clearHandler(callbackName)
+
       // TODO: 是否通过 success 判断是否成功，code 的结构是怎样的？
       const { success = true, code = 0 } = param || {}
       // 特定的错误处理

@@ -3,10 +3,12 @@
     <div class="tit">输入验证码</div>
     <div class="yzTip"><span>验证码已发送至</span><em> +86 {{phoneNum}}</em></div>
     <div class="password">
-      <input class="text" type="number" v-model="value" @keyup="verifyCode">
+      <input class="text" type="number" v-model="value"
+             @keyup="verifyCode" oninput="if(value.length > 6)value = value.slice(0, 6)"
+      >
       <i class="del" v-show="clear" @click="clearNum"></i>
     </div>
-    <button class="button" @click="setPwd">下一步</button>
+    <button class="button" @click="verifyCode">下一步</button>
     <div :class="again?'sendAgain':'sendTip'" @click="sendAgain">
       <p>重新发送 <span v-show="!again">（{{time}}S）</span></p>
     </div>
@@ -28,10 +30,7 @@
     page: number = 2
     clear: boolean = false
     again: boolean = false
-
-    async setPwd() {
-      this.changePage(this.page)
-    }
+    requestID: any = ''
 
     @Watch('pageOn', {deep: true})   //进入页面开始倒计时
     watchPageOn(val:boolean){
@@ -71,7 +70,9 @@
     async verifyCode(){    //校验验证码
       if(this.value.length == 6){
         try {
-          // await verifyCode({vcode: this.value})
+          //const { data: {requestID}} = await verifyCode({phoneNum: this.phoneNum,vcode: this.value})
+          // this.requestID = requestID
+          this.changePage(this.page)
         } catch (ex) {
           // this.handleError(ex)
         }
@@ -95,7 +96,7 @@
 </script>
 
 <style lang="less" scoped>
-  @import '~@/views/theater/apply/less/common.less';
+  @import '~@/views/theater/components/less/common.less';
   .yzTip{
     position: absolute;
     left: 46px;

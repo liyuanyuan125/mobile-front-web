@@ -1,6 +1,6 @@
 <template>
   <div class="num">
-    <div class="tit">设置登录密码</div>
+    <div class="tit">{{tit}}</div>
     <div class="password">
       <input class="text" :type="inputType" v-model="password" placeholder="请输入6～16位新密码">
       <i :class="show?'show':'hide'" @click="toggleShow"></i>
@@ -14,6 +14,7 @@
 
   @Component
   export default class setPwdPage extends Vue {
+    @Prop({ type: String }) tit!: string
     /** 进入下一页页面函数 */
     @Prop({ type: Function }) changePage!: (id: number) => Promise<boolean>
 
@@ -33,14 +34,19 @@
     }
 
     async confirmLogin() {
-      this.changePage(this.page)
+      try {
+        // await setPwd({requestID: this.requestID,phoneNum: this.inValue,password: this.password})
+        this.changePage(this.page)
+      } catch (ex) {
+        // this.handleError(ex)
+      }
     }
 
   }
 </script>
 
 <style lang="less" scoped>
-  @import '~@/views/theater/apply/less/common.less';
+  @import '~@/views/theater/components/less/common.less';
   .password{
     position: relative;
     i{

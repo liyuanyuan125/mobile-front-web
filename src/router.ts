@@ -24,9 +24,9 @@ export default new Router({
       component: () => import('./views/theater/apply/index.vue')
     },
     {
-      path: '/findPwd',
-      name: 'findPwd',
-      component: () => import('./views/theater/findPwd/index.vue')
+      path: '/setPwd',
+      name: 'setPwd',
+      component: () => import('./views/theater/setPwd/index.vue')
     },
     {
       path: '/form',

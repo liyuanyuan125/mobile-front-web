@@ -12,4 +12,10 @@
 //   return res
 // }
 
+// 修改密码
+// export async function setPwd(query: any) {
+//   const res = await post('/account/set_password' , query)
+//   return res
+// }
+
 

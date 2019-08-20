@@ -2,8 +2,8 @@
   <div class="apply">
     <NumPage
             v-show="page1"
-            @logNum="getNum"
             :changePage="changePage"
+            @logNum="getNum"
     />
     <YzPage
             v-show="page2"
@@ -13,6 +13,7 @@
     />
   <setPwdPage
             v-show="page3"
+            :tit="setPwdTit"
             :changePage="changePage"
   />
   </div>
@@ -20,27 +21,23 @@
 
 <script lang="ts">
   import { Component,Prop,Vue,Watch } from 'vue-property-decorator'
-  import { PasswordInput, NumberKeyboard } from 'vant'
-  import NumPage from './numPage.vue'
-  import YzPage from './yzPage.vue'
-  import setPwdPage from './setPwdPage.vue'
+  import NumPage from '../components/numPage.vue'
+  import YzPage from '../components/yzPage.vue'
+  import setPwdPage from '../components/setPwdPage.vue'
 
   @Component({
     components: {
       YzPage,
-      PasswordInput,
-      NumberKeyboard,
       NumPage,
       setPwdPage
     }
   })
-  export default class Apply extends Vue {
+  export default class setPwd extends Vue {
     page1 = true
     page2 = false
     page3 = false
-    showNum = false
-    showKeyboard = false
     phoneNum: string = ''
+    setPwdTit: string = '设置新密码'
 
     getNum(val: any) {
       this.phoneNum = val

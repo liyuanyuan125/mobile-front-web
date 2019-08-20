@@ -13,11 +13,11 @@
 </template>
 
 <script lang="ts">
-  import { Component,Prop,Vue,Watch } from 'vue-property-decorator'
+  import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 
   @Component
   export default class NumPage extends Vue {
-    @Prop({type: String,default: ''}) phoneNum!: string
+    @Prop({type: String, default: ''}) phoneNum!: string
 
     /** 进入下一页页面函数 */
     @Prop({ type: Function }) changePage!: (id: number) => Promise<boolean>
@@ -27,16 +27,16 @@
     clear: boolean = false
 
     @Watch('inValue', {deep: true})
-    watchPhoneNum(val:any){
-      if(val){
+    watchPhoneNum (val: any) {
+      if (val) {
         this.clear = true
-      }else{
+      } else {
         this.clear = false
       }
       this.$emit("logNum",val)
     }
 
-    clearNum(){
+    clearNum () {
       this.inValue = ''
     }
 
@@ -44,7 +44,7 @@
       if(this.inValue == ''){
         alert('请输入手机号')
         return
-      }else {
+      } else {
         try {
           // await getCode({phoneNum: this.inValue})
           this.changePage(this.page)

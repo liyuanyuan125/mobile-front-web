@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-  import { Component,Prop,Vue,Watch } from 'vue-property-decorator'
+  import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
   import NumPage from '../components/numPage.vue'
   import YzPage from '../components/yzPage.vue'
   import setPwdPage from '../components/setPwdPage.vue'
@@ -43,7 +43,7 @@
       this.phoneNum = val
     }
 
-    changePage(page:number) {
+    changePage(page: number) {
       switch (page) {
         case 1:
           this.page1 = false

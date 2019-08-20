@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-  import { Component,Prop,Vue } from 'vue-property-decorator'
+  import { Component, Prop, Vue } from 'vue-property-decorator'
 
   @Component
   export default class setPwdPage extends Vue {
@@ -25,7 +25,7 @@
 
     toggleShow(){
       if(this.inputType == 'password'){
-        this.inputType = 'number'
+        this.inputType = 'text'
         this.show = true
       }else{
         this.inputType = 'password'

@@ -25,47 +25,47 @@ module.exports = {
 
   chainWebpack: config => {
     const isDev = process.env.NODE_ENV === 'development'
-    // 开发|测试|仿真|生产：aiads-dev|qas|stg|prd
-    ;[
-      {
-        env: 'dev',
-        baseUrl: isDev ? '/' : 'https://h5.aiads-dev.com',
-        ajaxBaseUrl: 'https://fapi.aiads-dev.com'
-      },
-      {
-        env: 'qas',
-        baseUrl: 'https://qas.aiads.com',
-        ajaxBaseUrl: 'https://fapi.qas.aiads.com'
-      },
-      {
-        env: 'stg',
-        baseUrl: 'https://stg.aiads.com',
-        ajaxBaseUrl: 'https://fapi.stg.aiads.com'
-      },
-      {
-        env: 'prd',
-        baseUrl: 'https://jydata.com',
-        ajaxBaseUrl: 'https://fapi.jydata.com'
-      }
-    ].forEach(it => {
-      const { env } = it
-      config.plugin(env === 'dev' ? 'html' : `html-${env}`).use(HtmlWebpackPlugin, [
+      // 开发|测试|仿真|生产：aiads-dev|qas|stg|prd
+      ;[
         {
-          template: 'public/index.html',
-          filename: isDev && env === 'dev' ? 'index.html' : `index-aiads-${env}.html`,
-          minify: {
-            collapseWhitespace: true,
-            removeComments: true,
-            removeRedundantAttributes: true,
-            removeScriptTypeAttributes: true,
-            removeStyleLinkTypeAttributes: true,
-            useShortDoctype: true,
-            removeAttributeQuotes: true
-          },
-          VAR: it
+          env: 'dev',
+          baseUrl: isDev ? '/' : 'https://h5.aiads-dev.com',
+          ajaxBaseUrl: 'https://fapi.aiads-dev.com'
+        },
+        {
+          env: 'qas',
+          baseUrl: 'https://qas.aiads.com',
+          ajaxBaseUrl: 'https://fapi.qas.aiads.com'
+        },
+        {
+          env: 'stg',
+          baseUrl: 'https://stg.aiads.com',
+          ajaxBaseUrl: 'https://fapi.stg.aiads.com'
+        },
+        {
+          env: 'prd',
+          baseUrl: 'https://jydata.com',
+          ajaxBaseUrl: 'https://fapi.jydata.com'
         }
-      ])
-    })
+      ].forEach(it => {
+        const { env } = it
+        config.plugin(env === 'dev' ? 'html' : `html-${env}`).use(HtmlWebpackPlugin, [
+          {
+            template: 'public/index.html',
+            filename: isDev && env === 'dev' ? 'index.html' : `index-aiads-${env}.html`,
+            minify: {
+              collapseWhitespace: true,
+              removeComments: true,
+              removeRedundantAttributes: true,
+              removeScriptTypeAttributes: true,
+              removeStyleLinkTypeAttributes: true,
+              useShortDoctype: true,
+              removeAttributeQuotes: true
+            },
+            VAR: it
+          }
+        ])
+      })
 
     config.performance.hints(false)
 
@@ -98,7 +98,7 @@ module.exports = {
         plugins: [
           autoprefixer(),
           pxtoviewport({
-            viewportWidth: 375,
+            viewportWidth: 750,
             // 该项仅在使用 Circle 组件时需要
             // 原因参见 https://github.com/youzan/vant/issues/1948
             selectorBlackList: ['van-circle__layer']

@@ -29,6 +29,11 @@ export default new Router({
       component: () => import('./views/theater/setPwd/index.vue')
     },
     {
+      path: '/application',
+      name: 'application',
+      component: () => import('./views/theater/entryApplication/index.vue')
+    },
+    {
       path: '/form',
       name: 'form',
       component: () => import('./views/demo/index.vue')

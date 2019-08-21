@@ -59,7 +59,7 @@
 </script>
 
 <style lang="less" scoped>
-  @import '~@/views/theater/components/less/common.less';
+  @import './less/common.less';
   .numTip{
     width: 100%;
     text-align: right;

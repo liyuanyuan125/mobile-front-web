@@ -47,7 +47,7 @@ export function validatePassword(password: string): string | undefined {
  * @param mobile 手机号
  */
 export function validataTel(mobile: string): string | undefined {
-  const reg = /^[1][3-9][0-9]{9}$/
+  const reg = /^[1][0-9]{10}$/
   if (!reg.test(mobile)) {
     return '手机号不符合规范'
   }

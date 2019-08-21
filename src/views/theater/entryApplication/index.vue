@@ -24,8 +24,8 @@ import PersonInfo from './components/personInfo.vue'
 })
 export default class Home extends Vue {
   tabIndex: number = 1 // 1=企业 2=个人
-  companyItem: Object = {} //企业信息
-  personItem: Object = {} //个人信息
+  companyItem: object = {} // 企业信息
+  personItem: object = {} // 个人信息
 
   changeTabIndex(index: number) {
     this.tabIndex = index

@@ -44,7 +44,7 @@
 
     @Watch('value', {deep: true})
     watchValue(val: any) {
-      this.clear = !!val;
+      this.clear = !!val
     }
 
     clearNum() {

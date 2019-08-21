@@ -44,11 +44,7 @@
 
     @Watch('value', {deep: true})
     watchValue(val: any) {
-      if (val) {
-        this.clear = true
-      } else {
-        this.clear = false
-      }
+      this.clear = !!val;
     }
 
     clearNum() {
@@ -101,7 +97,7 @@
 </script>
 
 <style lang="less" scoped>
-  @import '~@/views/theater/components/less/common.less';
+  @import './less/common.less';
   .yzTip{
     position: absolute;
     left: 92px;

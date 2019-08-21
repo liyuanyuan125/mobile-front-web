@@ -37,7 +37,9 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 
 @Component
-export default class CompanyInfo extends Vue {}
+export default class CompanyInfo extends Vue {
+  @Prop({ type: Object }) companyItem!: object
+}
 </script>
 
 <style lang="less" scoped>

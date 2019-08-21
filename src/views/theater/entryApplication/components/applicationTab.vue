@@ -44,7 +44,7 @@ export default class ApplicationTab extends Vue {
   }
   li {
     flex: 1;
-    width: 50%;
+    // width: 50%;
     line-height: 80px;
     font-size: 26px;
     color: #899ab3;

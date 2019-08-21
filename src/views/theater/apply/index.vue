@@ -5,29 +5,29 @@
             :changePage="changePage"
             @logNum="getNum"
     />
-    <YzPage
+    <CheckPage
             v-show="page2"
             :phoneNum="phoneNum"
             :pageOn="page2"
             :changePage="changePage"
     />
-  <setPwdPage
+    <SetPwdPage
             v-show="page3"
             :tit="setPwdTit"
             :changePage="changePage"
-  />
+    />
   </div>
 </template>
 
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator'
-  import NumPage from '../components/numPage.vue'
-  import YzPage from '../components/yzPage.vue'
-  import SetPwdPage from '../components/setPwdPage.vue'
+  import NumPage from '../components/input/numPage.vue'
+  import CheckPage from '../components/input/checkPage.vue'
+  import SetPwdPage from '../components/input/setPwdPage.vue'
 
   @Component({
     components: {
-      YzPage,
+      CheckPage,
       NumPage,
       SetPwdPage
     }
@@ -65,6 +65,6 @@
 <style lang="less" scoped>
   .apply {
     position: relative;
-    padding: 50px 46px 0;
+    padding: 100px 92px 0;
   }
 </style>

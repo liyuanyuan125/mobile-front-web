@@ -22,7 +22,7 @@
 
 
   @Component
-  export default class YzPage extends Vue {
+  export default class CheckPage extends Vue {
     @Prop({ type: String, default: '' }) phoneNum!: string
     @Prop({ type: Boolean }) pageOn!: boolean
     /** 进入下一页页面函数 */
@@ -36,14 +36,14 @@
     requestID: any = ''
 
     @Watch('pageOn', {deep: true})   // 进入页面开始倒计时
-    watchPageOn (val: boolean) {
+    watchPageOn(val: boolean) {
       if (val) {
         this.timeFunc()
       }
     }
 
     @Watch('value', {deep: true})
-    watchValue (val: any) {
+    watchValue(val: any) {
       if (val) {
         this.clear = true
       } else {
@@ -51,11 +51,11 @@
       }
     }
 
-    clearNum () {
+    clearNum() {
       this.value = ''
     }
 
-    timeFunc () {
+    timeFunc() {
       const init: any = '3'
       let t: any = init
       const timer: any = setInterval(() => {
@@ -67,13 +67,13 @@
           t = t - 1
           this.time = t
         }
-      } ,1000)
+      }, 1000)
     }
 
     async verifyCode() {    // 校验验证码
       if (validataCode(this.value)) {
         alert(validataCode(this.value))
-      }else{
+      } else {
         try {
           // const { data: {requestID}} = await verifyCode({phoneNum: this.phoneNum,vcode: this.value})
           // this.requestID = requestID
@@ -104,13 +104,13 @@
   @import '~@/views/theater/components/less/common.less';
   .yzTip{
     position: absolute;
-    left: 46px;
-    top: 86px;
-    font-size: 14px;
+    left: 92px;
+    top: 172px;
+    font-size: 28px;
     color: @tip-color;
     em{
       display: inline-block;
-      margin-left: 5px;
+      margin-left: 10px;
       color: @black;
     }
   }
@@ -118,24 +118,24 @@
     margin: 0;
   }
   .van-password-input__security{  //ul
-    height: 42px;
+    height: 84px;
     border-bottom: @border;
     li{
-      line-height: 42px;
-      font-size: 25px;
+      line-height: 84px;
+      font-size: 50px;
       color: @black;
     }
   }
   .sendTip{
-    font-size: 14px;
+    font-size: 28px;
     color: @tip-color;
   }
   .sendAgain{
-    font-size: 14px;
+    font-size: 28px;
     color: @but-color;
   }
   .text{
-    font-size: 25px;
-    letter-spacing: 10px;
+    font-size: 50px;
+    letter-spacing: 20px;
   }
 </style>

@@ -24,20 +24,20 @@
     inputType: any = 'password'
     show: boolean = false
 
-    toggleShow(){
-      if(this.inputType == 'password'){
+    toggleShow() {
+      if (this.inputType == 'password') {
         this.inputType = 'text'
         this.show = true
-      }else{
+      } else {
         this.inputType = 'password'
         this.show = false
       }
     }
 
     async confirmLogin() {
-      if(validatePassword(this.password)){
+      if (validatePassword(this.password)) {
         alert(validatePassword(this.password))
-      }else{
+      } else {
         try {
           // await setPwd({requestID: this.requestID,phoneNum: this.inValue,password: this.password})
           this.changePage(this.page)
@@ -56,19 +56,19 @@
     position: relative;
     i{
       position: absolute;
-      top: 17px;
-      right: 10px;
+      top: 34px;
+      right: 20px;
     }
     .hide{
-      width: 18px;
-      height: 9px;
-      background: url("./assets/hide.png") no-repeat center;
+      width: 36px;
+      height: 18px;
+      background: url("assets/hide.png") no-repeat center;
       background-size: cover;
     }
     .show{
-      width: 18px;
-      height: 12px;
-      background: url("./assets/noHide.png") no-repeat center;
+      width: 36px;
+      height: 24px;
+      background: url("assets/noHide.png") no-repeat center;
       background-size: cover;
     }
   }

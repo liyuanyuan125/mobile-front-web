@@ -29,21 +29,21 @@
     clear: boolean = false
 
     @Watch('inValue', {deep: true})
-    watchPhoneNum (val: any) {
+    watchPhoneNum(val: any) {
       if (val) {
         this.clear = true
       } else {
         this.clear = false
       }
-      this.$emit("logNum",val)
+      this.$emit('logNum', val)
     }
 
-    clearNum () {
+    clearNum() {
       this.inValue = ''
     }
 
     async getYzm() {
-      if(validataTel(this.inValue)){
+      if (validataTel(this.inValue)) {
         alert(validataTel(this.inValue))
       } else {
         try {
@@ -64,7 +64,7 @@
     width: 100%;
     text-align: right;
     p{
-      font-size: 14px;
+      font-size: 28px;
       color: @tip-color;
       a{
         color: @but-color;

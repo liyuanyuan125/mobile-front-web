@@ -2,7 +2,7 @@
   <div class="num">
     <div class="tit">{{tit}}</div>
     <div class="password">
-      <input class="text" :type="inputType" v-model="password" placeholder="请输入6～16位新密码">
+      <input class="text" :type="inputType" v-model="password" placeholder="请输入6～16位新密码" maxlength="16">
       <i :class="show?'show':'hide'" @click="toggleShow"></i>
     </div>
     <button class="button" @click="confirmLogin">确认</button>
@@ -11,9 +11,10 @@
 
 <script lang="ts">
   import { Component, Prop, Vue } from 'vue-property-decorator'
+  import { validatePassword } from '@/fn/validateRules'
 
   @Component
-  export default class setPwdPage extends Vue {
+  export default class SetPwdPage extends Vue {
     @Prop({ type: String }) tit!: string
     /** 进入下一页页面函数 */
     @Prop({ type: Function }) changePage!: (id: number) => Promise<boolean>
@@ -34,11 +35,15 @@
     }
 
     async confirmLogin() {
-      try {
-        // await setPwd({requestID: this.requestID,phoneNum: this.inValue,password: this.password})
-        this.changePage(this.page)
-      } catch (ex) {
-        // this.handleError(ex)
+      if(validatePassword(this.password)){
+        alert(validatePassword(this.password))
+      }else{
+        try {
+          // await setPwd({requestID: this.requestID,phoneNum: this.inValue,password: this.password})
+          this.changePage(this.page)
+        } catch (ex) {
+          // this.handleError(ex)
+        }
       }
     }
 

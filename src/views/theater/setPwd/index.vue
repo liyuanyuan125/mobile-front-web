@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-  import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
+  import { Component, Vue } from 'vue-property-decorator'
   import NumPage from '../components/numPage.vue'
   import YzPage from '../components/yzPage.vue'
   import setPwdPage from '../components/setPwdPage.vue'

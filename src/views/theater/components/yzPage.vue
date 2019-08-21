@@ -5,6 +5,7 @@
     <div class="password">
       <input class="text" type="number" v-model="value"
              oninput="if(value.length > 6)value = value.slice(0, 6)"
+             onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))"
       >
       <i class="del" v-show="clear" @click="clearNum"></i>
     </div>
@@ -17,6 +18,8 @@
 
 <script lang="ts">
   import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
+  import { validataCode } from '@/fn/validateRules'
+
 
   @Component
   export default class YzPage extends Vue {
@@ -68,7 +71,9 @@
     }
 
     async verifyCode() {    // 校验验证码
-      if (this.value.length == 6) {
+      if (validataCode(this.value)) {
+        alert(validataCode(this.value))
+      }else{
         try {
           // const { data: {requestID}} = await verifyCode({phoneNum: this.phoneNum,vcode: this.value})
           // this.requestID = requestID

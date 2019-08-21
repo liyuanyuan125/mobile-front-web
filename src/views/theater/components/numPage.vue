@@ -4,6 +4,7 @@
     <div class="password">
       <input class="text" type="number" v-model="inValue" placeholder="请输入您的手机号码"
              oninput="if(value.length > 11)value = value.slice(0, 11)"
+             onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))"
       >
       <i class="del" v-show="clear" @click="clearNum"></i>
     </div>
@@ -14,6 +15,7 @@
 
 <script lang="ts">
   import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
+  import { validataTel } from '@/fn/validateRules'
 
   @Component
   export default class NumPage extends Vue {
@@ -41,9 +43,8 @@
     }
 
     async getYzm() {
-      if(this.inValue == ''){
-        alert('请输入手机号')
-        return
+      if(validataTel(this.inValue)){
+        alert(validataTel(this.inValue))
       } else {
         try {
           // await getCode({phoneNum: this.inValue})

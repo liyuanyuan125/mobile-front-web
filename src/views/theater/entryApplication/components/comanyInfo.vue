@@ -53,10 +53,19 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
+import { getProvinceList } from '@/api/commonData'
 
 @Component
 export default class CompanyInfo extends Vue {
   @Prop({ type: Object }) companyItem!: object
+
+  provinces = undefined
+
+  async created() {
+    const { data } = await getProvinceList()
+    console.log('provinsces', data)
+    this.provinces = data
+  }
 }
 </script>
 

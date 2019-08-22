@@ -19,7 +19,7 @@
 <script lang="ts">
   import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
   import { validataCode } from '@/fn/validateRules'
-
+  import { getRequestId } from '@/store'
 
   @Component
   export default class CheckPage extends Vue {
@@ -33,7 +33,7 @@
     page: number = 2
     clear: boolean = false
     again: boolean = false
-    requestID: any = ''
+    requestID: any = '77777777777'
 
     @Watch('pageOn', {deep: true})   // 进入页面开始倒计时
     watchPageOn(val: boolean) {
@@ -72,7 +72,8 @@
       } else {
         try {
           // const { data: {requestID}} = await verifyCode({phoneNum: this.phoneNum,vcode: this.value})
-          // this.requestID = requestID
+          // this.requestID = requestID   this.$store.state.requestID取用
+          // getRequestId(this.requestID)  更新store的值
           this.changePage(this.page)
         } catch (ex) {
           // this.handleError(ex)

@@ -12,6 +12,7 @@
 <script lang="ts">
   import { Component, Prop, Vue } from 'vue-property-decorator'
   import { validatePassword } from '@/fn/validateRules'
+  import { getPassword } from '@/store'
 
   @Component
   export default class SetPwdPage extends Vue {
@@ -40,6 +41,7 @@
       } else {
         try {
           // await setPwd({requestID: this.requestID,phoneNum: this.inValue,password: this.password})
+          getPassword(this.password)  // 更新store的值
           this.changePage(this.page)
         } catch (ex) {
           // this.handleError(ex)

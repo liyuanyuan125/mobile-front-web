@@ -21,7 +21,7 @@
   @Component
   export default class NumPage extends Vue {
     @Prop({type: String, default: ''}) phoneNum!: string
-    @Prop({type: String, default: ''}) loginShow!: string
+    @Prop({type: Boolean, default: ''}) loginShow!: boolean
 
     /** 进入下一页页面函数 */
     @Prop({ type: Function }) changePage!: (id: number) => Promise<boolean>

@@ -2,32 +2,50 @@
   <div class="companyBox">
     <dl>
       <dd>
-        <input type="text" class="input" placeholder="企业名称" />
+        <input type="text" class="input" placeholder="企业名称" v-model="companyItem.companyName" />
       </dd>
       <dd>
-        <input type="text" class="input" placeholder="联系人姓名" />
+        <input type="text" class="input" placeholder="联系人姓名" v-model="companyItem.contact" />
       </dd>
       <dd>
-        <input type="number" class="input" maxlength="11" placeholder="手机号码" />
+        <input
+          type="number"
+          class="input"
+          maxlength="11"
+          placeholder="手机号码"
+          v-model="companyItem.contactTel"
+        />
+      </dd>
+      <dd class="areaBox">
+        <span>
+          <select class="select" v-model="companyItem.provinceId">
+            <option>企业所在省份</option>
+          </select>
+        </span>
+        <span>
+          <select class="select" v-model="companyItem.cityId">
+            <option>城市</option>
+          </select>
+        </span>
       </dd>
       <dd>
-        <select class="select">
-          <option>企业所在省份</option>
-        </select>
-        <select class="select">
-          <option>城市</option>
-        </select>
-      </dd>
-      <dd>
-        <select class="select">
+        <select class="select" v-model="companyItem.qualificationId">
           <option>企业所属行业</option>
         </select>
       </dd>
-      <dd>
-        <input type="file" placeholder="上传营业执照" />
+      <dd class="uploadFile">
+        <div class="row">
+          <span>上传营业执照</span>
+        </div>
       </dd>
       <dd>
-        <input type="number" maxlength="11" class="input" placeholder="推荐人手机号码" />
+        <input
+          type="number"
+          maxlength="11"
+          class="input"
+          placeholder="推荐人手机号码"
+          v-model="companyItem.recommendTel"
+        />
       </dd>
     </dl>
   </div>
@@ -43,27 +61,5 @@ export default class CompanyInfo extends Vue {
 </script>
 
 <style lang="less" scoped>
-// @import '~@/views/theater/components/less/common.less';
-.companyBox {
-  dd {
-    margin-top: 20px;
-  }
-  .input,
-  .select {
-    background-color: rgba(241, 245, 251, 0.3);
-    border: 1px solid rgba(175, 190, 212, 0.3);
-    width: 100%;
-    font-size: 30px;
-    line-height: 30px;
-    padding: 27px 20px;
-    color: #404d66;
-    box-sizing: border-box;
-    &::-webkit-input-placeholder {
-      color: #afbed4;
-    }
-  }
-  .select {
-    z-index: 1;
-  }
-}
+@import '~@/views/theater/entryApplication/less/infoList.less';
 </style>

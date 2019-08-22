@@ -23,11 +23,16 @@ export default new Router({
       name: 'apply',
       component: () => import('./views/theater/apply/index.vue')
     },
-    // {
-    //   path: '/setPwd',
-    //   name: 'setPwd',
-    //   component: () => import('./views/theater/setPwd/index.vue')
-    // },
+    {
+      path: '/setPwd',
+      name: 'setPwd',
+      component: () => import('./views/theater/apply/setPwd.vue')
+    },
+    {
+      path: '/submit',
+      name: 'submit',
+      component: () => import('./views/theater/submit/index.vue')
+    },
     {
       path: '/form',
       name: 'form',

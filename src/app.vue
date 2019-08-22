@@ -13,9 +13,6 @@
 </style>
 
 <style lang="less" scoped>
-.app {
-  margin: 28px auto;
-}
 .nav {
   text-align: center;
 }

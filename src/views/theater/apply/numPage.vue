@@ -9,17 +9,19 @@
       <i class="del" v-show="clear" @click="clearNum"></i>
     </div>
     <button class="button" @click="getYzm">获取验证码</button>
-    <div class="numTip"><p>已有账号?<a href="">立即登录</a></p></div>
+    <div class="numTip" v-show="loginShow"><p>已有账号?<a href="">立即登录</a></p></div>
   </div>
 </template>
 
 <script lang="ts">
   import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
   import { validataTel } from '@/fn/validateRules'
+  // import { toastMessage } from '@/components/toastMessage'
 
   @Component
   export default class NumPage extends Vue {
     @Prop({type: String, default: ''}) phoneNum!: string
+    @Prop({type: String, default: ''}) loginShow!: string
 
     /** 进入下一页页面函数 */
     @Prop({ type: Function }) changePage!: (id: number) => Promise<boolean>
@@ -59,7 +61,7 @@
 </script>
 
 <style lang="less" scoped>
-  @import './less/common.less';
+  @import 'less/common.less';
   .numTip{
     width: 100%;
     text-align: right;

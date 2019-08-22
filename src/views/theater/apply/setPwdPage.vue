@@ -51,7 +51,7 @@
 </script>
 
 <style lang="less" scoped>
-  @import './less/common.less';
+  @import 'less/common.less';
   .password{
     position: relative;
     i{

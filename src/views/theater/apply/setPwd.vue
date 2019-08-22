@@ -2,7 +2,7 @@
   <div class="apply">
     <NumPage
             v-show="page1"
-            :loginShow="true"
+            :loginShow="false"
             :changePage="changePage"
             @logNum="getNum"
     />
@@ -33,12 +33,12 @@
       SetPwdPage
     }
   })
-  export default class Apply extends Vue {
+  export default class SetPwd extends Vue {
     page1 = true
     page2 = false
     page3 = false
     phoneNum: string = ''
-    setPwdTit: string = '设置登录密码'
+    setPwdTit: string = '设置新密码'
 
     getNum(val: any) {
       this.phoneNum = val

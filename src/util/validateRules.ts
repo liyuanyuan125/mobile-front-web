@@ -32,7 +32,7 @@ export function validatePassword(password: string): string | undefined {
     return '密码必须大小写字母、数字组合，缺一不可'
   }
 
-  // 一般直接在 input 上设置 maxlength 为 16，此处就不验证过长了，最后一条规则兜底
+  // 一般直接在 apply 上设置 maxlength 为 16，此处就不验证过长了，最后一条规则兜底
   if (password.length < 8) {
     return '密码过短，不能少于 8 位'
   }

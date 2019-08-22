@@ -17,6 +17,11 @@ html {
   -webkit-focus-ring-color: rgba(0,0,0,0);
 }
 
+*{
+  margin: 0;
+  padding: 0;
+}
+
 body {
   color: @c-text;
 }
@@ -102,7 +107,8 @@ video {
   margin: 0;
   padding: 0;
   border: 0;
-}
+
+  
 
 video {
   outline: 0;
@@ -133,3 +139,15 @@ button {
     border: none;
     outline: none;
  }
+
+input,button{
+  border: none;
+  padding: 0;
+  &:focus{
+    outline: none;
+  }
+}
+
+a{
+  text-decoration: none;
+}

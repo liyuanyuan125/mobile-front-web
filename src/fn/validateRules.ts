@@ -32,7 +32,7 @@ export function validatePassword(password: string): string | undefined {
     return '密码必须字母、数字组合'
   }
 
-  // 一般直接在 input 上设置 maxlength 为 16，此处就不验证过长了，最后一条规则兜底
+  // 一般直接在 apply 上设置 maxlength 为 16，此处就不验证过长了，最后一条规则兜底
   if (password.length < 6) {
     return '密码过短，不能少于 6 位'
   }
@@ -47,7 +47,7 @@ export function validatePassword(password: string): string | undefined {
  * @param mobile 手机号
  */
 export function validataTel(mobile: string): string | undefined {
-  const reg = /^[1][3-9][0-9]{9}$/
+  const reg = /^[1][0-9]{10}$/
   if (!reg.test(mobile)) {
     return '手机号不符合规范'
   }

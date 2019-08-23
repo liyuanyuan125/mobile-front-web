@@ -4,7 +4,7 @@
     <div class="yzTip"><span>验证码已发送至</span><em> +86 {{phoneNum}}</em></div>
     <div class="password">
       <input class="text" type="number" v-model="value"
-             oninput="if(value.length > 6)value = value.slice(0, 6)"
+             oninput="value=value.replace(/[^\d]/g,'');if(value.length > 6)value = value.slice(0, 6)"
              onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))"
              @keyup="butLight"
       >

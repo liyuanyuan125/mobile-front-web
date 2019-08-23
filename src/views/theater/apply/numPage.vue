@@ -4,7 +4,7 @@
     <div class="password">
       <input class="text" type="number" v-model="inValue" placeholder="请输入您的手机号码"
              oninput="if(value.length > 11)value = value.slice(0, 11)"
-             onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))"
+             onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))&&(/[^+-.*]/.test(event.key))"
              @keyup="butLight"
       >
       <i class="del" v-show="clear" @click="clearNum"></i>
@@ -34,17 +34,20 @@
 
     @Watch('inValue', {deep: true})
     watchPhoneNum(val: any) {
-      if (val) {
-        this.clear = true
-      } else {
-        this.clear = false
-      }
+      this.clear = !!val
       this.$emit('logNum', val)
     }
 
     clearNum() {
       this.inValue = ''
     }
+
+    // press(event: Event) {
+    //   console.log(event)
+    //   const e = (/[\d]/.test(String.fromCharCode(event.keyCode)))&&(/[^+-.*]/.test(event.key))
+    //   console.log(e)
+    //   return e
+    // }
 
     butLight() {
       this.button = !validataTel(this.inValue)

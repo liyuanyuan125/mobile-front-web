@@ -6,10 +6,11 @@
       <input class="text" type="number" v-model="value"
              oninput="if(value.length > 6)value = value.slice(0, 6)"
              onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))"
+             @keyup="butLight"
       >
       <i class="del" v-show="clear" @click="clearNum"></i>
     </div>
-    <button class="button" @click="verifyCode">下一步</button>
+    <button :class="button?'button':'button disabled'" @click="verifyCodeBut">下一步</button>
     <div :class="again?'sendAgain':'sendTip'" @click="sendAgain">
       <p>重新发送 <span v-show="!again">（{{time}}S）</span></p>
     </div>
@@ -25,6 +26,7 @@
   export default class CheckPage extends Vue {
     @Prop({ type: String, default: '' }) phoneNum!: string
     @Prop({ type: Boolean }) pageOn!: boolean
+    @Prop({ type: Boolean }) resetPwd!: boolean
     /** 进入下一页页面函数 */
     @Prop({ type: Function }) changePage!: (id: number) => Promise<boolean>
 
@@ -33,7 +35,8 @@
     page: number = 2
     clear: boolean = false
     again: boolean = false
-    requestID: any = '77777777777'
+    button: boolean = false
+    requestID: any = ''
 
     @Watch('pageOn', {deep: true})   // 进入页面开始倒计时
     watchPageOn(val: boolean) {
@@ -51,6 +54,10 @@
       this.value = ''
     }
 
+    butLight() {
+      this.button = !validataCode(this.value)
+    }
+
     timeFunc() {
       const init: any = '3'
       let t: any = init
@@ -66,17 +73,44 @@
       }, 1000)
     }
 
-    async verifyCode() {    // 校验验证码
-      if (validataCode(this.value)) {
-        alert(validataCode(this.value))
+    async verifyCodeBut() {    // 校验验证码
+      if (!this.button) {
+        return
       } else {
         try {
-          // const { data: {requestID}} = await verifyCode({phoneNum: this.phoneNum,vcode: this.value})
+          // const { data: {requestID}, code, msg} = await verifyCode({phoneNum: this.phoneNum,vcode: this.value})
           // this.requestID = requestID   this.$store.state.requestID取用
           // getRequestId(this.requestID)  更新store的值
-          this.changePage(this.page)
+
+          // 重置密码页面 code == 0：该手机号未注册；页面不做跳转；
+          // code != 0，则跳转至重置密码页面；
+          // if (this.resetPwd) {
+          //   if(code == 0) {
+//             alert('该手机号未注册')
+//           } else {
+//             this.changePage(this.page)
+//           }
+//         }else{
+
+//      申请页面     code == 0，未注册，继续走下面流程；
+//           code == 1，注册失败（原因未知那种）；
+//           code == 100003，未注册，但已经申请过，跳转至提交页面；
+//           code == 100001，操作中止，因为已注册过，并 已开通影院，跳转至提示页面
+//           code == 100002，操作中止，因为已注册过，并 已开通广告商，显示指定提示语
+//           if(code == 0) {
+            this.changePage(this.page)
+//           } else if (code == 1) {
+//             alert(msg)
+//           } else if (code == 100001) {
+//             await this.$router.push({name: 'submit', query: {'show': '2'}})
+//           } else if (code == 100002) {
+//             alert('您已开通广告商平台，请登录')
+//           } else if (code == 100003) {
+//             await this.$router.push({name: 'submit', query: {'show': '1'}})
+//           }
+//         }
         } catch (ex) {
-          // this.handleError(ex)
+          throw new Error(ex)
         }
       }
     }
@@ -87,10 +121,17 @@
       } else {
         try {
           this.again = false
-          // await getCode({phoneNum: this.phoneNum})
-          this.timeFunc()
+          // const {code, msg} = await getCode({phoneNum: this.phoneNum})
+
+          // 0 ===获取验证码成功
+          // 1 ===获取验证码失败
+          // if (code == 0) {
+            this.timeFunc()
+          // } else if (code == 1) {
+          //   alert(msg)
+          // }
         } catch (ex) {
-          // this.handleError(ex)
+          throw new Error(ex)
         }
       }
     }

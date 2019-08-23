@@ -10,11 +10,13 @@
             v-show="page2"
             :phoneNum="phoneNum"
             :pageOn="page2"
+            :resetPwd="true"
             :changePage="changePage"
     />
     <SetPwdPage
             v-show="page3"
             :tit="setPwdTit"
+            :resetPwd="true"
             :changePage="changePage"
     />
   </div>
@@ -55,11 +57,10 @@
           this.page3 = true
           break
         case 3:
-          this.$router.push({name: 'form'})
+          this.$router.push({name: 'login'})
           break
       }
     }
-
   }
 </script>
 

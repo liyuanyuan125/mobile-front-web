@@ -10,11 +10,13 @@
             v-show="page2"
             :phoneNum="phoneNum"
             :pageOn="page2"
+            :resetPwd="false"
             :changePage="changePage"
     />
     <SetPwdPage
             v-show="page3"
             :tit="setPwdTit"
+            :resetPwd="false"
             :changePage="changePage"
     />
   </div>

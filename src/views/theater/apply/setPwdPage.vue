@@ -57,7 +57,7 @@
 
           // 重置密码时点确认 提示：密码重置完成  设置密码时不做提示
           if (this.resetPwd) {
-            alert('密码重置完成')
+            this.$toast('密码重置完成')
           }
         } catch (ex) {
           this.handleError(ex)

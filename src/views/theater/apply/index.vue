@@ -70,4 +70,8 @@
     position: relative;
     padding: 100px 92px 0;
   }
+  .van-toast{
+    line-height: 0;
+    font-size: 50px;
+  }
 </style>

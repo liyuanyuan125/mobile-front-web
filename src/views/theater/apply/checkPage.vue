@@ -5,7 +5,7 @@
     <div class="password">
       <input class="text" type="number" v-model="value"
              oninput="value=value.replace(/[^\d]/g,'');if(value.length > 6)value = value.slice(0, 6)"
-             onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))"
+             onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))&&(/[^+-.*]/.test(event.key))"
              @keyup="butLight"
       >
       <i class="del" v-show="clear" @click="clearNum"></i>
@@ -87,7 +87,7 @@
           // code != 0，则跳转至重置密码页面；
           // if (this.resetPwd) {
           //   if(code == 0) {
-//             alert('该手机号未注册')
+//             this.$toast('该手机号未注册')
 //           } else {
 //             this.changePage(this.page)
 //           }
@@ -101,7 +101,7 @@
 //           if(code == 0) {
             this.changePage(this.page)
 //           } else if (code == 1) {
-//             alert(msg)
+//             this.$toast(msg)
 //           } else if (code == 100001) {
 //             await this.$router.push({name: 'submit', query: {'show': '2'}})
 //           } else if (code == 100002) {
@@ -129,7 +129,7 @@
           // if (code == 0) {
             this.timeFunc()
           // } else if (code == 1) {
-          //   alert(msg)
+          //   this.$toast(msg)
           // }
         } catch (ex) {
           this.handleError(ex)
@@ -150,18 +150,6 @@
     em{
       display: inline-block;
       margin-left: 10px;
-      color: @black;
-    }
-  }
-  .van-password-input{ //ul外层div
-    margin: 0;
-  }
-  .van-password-input__security{  //ul
-    height: 84px;
-    border-bottom: @border;
-    li{
-      line-height: 84px;
-      font-size: 50px;
       color: @black;
     }
   }

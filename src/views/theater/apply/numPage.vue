@@ -58,9 +58,8 @@
           // 1 ===获取验证码失败
           // if (code == 0) {
           this.changePage(this.page)
-          this.$toast('111111')
           // } else if (code == 1) {
-          //   alert(msg)
+          //   this.$toast(msg)
           // }
         } catch (ex) {
           this.handleError(ex)

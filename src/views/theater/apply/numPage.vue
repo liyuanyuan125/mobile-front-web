@@ -17,10 +17,11 @@
 <script lang="ts">
   import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
   import { validataTel } from '@/fn/validateRules'
-  // import { toastMessage } from '@/components/toastMessage'
+  import ViewBase from '@/util/ViewBase'
+  import { Toast } from 'vant'
 
   @Component
-  export default class NumPage extends Vue {
+  export default class NumPage extends ViewBase {
     @Prop({type: String, default: ''}) phoneNum!: string
     @Prop({type: Boolean, default: ''}) loginShow!: boolean
 
@@ -42,13 +43,6 @@
       this.inValue = ''
     }
 
-    // press(event: Event) {
-    //   console.log(event)
-    //   const e = (/[\d]/.test(String.fromCharCode(event.keyCode)))&&(/[^+-.*]/.test(event.key))
-    //   console.log(e)
-    //   return e
-    // }
-
     butLight() {
       this.button = !validataTel(this.inValue)
     }
@@ -63,16 +57,16 @@
           // 0 ===获取验证码成功
           // 1 ===获取验证码失败
           // if (code == 0) {
-            this.changePage(this.page)
+          this.changePage(this.page)
+          this.$toast('111111')
           // } else if (code == 1) {
           //   alert(msg)
           // }
         } catch (ex) {
-          throw new Error(ex)
+          this.handleError(ex)
         }
       }
     }
-
   }
 </script>
 

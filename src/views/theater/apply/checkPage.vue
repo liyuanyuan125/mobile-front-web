@@ -20,10 +20,11 @@
 <script lang="ts">
   import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
   import { validataCode } from '@/fn/validateRules'
+  import ViewBase from '@/util/ViewBase'
   import { getRequestId } from '@/store'
 
   @Component
-  export default class CheckPage extends Vue {
+  export default class CheckPage extends ViewBase {
     @Prop({ type: String, default: '' }) phoneNum!: string
     @Prop({ type: Boolean }) pageOn!: boolean
     @Prop({ type: Boolean }) resetPwd!: boolean
@@ -110,7 +111,7 @@
 //           }
 //         }
         } catch (ex) {
-          throw new Error(ex)
+          this.handleError(ex)
         }
       }
     }
@@ -131,7 +132,7 @@
           //   alert(msg)
           // }
         } catch (ex) {
-          throw new Error(ex)
+          this.handleError(ex)
         }
       }
     }

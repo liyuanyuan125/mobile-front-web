@@ -16,10 +16,11 @@
 <script lang="ts">
   import { Component, Prop, Vue } from 'vue-property-decorator'
   import { validatePassword } from '@/fn/validateRules'
+  import ViewBase from '@/util/ViewBase'
   import { getPassword } from '@/store'
 
   @Component
-  export default class SetPwdPage extends Vue {
+  export default class SetPwdPage extends ViewBase {
     @Prop({ type: String }) tit!: string
     @Prop({ type: Boolean }) resetPwd!: boolean
     /** 进入下一页页面函数 */
@@ -59,7 +60,7 @@
             alert('密码重置完成')
           }
         } catch (ex) {
-          throw new Error(ex)
+          this.handleError(ex)
         }
       }
     }

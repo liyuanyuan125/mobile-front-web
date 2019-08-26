@@ -18,6 +18,7 @@
   import { validatePassword } from '@/fn/validateRules'
   import ViewBase from '@/util/ViewBase'
   import { getPassword } from '@/store'
+  import { Toast } from 'vant'
 
   @Component
   export default class SetPwdPage extends ViewBase {

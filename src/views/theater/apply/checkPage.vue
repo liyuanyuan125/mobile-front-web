@@ -22,6 +22,7 @@
   import { validataCode } from '@/fn/validateRules'
   import ViewBase from '@/util/ViewBase'
   import { getRequestId } from '@/store'
+  import { Toast } from 'vant'
 
   @Component
   export default class CheckPage extends ViewBase {

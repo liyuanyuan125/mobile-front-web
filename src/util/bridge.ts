@@ -70,44 +70,37 @@ export function clearHandler(name: string) {
 export async function callNative(name: string, data: any = {}) {
   return new Promise((resolve, reject) => {
     const { postMsg, isIOS, androidMethods } = init()
-    const token = Math.random().toString(36).slice(2) + Date.now()
-
-    const callbackName = `@bridgeCallback${token}`
+    // const token = Math.random().toString(36).slice(2) + Date.now()
+    const callData: any = {
+      callBackMethod: data.callBackName,
+      data: data.params,
+      methodName: data.apiName
+    }
+    const postJson = JSON.stringify(callData)
+    const callbackName = data.callBackName
 
     // 自动注册回调
     registerHandler(callbackName, param => {
       clearHandler(callbackName)
-
-      // TODO: 是否通过 success 判断是否成功，code 的结构是怎样的？
-      const { success = true, code = 0 } = param || {}
+      // success:只代表和App通信是否成功 0=成功，1=失败 data:代表业务码 0=成功（通用） 其他的业码根据业务自定
+      const { success = 0, code = 0 } = param || {}
       // 特定的错误处理
-      if (!success && code == 1) {
+      if (success !== 0) {
         return reject(new Error(`method ${name} is not exists`))
       }
       // TODO: 根据 success 判断是否成功？
-      success ? resolve(param) : reject(param)
+      success === 0 ? resolve(param) : reject(param)
     })
-
-    const callData: any = {
-      callbackMethod: callbackName,
-      data,
-    }
 
     try {
       if (isIOS) {
-        const postJson = JSON.stringify({
-          ...callData,
-          methodName: name,
-          // TODO: 如果 native 不需要 token，则应该去掉，保持干净
-          token,
-        })
-        postMsg(postJson)
+        win.webkit.messageHandlers.nativeEventHandler.postMessage(postJson)
       } else {
         const method = androidMethods[name]
         if (method == null) {
           return reject(new Error(`method ${name} is not exists`))
         }
-        const postJson = JSON.stringify(callData)
+        // const postJson = JSON.stringify(callData)s
         method(postJson)
       }
     } catch (ex) {

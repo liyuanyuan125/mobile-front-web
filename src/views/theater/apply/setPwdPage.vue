@@ -2,27 +2,36 @@
   <div class="num">
     <div class="tit">{{tit}}</div>
     <div class="password">
-      <input class="text" :type="inputType" v-model="password" placeholder="请输入6～16位新密码" maxlength="16">
+      <input class="text" :type="inputType" v-model="password" placeholder="请输入6～16位新密码"
+             maxlength="16"
+             onkeypress="return (/[a-zA-Z\d]/.test(String.fromCharCode(event.keyCode)))"
+             @keyup="butLight"
+      >
       <i :class="show?'show':'hide'" @click="toggleShow"></i>
     </div>
-    <button class="button" @click="confirmLogin">确认</button>
+    <button :class="button?'button':'button disabled'" @click="confirmLogin">确认</button>
   </div>
 </template>
 
 <script lang="ts">
   import { Component, Prop, Vue } from 'vue-property-decorator'
   import { validatePassword } from '@/fn/validateRules'
+  import ViewBase from '@/util/ViewBase'
+  import { getPassword } from '@/store'
+  import { Toast } from 'vant'
 
   @Component
-  export default class SetPwdPage extends Vue {
+  export default class SetPwdPage extends ViewBase {
     @Prop({ type: String }) tit!: string
+    @Prop({ type: Boolean }) resetPwd!: boolean
     /** 进入下一页页面函数 */
     @Prop({ type: Function }) changePage!: (id: number) => Promise<boolean>
 
     page: number = 3
     password: any = ''
-    inputType: any = 'password'
-    show: boolean = false
+    inputType: any = 'text'
+    show: boolean = true
+    button: boolean = false
 
     toggleShow() {
       if (this.inputType == 'password') {
@@ -34,15 +43,25 @@
       }
     }
 
+    butLight() {
+      this.button = !validatePassword(this.password)
+    }
+
     async confirmLogin() {
-      if (validatePassword(this.password)) {
-        alert(validatePassword(this.password))
+      if (!this.button) {
+        return
       } else {
         try {
-          // await setPwd({requestID: this.requestID,phoneNum: this.inValue,password: this.password})
+          // await setPwd({requestID: this.$store.state.requestID,phoneNum: this.inValue,password: this.password})
+          getPassword(this.password)  // 更新store的值
           this.changePage(this.page)
+
+          // 重置密码时点确认 提示：密码重置完成  设置密码时不做提示
+          if (this.resetPwd) {
+            this.$toast('密码重置完成')
+          }
         } catch (ex) {
-          // this.handleError(ex)
+          this.handleError(ex)
         }
       }
     }

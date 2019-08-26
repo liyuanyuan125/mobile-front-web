@@ -10,11 +10,13 @@
             v-show="page2"
             :phoneNum="phoneNum"
             :pageOn="page2"
+            :resetPwd="false"
             :changePage="changePage"
     />
     <SetPwdPage
             v-show="page3"
             :tit="setPwdTit"
+            :resetPwd="false"
             :changePage="changePage"
     />
   </div>
@@ -67,5 +69,9 @@
   .apply {
     position: relative;
     padding: 100px 92px 0;
+  }
+  .van-toast{
+    line-height: 0;
+    font-size: 50px;
   }
 </style>

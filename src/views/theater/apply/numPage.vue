@@ -4,11 +4,12 @@
     <div class="password">
       <input class="text" type="number" v-model="inValue" placeholder="请输入您的手机号码"
              oninput="if(value.length > 11)value = value.slice(0, 11)"
-             onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))"
+             onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))&&(/[^+-.*]/.test(event.key))"
+             @keyup="butLight"
       >
       <i class="del" v-show="clear" @click="clearNum"></i>
     </div>
-    <button class="button" @click="getYzm">获取验证码</button>
+    <button :class="button?'button':'button disabled'" @click="getYzm">获取验证码</button>
     <div class="numTip" v-show="loginShow"><p>已有账号?<a href="">立即登录</a></p></div>
   </div>
 </template>
@@ -16,12 +17,13 @@
 <script lang="ts">
   import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
   import { validataTel } from '@/fn/validateRules'
-  // import { toastMessage } from '@/components/toastMessage'
+  import ViewBase from '@/util/ViewBase'
+  import { Toast } from 'vant'
 
   @Component
-  export default class NumPage extends Vue {
+  export default class NumPage extends ViewBase {
     @Prop({type: String, default: ''}) phoneNum!: string
-    @Prop({type: String, default: ''}) loginShow!: string
+    @Prop({type: Boolean, default: ''}) loginShow!: boolean
 
     /** 进入下一页页面函数 */
     @Prop({ type: Function }) changePage!: (id: number) => Promise<boolean>
@@ -29,14 +31,11 @@
     inValue: string = this.phoneNum
     page: number = 1
     clear: boolean = false
+    button: boolean = false
 
     @Watch('inValue', {deep: true})
     watchPhoneNum(val: any) {
-      if (val) {
-        this.clear = true
-      } else {
-        this.clear = false
-      }
+      this.clear = !!val
       this.$emit('logNum', val)
     }
 
@@ -44,19 +43,29 @@
       this.inValue = ''
     }
 
+    butLight() {
+      this.button = !validataTel(this.inValue)
+    }
+
     async getYzm() {
-      if (validataTel(this.inValue)) {
-        alert(validataTel(this.inValue))
+      if (!this.button) {
+        return
       } else {
         try {
-          // await getCode({phoneNum: this.inValue})
+          // const {code, msg} = await getCode({phoneNum: this.inValue})
+
+          // 0 ===获取验证码成功
+          // 1 ===获取验证码失败
+          // if (code == 0) {
           this.changePage(this.page)
+          // } else if (code == 1) {
+          //   this.$toast(msg)
+          // }
         } catch (ex) {
-          // this.handleError(ex)
+          this.handleError(ex)
         }
       }
     }
-
   }
 </script>
 

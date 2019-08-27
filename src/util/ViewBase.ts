@@ -1,5 +1,5 @@
 import { Vue, Component } from 'vue-property-decorator'
-import { Dialog } from 'vant'
+import { Dialog, Toast } from 'vant'
 
 const ignoreCodes = { 401: 1, 403: 1 }
 

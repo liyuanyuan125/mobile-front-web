@@ -13,6 +13,8 @@ import { getApiSignature } from '@/util/native'
 const ajaxBaseUrl = VAR.ajaxBaseUrl
 
 const isAbsoluteUrl = (url: string) => /^[a-z][a-z0-9+.-]*:/.test(url)
+const ua = navigator.userAgent
+const isApp = ua.indexOf('JYDataCinema') > -1
 
 const emit = (data: any) => {
   // 延迟发出 event，以便可以被阻止
@@ -75,9 +77,15 @@ const request = async (url: string, opts: object) => {
     withCredentials: true,
     ...opts,
   }
-  // 签名
-  const signature = await xhr(config)
-  const finalConfig = Object.assign({}, config, signature)
+  let finalConfig = config
+  // 处理一下非 app 报错的问题 临时
+  if (isApp) {
+    // 签名
+    const signature = await xhr(config)
+    finalConfig = Object.assign({}, config, signature)
+  }
+
+
   let res: any
 
   try {

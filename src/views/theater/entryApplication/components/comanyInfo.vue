@@ -92,18 +92,18 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import { getProvinceList, getQualification } from '@/api/commonData'
-// import { Toast } from 'vant'
+import ViewBase from '@/util/ViewBase'
 import { handleUploadImage } from '@/util/native'
 // import { setTimeout } from 'timers'
 
 @Component
-export default class CompanyInfo extends Vue {
+export default class CompanyInfo extends ViewBase {
   @Prop({ type: Object }) companyItem!: object
 
-  provinceData: any = undefined //所有城市数据
-  provinceList: any = [] //省份列表
-  cityList: any = [] //城市列表
-  qualificationList: any = [] //企业类型列表
+  provinceData: any = undefined // 所有城市数据
+  provinceList: any = [] // 省份列表
+  cityList: any = [] // 城市列表
+  qualificationList: any = [] // 企业类型列表
   credentialImg = ''
 
   async created() {
@@ -157,7 +157,6 @@ export default class CompanyInfo extends Vue {
    */
   async selectProvince(val: any) {
     // this.companyItem.cityId = 0;
-    console
     for (let i = 0; i < this.provinceData.length; i++) {
       const pid = this.provinceData[i].provinceId
       if (pid === val) {
@@ -172,13 +171,14 @@ export default class CompanyInfo extends Vue {
   async uploadImg() {
     const obj = {
       params: {
-        sourceType: 3,
-        imageCount: 1
+        sourceType: 3, // 1从相册选取 2拍照上传 3都有
+        imageCount: 1 //图片数量
       },
       apiName: 'handleUploadImage',
       callBackName: 'uploadImageCallBack' // 客户端回调JS方法
     }
-    const result = eval('(' + (await handleUploadImage(obj)) + ')')
+    const result: any = await handleUploadImage(obj)
+    const resultJSON = JSON.parse(result)
     this.credentialImg = result.data.imageList[0].url
     console.log('result', result)
   }

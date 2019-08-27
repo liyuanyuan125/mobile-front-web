@@ -13,9 +13,10 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
+import ViewBase from '@/util/ViewBase'
 
 @Component
-export default class ApplicationTab extends Vue {
+export default class ApplicationTab extends ViewBase {
   @Prop({ type: Number, default: 1 }) tabIndex!: number
   tabData: any = ['企业申请', '个人申请']
 }

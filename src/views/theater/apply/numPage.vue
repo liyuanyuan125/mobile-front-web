@@ -18,6 +18,7 @@
   import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
   import { validataTel } from '@/fn/validateRules'
   import ViewBase from '@/util/ViewBase'
+  import { getCode } from '@/api/theater'
   import { Toast } from 'vant'
 
   @Component
@@ -52,15 +53,15 @@
         return
       } else {
         try {
-          // const {code, msg} = await getCode({phoneNum: this.inValue})
-
+          const {code, msg} = await getCode({phoneNum: this.inValue})
+          console.log(code,msg)
           // 0 ===获取验证码成功
           // 1 ===获取验证码失败
-          // if (code == 0) {
-          this.changePage(this.page)
-          // } else if (code == 1) {
-          //   this.$toast(msg)
-          // }
+          if (code == 0) {
+            this.changePage(this.page)
+          } else {
+            this.$toast(msg)
+          }
         } catch (ex) {
           this.handleError(ex)
         }

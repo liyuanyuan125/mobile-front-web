@@ -81,8 +81,8 @@
       } else {
         try {
           // const { data: {requestID}, code, msg} = await verifyCode({phoneNum: this.phoneNum,vcode: this.value})
-          // this.requestID = requestID   this.$store.state.requestID取用
-          // getRequestId(this.requestID)  更新store的值
+          // this.requestID = requestID   // this.$store.state.requestID取用
+          // getRequestId(this.requestID) // 更新store的值
 
           // 重置密码页面 code == 0：该手机号未注册；页面不做跳转；
           // code != 0，则跳转至重置密码页面；

@@ -8,7 +8,7 @@
     <PersonInfo v-show="tabIndex === 2" :personItem="personItem"></PersonInfo>
     <!-- submit -->
     <div class="submitBox">
-      <button>提交申请</button>
+      <button @click="submitApplication">提交申请</button>
     </div>
   </div>
 </template>
@@ -41,12 +41,12 @@ export default class Application extends Vue {
   // 企业信息
   companyItem: object = Object.assign({}, this.commonInfo, {
     accountType: 1,
-    companyName: '票神',
-    provinceId: '',
-    provinceName: '',
-    cityId: '',
-    cityName: '',
-    qualificationId: '',
+    companyName: '',
+    provinceId: 0,
+    provinceName: '企业所在省份',
+    cityId: 0,
+    cityName: '城市',
+    qualificationId: 'NULL',
     qualificationName: ''
   })
   // 个人信息
@@ -60,6 +60,23 @@ export default class Application extends Vue {
   // 切换 tab
   changeTabIndex(index: number) {
     this.tabIndex = index
+  }
+
+  /**
+   * 验证信息
+   */
+  checkInfo(obj: any) {
+    switch (this.commonInfo.accountType) {
+      //企业
+      case 1:
+        break
+      case 2:
+        break
+    }
+  }
+
+  async submitApplication() {
+    console.info(this.companyItem)
   }
 }
 </script>

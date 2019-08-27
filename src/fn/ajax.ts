@@ -7,6 +7,8 @@ import axios from 'axios'
 import event from './event'
 import tryParseJson from '@/fn/tryParseJson'
 import { AjaxResult } from '@/util/types'
+import { getApiSignature } from '@/util/native'
+
 
 const ajaxBaseUrl = VAR.ajaxBaseUrl
 
@@ -28,6 +30,42 @@ const perfectData = ({ code, data, msg }: any = {}) => {
   } as AjaxResult
 }
 
+// 生成随机32位的字符串
+const createRandom32 = () => {
+  let text = ''
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  for (let i = 0; i < 32; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length))
+  }
+  return text
+}
+
+// 获取签名
+const xhr = async (options: any) => {
+  // 为防止接口并发时，传递了相同的callbackName,
+  // 将 callbackName 改为动态，'getApiSignature' + 接口名（去除下划线） + 'CallBack'
+  const urlArr = options.url.split('/')
+  const callName = urlArr[urlArr.length - 1].replace(/_/g, '').replace(/-/g, '')
+  const obj = {
+    params: {
+      apiUrl: options.baseURL,
+      httpMethod: options.method,
+      params: options.params,
+      platform: 'h5'
+    },
+    apiName: 'getApiSignature',
+    callBackName: 'getApiSignature' + callName + 'CallBack'
+  }
+  const result: any = await getApiSignature(obj)
+  const resultJSON = JSON.parse(result)
+  return {
+    'X-PS-Platform': 'h5',
+    'X-PS-SendTS': resultJSON.data.timeStamp,
+    'X-PS-Check': resultJSON.data.checkValue,
+    'X-PS-CID': createRandom32(),
+  }
+}
+
 const request = async (url: string, opts: object) => {
   const isAbs = isAbsoluteUrl(url)
 
@@ -37,11 +75,13 @@ const request = async (url: string, opts: object) => {
     withCredentials: true,
     ...opts,
   }
-
+  // 签名
+  const signature = await xhr(config)
+  const finalConfig = Object.assign({}, config, signature)
   let res: any
 
   try {
-    res = await axios(config)
+    res = await axios(finalConfig)
   } catch (ex) {
     if (ex && ex.response) {
       const { status, data: html } = ex.response

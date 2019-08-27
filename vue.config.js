@@ -6,12 +6,14 @@ const pxtoviewport = require('postcss-px-to-viewport')
 
 module.exports = {
   devServer: {
+    // port: 9000,
+    // host: 'h5.aiads-dev.com',
     headers: {
       'Access-Control-Allow-Origin': '*'
     },
     proxy: {
       '/': {
-        target: 'http://fapi.aiads-dev.com',
+        target: 'http://api.aiads-dev.com',
         changeOrigin: true,
         ws: false,
         bypass(req) {
@@ -30,7 +32,7 @@ module.exports = {
         {
           env: 'dev',
           baseUrl: isDev ? '/' : 'https://h5.aiads-dev.com',
-          ajaxBaseUrl: 'https://fapi.aiads-dev.com'
+          ajaxBaseUrl: 'https://api.aiads-dev.com'
         },
         {
           env: 'qas',

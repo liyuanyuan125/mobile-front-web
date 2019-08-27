@@ -2,50 +2,88 @@
   <div class="companyBox">
     <dl>
       <dd>
-        <input type="text" class="input" placeholder="企业名称" v-model="companyItem.companyName" />
+        <span class="input">
+          <input type="text" class="inputTxt" placeholder="企业名称" v-model="companyItem.companyName" />
+        </span>
       </dd>
       <dd>
-        <input type="text" class="input" placeholder="联系人姓名" v-model="companyItem.contact" />
+        <span class="input">
+          <input type="text" class="inputTxt" placeholder="联系人姓名" v-model="companyItem.contact" />
+        </span>
       </dd>
       <dd>
-        <input
-          type="number"
-          class="input"
-          maxlength="11"
-          placeholder="手机号码"
-          v-model="companyItem.contactTel"
-        />
+        <span class="input">
+          <input
+            type="number"
+            class="inputTxt"
+            maxlength="11"
+            placeholder="手机号码"
+            v-model="companyItem.contactTel"
+          />
+        </span>
       </dd>
       <dd class="areaBox">
-        <span>
-          <select class="select" v-model="companyItem.provinceId">
-            <option>企业所在省份</option>
+        <span class="selectbox">
+          <select
+            class="select"
+            :style="{color:!companyItem.provinceId ? '' :'#404d66'}"
+            v-model="companyItem.provinceId"
+            @change="selectProvince(companyItem.provinceId)"
+          >
+            <option value="0">企业所在省份</option>
+            <option
+              v-for="pro in provinceList"
+              :key="pro.provinceId"
+              :value="pro.provinceId"
+            >{{pro.provinceName}}</option>
           </select>
         </span>
-        <span>
-          <select class="select" v-model="companyItem.cityId">
-            <option>城市</option>
+        <span class="selectbox">
+          <select
+            class="select"
+            v-model="companyItem.cityId"
+            :style="{color:!companyItem.cityId ? '' :'#404d66'}"
+          >
+            <option value="0">城市</option>
+            <option
+              v-for="city in cityList"
+              :key="city.cityId"
+              :value="city.cityId"
+            >{{city.cityName}}</option>
           </select>
         </span>
       </dd>
       <dd>
-        <select class="select" v-model="companyItem.qualificationId">
-          <option>企业所属行业</option>
+        <select
+          class="select"
+          v-model="companyItem.qualificationId"
+          :style="{color:companyItem.qualificationId === 'NULL' ? '' :'#404d66'}"
+        >
+          <option
+            v-for="quality in qualificationList"
+            :key="quality.key"
+            :value="quality.key"
+          >{{quality.text}}</option>
         </select>
       </dd>
       <dd class="uploadFile">
         <div class="row">
-          <span>上传营业执照</span>
+          <span @click="uploadImg">
+            <img :src="credentialImg" v-if="credentialImg" alt="营业执照" />
+            <em v-else>上传营业执照</em>
+          </span>
         </div>
       </dd>
       <dd>
-        <input
-          type="number"
-          maxlength="11"
-          class="input"
-          placeholder="推荐人手机号码"
-          v-model="companyItem.recommendTel"
-        />
+        <span class="input">
+          <input
+            type="tel"
+            maxlength="11"
+            class="inputTxt"
+            placeholder="推荐人手机号码"
+            v-model="companyItem.recommendTel"
+          />
+        </span>
       </dd>
     </dl>
   </div>
@@ -53,18 +91,96 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
-import { getProvinceList } from '@/api/commonData'
+import { getProvinceList, getQualification } from '@/api/commonData'
+// import { Toast } from 'vant'
+import { handleUploadImage } from '@/util/native'
+// import { setTimeout } from 'timers'
 
 @Component
 export default class CompanyInfo extends Vue {
   @Prop({ type: Object }) companyItem!: object
 
-  provinces = undefined
+  provinceData: any = undefined //所有城市数据
+  provinceList: any = [] //省份列表
+  cityList: any = [] //城市列表
+  qualificationList: any = [] //企业类型列表
+  credentialImg = ''
 
   async created() {
-    const { data } = await getProvinceList()
-    console.log('provinsces', data)
-    this.provinces = data
+    // html加载完成之前，执行
+    this.getProvince()
+    this.getQualification()
+  }
+
+  /**
+   * 获取省份城市
+   */
+  async getProvince() {
+    try {
+      const { data } = await getProvinceList()
+      this.provinceData = data.provinceList
+      if (data.provinceList.length) {
+        this.provinceList = data.provinceList
+      }
+    } catch (err) {
+      throw new Error(err)
+    }
+  }
+  /**
+   * 获取省份城市
+   */
+  async getQualification() {
+    try {
+      const { data } = await getQualification('PARTNER_BUSINESS')
+      const result = []
+      // 添加默认 key
+      result.push({
+        key: 'NULL',
+        text: '企业所属行业'
+      })
+      // controlStatus 有3个参数，0=未知 1=有效 2=无效 只取有效
+      for (const item of data) {
+        if (item.controlStatus === 1) {
+          result.push(item)
+        }
+      }
+      if (result.length) {
+        this.qualificationList = result
+      }
+    } catch (err) {
+      throw new Error(err)
+    }
+  }
+
+  /**
+   * 选择省份
+   */
+  async selectProvince(val: any) {
+    // this.companyItem.cityId = 0;
+    console
+    for (let i = 0; i < this.provinceData.length; i++) {
+      const pid = this.provinceData[i].provinceId
+      if (pid === val) {
+        this.cityList = this.provinceData[i].cityList
+      }
+    }
+  }
+
+  /**
+   * 调取原生上传图片
+   */
+  async uploadImg() {
+    const obj = {
+      params: {
+        sourceType: 3,
+        imageCount: 1
+      },
+      apiName: 'handleUploadImage',
+      callBackName: 'uploadImageCallBack' // 客户端回调JS方法
+    }
+    const result = eval('(' + (await handleUploadImage(obj)) + ')')
+    this.credentialImg = result.data.imageList[0].url
+    console.log('result', result)
   }
 }
 </script>

@@ -2,16 +2,20 @@
   <div class="companyBox">
     <dl>
       <dd>
-        <input type="text" class="input" placeholder="联系人姓名" v-model="personItem.contact" />
+        <span class="input">
+          <input type="text" class="inputTxt" placeholder="联系人姓名" v-model="personItem.contact" />
+        </span>
       </dd>
       <dd>
-        <input
-          type="number"
-          class="input"
-          maxlength="11"
-          placeholder="手机号码"
-          v-model="personItem.contactTel"
-        />
+        <span class="input">
+          <input
+            type="tel"
+            class="inputTxt"
+            maxlength="11"
+            placeholder="手机号码"
+            v-model="personItem.contactTel"
+          />
+        </span>
       </dd>
       <dd>
         <select class="select" v-model="personItem.voucherId">
@@ -28,13 +32,15 @@
         </div>
       </dd>
       <dd>
-        <input
-          type="number"
-          maxlength="11"
-          class="input"
-          placeholder="推荐人手机号码"
-          v-model="personItem.recommendTel"
-        />
+        <span class="input">
+          <input
+            type="number"
+            maxlength="11"
+            class="inputTxt"
+            placeholder="推荐人手机号码"
+            v-model="personItem.recommendTel"
+          />
+        </span>
       </dd>
     </dl>
   </div>

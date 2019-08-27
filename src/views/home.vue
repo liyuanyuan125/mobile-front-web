@@ -2,7 +2,7 @@
   <div class="home">
     <div class="loading" v-if="loading">加载中</div>
     <div class="img-box" v-if="imageUrl">
-      <img :src="imageUrl">
+      <img :src="imageUrl" />
     </div>
   </div>
 </template>
@@ -20,14 +20,14 @@ export default class Home extends ViewBase {
 
   async mounted() {
     this.loading = true
-    try {
-      const { data } = await post('/captcha/images')
-      this.imageUrl = data.imageCaptcha.url
-    } catch (ex) {
-      this.handleError(ex)
-    } finally {
-      this.loading = false
-    }
+    // try {
+    //   const { data } = await post('/captcha/images')
+    //   this.imageUrl = data.imageCaptcha.url
+    // } catch (ex) {
+    //   this.handleError(ex)
+    // } finally {
+    //   this.loading = false
+    // }
   }
 }
 </script>

@@ -8,6 +8,7 @@
     <div class="password">
       <input
         class="text"
+        ref="verifyVal"
         type="number"
         v-model="value"
         oninput="value=value.replace(/[^\d]/g,'');if(value.length > 6)value = value.slice(0, 6)"
@@ -53,6 +54,8 @@ export default class CheckPage extends ViewBase {
 
   @Watch('pageOn', { deep: true }) // 进入页面开始倒计时
   watchPageOn(val: boolean) {
+    const vfocus: any = this.$refs.verifyVal
+    vfocus.focus()
     if (val) {
       this.timeFunc()
     }

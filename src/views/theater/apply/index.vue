@@ -32,7 +32,7 @@ export default class Apply extends Vue {
   page3 = false
   phoneNum: string = ''
   setPwdTit: string = '设置登录密码'
-  pageType: any = '1' //1=申请入驻 2=修改密码
+  pageType: any = '1' // 1=申请入驻 2=修改密码
 
   mounted() {
     this.pageType = this.$route.query.type

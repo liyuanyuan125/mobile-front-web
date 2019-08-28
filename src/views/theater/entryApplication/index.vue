@@ -67,11 +67,11 @@ export default class Application extends Vue {
    * 验证信息
    */
   checkInfo(obj: any) {
-    console.info('11', obj, obj.accountType)
+    // console.info('11', obj, obj.accountType)
     switch (obj.accountType) {
-      //企业
+      // 企业
       case 1:
-        console.info('11', obj.companyName.length, obj.companyName)
+        // console.info('11', obj.companyName.length, obj.companyName)
         if (!obj.companyName.length) {
           this.$toast('请填写公司名称')
         } else if (!obj.contact.length) {
@@ -105,7 +105,7 @@ export default class Application extends Vue {
   }
 
   async submitApplication() {
-    console.info(this.companyItem)
+    // console.info(this.companyItem)
     this.checkInfo(this.companyItem)
   }
 }

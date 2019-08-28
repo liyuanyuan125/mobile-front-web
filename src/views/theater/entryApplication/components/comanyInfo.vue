@@ -157,10 +157,10 @@ export default class CompanyInfo extends ViewBase {
    */
   async selectProvince(val: any) {
     // this.companyItem.cityId = 0;
-    for (let i = 0; i < this.provinceData.length; i++) {
-      const pid = this.provinceData[i].provinceId
+    for (const proItem of this.provinceData) {
+      const pid = proItem.provinceId
       if (pid === val) {
-        this.cityList = this.provinceData[i].cityList
+        this.cityList = proItem.cityList
       }
     }
   }
@@ -172,7 +172,7 @@ export default class CompanyInfo extends ViewBase {
     const obj = {
       params: {
         sourceType: 3, // 1从相册选取 2拍照上传 3都有
-        imageCount: 1 //图片数量
+        imageCount: 1 // 图片数量
       },
       apiName: 'handleUploadImage',
       callBackName: 'uploadImageCallBack' // 客户端回调JS方法
@@ -180,7 +180,7 @@ export default class CompanyInfo extends ViewBase {
     const result: any = await handleUploadImage(obj)
     const resultJSON = JSON.parse(result)
     this.credentialImg = result.data.imageList[0].url
-    console.log('result', result)
+    // console.log('result', result)
   }
 }
 </script>

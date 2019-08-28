@@ -32,7 +32,7 @@ export default class ApplicationTab extends ViewBase {
   ul {
     display: flex;
     position: relative;
-    &:after {
+    &::after {
       content: '';
       background-color: #afbed4;
       width: 2px;

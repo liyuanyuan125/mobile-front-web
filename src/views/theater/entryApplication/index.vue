@@ -18,6 +18,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import ApplicationTab from './components/applicationTab.vue'
 import CompanyInfo from './components/comanyInfo.vue'
 import PersonInfo from './components/personInfo.vue'
+import { Toast } from 'vant'
 
 @Component({
   components: {
@@ -53,7 +54,7 @@ export default class Application extends Vue {
   personItem: object = Object.assign({}, this.commonInfo, {
     accountType: 2,
     contactMail: '',
-    voucherId: '',
+    voucherId: 'NULL',
     voucherName: ''
   })
 
@@ -66,17 +67,46 @@ export default class Application extends Vue {
    * 验证信息
    */
   checkInfo(obj: any) {
-    switch (this.commonInfo.accountType) {
+    console.info('11', obj, obj.accountType)
+    switch (obj.accountType) {
       //企业
       case 1:
+        console.info('11', obj.companyName.length, obj.companyName)
+        if (!obj.companyName.length) {
+          this.$toast('请填写公司名称')
+        } else if (!obj.contact.length) {
+          this.$toast('请填写联系人')
+        } else if (!obj.contactTel.length) {
+          this.$toast('请填写联系人电话')
+        } else if (!obj.provinceId) {
+          this.$toast('请选择公司所在省份')
+        } else if (!obj.cityId) {
+          this.$toast('请选择公司所在城市')
+        } else if (obj.qualificationId === 'NULL') {
+          this.$toast('请选择公司行业类型')
+        } else if (!obj.credentialUrl.length) {
+          this.$toast('请上传公司营业执照')
+        }
         break
       case 2:
+        if (!obj.contact.length) {
+          this.$toast('请填写联系人')
+        } else if (!obj.contactTel.length) {
+          this.$toast('请填写联系人电话')
+        } else if (obj.qualificationId === 'NULL') {
+          this.$toast('请选择证件类型')
+        } else if (!obj.credentialUrl.length) {
+          this.$toast('请上传证件照')
+        } else if (obj.qualificationId === 'ID_CARD' && obj.credentialUrl.length < 2) {
+          this.$toast('请上传身份证正反照')
+        }
         break
     }
   }
 
   async submitApplication() {
     console.info(this.companyItem)
+    this.checkInfo(this.companyItem)
   }
 }
 </script>

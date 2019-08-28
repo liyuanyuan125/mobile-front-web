@@ -5,12 +5,12 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-      requestID: '',
-      password: ''
+    requestId: '',
+    password: ''
   },
   mutations: {
     requestId(state, value: string) {
-      state.requestID = value
+      state.requestId = value
     },
     password(state, value: string) {
       state.password = value

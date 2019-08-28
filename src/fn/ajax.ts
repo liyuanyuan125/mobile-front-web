@@ -5,6 +5,7 @@
 
 import axios from 'axios'
 import event from './event'
+import qs from 'querystring'
 import tryParseJson from '@/fn/tryParseJson'
 import { AjaxResult } from '@/util/types'
 import { getApiSignature } from '@/util/native'
@@ -13,6 +14,8 @@ import { getApiSignature } from '@/util/native'
 const ajaxBaseUrl = VAR.ajaxBaseUrl
 
 const isAbsoluteUrl = (url: string) => /^[a-z][a-z0-9+.-]*:/.test(url)
+const ua = navigator.userAgent
+const isApp = ua.indexOf('JYDataCinema') > -1
 
 const emit = (data: any) => {
   // 延迟发出 event，以便可以被阻止
@@ -71,15 +74,20 @@ const request = async (url: string, opts: object) => {
 
   const config = {
     baseURL: isAbs ? '' : ajaxBaseUrl,
+    // baseURL: 'http://192.168.6.186:8039',
     url,
     withCredentials: true,
     ...opts,
   }
-  // 签名
-  const signature = await xhr(config)
-  const finalConfig = Object.assign({}, config, signature)
-  let res: any
+  let finalConfig = config
+  // 处理一下非 app 报错的问题 临时
+  if (isApp) {
+    // 签名
+    const signature = await xhr(config)
+    finalConfig = Object.assign({}, config, signature)
+  }
 
+  let res: any
   try {
     res = await axios(finalConfig)
   } catch (ex) {
@@ -105,11 +113,11 @@ const request = async (url: string, opts: object) => {
   const { data } = res
   if (data && data.code !== undefined) {
     const result = perfectData(data)
-    if (result.code == 0) {
-      return result
-    } else {
-      throw emit(result)
-    }
+    // if (result.code == 0) {
+    return result
+    // } else {
+    //   throw emit(result)
+    // }
   } else {
     throw emit({ code: 800, data: { raw: data }, msg: '数据格式错误' })
   }
@@ -129,7 +137,10 @@ export async function get(url: string, data: object = {}, opts: object = {}) {
 export async function post(url: string, data: object = {}, opts: object = {}) {
   return request(url, {
     method: 'post',
-    data,
+    data: qs.stringify({ ...data }),
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
     ...opts,
   })
 }

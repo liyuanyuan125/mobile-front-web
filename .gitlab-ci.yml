@@ -1,0 +1,61 @@
+stages:
+  - build
+  - package
+  - deploy-dev
+
+variables:
+  SERVICE_NAME: iadp-front-web
+
+build:
+  image: $REGISTRY_ADDRESS/devops/nodejs/build
+  stage: build
+  only:
+    - tags
+    - develop
+    - testing
+    - release
+  script:
+    - yarn config get registry && yarn && yarn run lint && yarn run build
+  artifacts:
+    paths:
+      - dist
+      - Dockerfile
+    expire_in: 2 hrs
+  tags:
+    - nodejs
+
+package:
+  image: $REGISTRY_ADDRESS/devops/docker/package
+  stage: package
+  variables:
+    GIT_STRATEGY: none
+  only:
+    - tags
+    - develop
+    - testing
+    - release
+  script:
+    - package
+  tags:
+    - docker
+
+deploy-dev:
+  image: $REGISTRY_ADDRESS/devops/docker/deploy
+  stage: deploy-dev
+  variables:
+    GIT_STRATEGY: none
+  dependencies: []
+  only:
+    - develop
+    - testing
+    - release
+  except:
+    - tags
+  script:
+    - deploy -service $SERVICE_NAME
+  environment: aiads-dev
+  tags:
+    - docker
+
+
+

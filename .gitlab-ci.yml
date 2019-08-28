@@ -4,7 +4,7 @@ stages:
   - deploy-dev
 
 variables:
-  SERVICE_NAME: iadp-front-web
+  SERVICE_NAME: iadp-mobile-front-web
 
 build:
   image: $REGISTRY_ADDRESS/devops/nodejs/build

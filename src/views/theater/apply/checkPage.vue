@@ -98,7 +98,7 @@ export default class CheckPage extends ViewBase {
           requestType: this.pageType,
           requestId: this.$store.state.requestId
         })
-        console.log('check', res)
+        // console.log('check', res)
         this.requestId = res.data.requestId // this.$store.state.requestID取用
         // getRequestId(res.data.requestId) // 更新store的值
 

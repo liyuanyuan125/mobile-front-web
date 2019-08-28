@@ -17,19 +17,18 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 
-  @Component
-  export default class SubmitPage extends Vue {
-    show: any = ''
+@Component
+export default class SubmitPage extends Vue {
+  show: any = ''
 
-    mounted() {
-      this.show = this.$route.query.show
-    }
-
+  mounted() {
+    this.show = this.$route.query.show
   }
+}
 </script>
 
 <style lang="less" scoped>
-  @import 'less/common.less';
+@import 'less/common.less';
 </style>

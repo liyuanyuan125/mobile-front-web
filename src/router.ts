@@ -24,12 +24,12 @@ export default new Router({
       component: () => import('./views/theater/apply/index.vue')
     },
     {
-      path: '/setPwd',
-      name: 'setPwd',
+      path: '/setpassword',
+      name: 'setpassword',
       component: () => import('./views/theater/apply/setPwd.vue')
     },
     {
-      path: '/submit?',
+      path: '/submit',
       name: 'submit',
       component: () => import('./views/theater/submit/index.vue')
     },

@@ -56,7 +56,6 @@ const xhr = async (options: any) => {
       params: options.params,
       platform: 'h5'
     },
-    apiName: 'getApiSignature',
     callBackName: 'getApiSignature' + callName + 'CallBack'
   }
   const result: any = await getApiSignature(obj)

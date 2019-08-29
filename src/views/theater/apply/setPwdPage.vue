@@ -21,15 +21,18 @@
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { validatePassword } from '@/fn/validateRules'
 import ViewBase from '@/util/ViewBase'
-import { getPassword } from '@/store'
+import { setPassword } from '@/store'
+import { modifyPassWord } from '@/api/theater'
+import { handleGoBack } from '@/util/native'
 import { Toast } from 'vant'
 
 @Component
 export default class SetPwdPage extends ViewBase {
   @Prop({ type: String }) tit!: string
-  @Prop({ type: Boolean }) resetPwd!: boolean
+  // @Prop({ type: Boolean }) resetPwd!: boolean
   /** 进入下一页页面函数 */
   @Prop({ type: Function }) changePage!: (id: number) => Promise<boolean>
+  @Prop({ type: String, default: '1' }) pageType!: string
 
   page: number = 3
   password: any = ''
@@ -54,15 +57,27 @@ export default class SetPwdPage extends ViewBase {
   async confirmLogin() {
     if (!this.button) {
       return
+    } else if (this.pageType === '1') {
+      // 申请注册页
+      setPassword(this.password)
+      this.$router.push({ name: 'application' })
     } else {
       try {
-        // await setPwd({requestID: this.$store.state.requestID,phoneNum: this.inValue,password: this.password})
-        getPassword(this.password) // 更新store的值
-        this.changePage(this.page)
-
-        // 重置密码时点确认 提示：密码重置完成  设置密码时不做提示
-        if (this.resetPwd) {
+        const res: any = await modifyPassWord({
+          requestId: this.$store.state.requestId,
+          phoneNum: this.$store.state.phoneNumber,
+          password: this.password
+        })
+        if (res.code === 0) {
           this.$toast('密码重置完成')
+          // 成功后返回登录页
+          const obj = {
+            params: {
+              isCloseWindow: true,
+              refreshWindow: false
+            }
+          }
+          await handleGoBack(obj)
         }
       } catch (ex) {
         this.handleError(ex)

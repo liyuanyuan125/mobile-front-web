@@ -31,7 +31,7 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import { validataCode } from '@/fn/validateRules'
 import ViewBase from '@/util/ViewBase'
-import { getRequestId } from '@/store'
+import { setRequestId } from '@/store'
 import { Toast } from 'vant'
 import { verifySmsCode, getSmsCode } from '@/api/theater'
 
@@ -54,8 +54,6 @@ export default class CheckPage extends ViewBase {
 
   @Watch('pageOn', { deep: true }) // 进入页面开始倒计时
   watchPageOn(val: boolean) {
-    const vfocus: any = this.$refs.verifyVal
-    vfocus.focus()
     if (val) {
       this.timeFunc()
     }
@@ -75,6 +73,9 @@ export default class CheckPage extends ViewBase {
   }
 
   timeFunc() {
+    // 倒计时开始时，input 框就获取焦点
+    const vfocus: any = this.$refs.verifyVal
+    vfocus.focus()
     const init: any = '60'
     let t: any = init
     const timer: any = setInterval(() => {
@@ -89,8 +90,8 @@ export default class CheckPage extends ViewBase {
     }, 1000)
   }
 
+  // 校验验证码
   async verifyCodeBut() {
-    // 校验验证码
     if (!this.button) {
       return
     } else {
@@ -101,24 +102,13 @@ export default class CheckPage extends ViewBase {
           requestType: this.pageType,
           requestId: this.$store.state.requestId
         })
-        // console.log('check', res)
         this.requestId = res.data.requestId // this.$store.state.requestID取用
-        // getRequestId(res.data.requestId) // 更新store的值
-
-        //  申请页面
-        //  code == 0，未注册，继续走下面流程；
-        //  code == 1，注册失败（原因未知那种）；
-        //  code == 100003，未注册，但已经申请过，跳转至提交页面；
-        //  code == 100001，操作中止，因为已注册过，并 已开通影院，跳转至提示页面
-        //  code == 100002，操作中止，因为已注册过，并 已开通广告商，显示指定提示语
+        // 这里有点绕，备注一下
+        // 当页面类型是申请入驻的帐号时，0表示这个用户未注册过，可以继续注册 0只给申请用户使用
+        // 当页面类型是修改密码时，手机号未注册的时候，api会返回相应的code=8007224
         switch (res.code) {
           case 0:
-            // 根据 pageType 判断是注册还是找回密码 1=注册 2=找回密码
-            if (this.pageType === '2') {
-              // 重置密码页面 code == 0：该手机号未注册；页面不做跳转；
-              this.$toast('该手机号未注册')
-              return
-            }
+            setRequestId(res.data.requestId) // 更新store的值
             this.changePage(this.page)
             break
           case 1:
@@ -153,8 +143,9 @@ export default class CheckPage extends ViewBase {
         // 0 ===获取验证码成功
         // 1 ===获取验证码失败
         if (res.code == 0) {
-          this.changePage(this.page)
-          getRequestId(res.data.requestId) // 更新store的值
+          this.again = false
+          this.timeFunc()
+          setRequestId(res.data.requestId) // 更新store的值
         } else {
           this.$toast(res.msg)
         }

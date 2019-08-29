@@ -74,23 +74,25 @@ export async function callNative(name: string, data: any = {}) {
     const callData: any = {
       callBackMethod: data.callBackName,
       data: data.params,
-      methodName: data.apiName
+      methodName: name,
     }
     const postJson = JSON.stringify(callData)
     const callbackName = data.callBackName
 
-    // 自动注册回调
-    registerHandler(callbackName, param => {
-      clearHandler(callbackName)
-      // success:只代表和App通信是否成功 0=成功，1=失败 data:代表业务码 0=成功（通用） 其他的业码根据业务自定
-      const { success = 0, code = 0 } = param || {}
-      // 特定的错误处理
-      if (success !== 0) {
-        return reject(new Error(`method ${name} is not exists`))
-      }
-      // TODO: 根据 success 判断是否成功？
-      success === 0 ? resolve(param) : reject(param)
-    })
+    // 自动注册回调 有不需要传回调方法的 jssdk
+    if (callbackName) {
+      registerHandler(callbackName, param => {
+        clearHandler(callbackName)
+        // success:只代表和App通信是否成功 0=成功，1=失败 data:代表业务码 0=成功（通用） 其他的业码根据业务自定
+        const { success = 0, code = 0 } = param || {}
+        // 特定的错误处理
+        if (success !== 0) {
+          return reject(new Error(`method ${name} is not exists`))
+        }
+        // TODO: 根据 success 判断是否成功？
+        success === 0 ? resolve(param) : reject(param)
+      })
+    }
 
     try {
       if (isIOS) {

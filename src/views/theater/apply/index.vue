@@ -1,15 +1,20 @@
 <template>
   <div class="apply">
-    <NumPage v-show="page1" :loginShow="true" :changePage="changePage" @logNum="getNum" />
+    <NumPage v-show="page1" :pageType="pageType" :changePage="changePage" @logNum="getNum" />
     <CheckPage
       v-show="page2"
       :phoneNum="phoneNum"
       :pageOn="page2"
+      :changePage="changePage"
+      :pageType="pageType"
+    />
+    <SetPwdPage
+      v-show="page3"
+      :tit="setPwdTit"
       :resetPwd="false"
       :changePage="changePage"
       :pageType="pageType"
     />
-    <SetPwdPage v-show="page3" :tit="setPwdTit" :resetPwd="false" :changePage="changePage" />
   </div>
 </template>
 

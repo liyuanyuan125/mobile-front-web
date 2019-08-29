@@ -14,10 +14,10 @@
       <i class="del" v-show="clear" @click="clearNum"></i>
     </div>
     <button :class="button?'button':'button disabled'" @click="getVerifyCode">获取验证码</button>
-    <div class="numTip" v-show="loginShow">
+    <div class="numTip" v-show="pageType === '1'">
       <p>
         已有账号?
-        <a href>立即登录</a>
+        <span @click="goBackApp">立即登录</span>
       </p>
     </div>
   </div>
@@ -28,13 +28,14 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import { validataTel } from '@/fn/validateRules'
 import ViewBase from '@/util/ViewBase'
 import { getSmsCode } from '@/api/theater'
-import { getRequestId } from '@/store'
+import { setRequestId, setPhoneNumber } from '@/store'
 import { Toast } from 'vant'
+import { handleGoBack } from '@/util/native'
 
 @Component
 export default class NumPage extends ViewBase {
   @Prop({ type: String, default: '' }) phoneNum!: string
-  @Prop({ type: Boolean, default: '' }) loginShow!: boolean
+  @Prop({ type: String, default: '1' }) pageType!: string
 
   /** 进入下一页页面函数 */
   @Prop({ type: Function }) changePage!: (id: number) => Promise<boolean>
@@ -70,7 +71,8 @@ export default class NumPage extends ViewBase {
         // 1 ===获取验证码失败
         if (res.code == 0) {
           this.changePage(this.page)
-          getRequestId(res.data.requestId) // 更新store的值
+          setRequestId(res.data.requestId) // 更新store的值
+          setPhoneNumber(res.data.requestId) // 更新store的值
         } else {
           this.$toast(res.msg)
         }
@@ -78,6 +80,17 @@ export default class NumPage extends ViewBase {
         this.handleError(ex)
       }
     }
+  }
+
+  // 返回登录页 (关闭 webview)
+  async goBackApp() {
+    const obj = {
+      params: {
+        isCloseWindow: true,
+        refreshWindow: false
+      }
+    }
+    await handleGoBack(obj)
   }
 }
 </script>
@@ -90,7 +103,7 @@ export default class NumPage extends ViewBase {
   p {
     font-size: 28px;
     color: @tip-color;
-    a {
+    span {
       color: @but-color;
     }
   }

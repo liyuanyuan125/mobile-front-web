@@ -18,6 +18,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import ApplicationTab from './components/applicationTab.vue'
 import CompanyInfo from './components/comanyInfo.vue'
 import PersonInfo from './components/personInfo.vue'
+import { submitApplicationInfo } from '@/api/theater'
 import { Toast } from 'vant'
 
 @Component({
@@ -35,7 +36,7 @@ export default class Application extends Vue {
     requestId: '',
     password: '',
     contact: '',
-    contactTel: '',
+    contactTel: this.$store.state.phoneNumber,
     credentialUrl: [],
     recommendTel: ''
   }
@@ -67,46 +68,64 @@ export default class Application extends Vue {
    * 验证信息
    */
   checkInfo(obj: any) {
-    // console.info('11', obj, obj.accountType)
     switch (obj.accountType) {
       // 企业
       case 1:
-        // console.info('11', obj.companyName.length, obj.companyName)
         if (!obj.companyName.length) {
           this.$toast('请填写公司名称')
+          return
         } else if (!obj.contact.length) {
           this.$toast('请填写联系人')
+          return
         } else if (!obj.contactTel.length) {
           this.$toast('请填写联系人电话')
+          return
         } else if (!obj.provinceId) {
           this.$toast('请选择公司所在省份')
+          return
         } else if (!obj.cityId) {
           this.$toast('请选择公司所在城市')
+          return
         } else if (obj.qualificationId === 'NULL') {
           this.$toast('请选择公司行业类型')
+          return
         } else if (!obj.credentialUrl.length) {
           this.$toast('请上传公司营业执照')
+          return
         }
         break
+      // 个人
       case 2:
         if (!obj.contact.length) {
           this.$toast('请填写联系人')
+          return
         } else if (!obj.contactTel.length) {
           this.$toast('请填写联系人电话')
+          return
         } else if (obj.qualificationId === 'NULL') {
           this.$toast('请选择证件类型')
+          return
         } else if (!obj.credentialUrl.length) {
           this.$toast('请上传证件照')
+          return
         } else if (obj.qualificationId === 'ID_CARD' && obj.credentialUrl.length < 2) {
           this.$toast('请上传身份证正反照')
+          return
         }
         break
     }
   }
 
   async submitApplication() {
-    // console.info(this.companyItem)
-    this.checkInfo(this.companyItem)
+    try {
+      if (this.tabIndex === 1) {
+        this.checkInfo(this.companyItem)
+        const res = await submitApplicationInfo(this.companyItem)
+        console.log('res', res)
+      }
+    } catch (ex) {
+      //
+    }
   }
 }
 </script>

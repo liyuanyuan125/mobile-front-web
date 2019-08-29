@@ -7,9 +7,9 @@
         type="number"
         v-model="inValue"
         placeholder="请输入您的手机号码"
+        v-on:input="butLight"
         oninput="if(value.length > 11)value = value.slice(0, 11)"
-        onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))&&(/[^+-.*]/.test(event.key))"
-        @keyup="butLight"
+        ref="getPhoneNumber"
       />
       <i class="del" v-show="clear" @click="clearNum"></i>
     </div>
@@ -53,6 +53,9 @@ export default class NumPage extends ViewBase {
 
   clearNum() {
     this.inValue = ''
+    this.button = false
+    const mobile: any = this.$refs.getPhoneNumber
+    mobile.focus()
   }
 
   // 监听 input 改变按钮状态

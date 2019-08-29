@@ -102,8 +102,7 @@ export async function callNative(name: string, data: any = {}) {
         if (method == null) {
           return reject(new Error(`method ${name} is not exists`))
         }
-        // const postJson = JSON.stringify(callData)s
-        method(postJson)
+        win.jydata[name](postJson)
       }
     } catch (ex) {
       reject(ex)

@@ -30,10 +30,10 @@ export default class Apply extends Vue {
   page2 = false
   page3 = false
   phoneNum: string = ''
-  pageType: any = '1' // 1=申请入驻 2=修改密码
+  pageType: any = '' // 1=申请入驻 2=修改密码
 
   mounted() {
-    this.pageType = this.$route.query.type
+    this.pageType = this.$route.query.type || '1'
     document.title = this.pageType === '1' ? '申请入驻' : '找回密码'
   }
 

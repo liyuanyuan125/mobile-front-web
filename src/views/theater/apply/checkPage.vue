@@ -11,7 +11,8 @@
         ref="verifyVal"
         type="number"
         v-model="value"
-        oninput="value=value.replace(/[^\d]/g,'');if(value.length > 6)value = value.slice(0, 6)"
+        v-on:input="butLight"
+        oninput="if(value.length > 6)value = value.slice(0, 6)"
         onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))&&(/[^+-.*]/.test(event.key))"
         @keyup="butLight"
       />
@@ -52,6 +53,12 @@ export default class CheckPage extends ViewBase {
   button: boolean = false
   requestId: any = ''
 
+  mounted() {
+    if (this.pageOn) {
+      this.getInputFocus()
+    }
+  }
+
   @Watch('pageOn', { deep: true }) // 进入页面开始倒计时
   watchPageOn(val: boolean) {
     if (val) {
@@ -64,8 +71,16 @@ export default class CheckPage extends ViewBase {
     this.clear = !!val
   }
 
+  // 让 input 获取焦点
+  getInputFocus() {
+    const vfocus: any = this.$refs.verifyVal
+    vfocus.focus()
+  }
+
   clearNum() {
     this.value = ''
+    this.button = false
+    this.getInputFocus()
   }
 
   butLight() {
@@ -74,8 +89,7 @@ export default class CheckPage extends ViewBase {
 
   timeFunc() {
     // 倒计时开始时，input 框就获取焦点
-    const vfocus: any = this.$refs.verifyVal
-    vfocus.focus()
+    this.getInputFocus()
     const init: any = '60'
     let t: any = init
     const timer: any = setInterval(() => {

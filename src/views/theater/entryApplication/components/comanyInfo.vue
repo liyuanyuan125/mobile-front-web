@@ -177,8 +177,14 @@ export default class CompanyInfo extends ViewBase {
       callBackName: 'uploadImageCallBack' // 客户端回调JS方法
     }
     const result: any = await handleUploadImage(obj)
-    const resultJSON = JSON.parse(result)
-    this.credentialImg = result.data.imageList[0].url
+
+    // 防止操作中途停止时报错
+    if (result) {
+      const resultJSON = JSON.parse(result)
+      // console.log('result', resultJSON)
+      this.credentialImg = resultJSON.data.imageList[0].url
+      this.$emit('companyItem.credentialUrl', resultJSON.data.imageList[0].fileId)
+    }
     // console.log('result', result)
   }
 }

@@ -1,15 +1,14 @@
 <template>
   <div class="apply">
-    <NumPage v-show="page1" :loginShow="true" :changePage="changePage" @logNum="getNum" />
+    <NumPage v-show="page1" :pageType="pageType" :changePage="changePage" @logNum="getNum" />
     <CheckPage
       v-show="page2"
       :phoneNum="phoneNum"
       :pageOn="page2"
-      :resetPwd="false"
       :changePage="changePage"
       :pageType="pageType"
     />
-    <SetPwdPage v-show="page3" :tit="setPwdTit" :resetPwd="false" :changePage="changePage" />
+    <SetPwdPage v-show="page3" :resetPwd="false" :changePage="changePage" :pageType="pageType" />
   </div>
 </template>
 
@@ -31,11 +30,11 @@ export default class Apply extends Vue {
   page2 = false
   page3 = false
   phoneNum: string = ''
-  setPwdTit: string = '设置登录密码'
   pageType: any = '1' // 1=申请入驻 2=修改密码
 
   mounted() {
     this.pageType = this.$route.query.type
+    document.title = this.pageType === '1' ? '申请入驻' : '找回密码'
   }
 
   getNum(val: any) {

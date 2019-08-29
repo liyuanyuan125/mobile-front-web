@@ -70,3 +70,12 @@ export async function getApiSignature(obj: object) {
   devInfo(`[sayHi] native return data:`, data)
   return data
 }
+/**
+ * 获取 api 校验签名
+ * @param  obj app需要的内部参数
+ */
+export async function handleGoBack(obj: object) {
+  const data = await callNative('handleGoBack', obj)
+  devInfo(`[sayHi] native return data:`, data)
+  return data
+}

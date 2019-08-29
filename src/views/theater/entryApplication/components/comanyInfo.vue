@@ -174,7 +174,6 @@ export default class CompanyInfo extends ViewBase {
         sourceType: 3, // 1从相册选取 2拍照上传 3都有
         imageCount: 1 // 图片数量
       },
-      apiName: 'handleUploadImage',
       callBackName: 'uploadImageCallBack' // 客户端回调JS方法
     }
     const result: any = await handleUploadImage(obj)

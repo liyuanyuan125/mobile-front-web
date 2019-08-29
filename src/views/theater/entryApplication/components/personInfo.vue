@@ -13,6 +13,7 @@
             class="inputTxt"
             maxlength="11"
             placeholder="手机号码"
+            disabled="false"
             v-model="personItem.contactTel"
           />
         </span>

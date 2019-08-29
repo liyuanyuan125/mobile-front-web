@@ -24,11 +24,6 @@ export default new Router({
       component: () => import('./views/theater/apply/index.vue')
     },
     {
-      path: '/setpassword',
-      name: 'setpassword',
-      component: () => import('./views/theater/apply/setPwd.vue')
-    },
-    {
       path: '/submit',
       name: 'submit',
       component: () => import('./views/theater/submit/index.vue')
@@ -37,11 +32,6 @@ export default new Router({
       path: '/application',
       name: 'application',
       component: () => import('./views/theater/entryApplication/index.vue')
-    },
-    {
-      path: '/form',
-      name: 'form',
-      component: () => import('./views/demo/index.vue')
     }
   ]
 })

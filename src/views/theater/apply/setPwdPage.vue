@@ -1,6 +1,6 @@
 <template>
   <div class="num">
-    <div class="tit">{{tit}}</div>
+    <div class="tit">{{pageType==='1' ? '设置登录密码' :'设置新密码' }}</div>
     <div class="password">
       <input
         class="text"
@@ -28,8 +28,6 @@ import { Toast } from 'vant'
 
 @Component
 export default class SetPwdPage extends ViewBase {
-  @Prop({ type: String }) tit!: string
-  // @Prop({ type: Boolean }) resetPwd!: boolean
   /** 进入下一页页面函数 */
   @Prop({ type: Function }) changePage!: (id: number) => Promise<boolean>
   @Prop({ type: String, default: '1' }) pageType!: string

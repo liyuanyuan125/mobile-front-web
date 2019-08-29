@@ -115,14 +115,14 @@ export default class CheckPage extends ViewBase {
             // 未知错误
             this.$toast(res.msg)
             break
-          case 100001:
-            await this.$router.push({ name: 'submit', query: { show: '2' } })
-            break
-          case 100002:
-            alert('您已开通广告商平台，请登录')
-            break
-          case 100003:
+          case 8007408:
             await this.$router.push({ name: 'submit', query: { show: '1' } })
+            break
+          case 8007223:
+            this.$toast('您已开通广告商平台，请登录')
+            break
+          case 8007225:
+            await this.$router.push({ name: 'submit', query: { show: '2' } })
             break
           default:
             this.$toast(res.msg)

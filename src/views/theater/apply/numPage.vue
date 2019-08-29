@@ -72,7 +72,7 @@ export default class NumPage extends ViewBase {
         if (res.code == 0) {
           this.changePage(this.page)
           setRequestId(res.data.requestId) // 更新store的值
-          setPhoneNumber(res.data.requestId) // 更新store的值
+          setPhoneNumber(this.inValue) // 更新store的值
         } else {
           this.$toast(res.msg)
         }

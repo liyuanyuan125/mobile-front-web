@@ -33,7 +33,7 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import { validataCode } from '@/fn/validateRules'
 import ViewBase from '@/util/ViewBase'
 import { setRequestId } from '@/store'
-import { Toast } from 'vant'
+import { toast } from '@/util/toast'
 import { verifySmsCode, getSmsCode } from '@/api/theater'
 
 @Component
@@ -127,19 +127,19 @@ export default class CheckPage extends ViewBase {
             break
           case 1:
             // 未知错误
-            this.$toast(res.msg)
+            toast(res.msg)
             break
           case 8007408:
             await this.$router.push({ name: 'submit', query: { show: '1' } })
             break
           case 8007223:
-            this.$toast('您已开通广告商平台，请登录')
+            toast('您已开通广告商平台，请登录')
             break
           case 8007225:
             await this.$router.push({ name: 'submit', query: { show: '2' } })
             break
           default:
-            this.$toast(res.msg)
+            toast(res.msg)
         }
       } catch (ex) {
         this.handleError(ex)
@@ -161,7 +161,7 @@ export default class CheckPage extends ViewBase {
           this.timeFunc()
           setRequestId(res.data.requestId) // 更新store的值
         } else {
-          this.$toast(res.msg)
+          toast(res.msg)
         }
       } catch (ex) {
         this.handleError(ex)

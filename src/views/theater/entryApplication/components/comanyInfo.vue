@@ -94,7 +94,6 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import { getProvinceList, getQualification } from '@/api/commonData'
 import ViewBase from '@/util/ViewBase'
 import { handleUploadImage } from '@/util/native'
-// import { setTimeout } from 'timers'
 
 @Component
 export default class CompanyInfo extends ViewBase {
@@ -181,11 +180,9 @@ export default class CompanyInfo extends ViewBase {
     // 防止操作中途停止时报错
     if (result) {
       const resultJSON = JSON.parse(result)
-      // console.log('result', resultJSON)
       this.credentialImg = resultJSON.data.imageList[0].url
-      this.$emit('companyItem.credentialUrl', resultJSON.data.imageList[0].fileId)
+      this.$emit('credentialFileId', resultJSON.data.imageList[0].fileId)
     }
-    // console.log('result', result)
   }
 }
 </script>

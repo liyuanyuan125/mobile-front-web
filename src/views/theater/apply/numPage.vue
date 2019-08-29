@@ -29,7 +29,7 @@ import { validataTel } from '@/fn/validateRules'
 import ViewBase from '@/util/ViewBase'
 import { getSmsCode } from '@/api/theater'
 import { setRequestId, setPhoneNumber } from '@/store'
-import { Toast } from 'vant'
+import { toast } from '@/util/toast'
 import { handleGoBack } from '@/util/native'
 
 @Component
@@ -77,7 +77,7 @@ export default class NumPage extends ViewBase {
           setRequestId(res.data.requestId) // 更新store的值
           setPhoneNumber(this.inValue) // 更新store的值
         } else {
-          this.$toast(res.msg)
+          toast(res.msg)
         }
       } catch (ex) {
         this.handleError(ex)

@@ -1,9 +1,13 @@
 <template>
   <div class="application-page">
     <!-- tab -->
-    <ApplicationTab :tabIndex="tabIndex" @changeTabIndex="changeTabIndex"></ApplicationTab>
+    <ApplicationTab :tabIndex="tabIndex" @changeTabIndex="changeTabIndex($event)"></ApplicationTab>
     <!-- company -->
-    <CompanyInfo v-show="tabIndex === 1" :companyItem="companyItem"></CompanyInfo>
+    <CompanyInfo
+      v-show="tabIndex === 1"
+      :companyItem="companyItem"
+      @credentialFileId="changeCredential"
+    ></CompanyInfo>
     <!-- person -->
     <PersonInfo v-show="tabIndex === 2" :personItem="personItem"></PersonInfo>
     <!-- submit -->
@@ -14,12 +18,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import ApplicationTab from './components/applicationTab.vue'
 import CompanyInfo from './components/comanyInfo.vue'
 import PersonInfo from './components/personInfo.vue'
 import { submitApplicationInfo } from '@/api/theater'
 import { Toast } from 'vant'
+import { handleUploadImage } from '@/util/native'
+import { watch } from 'fs'
 
 @Component({
   components: {
@@ -36,32 +42,42 @@ export default class Application extends Vue {
     requestId: this.$store.state.requestId,
     password: this.$store.state.password,
     phoneNum: this.$store.state.phoneNumber,
-    contact: '',
-    contactTel: this.$store.state.phoneNumber,
-    credentialUrl: 'bljimaf0giug008000tg',
-    recommendTel: ''
+    contactTel: this.$store.state.phoneNumber
   }
   // 企业信息
-  companyItem: object = Object.assign({}, this.commonInfo, {
+  companyItem: any = {
     accountType: 1,
     companyName: '',
-    provinceId: 31,
-    cityId: 376,
-    qualificationId: 'PARTNER_BUSINESS_CLOTHES'
-  })
+    contact: '',
+    provinceId: 0,
+    cityId: 0,
+    qualificationId: '',
+    credentialUrl: '',
+    recommendTel: ''
+  }
   // 个人信息
-  personItem: object = Object.assign({}, this.commonInfo, {
+  personItem: any = {
     accountType: 2,
-    contactMail: '',
-    voucherId: 'CARD_ID'
-  })
+    contact: '',
+    voucherId: 'NULL',
+    credentialUrl: '',
+    recommendTel: ''
+  }
 
   mounted() {
     document.title = '填写信息'
   }
+
   // 切换 tab
   changeTabIndex(index: number) {
     this.tabIndex = index
+  }
+
+  changeCredential(img: string) {
+    // console.log('changeCredential', img)
+    this.companyItem.credentialUrl = img
+    // Object.assign({}, this.companyItem, { credentialUrl: img })
+    // console.log('changeCredential', this.companyItem)
   }
 
   /**

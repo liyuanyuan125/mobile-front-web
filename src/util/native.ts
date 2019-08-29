@@ -71,7 +71,7 @@ export async function getApiSignature(obj: object) {
   return data
 }
 /**
- * 获取 api 校验签名
+ * 返回上一页或关闭webview
  * @param  obj app需要的内部参数
  */
 export async function handleGoBack(obj: object) {
@@ -79,3 +79,14 @@ export async function handleGoBack(obj: object) {
   devInfo(`[sayHi] native return data:`, data)
   return data
 }
+
+/**
+ * 设置原生导航栏
+ * @param  obj app需要的内部参数
+ */
+export async function setNavBarStatus(obj: object) {
+  const data = await callNative('setNavBarStatus', obj)
+  devInfo(`[sayHi] native return data:`, data)
+  return data
+}
+

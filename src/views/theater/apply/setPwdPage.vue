@@ -24,7 +24,7 @@ import ViewBase from '@/util/ViewBase'
 import { setPassword } from '@/store'
 import { modifyPassWord } from '@/api/theater'
 import { handleGoBack } from '@/util/native'
-import { Toast } from 'vant'
+import { toast } from '@/util/toast'
 
 @Component
 export default class SetPwdPage extends ViewBase {
@@ -67,7 +67,7 @@ export default class SetPwdPage extends ViewBase {
           password: this.password
         })
         if (res.code === 0) {
-          this.$toast('密码重置完成')
+          toast('密码重置完成')
           // 成功后返回登录页
           const obj = {
             params: {

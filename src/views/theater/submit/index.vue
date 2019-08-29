@@ -11,20 +11,44 @@
         <p>电话: 13718668880</p>
         <p>邮箱: webcpy@163.com</p>
       </div>
-      <button>确定</button>
+      <button @click="goBackApp">确定</button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import { setNavBarStatus, handleGoBack } from '@/util/native'
 
 @Component
 export default class SubmitPage extends Vue {
   show: any = ''
 
-  mounted() {
+  created() {
     this.show = this.$route.query.show
+    this.hideNativeNavBar()
+  }
+
+  // 隐藏原生导航栏
+  async hideNativeNavBar() {
+    const obj = {
+      params: {
+        isShowNavBar: false, // 是否显示导航栏
+        isWebViewOnScreenTop: true // 否从屏幕顶部开始布局
+      }
+    }
+    await setNavBarStatus(obj)
+  }
+
+  // 返回登录页 (关闭 webview)
+  async goBackApp() {
+    const obj = {
+      params: {
+        isCloseWindow: true,
+        refreshWindow: false
+      }
+    }
+    await handleGoBack(obj)
   }
 }
 </script>

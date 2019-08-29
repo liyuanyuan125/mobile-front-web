@@ -33,32 +33,32 @@ export default class Application extends Vue {
   tabIndex: number = 1
   // 基本信息
   commonInfo: any = {
-    requestId: '',
-    password: '',
+    requestId: this.$store.state.requestId,
+    password: this.$store.state.password,
+    phoneNum: this.$store.state.phoneNumber,
     contact: '',
     contactTel: this.$store.state.phoneNumber,
-    credentialUrl: [],
+    credentialUrl: 'bljimaf0giug008000tg',
     recommendTel: ''
   }
   // 企业信息
   companyItem: object = Object.assign({}, this.commonInfo, {
     accountType: 1,
     companyName: '',
-    provinceId: 0,
-    provinceName: '企业所在省份',
-    cityId: 0,
-    cityName: '城市',
-    qualificationId: 'NULL',
-    qualificationName: ''
+    provinceId: 31,
+    cityId: 376,
+    qualificationId: 'PARTNER_BUSINESS_CLOTHES'
   })
   // 个人信息
   personItem: object = Object.assign({}, this.commonInfo, {
     accountType: 2,
     contactMail: '',
-    voucherId: 'NULL',
-    voucherName: ''
+    voucherId: 'CARD_ID'
   })
 
+  mounted() {
+    document.title = '填写信息'
+  }
   // 切换 tab
   changeTabIndex(index: number) {
     this.tabIndex = index
@@ -119,9 +119,10 @@ export default class Application extends Vue {
   async submitApplication() {
     try {
       if (this.tabIndex === 1) {
+        // console.log('companyItem', this.companyItem)
         this.checkInfo(this.companyItem)
         const res = await submitApplicationInfo(this.companyItem)
-        console.log('res', res)
+        // console.log('res', res)
       }
     } catch (ex) {
       //

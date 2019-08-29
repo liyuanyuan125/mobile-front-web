@@ -13,11 +13,11 @@
 
 .text{
   width: 100%;
-  height: 84px;
-  line-height: 84px;
+  height: 30px;
+  // line-height: 84px;
   font-size: 30px;
   color: @black;
-  border-bottom: @border;
+  padding:27px 0;
 }
 .text::-webkit-input-placeholder{
   color: @grey;
@@ -48,13 +48,16 @@
 
 .password{
   position: relative;
+  border-bottom: @border;
+  box-sizing: content-box;
   .del{
     position: absolute;
-    top: 26px;
+    top: 50%;
     right: 0;
     width: 30px;
     height: 30px;
     background: url("../assets/del.png") no-repeat center;
     background-size: cover;
+    margin-top: -15px;
   }
 }

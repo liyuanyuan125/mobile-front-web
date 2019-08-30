@@ -78,13 +78,13 @@ const request = async (url: string, opts: object) => {
     withCredentials: true,
     ...opts,
   }
-  let finalConfig = config
+  const finalConfig = config
   // 处理一下非 app 报错的问题 临时
-  if (isApp) {
-    // 签名
-    const signature = await xhr(config)
-    finalConfig = Object.assign({}, config, signature)
-  }
+  // if (isApp) {
+  //   // 签名
+  //   const signature = await xhr(config)
+  //   finalConfig = Object.assign({}, config, signature)
+  // }
 
   let res: any
   try {

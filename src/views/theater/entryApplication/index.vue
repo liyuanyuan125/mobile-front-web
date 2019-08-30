@@ -9,7 +9,11 @@
       @credentialFileId="changeCredential"
     ></CompanyInfo>
     <!-- person -->
-    <PersonInfo v-show="tabIndex === 2" :personItem="personItem"></PersonInfo>
+    <PersonInfo
+      v-show="tabIndex === 2"
+      :personItem="personItem"
+      @credentialFileId="changeCredential"
+    ></PersonInfo>
     <!-- submit -->
     <div class="submitBox">
       <button @click="submitApplication">提交申请</button>
@@ -23,7 +27,7 @@ import ApplicationTab from './components/applicationTab.vue'
 import CompanyInfo from './components/comanyInfo.vue'
 import PersonInfo from './components/personInfo.vue'
 import { submitApplicationInfo } from '@/api/theater'
-import { Toast } from 'vant'
+import { toast } from '@/util/toast'
 import { handleUploadImage } from '@/util/native'
 import { watch } from 'fs'
 
@@ -37,7 +41,7 @@ import { watch } from 'fs'
 export default class Application extends Vue {
   // 1=企业 2=个人
   tabIndex: number = 1
-  // 基本信息
+  // 从其他页面带过来的信息
   commonInfo: any = {
     requestId: this.$store.state.requestId,
     password: this.$store.state.password,
@@ -45,24 +49,24 @@ export default class Application extends Vue {
     contactTel: this.$store.state.phoneNumber
   }
   // 企业信息
-  companyItem: any = {
+  companyItem: any = Object.assign({}, this.commonInfo, {
     accountType: 1,
     companyName: '',
     contact: '',
     provinceId: 0,
     cityId: 0,
-    qualificationId: '',
+    qualificationId: 'NULL',
     credentialUrl: '',
     recommendTel: ''
-  }
+  })
   // 个人信息
-  personItem: any = {
+  personItem: any = Object.assign({}, this.commonInfo, {
     accountType: 2,
     contact: '',
     voucherId: 'NULL',
     credentialUrl: '',
     recommendTel: ''
-  }
+  })
 
   mounted() {
     document.title = '填写信息'
@@ -74,71 +78,76 @@ export default class Application extends Vue {
   }
 
   changeCredential(img: string) {
-    // console.log('changeCredential', img)
-    this.companyItem.credentialUrl = img
-    // Object.assign({}, this.companyItem, { credentialUrl: img })
-    // console.log('changeCredential', this.companyItem)
-  }
-
-  /**
-   * 验证信息
-   */
-  checkInfo(obj: any) {
-    switch (obj.accountType) {
-      // 企业
-      case 1:
-        if (!obj.companyName.length) {
-          this.$toast('请填写公司名称')
-          return
-        } else if (!obj.contact.length) {
-          this.$toast('请填写联系人')
-          return
-        } else if (!obj.contactTel.length) {
-          this.$toast('请填写联系人电话')
-          return
-        } else if (!obj.provinceId) {
-          this.$toast('请选择公司所在省份')
-          return
-        } else if (!obj.cityId) {
-          this.$toast('请选择公司所在城市')
-          return
-        } else if (obj.qualificationId === 'NULL') {
-          this.$toast('请选择公司行业类型')
-          return
-        } else if (!obj.credentialUrl.length) {
-          this.$toast('请上传公司营业执照')
-          return
-        }
-        break
-      // 个人
-      case 2:
-        if (!obj.contact.length) {
-          this.$toast('请填写联系人')
-          return
-        } else if (!obj.contactTel.length) {
-          this.$toast('请填写联系人电话')
-          return
-        } else if (obj.qualificationId === 'NULL') {
-          this.$toast('请选择证件类型')
-          return
-        } else if (!obj.credentialUrl.length) {
-          this.$toast('请上传证件照')
-          return
-        } else if (obj.qualificationId === 'ID_CARD' && obj.credentialUrl.length < 2) {
-          this.$toast('请上传身份证正反照')
-          return
-        }
-        break
+    if (this.tabIndex === 1) {
+      this.companyItem.credentialUrl = img
+    } else {
+      this.personItem.credentialUrl = img
     }
   }
 
   async submitApplication() {
     try {
+      let result: any
       if (this.tabIndex === 1) {
-        // console.log('companyItem', this.companyItem)
-        this.checkInfo(this.companyItem)
-        const res = await submitApplicationInfo(this.companyItem)
-        // console.log('res', res)
+        // 企业
+        const obj = this.companyItem
+        if (!obj.companyName.length) {
+          toast('请填写公司名称')
+          return
+        } else if (!obj.contact.length) {
+          toast('请填写联系人')
+          return
+        } else if (!obj.contactTel.length) {
+          toast('请填写联系人电话')
+          return
+        } else if (!obj.provinceId) {
+          toast('请选择公司所在省份')
+          return
+        } else if (!obj.cityId) {
+          toast('请选择公司所在城市')
+          return
+        } else if (obj.qualificationId === 'NULL') {
+          toast('请选择公司行业类型')
+          return
+        } else if (!obj.credentialUrl) {
+          toast('请上传公司营业执照')
+          return
+        } else {
+          const finalItem = Object.assign({}, this.commonInfo, this.companyItem)
+          console.log('companyItem', finalItem)
+          result = await submitApplicationInfo(finalItem)
+          console.log('res', result)
+        }
+      } else if (this.tabIndex === 2) {
+        // 个人
+        const obj = this.personItem
+        if (!obj.contact.length) {
+          toast('请填写联系人')
+          return
+        } else if (!obj.contactTel.length) {
+          toast('请填写联系人电话')
+          return
+        } else if (obj.qualificationId === 'NULL') {
+          toast('请选择证件类型')
+          return
+        } else if (!obj.credentialUrl.length) {
+          toast('请上传证件照')
+          return
+        } else if (
+          obj.qualificationId === 'ID_CARD' &&
+          obj.credentialUrl.split(',').length < 2
+        ) {
+          toast('请上传身份证正反照')
+          return
+        } else {
+          const finalItem = Object.assign({}, this.commonInfo, this.personItem)
+          console.log('personItem', this.personItem)
+          result = await submitApplicationInfo(this.personItem)
+          console.log('personItemres', result)
+        }
+      }
+      switch (result.code) {
+        case 0:
       }
     } catch (ex) {
       //

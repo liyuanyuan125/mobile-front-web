@@ -14,9 +14,9 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import NumPage from './numPage.vue'
-import CheckPage from './checkPage.vue'
-import SetPwdPage from './setPwdPage.vue'
+import NumPage from './components/numPage.vue'
+import CheckPage from './components/checkPage.vue'
+import SetPwdPage from './components/setPwdPage.vue'
 
 @Component({
   components: {

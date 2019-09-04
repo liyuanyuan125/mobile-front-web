@@ -19,6 +19,11 @@ export default new Router({
       component: () => import('./views/demo/index.vue')
     },
     {
+      path: '/jssdk',
+      name: 'jssdk',
+      component: () => import('./views/sdk/index.vue')
+    },
+    {
       path: '/apply',
       name: 'apply',
       component: () => import('./views/theater/apply/index.vue')

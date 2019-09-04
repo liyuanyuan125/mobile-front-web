@@ -188,5 +188,5 @@ export default class CompanyInfo extends ViewBase {
 </script>
 
 <style lang="less" scoped>
-@import '~@/views/theater/entryApplication/less/infoList.less';
+@import '../less/infoList.less';
 </style>

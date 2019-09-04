@@ -22,6 +22,7 @@
         <select
           class="select"
           v-model="personItem.voucherId"
+          @change="changeVoucher"
           :style="{color:personItem.voucherId === 'NULL' ? '' :'#404d66'}"
         >
           <option v-for="per in voucherList" :key="per.key" :value="per.key">{{per.text}}</option>
@@ -29,11 +30,20 @@
       </dd>
       <dd class="uploadFile">
         <div class="rowTwo" v-if="personItem.voucherId ==='ID_CARD'">
-          <span>身份证正面照</span>
-          <span>身份证背面照</span>
+          <span @click="uploadImg($event)" data-type="front">
+            <img :src="voucherImgs[0]" v-if="voucherImgs[0]" alt="身份证正面照" />
+            <em v-else>身份证正面照</em>
+          </span>
+          <span @click="uploadImg($event)" data-type="back">
+            <img :src="voucherImgs[1]" v-if="voucherImgs[1]" alt="身份证背面照" />
+            <em v-else>身份证背面照</em>
+          </span>
         </div>
         <div class="row" v-else>
-          <span>上传证件</span>
+          <span @click="uploadImg($event)">
+            <img :src="voucherImgs[0]" v-if="voucherImgs[0]" alt="上传证件" />
+            <em v-else>上传证件</em>
+          </span>
         </div>
       </dd>
       <dd>
@@ -56,12 +66,15 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import { getQualification } from '@/api/commonData'
+import { handleUploadImage } from '@/util/native'
 
 @Component
 export default class PersonInfo extends ViewBase {
-  @Prop({ type: Object }) personItem!: object
+  @Prop({ type: Object }) personItem!: any
 
   voucherList: any = []
+  voucherImgs: any = []
+  fileIds: any = []
 
   async created() {
     // html加载完成之前，执行
@@ -87,9 +100,54 @@ export default class PersonInfo extends ViewBase {
       throw new Error(err)
     }
   }
+
+  /**
+   * 监听证件切换
+   */
+  changeVoucher() {
+    this.voucherImgs = []
+  }
+  /**
+   * 调取原生上传图片
+   */
+  async uploadImg(e: any) {
+    const obj = {
+      params: {
+        sourceType: 3, // 1从相册选取 2拍照上传 3都有
+        imageCount: 1 // 图片数量
+      },
+      callBackName: 'uploadImageCallBack' // 客户端回调JS方法
+    }
+    const result: any = await handleUploadImage(obj)
+    const resultJSON = JSON.parse(result)
+    // 防止操作中途停止时报错
+    if (!resultJSON.code) {
+      // 判断一下身份证，身份证需两张图片
+      switch (this.personItem.voucherId) {
+        case 'ID_CARD':
+          // 暂存 给最外层 span 加的点击事件，但点击里面的图片或文字的时候，会发现获不到 span 的 dataset 待解决
+          const upType = e.target.dataset.type || e.target.parentNode.dataset.type
+          if (upType === 'front') {
+            this.voucherImgs.splice(0, 1, resultJSON.data.imageList[0].url)
+            this.fileIds.splice(0, 1, resultJSON.data.imageList[0].fileId)
+          } else {
+            this.voucherImgs.splice(1, 1, resultJSON.data.imageList[0].url)
+            this.fileIds.splice(1, 1, resultJSON.data.imageList[0].fileId)
+          }
+          this.$emit(
+            'credentialFileId',
+            this.fileIds.length === 2 ? this.fileIds.join(',') : ''
+          )
+          break
+        default:
+          this.voucherImgs.splice(0, 1, resultJSON.data.imageList[0].url)
+          this.$emit('credentialFileId', resultJSON.data.imageList[0].fileId)
+      }
+    }
+  }
 }
 </script>
 
 <style lang="less" scoped>
-@import '~@/views/theater/entryApplication/less/infoList.less';
+@import '../less/infoList.less';
 </style>

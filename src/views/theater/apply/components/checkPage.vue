@@ -53,15 +53,10 @@ export default class CheckPage extends ViewBase {
   button: boolean = false
   requestId: any = ''
 
-  mounted() {
-    if (this.pageOn) {
-      this.getInputFocus()
-    }
-  }
-
   @Watch('pageOn', { deep: true }) // 进入页面开始倒计时
   watchPageOn(val: boolean) {
     if (val) {
+      this.getInputFocus()
       this.timeFunc()
     }
   }
@@ -125,17 +120,15 @@ export default class CheckPage extends ViewBase {
             setRequestId(res.data.requestId) // 更新store的值
             this.changePage(this.page)
             break
-          case 1:
-            // 未知错误
-            toast(res.msg)
-            break
           case 8007408:
+            // 公司状态为待审核
             await this.$router.push({ name: 'submit', query: { show: '1' } })
             break
           case 8007223:
             toast('您已开通广告商平台，请登录')
             break
           case 8007225:
+            // 已经开通了账号，但是未开通广告商平台账号
             await this.$router.push({ name: 'submit', query: { show: '2' } })
             break
           default:
@@ -172,7 +165,7 @@ export default class CheckPage extends ViewBase {
 </script>
 
 <style lang="less" scoped>
-@import 'less/common.less';
+@import '../less/common.less';
 .yzTip {
   position: absolute;
   left: 92px;

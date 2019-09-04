@@ -86,7 +86,7 @@ export default class SetPwdPage extends ViewBase {
 </script>
 
 <style lang="less" scoped>
-@import 'less/common.less';
+@import '../less/common.less';
 .password {
   position: relative;
   i {
@@ -97,13 +97,13 @@ export default class SetPwdPage extends ViewBase {
   .hide {
     width: 36px;
     height: 18px;
-    background: url('assets/hide.png') no-repeat center;
+    background: url('../assets/hide.png') no-repeat center;
     background-size: cover;
   }
   .show {
     width: 36px;
     height: 24px;
-    background: url('assets/noHide.png') no-repeat center;
+    background: url('../assets/noHide.png') no-repeat center;
     background-size: cover;
   }
 }

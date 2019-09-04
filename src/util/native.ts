@@ -55,7 +55,7 @@ export function registerCallMeInJs() {
  * 上传图片
  * @param  obj app需要的内部参数
  */
-export async function handleUploadImage(obj: object) {
+export async function handleUploadImage(obj: any) {
   const data = await callNative('handleUploadImage', obj)
   devInfo(`[sayHi] native return data:`, data)
   return data
@@ -65,7 +65,8 @@ export async function handleUploadImage(obj: object) {
  * 获取 api 校验签名
  * @param  obj app需要的内部参数
  */
-export async function getApiSignature(obj: object) {
+export async function getApiSignature(obj: any) {
+  // devInfo(`getApiSignature`, obj)
   const data = await callNative('getApiSignature', obj)
   devInfo(`[sayHi] native return data:`, data)
   return data
@@ -74,7 +75,7 @@ export async function getApiSignature(obj: object) {
  * 返回上一页或关闭webview
  * @param  obj app需要的内部参数
  */
-export async function handleGoBack(obj: object) {
+export async function handleGoBack(obj: any) {
   const data = await callNative('handleGoBack', obj)
   devInfo(`[sayHi] native return data:`, data)
   return data
@@ -84,8 +85,18 @@ export async function handleGoBack(obj: object) {
  * 设置原生导航栏
  * @param  obj app需要的内部参数
  */
-export async function setNavBarStatus(obj: object) {
+export async function setNavBarStatus(obj: any) {
   const data = await callNative('setNavBarStatus', obj)
+  devInfo(`[sayHi] native return data:`, data)
+  return data
+}
+
+/**
+ * 打开h5指定页面
+ * @param  obj app需要的内部参数
+ */
+export async function openAppLinkClient(obj: any) {
+  const data = await callNative('openAppLinkClient', obj)
   devInfo(`[sayHi] native return data:`, data)
   return data
 }

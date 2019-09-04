@@ -114,9 +114,7 @@ export default class Application extends Vue {
           return
         } else {
           const finalItem = Object.assign({}, this.commonInfo, this.companyItem)
-          console.log('companyItem', finalItem)
           result = await submitApplicationInfo(finalItem)
-          console.log('res', result)
         }
       } else if (this.tabIndex === 2) {
         // 个人
@@ -141,9 +139,7 @@ export default class Application extends Vue {
           return
         } else {
           const finalItem = Object.assign({}, this.commonInfo, this.personItem)
-          console.log('personItem', this.personItem)
           result = await submitApplicationInfo(this.personItem)
-          console.log('personItemres', result)
         }
       }
       switch (result.code) {

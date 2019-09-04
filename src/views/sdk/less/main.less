@@ -1,0 +1,81 @@
+.viewpage{
+    padding:50px 20px;
+    .params{
+        padding:50px 30px;
+        dt{
+            font-weight: bold;
+            font-size: 32px;
+            margin-top: 20px;
+            word-break: break-all;
+            b{
+                font-weight: normal;
+            }
+            button {
+                background-color: #3c8eff;
+                color: #fff;
+                font-size: 30px;
+                line-height: 90px;
+                padding: 0;
+                border: none;
+                text-align: center;
+                border-radius: 45px;
+                margin-top: 70px;
+                width: 100%;
+              }
+        }
+    }
+    dd {
+        margin-top: 20px;
+        p{
+            color: #afbed4;
+            font-size: 24px;
+            padding-bottom: 9px;
+        }
+    }
+    .input{
+        background-color: rgba(241, 245, 251, 0.3);
+        border: 1px solid rgba(175, 190, 212, 0.3);
+        color: #404d66;
+        display: block;
+        padding: 0 20px;
+        .inputTxt{
+            box-shadow: none;
+            height: 30px;
+            font-size: 30px;
+            padding: 27px 0;
+            border:none;
+            box-sizing: content-box;
+            width: 100%;
+        }
+        .inputTxt::-webkit-input-placeholder {
+            color: #afbed4;
+        }
+    }
+    .select {
+        background-color: rgba(241, 245, 251, 0.3);
+        border: 1px solid rgba(175, 190, 212, 0.3);
+        border-radius: 0;
+        padding: 0 20px;
+        position: relative;
+        &::after{
+            border-bottom: 2px solid #afbed4;
+            border-right: 2px solid #afbed4;
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform:rotate(45deg);
+            content: '';
+            width: 12px;
+            height: 12px;
+            margin-top: -6px;
+        }
+        select{
+            background: none;
+            height: 84px;
+            font-size: 30px;
+            box-sizing: content-box;
+            width: 100%;
+            border:none;
+        }
+    }
+}

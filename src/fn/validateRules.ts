@@ -47,7 +47,7 @@ export function validatePassword(password: string): string | undefined {
  * @param mobile 手机号
  */
 export function validataTel(mobile: string): string | undefined {
-  const reg = /^[1][0-9]{10}$/
+  const reg = /^1[3-9]\d{9}$/
   if (!reg.test(mobile)) {
     return '手机号不符合规范'
   }
@@ -113,9 +113,9 @@ export function formatTimestamp(val: any) {
 export function formatNumber(num: number, type?: any) {
   if (num != undefined) {
     if (type == 2) {
-       return num.toString().replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,')
+      return num.toString().replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,')
     } else {
-       return num.toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,')
+      return num.toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,')
     }
   }
 }
@@ -147,8 +147,8 @@ export function formatConversion(date: strFor, type?: number) {
 export function getTodayDate() {
   const todayDate = new Date().toLocaleDateString().split('/')
   const year = todayDate[0]
-  const mouth = todayDate[1].length == 1 ? '0' + todayDate[1] :  todayDate[1]
-  const date = todayDate[2].length == 1 ? '0' + todayDate[2] :  todayDate[2]
+  const mouth = todayDate[1].length == 1 ? '0' + todayDate[1] : todayDate[1]
+  const date = todayDate[2].length == 1 ? '0' + todayDate[2] : todayDate[2]
   return `${year}${mouth}${date}`
 }
 
@@ -162,7 +162,7 @@ export function roleNumber(num: string | number) {
     return num
   } else if (num.length == 4) {
     return num.replace(/^(\d{1})(\d{3})$/, '$1,$2')
-  } else if (num.length >= 5 ) {
+  } else if (num.length >= 5) {
     const tenThousand = (Number(num) / 10000).toFixed(1)
     return `${tenThousand}万`
   } else if (num.length >= 9) {
@@ -171,4 +171,12 @@ export function roleNumber(num: string | number) {
   } else {
     return 0
   }
+}
+/**
+ * 验证URL格式
+ * @param url 链接
+ */
+export function validateURL(url: string): boolean | undefined {
+  const reg = /^https:\/\/[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\’:+!]*([^<>\"\"])*$/
+  return reg.test(url)
 }

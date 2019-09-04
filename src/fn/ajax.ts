@@ -9,6 +9,7 @@ import qs from 'querystring'
 import tryParseJson from '@/fn/tryParseJson'
 import { AjaxResult } from '@/util/types'
 import { getApiSignature } from '@/util/native'
+import { random } from '@/fn/string'
 
 
 const ajaxBaseUrl = VAR.ajaxBaseUrl
@@ -33,27 +34,18 @@ const perfectData = ({ code, data, msg }: any = {}) => {
   } as AjaxResult
 }
 
-// 生成随机32位的字符串
-const createRandom32 = () => {
-  let text = ''
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-  for (let i = 0; i < 32; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length))
-  }
-  return text
-}
-
 // 获取签名
 const xhr = async (options: any) => {
   // 为防止接口并发时，传递了相同的callbackName,
-  // 将 callbackName 改为动态，'getApiSignature' + 接口名（去除下划线） + 'CallBack'
-  const urlArr = options.url.split('/')
-  const callName = urlArr[urlArr.length - 1].replace(/_/g, '').replace(/-/g, '')
+  // 将 callbackName 改为动态，'getApiSignature' + 随机数 + 'CallBack'
+  const callName = random('getApiSignature', 'CallBack')
+  // 处理一下发送的数据 最终发给app的是 string
+  const data = options.method === 'post' ? options.data : qs.stringify(options.params)
   const obj = {
     params: {
-      apiUrl: options.baseURL,
+      apiUrl: options.baseURL + options.url,
       httpMethod: options.method,
-      params: options.params,
+      params: data,
       platform: 'h5'
     },
     callBackName: 'getApiSignature' + callName + 'CallBack'
@@ -64,27 +56,27 @@ const xhr = async (options: any) => {
     'X-PS-Platform': 'h5',
     'X-PS-SendTS': resultJSON.data.timeStamp,
     'X-PS-Check': resultJSON.data.checkValue,
-    'X-PS-CID': createRandom32(),
+    'X-PS-CID': random('h5'),
   }
 }
 
 const request = async (url: string, opts: object) => {
   const isAbs = isAbsoluteUrl(url)
 
-  const config = {
+  const config: any = {
     baseURL: isAbs ? '' : ajaxBaseUrl,
-    // baseURL: 'http://192.168.6.186:8039',
     url,
     withCredentials: true,
     ...opts,
   }
-  const finalConfig = config
+  let finalConfig = config
   // 处理一下非 app 报错的问题 临时
-  // if (isApp) {
-  //   // 签名
-  //   const signature = await xhr(config)
-  //   finalConfig = Object.assign({}, config, signature)
-  // }
+  if (isApp) {
+    // 签名
+    const signature = await xhr(config)
+    const lastHeader = Object.assign({}, config.headers, signature)
+    finalConfig = Object.assign({}, config, { headers: lastHeader })
+  }
 
   let res: any
   try {

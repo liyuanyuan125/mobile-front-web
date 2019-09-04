@@ -130,20 +130,10 @@ export default class PersonInfo extends ViewBase {
           if (upType === 'front') {
             this.voucherImgs.splice(0, 1, resultJSON.data.imageList[0].url)
             this.fileIds.splice(0, 1, resultJSON.data.imageList[0].fileId)
-            // 判断是上传还是修改图片
-            // fileIds[0]
-            //   ? fileIds.splice(0, 1, resultJSON.data.imageList[0].fileId)
-            //   : fileIds.push(resultJSON.data.imageList[0].fileId)
           } else {
             this.voucherImgs.splice(1, 1, resultJSON.data.imageList[0].url)
             this.fileIds.splice(1, 1, resultJSON.data.imageList[0].fileId)
-            // 判断是上传还是修改图片
-            // console.log('fileIds', fileIds)
-            // fileIds[1]
-            //   ? fileIds.splice(1, 1, resultJSON.data.imageList[0].fileId)
-            //   : fileIds.push(resultJSON.data.imageList[0].fileId)
           }
-          console.log('www', upType, this.fileIds, this.fileIds.length === 2)
           this.$emit(
             'credentialFileId',
             this.fileIds.length === 2 ? this.fileIds.join(',') : ''
@@ -159,5 +149,5 @@ export default class PersonInfo extends ViewBase {
 </script>
 
 <style lang="less" scoped>
-@import '~@/views/theater/entryApplication/less/infoList.less';
+@import '../less/infoList.less';
 </style>

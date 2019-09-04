@@ -5,10 +5,14 @@
 
 html {
   box-sizing: border-box;
+  color: @c-text;
+}
+html,body{
+  height: 100%;
+  background: #fff;
 }
 
-*,:before,
-:after {
+* {
   box-sizing: inherit;
   -webkit-appearance:none;
   outline: none;
@@ -18,12 +22,6 @@ html {
   padding: 0;
   border: 0;
 }
-
-body {
-  color: @c-text;
-}
-
-  
 
 video {
   outline: 0;

@@ -70,7 +70,6 @@ export function clearHandler(name: string) {
 export async function callNative(name: string, data: any = {}) {
   return new Promise((resolve, reject) => {
     const { postMsg, isIOS, androidMethods } = init()
-    // const token = Math.random().toString(36).slice(2) + Date.now()
     const callData: any = {
       callBackMethod: data.callBackName,
       data: data.params,
@@ -83,14 +82,15 @@ export async function callNative(name: string, data: any = {}) {
     if (callbackName) {
       registerHandler(callbackName, param => {
         clearHandler(callbackName)
-        // success:只代表和App通信是否成功 0=成功，1=失败 data:代表业务码 0=成功（通用） 其他的业码根据业务自定
+        // success:只代表和App通信是否成功 0=成功，1=失败 code:代表业务码 0=成功（通用） 其他的业码根据业务自定
         const { success = 0, code = 0 } = param || {}
         // 特定的错误处理
-        if (success !== 0) {
+        if (success) {
           return reject(new Error(`method ${name} is not exists`))
+        } else {
+          // TODO: 根据 success 判断是否成功？
+          success === 0 ? resolve(param) : reject(param)
         }
-        // TODO: 根据 success 判断是否成功？
-        success === 0 ? resolve(param) : reject(param)
       })
     }
 

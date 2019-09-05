@@ -131,3 +131,23 @@ export async function showShare(obj: any) {
   return data
 }
 
+/**
+ * 显示原生视频播放器
+ * @param  obj app需要的内部参数
+ */
+export async function showVideoPlayer(obj: any) {
+  const data = await callNative('showVideoPlayer', obj)
+  devInfo(`[sayHi] native return data:`, data)
+  return data
+}
+
+/**
+ * 显示原生图片浏览
+ * @param  obj app需要的内部参数
+ */
+export async function showImageBrowser(obj: any) {
+  const data = await callNative('showImageBrowser', obj)
+  devInfo(`[sayHi] native return data:`, data)
+  return data
+}
+

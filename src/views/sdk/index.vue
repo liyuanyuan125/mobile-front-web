@@ -17,6 +17,8 @@
     <SetNavBarStatus :dataBase="list[dataIndex]" v-if="dataIndex === 5" />
     <GetNativeNetStatus :dataBase="list[dataIndex]" v-if="dataIndex === 6" />
     <ShowShare :dataBase="list[dataIndex]" v-if="dataIndex === 7" />
+    <ShowVideoPlayer :dataBase="list[dataIndex]" v-if="dataIndex === 8" />
+    <ShowImageBrowser :dataBase="list[dataIndex]" v-if="dataIndex === 9" />
   </div>
 </template>
 
@@ -32,6 +34,8 @@ import HandleDialTel from './components/handleDialTel.vue'
 import SetNavBarStatus from './components/setNavBarStatus.vue'
 import GetNativeNetStatus from './components/getNativeNetStatus.vue'
 import ShowShare from './components/showShare.vue'
+import ShowVideoPlayer from './components/showVideoPlayer.vue'
+import ShowImageBrowser from './components/showImageBrowser.vue'
 
 @Component({
   components: {
@@ -42,7 +46,9 @@ import ShowShare from './components/showShare.vue'
     HandleDialTel,
     SetNavBarStatus,
     GetNativeNetStatus,
-    ShowShare
+    ShowShare,
+    ShowVideoPlayer,
+    ShowImageBrowser
   }
 })
 export default class JSsdk extends Vue {

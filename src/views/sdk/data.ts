@@ -105,6 +105,41 @@ const data: SDKType[] = [
             pic: 'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/MISC/blob1dn0giug00800420.jpg'
         },
         callBackName: 'showShareCallBack'
+    },
+    // 显示原生播放器
+    {
+        name: '显示原生播放器',
+        index: 8,
+        sdkName: 'showVideoPlayer',
+        data: {
+            // tslint:disable-next-line:max-line-length
+            videoUrl: 'https://piaoshen.oss-cn-beijing.aliyuncs.com/moive/videos/2019/08/30/d38b665493634f63a322729202c537de.mp4',
+            // tslint:disable-next-line:max-line-length
+            posterUrl: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/moive/images/2019/08/30/471524384f5a44a99635016afdd365e9.jpg',
+            videoTop: 0,
+            videoLeft: 0,
+            videoWidth: 750,
+            videoHeight: 200,
+
+        },
+        callBackName: ''
+    },
+    // 显示图片浏览
+    {
+        name: '显示图片浏览',
+        index: 9,
+        sdkName: 'showImageBrowser',
+        data: {
+            currentImageIndex: 1,
+            photoImageUrls: [
+                // tslint:disable-next-line:max-line-length
+                'http://piaoshen.oss-cn-beijing.aliyuncs.com/moive/images/2019/08/30/471524384f5a44a99635016afdd365e9.jpg',
+                'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/MISC/blobfnf0giug00800430.jpg'
+            ],
+            originUrl: location.href,
+            isGif: 0
+        },
+        callBackName: ''
     }
 ]
 export default data

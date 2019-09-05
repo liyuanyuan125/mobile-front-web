@@ -79,8 +79,7 @@ const data: SDKType[] = [
                 summary: '分享描述',
                 title: '分享标题',
                 url: location.href,
-                pic: 'https://m.piaoshen.com',
-                sharetype: '?'
+                pic: 'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/MISC/blob1dn0giug00800420.jpg'
             }
         },
         callBackName: ''
@@ -92,9 +91,9 @@ const data: SDKType[] = [
         sdkName: 'getNativeNetStatus',
         data: {
         },
-        callBackName: ''
+        callBackName: 'nativeNetStatusCallBack'
     },
-    // 获取客户端网络状态
+    // 显示原生分享弹框
     {
         name: '显示原生分享弹框',
         index: 7,
@@ -103,10 +102,9 @@ const data: SDKType[] = [
             summary: '分享描述',
             title: '分享标题',
             url: location.href,
-            pic: 'https://m.piaoshen.com',
-            sharetype: '?'
+            pic: 'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/MISC/blob1dn0giug00800420.jpg'
         },
-        callBackName: ''
+        callBackName: 'showShareCallBack'
     }
 ]
 export default data

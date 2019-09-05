@@ -101,3 +101,33 @@ export async function openAppLinkClient(obj: any) {
   return data
 }
 
+/**
+ * 拨打电话
+ * @param  obj app需要的内部参数
+ */
+export async function handleDialTel(obj: any) {
+  const data = await callNative('handleDialTel', obj)
+  devInfo(`[sayHi] native return data:`, data)
+  return data
+}
+
+/**
+ * 获取原生网络状态
+ * @param  obj app需要的内部参数
+ */
+export async function getNativeNetStatus(obj: any) {
+  const data = await callNative('getNativeNetStatus', obj)
+  devInfo(`[sayHi] native return data:`, data)
+  return data
+}
+
+/**
+ * 显示原生分享框
+ * @param  obj app需要的内部参数
+ */
+export async function showShare(obj: any) {
+  const data = await callNative('showShare', obj)
+  devInfo(`[sayHi] native return data:`, data)
+  return data
+}
+

@@ -2,6 +2,7 @@ stages:
   - build
   - package
   - deploy-dev
+  - deploy-dev
 
 variables:
   SERVICE_NAME: iadp-mobile-front-web

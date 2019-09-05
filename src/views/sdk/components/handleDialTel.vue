@@ -12,13 +12,12 @@
     </dt>
     <dt>data：</dt>
     <dd>
-      <p>跳转的URL，需Encode</p>
       <span class="input">
-        <input type="text" class="inputTxt" v-model="url" placeholder="https://" />
+        <input type="text" class="inputTxt" v-model="mobile" />
       </span>
     </dd>
     <dt>
-      <button @click="openLinkClient">跳转</button>
+      <button @click="handleTelphone">拨打电话</button>
     </dt>
   </dl>
 </template>
@@ -27,26 +26,19 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import data from '../data'
-import { openAppLinkClient } from '@/util/native'
-import { validateURL } from '@/fn/validateRules'
+import { handleDialTel } from '@/util/native'
 
 @Component({})
-export default class OpenAppLinkClient extends ViewBase {
+export default class HandleDialTel extends ViewBase {
   @Prop({ type: Object }) dataBase!: any
 
-  url: string = this.dataBase.data.applinkData
+  mobile: string = this.dataBase.data.phoneNumber
   objectData: any = this.dataBase.data
 
-  async openLinkClient() {
-    if (validateURL(this.url)) {
-      this.url.replace('http://', 'https://')
-      this.objectData.applinkData =
-        'jydatacinema://scheme?p=h5Page&url=' + encodeURIComponent(this.url)
-      const obj = { params: this.objectData }
-      await openAppLinkClient(obj)
-    } else {
-      alert('url格式错误')
-    }
+  async handleTelphone() {
+    const obj = { params: this.objectData }
+    this.dataBase.data.phoneNumber = this.mobile
+    await handleDialTel(obj)
   }
 }
 </script>

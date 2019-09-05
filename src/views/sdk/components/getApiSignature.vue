@@ -52,13 +52,8 @@ import { validateURL } from '@/fn/validateRules'
 export default class GetApiSignature extends ViewBase {
   @Prop({ type: Object }) dataBase!: any
 
-  objectData: any = {
-    apiUrl: 'https://api.aiads-dev.com/common/get_common_data',
-    httpMethod: 'get',
-    params: 'identify=PARTNER_BUSINESS',
-    platform: 'h5'
-  }
-  codeJson = {}
+  objectData: any = this.dataBase.data
+  codeJson = null
   // 执行方法
   async getSignature() {
     try {

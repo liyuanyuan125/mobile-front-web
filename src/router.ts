@@ -24,6 +24,11 @@ export default new Router({
       component: () => import('./views/sdk/index.vue')
     },
     {
+      path: '/help/privacy',
+      name: 'privacy',
+      component: () => import('./views/help/privacy.vue')
+    },
+    {
       path: '/apply',
       name: 'apply',
       component: () => import('./views/theater/apply/index.vue')

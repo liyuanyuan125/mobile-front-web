@@ -70,7 +70,7 @@ deploy-prd:
   except:
     - tags
   script:
-    - deploy -service $SERVICE_NAME -template web -vars port=8005
+    - deploy -service $SERVICE_NAME -template web -vars host=m.jydata.com,port=80
   environment: aiads-prd
   tags:
     - docker

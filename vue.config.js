@@ -47,7 +47,7 @@ module.exports = {
         {
           env: 'prd',
           baseUrl: 'https://m.jydata.com',
-          ajaxBaseUrl: 'https://fapi.jydata.com'
+          ajaxBaseUrl: 'https://api.jydata.com'
         }
       ].forEach(it => {
         const { env } = it

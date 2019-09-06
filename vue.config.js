@@ -13,7 +13,7 @@ module.exports = {
     },
     proxy: {
       '/': {
-        target: 'http://api.aiads-dev.com',
+        target: 'https://api.aiads-dev.com',
         changeOrigin: true,
         ws: false,
         bypass(req) {
@@ -46,7 +46,7 @@ module.exports = {
         },
         {
           env: 'prd',
-          baseUrl: 'https://jydata.com',
+          baseUrl: 'https://m.jydata.com',
           ajaxBaseUrl: 'https://fapi.jydata.com'
         }
       ].forEach(it => {

@@ -46,8 +46,6 @@ package:
     GIT_STRATEGY: none
   dependencies: []
   script: deploy -service $SERVICE_NAME -template web -vars host=e.jydata.com,port=80
-  tags:
-    - nodejs
   only:
     - /^release\/.*$/
 

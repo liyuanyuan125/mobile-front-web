@@ -40,32 +40,29 @@ package:
   tags:
     - docker
 
-.deploy_job: &deploy_job
+deploy-dev:
   image: $CI_REGISTRY/devops/docker/deploy
-  variables:
-    GIT_STRATEGY: none
   dependencies: []
   script: deploy -service $SERVICE_NAME -template web -vars host=e.jydata.com,port=80
   only:
     - /^release\/.*$/
-
-deploy-dev:
-  <<: *deploy_job
   stage: deploy-dev
   variables:
     GIT_STRATEGY: none
-  dependencies: []
   environment: aiads-dev
   tags:
     - docker
 
 
 deploy-prd:
-  <<: *deploy_job
+  image: $CI_REGISTRY/devops/docker/deploy
+  dependencies: []
+  script: deploy -service $SERVICE_NAME -template web -vars host=e.jydata.com,port=80
+  only:
+    - /^release\/.*$/
   stage: deploy-prd
   variables:
     GIT_STRATEGY: none
-  dependencies: []
   environment: aiads-prd
   retry: 2
   tags:

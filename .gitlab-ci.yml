@@ -45,7 +45,10 @@ deploy-dev:
   dependencies: []
   script: deploy -service $SERVICE_NAME -template web -vars host=e.jydata.com,port=80
   only:
-    - /^release\/.*$/
+    - tags
+    - develop
+    - testing
+    - release
   stage: deploy-dev
   variables:
     GIT_STRATEGY: none
@@ -59,7 +62,10 @@ deploy-prd:
   dependencies: []
   script: deploy -service $SERVICE_NAME -template web -vars host=e.jydata.com,port=80
   only:
-    - /^release\/.*$/
+    - tags
+    - develop
+    - testing
+    - release
   stage: deploy-prd
   variables:
     GIT_STRATEGY: none

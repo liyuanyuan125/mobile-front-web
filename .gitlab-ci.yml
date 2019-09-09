@@ -69,7 +69,7 @@ deploy-prd:
     GIT_STRATEGY: none
   dependencies: []
   environment: aiads-prd
-  retry: 3
+  retry: 2
   tags:
     - docker
   when: manual

@@ -31,22 +31,22 @@ module.exports = {
       ;[
         {
           env: 'dev',
-          baseUrl: isDev ? '/' : 'https://h5.aiads-dev.com',
+          baseUrl: isDev ? '/' : 'https://e.aiads-dev.com',
           ajaxBaseUrl: 'https://api.aiads-dev.com'
         },
-        {
-          env: 'qas',
-          baseUrl: 'https://qas.aiads.com',
-          ajaxBaseUrl: 'https://fapi.qas.aiads.com'
-        },
-        {
-          env: 'stg',
-          baseUrl: 'https://stg.aiads.com',
-          ajaxBaseUrl: 'https://fapi.stg.aiads.com'
-        },
+        // {
+        //   env: 'qas',
+        //   baseUrl: 'https://qas.aiads.com',
+        //   ajaxBaseUrl: 'https://fapi.qas.aiads.com'
+        // },
+        // {
+        //   env: 'stg',
+        //   baseUrl: 'https://stg.aiads.com',
+        //   ajaxBaseUrl: 'https://fapi.stg.aiads.com'
+        // },
         {
           env: 'prd',
-          baseUrl: 'https://m.jydata.com',
+          baseUrl: 'https://e.jydata.com',
           ajaxBaseUrl: 'https://api.jydata.com'
         }
       ].forEach(it => {
@@ -106,7 +106,8 @@ module.exports = {
             selectorBlackList: ['van-circle__layer']
           })
         ]
+
       }
     }
-  }
+  },
 }

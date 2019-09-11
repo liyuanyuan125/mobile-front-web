@@ -62,7 +62,7 @@ deploy-qas:
   <<: *deploy_job
   only:
     - /^release\/.*$/
-  stage: deploy-dev
+  stage: deploy-qas
   environment: aiads-qas
 
 

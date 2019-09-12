@@ -34,11 +34,11 @@ module.exports = {
           baseUrl: isDev ? '/' : 'https://e.aiads-dev.com',
           ajaxBaseUrl: 'https://api.aiads-dev.com'
         },
-        // {
-        //   env: 'qas',
-        //   baseUrl: 'https://qas.aiads.com',
-        //   ajaxBaseUrl: 'https://fapi.qas.aiads.com'
-        // },
+        {
+          env: 'qas',
+          baseUrl: 'https://e.whaledata.com',
+          ajaxBaseUrl: 'https://api.whaledata.com'
+        },
         // {
         //   env: 'stg',
         //   baseUrl: 'https://stg.aiads.com',

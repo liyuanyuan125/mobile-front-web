@@ -63,7 +63,7 @@ deploy-qas:
   only:
     - /^release\/.*$/
   stage: deploy-qas
-  environment: aiads-qas
+  environment: jydata-qas
 
 
 deploy-prd:

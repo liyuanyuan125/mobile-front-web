@@ -7,7 +7,9 @@ html {
   box-sizing: border-box;
   color: @c-text;
 }
-html,body{
+
+html,
+body {
   height: 100%;
   background: #fff;
 }
@@ -15,8 +17,8 @@ html,body{
 * {
   box-sizing: inherit;
   outline: none;
-  -webkit-tap-highlight-color:rgba(0,0,0,0);
-  -webkit-focus-ring-color: rgba(0,0,0,0);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-focus-ring-color: rgba(0, 0, 0, 0);
   margin: 0;
   padding: 0;
   border: 0;
@@ -46,28 +48,34 @@ input[type="submit"],
 input[type="reset"],
 input[type="button"],
 button {
-    -webkit-appearance: none;
-    background: none;
-    border: none;
-    outline: none;
- }
+  -webkit-appearance: none;
+  background: none;
+  border: none;
+  outline: none;
+}
 
-input,button{
+input,
+button {
   border: none;
   border-radius: 0;
   padding: 0;
-  &:focus{
+
+  &:focus {
     outline: none;
   }
 }
 
-a{
+a {
   text-decoration: none;
 }
 
-.van-toast{
+// .app {
+//   min-height: 100%;
+// }
+
+.van-toast {
   line-height: 2 !important;
   font-size: 30px !important;
-  padding:12px 25px !important;
+  padding: 12px 25px !important;
   border-radius: 10px !important;
 }

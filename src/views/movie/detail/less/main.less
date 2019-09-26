@@ -1,0 +1,263 @@
+.viewpage {
+    min-height: 100%;
+    background: #FBFBFB;
+
+    &::after {
+        background: linear-gradient(rgb(96, 163, 233), rgb(96, 163, 233), transparent);
+        width: 100%;
+        height: 855px;
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 1;
+    }
+
+    .viewer {
+        position: relative;
+        z-index: 2;
+        color: #2E2F5A;
+    }
+}
+
+// ul {
+//     width: 100%;
+
+//     li {
+//         color: #fff;
+//         // height: 200px;
+//         padding: 50px;
+
+//         img {
+//             width: 100px;
+//             vertical-align: middle;
+//         }
+//     }
+// }
+
+// movieinfo
+.movieinfo {
+    padding: 0 30px;
+
+    .moviebox {
+        position: relative;
+        padding: 0 160px 0 190px;
+        font-size: 26px;
+        line-height: 37px;
+        min-height: 210px;
+        color: #fff;
+
+        .img {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 160px;
+            height: 210px;
+        }
+
+        h3 {
+            font-size: 36px;
+            line-height: 50px;
+            font-weight: normal;
+        }
+
+        h5 {
+
+            opacity: .5;
+        }
+
+        p {
+            margin-top: 16px;
+        }
+
+        .exponentbox {
+            background: rgba(255, 255, 255, .1);
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 140px;
+            padding: 13px 0;
+            text-align: center;
+
+            strong {
+                font-size: 42px;
+                line-height: 58px;
+                font-weight: normal;
+                color: #FFE16A;
+            }
+
+            p.ques {
+                margin-top: 3px;
+                font-size: 22px;
+                line-height: 30px;
+
+                &::after {
+                    content: '?';
+                    color: #fff;
+                    display: inline-block;
+                    position: relative;
+                    border-radius: 50%;
+                    width: 20px;
+                    line-height: 20px;
+                    overflow: hidden;
+                    border: 1px solid #fff;
+                    margin-left: 4px;
+                    vertical-align: middle;
+                    margin-top: -6px;
+                    font-size: 18px;
+                }
+            }
+        }
+    }
+}
+
+// boxoffice
+.boxoffice {
+    background: #fff;
+    border-radius: 20px;
+    margin: 30px 30px 0;
+    padding: 38px 0;
+    box-shadow: 0 0 20px rgba(18, 92, 164, .1);
+
+    dl {
+        display: flex;
+    }
+
+    dd {
+        flex: 1;
+        width: 33%;
+        position: relative;
+        text-align: center;
+
+        b {
+            font-size: 50px;
+            line-height: 58px;
+            margin-right: 4px;
+        }
+
+        .desc {
+            font-size: 24px;
+            line-height: 33px;
+            color: #8798AF;
+            margin-top: 13px;
+        }
+
+        &::after {
+            width: 1px;
+            height: 60px;
+            background: #E3E5ED;
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            margin-top: -30px;
+        }
+
+        &:last-child::after {
+            display: none;
+        }
+    }
+}
+
+// 近7日观影人次
+.watchtimes {
+    background: #fff;
+    margin: 30px 30px 0;
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 2px 30px rgba(216, 216, 216, .5);
+
+    .tit {
+        display: flex;
+
+        h3 {
+            font-size: 36px;
+            line-height: 50px;
+            flex: 1;
+        }
+
+        span {
+            text-align: right;
+            font-size: 26px;
+            line-height: 37px;
+            color: #8798AF;
+            white-space: nowrap;
+        }
+    }
+}
+
+// 用户画像
+.userportrait {
+    background: #fff;
+    margin: 30px 30px 0;
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 0 30px rgba(216, 216, 216, .4);
+
+    h3 {
+        font-size: 36px;
+        line-height: 50px;
+    }
+
+    h4 {
+        font-size: 30px;
+        line-height: 42px;
+    }
+}
+
+// 主创人员
+.chiefpeople {
+    background: #fff;
+    margin: 30px 30px 0;
+    border-radius: 20px;
+    padding: 35px 0;
+    box-shadow: 0 0 30px rgba(216, 216, 216, .4);
+
+    h3 {
+        font-size: 36px;
+        line-height: 50px;
+        padding: 0 0 30px 30px;
+    }
+
+    .peoplelist {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    dl {
+        display: flex;
+        white-space: nowrap;
+        padding: 0 30px 0 10px;
+    }
+
+    dd {
+        margin-left: 20px;
+        flex: 1;
+        width: 160px;
+        text-align: center;
+    }
+
+    .img {
+        width: 160px;
+        height: 240px;
+        display: block;
+        overflow: hidden;
+
+        img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+    }
+
+    h5 {
+        font-size: 30px;
+        line-height: 42px;
+        margin-top: 15px;
+    }
+
+    p {
+        font-size: 26px;
+        color: #8798AF;
+        line-break: 37px;
+    }
+}

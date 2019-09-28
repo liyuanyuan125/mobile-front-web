@@ -48,6 +48,18 @@ export default new Router({
       path: '/movie/detail/:movieId',
       name: 'movieDetail',
       component: () => import('./views/movie/detail/index.vue')
+    },
+    // 影院资料页
+    {
+      path: '/cinema/detail/:cinemaId',
+      name: 'cinemadetail',
+      component: () => import('./views/cinema/detail/index.vue')
+    },
+    // 效果报告
+    {
+      path: '/report/detail',
+      name: 'resultreport',
+      component: () => import('./views/report/index.vue')
     }
   ]
 })

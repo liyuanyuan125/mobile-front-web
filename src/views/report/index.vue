@@ -2,20 +2,12 @@
   <div class="viewpage">
     <div class="viewer">
       <TopBar />
-      <MovieInfo />
-      <BoxOffice />
-      <WatchTimes />
-      <UserPortrait />
-      <ChiefPeople />
-      <!-- <canvas id="myCanvas" width="10" height="10" />
-      <ul>
-        <li v-for="(item,index) in rgbArr" :key="index" :style="{background: 'rgba('+item+')'}">
-          <img
-            src="http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/05/06/190506000002357372.jpg"
-          />
-          复仇者联盟
-        </li>
-      </ul>-->
+      <UserInfo />
+      <PutProgress />
+      <Statistics />
+      <DataTrend />
+      <DataTotal />
+      <UserStatus />
     </div>
   </div>
 </template>
@@ -23,23 +15,25 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import TopBar from '@/components/topBar'
-import MovieInfo from './components/movieInfo.vue'
-import BoxOffice from './components/boxOffice.vue'
-import WatchTimes from './components/watchTimes.vue'
-import UserPortrait from './components/userPortrait.vue'
-import ChiefPeople from './components/chiefPeople.vue'
+import UserInfo from './components/userInfo.vue' // 用户信息
+import Statistics from './components/statistics.vue' // 数据统计
+import PutProgress from './components/putProgress.vue' // 投放进度
+import DataTrend from './components/dataTrend.vue' // 数据趋势
+import DataTotal from './components/dataTotal.vue' // 影院和电影统计
+import UserStatus from './components/userStatus.vue' // 年龄和性别占比
 
 @Component({
   components: {
     TopBar,
-    MovieInfo,
-    BoxOffice,
-    WatchTimes,
-    UserPortrait,
-    ChiefPeople
+    UserInfo,
+    PutProgress,
+    Statistics,
+    DataTrend,
+    DataTotal,
+    UserStatus
   }
 })
-export default class MovieDetail extends Vue {
+export default class ResultReport extends Vue {
   backgroundRGA: string = ''
   rgbArr: any = []
 
@@ -67,6 +61,7 @@ export default class MovieDetail extends Vue {
         const colorItem = imgData.slice(i, i + 4)
         const formated = this.formatColor(colorItem)
         this.rgbArr.push(formated)
+        console.log(imgData, this.rgbArr)
       }
     }
   }

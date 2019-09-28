@@ -23,19 +23,19 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
-import ApplicationTab from './components/applicationTab.vue'
-import CompanyInfo from './components/comanyInfo.vue'
-import PersonInfo from './components/personInfo.vue'
+import GetMobile from './components/getMobile.vue'
+import VerifyCode from './components/verifyCode.vue'
+import SetPassWord from './components/setPassWord.vue'
+import Success from './components/success.vue'
 import { submitApplicationInfo } from '@/api/theater'
 import { toast } from '@/util/toast'
-import { handleUploadImage } from '@/util/native'
-import { watch } from 'fs'
 
 @Component({
   components: {
-    ApplicationTab,
-    CompanyInfo,
-    PersonInfo
+    GetMobile,
+    VerifyCode,
+    SetPassWord,
+    Success
   }
 })
 export default class Application extends Vue {

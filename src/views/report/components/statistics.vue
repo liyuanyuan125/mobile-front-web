@@ -1,23 +1,23 @@
 <template>
-  <div class="boxoffice">
+  <div class="statistics">
     <dl>
       <dd>
         <p>
-          <b>67.2</b>万
+          <b>67.2</b>
         </p>
-        <p class="desc">累计想看人数</p>
+        <p class="desc">曝光人次 (千)</p>
       </dd>
       <dd>
         <p>
-          <b>67.2</b>万
+          <b>67.2</b>
         </p>
-        <p class="desc">今日实时票房</p>
+        <p class="desc">曝光场次</p>
       </dd>
       <dd>
         <p>
-          <b>67.2</b>亿
+          <b>67.2</b>
         </p>
-        <p class="desc">累计票房</p>
+        <p class="desc">支出金额 (万)</p>
       </dd>
     </dl>
   </div>
@@ -30,7 +30,7 @@ import ViewBase from '@/util/ViewBase'
 @Component({
   components: {}
 })
-export default class BoxOffice extends ViewBase {}
+export default class Statistics extends ViewBase {}
 </script>
 
 <style lang="less" scoped>

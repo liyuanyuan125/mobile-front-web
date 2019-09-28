@@ -17,5 +17,5 @@ export default class UserPortrait extends ViewBase {}
 </script>
 
 <style lang="less" scoped>
-@import '../less/index.less';
+@import '../less/main.less';
 </style>

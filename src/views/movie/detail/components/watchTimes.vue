@@ -18,5 +18,5 @@ export default class WatchTimes extends ViewBase {}
 </script>
 
 <style lang="less" scoped>
-@import '../less/index.less';
+@import '../less/main.less';
 </style>

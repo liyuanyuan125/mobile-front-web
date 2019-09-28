@@ -96,7 +96,7 @@ import ViewBase from '@/util/ViewBase'
 import { handleUploadImage } from '@/util/native'
 
 @Component
-export default class CompanyInfo extends ViewBase {
+export default class SetPassWord extends ViewBase {
   @Prop({ type: Object }) companyItem!: object
 
   provinceData: any = undefined // 所有城市数据

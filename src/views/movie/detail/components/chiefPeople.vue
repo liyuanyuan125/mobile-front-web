@@ -69,5 +69,5 @@ export default class ChiefPeople extends ViewBase {}
 </script>
 
 <style lang="less" scoped>
-@import '../less/index.less';
+@import '../less/main.less';
 </style>

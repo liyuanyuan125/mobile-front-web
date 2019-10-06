@@ -5,18 +5,20 @@
       <span>{{dataTrend.showDate}}</span>
     </div>
     <ul class="tabindex">
-      <li class="active">
-        <button>支付金额</button>
-      </li>
-      <li>
-        <button>曝光人次</button>
-      </li>
-      <li>
-        <button>曝光场次</button>
+      <li v-for="item in buttonArr" :key="item.id" :class="item.id === buttonIndex ? 'active' : ''">
+        <button @click="changeIndex($event)" :data-index="item.id">{{item.name}}</button>
       </li>
     </ul>
     <div class="chartbox">
-      <AreaBasic :dataOption="dataTrend.showCost" />
+      <div :style="{opacity:buttonIndex == 1 ? 1 :0}">
+        <AreaBasic :dataOption="dataTrend.showCost" :key="1" />
+      </div>
+      <div :style="{opacity:buttonIndex == 2 ? 1 :0}">
+        <AreaBasic :dataOption="dataTrend.showPerson" :key="2" />
+      </div>
+      <div :style="{opacity:buttonIndex == 3 ? 1 :0}">
+        <AreaBasic :dataOption="dataTrend.showScene" :key="3" />
+      </div>
     </div>
   </div>
 </template>
@@ -33,6 +35,27 @@ import AreaBasic from '../echarts/dataTrend.vue'
 })
 export default class DataTrend extends ViewBase {
   @Prop({ type: Object }) dataTrend!: any
+
+  buttonArr: any = [
+    {
+      name: '支付金额',
+      id: 1
+    },
+    {
+      name: '曝光人次',
+      id: 2
+    },
+    {
+      name: '曝光场次',
+      id: 3
+    }
+  ]
+  buttonIndex: number = 1
+
+  changeIndex(event: any) {
+    const ind = event.target.dataset.index
+    this.buttonIndex = Number(ind)
+  }
 }
 </script>
 

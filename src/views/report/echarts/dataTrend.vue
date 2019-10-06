@@ -1,5 +1,5 @@
 <template>
-  <div ref="refChart" class="chart-wrap"></div>
+  <div class="chart-wrap" ref="refChart"></div>
 </template>
 
 <script lang="ts">
@@ -179,6 +179,9 @@ export default class AreaBasic extends ViewBase {
   height: 400px;
 }
 .chart-wrap {
+  // position: absolute;
+  // left: 0;
+  // top: 0;
   width: 100%;
   height: 400px;
 }

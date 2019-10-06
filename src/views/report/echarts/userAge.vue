@@ -59,7 +59,8 @@ export default class UserAge extends ViewBase {
           }
         },
         axisTick: {
-          show: false
+          show: false,
+          alignWithLabel: true
         }
       },
 

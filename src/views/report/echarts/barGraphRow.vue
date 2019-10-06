@@ -52,46 +52,43 @@ export default class BarGraphRow extends ViewBase {
       yAxis: {
         type: 'category',
         data: this.chartData.yData,
-        inverse: true, // 是否反向 有点搞不明白
-        nameTextStyle: {}
-        // axisLabel: {
-        //   //   formatter: '{value}%',
-        //   textStyle: {
-        //     color: '#8798AF',
-        //     fontSize: '26px'
-        //   }
-        // },
-        // axisLine: {
-        //   show: false
-        // },
-        // axisTick: {
-        //   show: false
-        // },
-        // // 分割线样式
-        // splitLine: {
-        //   lineStyle: {
-        //     color: 'rgba(151,167,195,.45)',
-        //     type: 'dashed'
-        //   }
-        // }
+        inverse: true, // 是否反向 有点搞不明白,false就是从小到大排序
+        silent: true,
+        axisLabel: {
+          textStyle: {
+            color: '#8798AF',
+            fontSize: 12
+          }
+        },
+        // 是否显示刻度线
+        axisTick: {
+          show: false,
+          alignWithLabel: true
+        },
+        // 是否显示线
+        axisLine: {
+          show: false
+        }
       },
 
       grid: {
         left: 0,
-        top: '15px',
+        top: 0,
         bottom: 0,
         right: '50px',
         containLabel: true,
         show: false,
         borderWidth: 0
+        // height: '400px'
       },
 
       series: [
         {
           data: this.chartData.xData,
           type: 'bar',
-          //   barGap: 0,
-          //   smooth: true,
+          barGap: '50%',
+          barCategoryGap: '50%',
+          smooth: true,
           // legendHoverLink: true,
           label: {
             show: true,
@@ -122,12 +119,11 @@ export default class BarGraphRow extends ViewBase {
           },
           // 选中
           emphasis: {
-            itemStyle: {
-              color: '#7AA0F5',
-              opacity: 1
+            label: {
+              show: false
             }
           },
-          barWidth: 20
+          barWidth: 15
         }
       ]
     }
@@ -141,11 +137,11 @@ export default class BarGraphRow extends ViewBase {
 .content-wrap {
   position: relative;
   width: 100%;
-  height: 400px;
+  height: 600px;
 }
 .chart-wrap {
   width: 100%;
-  height: 400px;
+  height: 600px;
 }
 .chart-wrap:empty {
   display: flex;

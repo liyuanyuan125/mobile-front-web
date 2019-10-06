@@ -8,6 +8,7 @@
     <div class="usergender">
       <BarGraphRow v-if="cityProfile" :dataOption="cityProfile" />
     </div>
+    <div class="morecity">查看全部城市</div>
   </div>
 </template>
 
@@ -46,4 +47,11 @@ export default class DataCity extends ViewBase {
 
 <style lang="less" scoped>
 @import '../less/main.less';
+.morecity {
+  font-size: 30px;
+  line-height: 28px;
+  color: #7aa0f5;
+  text-align: center;
+  padding: 0 0 60px 0;
+}
 </style>

@@ -32,7 +32,7 @@ import PutProgress from './components/putProgress.vue' // 投放进度
 import DataTrend from './components/dataTrend.vue' // 数据趋势
 import DataTotal from './components/dataTotal.vue' // 影院和电影统计
 import DataUserStatus from './components/dataUserStatus.vue' // 年龄和性别占比
-import DataCity from './components/dataCity.vue'
+import DataCity from './components/dataCity.vue' // 城市相关
 import { getReportDetail } from '@/api/advertiser.ts'
 import { toast } from '@/util/toast'
 

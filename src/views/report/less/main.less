@@ -1,0 +1,356 @@
+.viewpage {
+    min-height: 100%;
+    background: #FBFBFB;
+    color: #2E2F5A;
+    padding-bottom: 30px;
+}
+
+.userinfo {
+    margin: 10px 30px 0;
+
+    .userbox {
+        padding-left: 106px;
+        position: relative;
+
+        .img {
+            width: 86px;
+            height: 86px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            border-radius: 50%;
+        }
+
+        h3 {
+            font-size: 38px;
+            line-height: 53px;
+        }
+
+        p {
+            font-size: 26px;
+            line-height: 37px;
+            color: #A5BEF8;
+            margin-top: 5px;
+        }
+    }
+}
+
+// 投放进度
+.putprogress {
+    background: #fff;
+    border-radius: 20px;
+    margin: 30px 30px 0;
+    box-shadow: 0 2px 30px rgba(216, 216, 216, .5);
+    position: relative;
+    padding: 30px;
+
+    .addbudget {
+        background: #A5BEF8;
+        width: 140px;
+        line-height: 50px;
+        text-align: center;
+        border-radius: 25px;
+        font-size: 26px;
+        color: #1E386F;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, .2);
+        position: absolute;
+        right: 30px;
+        top: 30px;
+    }
+
+    dt {
+        font-size: 30px;
+        line-height: 42px;
+        letter-spacing: -.5px;
+
+        .col {
+            display: flex;
+
+            b {
+                font-weight: normal;
+                flex: 1;
+            }
+
+            span {
+                font-size: 24px;
+                color: #8798AF;
+                opacity: .5;
+            }
+        }
+    }
+
+    dd {
+        margin-top: 20px;
+    }
+
+    .progress {
+        position: relative;
+        padding-bottom: 100px;
+
+        span {
+            background: #E1E7EE;
+            display: block;
+            height: 20px;
+            border-radius: 10px;
+        }
+
+        b {
+            display: block;
+            border-radius: 10px;
+            height: 20px;
+        }
+
+        em {
+            border-radius: 22px 0 22px 22px;
+            line-height: 44px;
+            padding: 0 20px;
+            position: absolute;
+            top: 40px;
+            font-size: 24px;
+        }
+    }
+
+    .expend {
+        b {
+            background: #A5BEF8
+        }
+
+        em {
+            background: rgba(141, 176, 255, .2);
+            color: #7095E6;
+        }
+    }
+
+    .exposure {
+        b {
+            background: #FFCE8D;
+        }
+
+        em {
+            background: rgba(255, 206, 141, .2);
+            color: #E79D32;
+        }
+    }
+
+    .puted {
+        b {
+            background: #9FDECF;
+        }
+
+        em {
+            background: rgba(159, 222, 207, .2);
+            color: #7ACAB7;
+        }
+    }
+}
+
+// 数据统计
+.statistics {
+    background: #fff;
+    border-radius: 20px;
+    margin: 30px 30px 0;
+    padding: 38px 0;
+    box-shadow: 0 2px 30px rgba(216, 216, 216, .5);
+
+    dl {
+        display: flex;
+    }
+
+    dd {
+        flex: 1;
+        width: 33%;
+        position: relative;
+        text-align: center;
+
+        b {
+            font-size: 50px;
+            line-height: 58px;
+            margin-right: 4px;
+        }
+
+        .desc {
+            font-size: 26px;
+            line-height: 37px;
+            color: #8798AF;
+            margin-top: 7px;
+        }
+
+        &::after {
+            width: 1px;
+            height: 60px;
+            background: #E3E5ED;
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            margin-top: -30px;
+        }
+
+        &:last-child::after {
+            display: none;
+        }
+    }
+}
+
+// 数据趋势
+.datatrend {
+    background: #fff;
+    margin: 30px 30px 0;
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 2px 30px rgba(216, 216, 216, .5);
+
+    .tit {
+        display: flex;
+
+        h3 {
+            font-size: 36px;
+            line-height: 50px;
+            flex: 1;
+        }
+
+        span {
+            text-align: right;
+            font-size: 26px;
+            line-height: 37px;
+            color: #8798AF;
+            white-space: nowrap;
+        }
+    }
+
+    .tabindex {
+        display: flex;
+        margin-top: 30px;
+
+        li {
+            width: 156px;
+            line-height: 56px;
+            margin-right: 20px;
+            border: 2px solid #E1E7EE;
+            border-radius: 30px;
+            font-size: 26px;
+            color: #2E2F5A;
+            text-align: center;
+        }
+
+        .active {
+            background: #7AA0F5;
+            color: #fff;
+            border-color: #7AA0F5;
+        }
+    }
+
+    .chartbox {
+        height: 450px;
+        margin-top: 30px;
+        position: relative;
+        width: 100%;
+
+        >div {
+            width: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            transition: all .6s;
+        }
+    }
+}
+
+// 总数据
+.datatotal {
+    background: #fff;
+    border-radius: 20px;
+    margin: 30px 30px 0;
+    padding: 38px 0;
+    box-shadow: 0 2px 30px rgba(216, 216, 216, .5);
+
+    dl {
+        display: flex;
+    }
+
+    dd {
+        flex: 1;
+        width: 50%;
+        position: relative;
+        text-align: center;
+
+        .box {
+            display: inline-block;
+            padding-left: 120px;
+            position: relative;
+            text-align: left;
+
+            strong {
+                display: block;
+                font-size: 60px;
+                line-height: 70px;
+                font-weight: normal;
+            }
+
+            p {
+                font-size: 26px;
+                line-height: 37px;
+                color: #A5BEF8;
+            }
+
+            i {
+                width: 90px;
+                height: 90px;
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                background: no-repeat 0 0;
+                background-size: 100%;
+            }
+
+            .icomovie {
+                background-image: url("../assets/ico-movie.png");
+            }
+
+            .icocinema {
+                background-image: url("../assets/ico-cinema.png");
+            }
+        }
+
+        &::after {
+            width: 1px;
+            height: 60px;
+            background: #E3E5ED;
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            margin-top: -30px;
+        }
+
+        &:last-child::after {
+            display: none;
+        }
+    }
+}
+
+// ageGender
+.userStatus {
+    background: #fff;
+    margin: 30px 30px 0;
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 2px 20px rgba(216, 216, 216, .4);
+
+    h3 {
+        font-size: 36px;
+        line-height: 50px;
+        flex: 1;
+    }
+
+    .userage,
+    .usergender {
+        margin-top: 30px;
+    }
+
+    .userage {
+        padding-bottom: 50px;
+    }
+
+}

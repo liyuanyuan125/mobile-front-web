@@ -1,0 +1,80 @@
+.viewpage {
+    min-height: 100%;
+    background: #FBFBFB;
+
+    &::after {
+        background: linear-gradient(#A0BBF9, #A0BBF9, #FBFBFB);
+        width: 100%;
+        height: 855px;
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 1;
+    }
+
+    .viewer {
+        position: relative;
+        z-index: 2;
+        color: #2E2F5A;
+    }
+}
+
+// 影院信息
+.cinemainfo {
+    margin: 10px 30px 0;
+
+    h2 {
+        font-size: 36px;
+        line-height: 50px;
+        font-weight: normal;
+    }
+}
+
+// boxoffice
+.boxoffice {
+    background: #fff;
+    border-radius: 20px;
+    margin: 30px 30px 0;
+    padding: 38px 0;
+    box-shadow: 0 0 20px rgba(18, 92, 164, .1);
+
+    dl {
+        display: flex;
+    }
+
+    dd {
+        flex: 1;
+        width: 33%;
+        position: relative;
+        text-align: center;
+
+        b {
+            font-size: 50px;
+            line-height: 58px;
+            margin-right: 4px;
+        }
+
+        .desc {
+            font-size: 24px;
+            line-height: 33px;
+            color: #8798AF;
+            margin-top: 13px;
+        }
+
+        &::after {
+            width: 1px;
+            height: 60px;
+            background: #E3E5ED;
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            margin-top: -30px;
+        }
+
+        &:last-child::after {
+            display: none;
+        }
+    }
+}

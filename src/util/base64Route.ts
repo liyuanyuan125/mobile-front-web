@@ -28,6 +28,7 @@ export function decodeRoute(base64: string) {
       return route
     }
   } catch (ex) {
+    throw ex
   }
   return null
 }

@@ -29,7 +29,19 @@ export default new Router({
     {
       path: '/help/privacy',
       name: 'privacy',
-      component: () => import('./views/help/privacy.vue')
+      component: () => import('./views/help/privacy/index.vue')
+    },
+    // 广告片新手需知
+    {
+      path: '/help/videoexplain',
+      name: 'videoexplain',
+      component: () => import('./views/help/video/index.vue')
+    },
+    // 充值规范
+    {
+      path: '/help/rechargerule',
+      name: 'rechargerule',
+      component: () => import('./views/help/recharge/index.vue')
     },
     // 修改密码
     {
@@ -57,7 +69,7 @@ export default new Router({
     },
     // 效果报告
     {
-      path: '/report/detail',
+      path: '/report/detail/:orderId',
       name: 'resultreport',
       component: () => import('./views/report/index.vue')
     }

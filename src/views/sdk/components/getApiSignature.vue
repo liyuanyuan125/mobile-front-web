@@ -68,7 +68,9 @@ export default class GetApiSignature extends ViewBase {
       } else {
         alert('url格式错误')
       }
-    } catch (err) {}
+    } catch (err) {
+      alert(err)
+    }
   }
 }
 </script>

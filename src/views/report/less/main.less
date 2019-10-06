@@ -2,6 +2,7 @@
     min-height: 100%;
     background: #FBFBFB;
     color: #2E2F5A;
+    padding-bottom: 30px;
 }
 
 .userinfo {
@@ -60,6 +61,22 @@
     dt {
         font-size: 30px;
         line-height: 42px;
+        letter-spacing: -.5px;
+
+        .col {
+            display: flex;
+
+            b {
+                font-weight: normal;
+                flex: 1;
+            }
+
+            span {
+                font-size: 24px;
+                color: #8798AF;
+                opacity: .5;
+            }
+        }
     }
 
     dd {
@@ -154,7 +171,7 @@
         .desc {
             font-size: 26px;
             line-height: 37px;
-            color: #A5BEF8;
+            color: #8798AF;
             margin-top: 7px;
         }
 
@@ -196,11 +213,37 @@
             text-align: right;
             font-size: 26px;
             line-height: 37px;
-            color: #A5BEF8;
+            color: #8798AF;
             white-space: nowrap;
         }
     }
 
+    .tabindex {
+        display: flex;
+        margin-top: 30px;
+
+        li {
+            width: 156px;
+            line-height: 56px;
+            margin-right: 20px;
+            border: 2px solid #E1E7EE;
+            border-radius: 30px;
+            font-size: 26px;
+            color: #2E2F5A;
+            text-align: center;
+        }
+
+        .active {
+            background: #7AA0F5;
+            color: #fff;
+            border-color: #7AA0F5;
+        }
+    }
+
+    .chartbox {
+        height: 450px;
+        margin-top: 30px;
+    }
 }
 
 // 总数据
@@ -231,6 +274,7 @@
                 display: block;
                 font-size: 60px;
                 line-height: 70px;
+                font-weight: normal;
             }
 
             p {
@@ -244,9 +288,10 @@
                 height: 90px;
                 position: absolute;
                 left: 0;
-                top: 0;
+                top: 50%;
+                transform: translateY(-50%);
                 background: no-repeat 0 0;
-                background-size: cover;
+                background-size: 100%;
             }
 
             .icomovie {
@@ -289,5 +334,13 @@
         flex: 1;
     }
 
+    .userage,
+    .usergender {
+        margin-top: 30px;
+    }
+
+    .userage {
+        padding-bottom: 50px;
+    }
 
 }

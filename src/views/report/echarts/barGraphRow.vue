@@ -13,9 +13,9 @@ import { find } from 'lodash'
 @Component({
   components: {}
 })
-// 基础面积图
-export default class UserAge extends ViewBase {
-  @Prop({ type: Array }) ageOption!: any
+// 横向柱状图
+export default class BarGraphRow extends ViewBase {
+  @Prop({ type: Array }) dataOption!: any
 
   // chart数据
   chartData: any = {
@@ -31,9 +31,9 @@ export default class UserAge extends ViewBase {
   formatChartData() {
     const xData = []
     const yData = []
-    for (const item of this.ageOption) {
-      this.chartData.xData.push(item.range)
-      this.chartData.yData.push(item.value)
+    for (const item of this.dataOption) {
+      this.chartData.xData.push(item.value)
+      this.chartData.yData.push(item.cityName)
     }
   }
 
@@ -45,53 +45,42 @@ export default class UserAge extends ViewBase {
     const myChart = echarts.init(chartEl)
     const option: any = {
       xAxis: {
-        type: 'category',
-        data: this.chartData.xData,
-        axisLabel: {
-          textStyle: {
-            color: '#8798AF',
-            fontSize: '20px'
-          }
-        },
-        axisLine: {
-          lineStyle: {
-            color: 'rgba(151, 167, 195, 0.45)'
-          }
-        },
-        axisTick: {
-          show: false
-        }
+        type: 'value',
+        show: false
       },
 
       yAxis: {
-        type: 'value',
-        axisLabel: {
-          formatter: '{value}%',
-          textStyle: {
-            color: '#8798AF',
-            fontSize: '20px'
-          }
-        },
-        axisLine: {
-          show: false
-        },
-        axisTick: {
-          show: false
-        },
-        // 分割线样式
-        splitLine: {
-          lineStyle: {
-            color: 'rgba(151,167,195,.45)',
-            type: 'dashed'
-          }
-        }
+        type: 'category',
+        data: this.chartData.yData,
+        inverse: true, // 是否反向 有点搞不明白
+        nameTextStyle: {}
+        // axisLabel: {
+        //   //   formatter: '{value}%',
+        //   textStyle: {
+        //     color: '#8798AF',
+        //     fontSize: '26px'
+        //   }
+        // },
+        // axisLine: {
+        //   show: false
+        // },
+        // axisTick: {
+        //   show: false
+        // },
+        // // 分割线样式
+        // splitLine: {
+        //   lineStyle: {
+        //     color: 'rgba(151,167,195,.45)',
+        //     type: 'dashed'
+        //   }
+        // }
       },
 
       grid: {
         left: 0,
         top: '15px',
         bottom: 0,
-        right: '15px',
+        right: '50px',
         containLabel: true,
         show: false,
         borderWidth: 0
@@ -99,19 +88,37 @@ export default class UserAge extends ViewBase {
 
       series: [
         {
-          data: this.chartData.yData,
+          data: this.chartData.xData,
           type: 'bar',
-          smooth: true,
+          //   barGap: 0,
+          //   smooth: true,
           // legendHoverLink: true,
           label: {
-            normal: {
-              show: false,
-              position: 'outside'
-            }
+            show: true,
+            position: 'right',
+            distance: 10,
+            formatter: '{c}%',
+            color: '#2E2F5A',
+            fontWeight: 'bold',
+            fontSize: 14
           },
           itemStyle: {
-            color: '#7AA0F5',
-            opacity: 0.4
+            color: (params: any) => {
+              const colorList: any = [
+                '#FF8080',
+                '#FFCB84',
+                '#9FDECF',
+                '#D9E0E9',
+                '#D9E0E9',
+                '#D9E0E9',
+                '#D9E0E9',
+                '#D9E0E9',
+                '#D9E0E9',
+                '#D9E0E9'
+              ]
+              return colorList[params.dataIndex]
+            }
+            // opacity: 0.4
           },
           // 选中
           emphasis: {

@@ -16,7 +16,6 @@ import { Component, Vue } from 'vue-property-decorator'
   components: {}
 })
 export default class DownloadCinema extends Vue {
-  screenH: number = 0
   mounted() {
     const dw: any = this.$refs.downloabox
     dw.style.height = document.body.clientHeight + 'px'

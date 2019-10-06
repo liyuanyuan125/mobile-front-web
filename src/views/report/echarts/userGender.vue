@@ -10,25 +10,43 @@ import ViewBase from '@/util/ViewBase'
 import echarts from 'echarts'
 import { find } from 'lodash'
 import { tooltipStyles } from '@/util/echarts'
+const defaultColor: any = ['#85B9FF', '#9FDECF', '#FFCB84', '#FF8080', '#dddeef']
 
 @Component({
   components: {}
 })
 // 基础面积图
 export default class UserGender extends ViewBase {
+  @Prop({ type: Array }) genderOption!: any
+  @Prop({ type: Array, default: () => defaultColor }) bgColor: any
+
+  // chart数据
+  chartData: any = {
+    xData: [],
+    yData: []
+  }
   mounted() {
+    this.formatChartData()
     this.updateCharts()
+  }
+
+  // 格式化数据
+  formatChartData() {
+    const xData = []
+    const yData = []
+    for (const item of this.genderOption) {
+      this.chartData.xData.push(item.name)
+      this.chartData.yData.push(item.value)
+    }
+    // console.log(this.bgColor)
   }
 
   // 接口没调
   updateCharts() {
     const chartEl = this.$refs.refChart as HTMLDivElement
-
     echarts.dispose(chartEl)
     chartEl.innerHTML = ''
-
     const myChart = echarts.init(chartEl)
-
     const option: any = {
       tooltip: {
         trigger: 'item',
@@ -38,33 +56,40 @@ export default class UserGender extends ViewBase {
         orient: 'vertical',
         x: 'right',
         y: 'middle',
-        data: ['女性', '男性']
+        data: this.chartData.xData
       },
+      grid: {
+        left: '15px',
+        right: '15px',
+        top: '15px',
+        bottom: '15px'
+      },
+      color: this.bgColor,
       series: [
         {
-          name: '访问来源',
           type: 'pie',
-          radius: ['40%', '60%'],
-          avoidLabelOverlap: false,
-          label: {
-            normal: {
-              show: false,
-              position: 'center'
-            },
-            emphasis: {
-              show: true,
-              textStyle: {
-                fontSize: '30',
-                fontWeight: 'bold'
-              }
-            }
-          },
-          labelLine: {
-            normal: {
-              show: false
-            }
-          },
-          data: [{ value: 75, name: '女性' }, { value: 25, name: '男性' }]
+          hoverOffset: 5,
+          center: ['40%', '50%'],
+          radius: ['45%', '80%'],
+          data: this.genderOption
+          // label: {
+          //   normal: {
+          //     show: false,
+          //     position: 'center'
+          //   },
+          //   emphasis: {
+          //     show: true,
+          //     textStyle: {
+          //       fontSize: '30',
+          //       fontWeight: 'bold'
+          //     }
+          //   }
+          // },
+          // labelLine: {
+          //   normal: {
+          //     show: false
+          //   }
+          // }
         }
       ]
     }

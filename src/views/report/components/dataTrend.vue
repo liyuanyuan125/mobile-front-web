@@ -2,10 +2,10 @@
   <div class="datatrend">
     <div class="tit">
       <h3>数据趋势</h3>
-      <span>09-17 至 09-23</span>
+      <span>{{dataTrend.showDate}}</span>
     </div>
-    <ul>
-      <li>
+    <ul class="tabindex">
+      <li class="active">
         <button>支付金额</button>
       </li>
       <li>
@@ -15,14 +15,14 @@
         <button>曝光场次</button>
       </li>
     </ul>
-    <div>
-      <AreaBasic />
+    <div class="chartbox">
+      <AreaBasic :dataOption="dataTrend.showCost" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import AreaBasic from '../echarts/dataTrend.vue'
 
@@ -31,7 +31,9 @@ import AreaBasic from '../echarts/dataTrend.vue'
     AreaBasic
   }
 })
-export default class DataTrend extends ViewBase {}
+export default class DataTrend extends ViewBase {
+  @Prop({ type: Object }) dataTrend!: any
+}
 </script>
 
 <style lang="less" scoped>

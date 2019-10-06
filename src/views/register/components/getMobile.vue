@@ -1,12 +1,30 @@
 <template>
   <div class="getmobile">
     <p>广告主申请入驻</p>
+    <div></div>
+    <dl>
+      <dd>
+        <input type="text" placeholder="企业名称" />
+      </dd>
+      <dd>
+        <input type="text" placeholder="姓名" />
+      </dd>
+      <dd>
+        <input type="text" placeholder="手机号" />
+      </dd>
+      <dd>
+        <input type="text" placeholder="推荐人手机号码 (选填)" />
+      </dd>
+      <dt>
+        <i></i>《广告主合作协议》
+      </dt>
+    </dl>
+    <div></div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
-import { getProvinceList, getQualification } from '@/api/commonData'
 import ViewBase from '@/util/ViewBase'
 import { handleUploadImage } from '@/util/native'
 
@@ -22,48 +40,6 @@ export default class GetMobile extends ViewBase {
 
   async created() {
     // html加载完成之前，执行
-    this.getProvince()
-    this.getQualification()
-  }
-
-  /**
-   * 获取省份城市
-   */
-  async getProvince() {
-    try {
-      const { data } = await getProvinceList()
-      this.provinceData = data.provinceList
-      if (data.provinceList.length) {
-        this.provinceList = data.provinceList
-      }
-    } catch (err) {
-      throw new Error(err)
-    }
-  }
-  /**
-   * 获取省份城市
-   */
-  async getQualification() {
-    try {
-      const { data } = await getQualification('PARTNER_BUSINESS')
-      const result = []
-      // 添加默认 key
-      result.push({
-        key: 'NULL',
-        text: '企业所属行业'
-      })
-      // controlStatus 有3个参数，0=未知 1=有效 2=无效 只取有效
-      for (const item of data) {
-        if (item.controlStatus === 1) {
-          result.push(item)
-        }
-      }
-      if (result.length) {
-        this.qualificationList = result
-      }
-    } catch (err) {
-      throw new Error(err)
-    }
   }
 
   /**
@@ -103,5 +79,5 @@ export default class GetMobile extends ViewBase {
 </script>
 
 <style lang="less" scoped>
-@import '../less/infoList.less';
+@import '../less/main.less';
 </style>

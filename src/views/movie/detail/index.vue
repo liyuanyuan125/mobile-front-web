@@ -56,8 +56,7 @@ export default class MovieDetail extends Vue {
       'http://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/MISC/bm4s9v3lqfo000804kc0.jpg'
     // img.src =
     //   'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/05/06/190506000002357372.jpg'
-    // img.src =
-    //   'https://picagent.piaoshen.com/picture/cut_picture?uri=http%3A%2F%2Fpiaoshen.oss-cn-beijing.aliyuncs.com%2Fimages%2Fmovie%2F2019%2F05%2F06%2F190506000002357372.jpg&width=200&height=300&clipType=4'
+
     img.onload = () => {
       // 将图片画到canvas上面上去！
       ctx.drawImage(img, 0, 0, img.width, img.height)

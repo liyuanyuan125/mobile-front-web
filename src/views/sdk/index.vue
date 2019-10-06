@@ -59,9 +59,6 @@ export default class JSsdk extends Vue {
     const ua = navigator.userAgent
     const isApp = ua.indexOf('JYDataCinema') > -1
   }
-
-  // 执行方法
-  carryAction(name: string) {}
 }
 </script>
 

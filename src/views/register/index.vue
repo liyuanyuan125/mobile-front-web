@@ -3,7 +3,7 @@
     <GetMobile :changePage="changePage" v-show="stepOne" />
     <VerifyCode :changePage="changePage" v-show="stepSec" :pageOn="stepSec" />
     <SetPassWord :changePage="changePage" v-show="stepThr" />
-    <!-- <SuccessPage :changePage="changePage" v-show="stepFor" />-->
+    <SuccessPage :changePage="changePage" v-show="stepFor" />
   </div>
 </template>
 
@@ -25,10 +25,10 @@ import { toast } from '@/util/toast'
   }
 })
 export default class Application extends Vue {
-  stepOne: boolean = true
+  stepOne: boolean = false
   stepSec: boolean = false
   stepThr: boolean = false
-  stepFor: boolean = false
+  stepFor: boolean = true
 
   // 切换页面
   changePage(page: number) {

@@ -66,7 +66,6 @@ export default class SetPassWord extends ViewBase {
           accountType: sto.state.userType,
           companyName: sto.state.companyName,
           contact: sto.state.userName,
-          // contactTel: '',
           recommendTel: sto.state.recommendPhone
         })
         if (res.code === 0) {

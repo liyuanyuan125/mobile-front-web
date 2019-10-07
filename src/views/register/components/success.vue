@@ -95,7 +95,7 @@ import ViewBase from '@/util/ViewBase'
 import { handleUploadImage } from '@/util/native'
 
 @Component
-export default class Success extends ViewBase {
+export default class SuccessPage extends ViewBase {
   @Prop({ type: Object }) companyItem!: object
 
   provinceData: any = undefined // 所有城市数据

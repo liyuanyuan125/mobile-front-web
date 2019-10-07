@@ -1,78 +1,209 @@
 <template>
-  <div class="getmobile">
-    <p>广告主申请入驻</p>
-    <div></div>
-    <dl>
-      <dd>
-        <input type="text" placeholder="企业名称" />
+  <div class="wrap">
+    <p class="tit">广告主申请入驻</p>
+    <div class="gologin">
+      已有帐号？
+      <i>立即登录</i>
+    </div>
+    <div class="radiobox">
+      <label
+        v-for="item in radioType"
+        :key="item.value"
+        :data-type="item.value"
+        @click.self="changeRadioType($event)"
+      >
+        <i
+          :class="['radio',{check:userType==item.value}]"
+          @click.stop="changeRadioType($event)"
+          :data-type="item.value"
+        ></i>
+        {{item.name}}
+      </label>
+    </div>
+    <dl class="fillinfo">
+      <dd v-show="userType == '1'">
+        <div class="inputctrl">
+          <input
+            class="text"
+            type="text"
+            v-model="companyName"
+            v-on:input="changeBtnStatus"
+            placeholder="企业名称"
+          />
+          <i class="del" v-show="companyName.length" @click="clearTxt('companyName')"></i>
+        </div>
       </dd>
       <dd>
-        <input type="text" placeholder="姓名" />
+        <div class="inputctrl">
+          <input
+            class="text"
+            type="text"
+            v-model="userName"
+            placeholder="姓名"
+            v-on:input="changeBtnStatus"
+          />
+          <i class="del" v-show="userName.length" @click="clearTxt('userName')"></i>
+        </div>
       </dd>
       <dd>
-        <input type="text" placeholder="手机号" />
+        <div class="inputctrl">
+          <input
+            class="text"
+            type="number"
+            v-model="userMobile"
+            placeholder="手机号"
+            v-on:input="changeBtnStatus"
+            oninput="if(value.length > 11)value = value.slice(0, 11)"
+            ref="getPhoneNumber"
+          />
+          <i class="del" v-show="userMobile.length" @click="clearTxt('userMobile')"></i>
+        </div>
       </dd>
       <dd>
-        <input type="text" placeholder="推荐人手机号码 (选填)" />
+        <div class="inputctrl">
+          <input
+            class="text"
+            type="number"
+            v-model="recommendMobile"
+            placeholder="推荐人手机号码 (选填)"
+            oninput="if(value.length > 11)value = value.slice(0, 11)"
+            v-on:input="changeBtnStatus"
+            ref="getPhoneNumber"
+          />
+          <i class="del" v-show="recommendMobile.length" @click="clearTxt('recommendMobile')"></i>
+        </div>
       </dd>
-      <dt>
-        <i></i>《广告主合作协议》
+      <dt @click.self="changeAgreeStatus">
+        <i @click.stop="changeAgreeStatus" :class="{checked:isAgree}"></i>《广告主合作协议》
       </dt>
     </dl>
-    <div></div>
+    <div class="subbuttonbox">
+      <button :class="{disabled:!btnStatus}" @click="getVerifyCode">获取验证码</button>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
+import { validataTel } from '@/fn/validateRules'
+import {
+  setRequestId,
+  setUserType,
+  setCompanyName,
+  setUserName,
+  setUserMobile,
+  setRecommendPhone
+} from '../store'
 import { handleUploadImage } from '@/util/native'
+import { getSmsCode } from '@/api/theater'
+import { toast } from '@/util/toast'
 
 @Component
 export default class GetMobile extends ViewBase {
-  @Prop({ type: Object }) companyItem!: object
+  @Prop({ type: Function }) changePage!: (id: number) => Promise<boolean>
 
-  provinceData: any = undefined // 所有城市数据
-  provinceList: any = [] // 省份列表
-  cityList: any = [] // 城市列表
-  qualificationList: any = [] // 企业类型列表
-  credentialImg = ''
+  // 注册类型
+  radioType: any = [
+    {
+      name: '企业',
+      value: '1'
+    },
+    {
+      name: '个人',
+      value: '2'
+    }
+  ]
+  userType: string = '1' // 注册类型
+  companyName: string = '' // 公司名称
+  userName: string = '' // 用户名称
+  userMobile: string = '' // 用户手机号
+  recommendMobile: string = '' // 推荐人手机号
+  isAgree: boolean = true // 是否同意用户协议
+  btnStatus: boolean = false
 
-  async created() {
-    // html加载完成之前，执行
+  // 清除
+  clearTxt(name: string) {
+    switch (name) {
+      case 'companyName':
+        this.companyName = ''
+        break
+      case 'userName':
+        this.userName = ''
+        break
+      case 'userMobile':
+        this.userMobile = ''
+        break
+      case 'recommendMobile':
+        this.recommendMobile = ''
+    }
+    this.changeBtnStatus()
   }
 
-  /**
-   * 选择省份
-   */
-  async selectProvince(val: any) {
-    // this.companyItem.cityId = 0;
-    for (const proItem of this.provinceData) {
-      const pid = proItem.provinceId
-      if (pid === val) {
-        this.cityList = proItem.cityList
+  // 选择注册类型
+  changeRadioType(e: any) {
+    const idx = e.target.dataset.type
+    this.userType = idx
+    // 如果是个人时，将公司名称清空
+    if (idx === '2') {
+      this.companyName = ''
+    }
+  }
+
+  // 是否同意用户协议
+  changeAgreeStatus() {
+    this.isAgree = !this.isAgree
+  }
+
+  // 监听 input 改变提按钮状态
+  changeBtnStatus() {
+    // 推荐手机号为空或不为空时格式正式确都是true
+    const recomVali = this.recommendMobile == '' || !validataTel(this.recommendMobile)
+    if (this.userType === '2') {
+      // 个人
+      this.btnStatus =
+        this.userName != '' &&
+        !validataTel(this.userMobile) &&
+        recomVali &&
+        this.isAgree
+    } else {
+      // 企业
+      this.btnStatus =
+        this.companyName != '' &&
+        this.userName != '' &&
+        !validataTel(this.userMobile) &&
+        recomVali &&
+        this.isAgree
+    }
+  }
+
+  // 获取验证码
+  async getVerifyCode() {
+    if (!this.btnStatus) {
+      return
+    } else {
+      try {
+        const res = await getSmsCode({ phoneNum: this.userMobile })
+        // 0 ===获取验证码成功
+        // 1 ===获取验证码失败
+        if (res.code == 0) {
+          // this.changePage(this.page)
+          // 更新store的值
+          setRequestId(res.data.requestId)
+          setUserType(this.userType)
+          setUserName(this.userName)
+          setUserMobile(this.userMobile)
+          setRecommendPhone(this.recommendMobile)
+          if (this.userType === '1') {
+            setCompanyName(this.companyName)
+          }
+          this.changePage(1)
+        } else {
+          toast(res.msg)
+        }
+      } catch (ex) {
+        this.handleError(ex)
       }
-    }
-  }
-
-  /**
-   * 调取原生上传图片
-   */
-  async uploadImg() {
-    const obj = {
-      params: {
-        sourceType: 3, // 1从相册选取 2拍照上传 3都有
-        imageCount: 1 // 图片数量
-      },
-      callBackName: 'uploadImageCallBack' // 客户端回调JS方法
-    }
-    const result: any = await handleUploadImage(obj)
-
-    // 防止操作中途停止时报错
-    if (result) {
-      const resultJSON = JSON.parse(result)
-      this.credentialImg = resultJSON.data.imageList[0].url
-      this.$emit('credentialFileId', resultJSON.data.imageList[0].fileId)
     }
   }
 }

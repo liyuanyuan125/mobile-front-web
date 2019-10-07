@@ -171,23 +171,31 @@ export default class CheckPage extends ViewBase {
   left: 92px;
   top: 172px;
   font-size: 28px;
-  color: @tip-color;
+  color: #899ab3;
   em {
     display: inline-block;
     margin-left: 10px;
-    color: @black;
+    color: #404d66;
   }
 }
 .sendTip {
   font-size: 28px;
-  color: @tip-color;
+  color: #899ab3;
 }
 .sendAgain {
   font-size: 28px;
-  color: @but-color;
+  color: #3c8eff;
 }
 .text {
   font-size: 50px;
   letter-spacing: 20px;
+}
+.adver {
+  .yzTip {
+    color: #a5bef8;
+    em {
+      color: #404d66;
+    }
+  }
 }
 </style>

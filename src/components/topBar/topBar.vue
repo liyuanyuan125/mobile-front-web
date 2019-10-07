@@ -1,5 +1,5 @@
 <template>
-  <div class="topbar">
+  <div :class="['topbar',barColor]">
     <span class="reBack"></span>
     <h1 class="title">{{title}}</h1>
   </div>
@@ -16,6 +16,9 @@ export default class TopBar extends Vue {
   @Prop({ type: String, default: '' }) title!: string
   @Prop({ type: String, default: 'transparent' }) bgColor!: string
   @Prop({ type: String, default: '' }) styleline!: any
+  @Prop({ type: String, default: 'white' }) barColor: any // 黑或白
+
+  // barColor:string = 'white'
 }
 </script>
 
@@ -47,6 +50,16 @@ export default class TopBar extends Vue {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%) rotate(45deg);
+  }
+}
+.black {
+  .title {
+    color: #1e386f;
+  }
+  .reBack {
+    &::after {
+      border-color: #1e386f;
+    }
   }
 }
 </style>

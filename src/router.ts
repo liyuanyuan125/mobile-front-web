@@ -72,6 +72,12 @@ export default new Router({
       path: '/report/detail/:orderId',
       name: 'resultreport',
       component: () => import('./views/report/index.vue')
+    },
+    // 广告片详情
+    {
+      path: '/video/detail/:adId',
+      name: 'resultreport',
+      component: () => import('./views/video/index.vue')
     }
   ]
 })

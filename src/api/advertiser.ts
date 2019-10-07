@@ -10,11 +10,11 @@ export async function getReportDetail(query: any) {
 }
 
 /**
- * 校验验证码
+ * 获取广告详情页
  * @param query  object
  */
-export async function verifySmsCode(query: any) {
-    const res = await post('/customer/accounts/verify_sms_code', query)
+export async function getVideoDetail(query: any) {
+    const res = await get('/xadvert/videos/info', query)
     return res
 }
 

@@ -3,7 +3,7 @@
     <p class="tit">广告主申请入驻</p>
     <div class="gologin">
       已有帐号？
-      <i>立即登录</i>
+      <i @click.stop="goLogin">立即登录</i>
     </div>
     <div class="radiobox">
       <label
@@ -73,8 +73,9 @@
           <i class="del" v-show="recommendMobile.length" @click="clearTxt('recommendMobile')"></i>
         </div>
       </dd>
-      <dt @click.self="changeAgreeStatus">
-        <i @click.stop="changeAgreeStatus" :class="{checked:isAgree}"></i>《广告主合作协议》
+      <dt>
+        <i @click.stop="changeAgreeStatus" :class="{checked:isAgree}"></i>
+        <router-link to="/help/agreement">《广告主合作协议》</router-link>
       </dt>
     </dl>
     <div class="subbuttonbox">
@@ -98,6 +99,7 @@ import {
 import { handleUploadImage } from '@/util/native'
 import { getSmsCode } from '@/api/theater'
 import { toast } from '@/util/toast'
+import { handleGoBack } from '@/util/native'
 
 @Component
 export default class GetMobile extends ViewBase {
@@ -205,6 +207,22 @@ export default class GetMobile extends ViewBase {
         this.handleError(ex)
       }
     }
+  }
+
+  // 去登录
+  async goLogin() {
+    const obj = {
+      params: {
+        isCloseWindow: true,
+        refreshWindow: true
+      }
+    }
+    await handleGoBack(obj)
+  }
+
+  // 查看广告主协议
+  goAgreeMent() {
+    this.$router
   }
 }
 </script>

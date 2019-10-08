@@ -25,10 +25,10 @@ import { toast } from '@/util/toast'
   }
 })
 export default class Application extends Vue {
-  stepOne: boolean = false
+  stepOne: boolean = true
   stepSec: boolean = false
   stepThr: boolean = false
-  stepFor: boolean = true
+  stepFor: boolean = false
 
   // 切换页面
   changePage(page: number) {

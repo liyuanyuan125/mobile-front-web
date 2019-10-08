@@ -37,6 +37,7 @@ import ViewBase from '@/util/ViewBase'
 import applicationStore, { setRequestId } from '../store'
 import { toast } from '@/util/toast'
 import { verifySmsCode, getSmsCode } from '@/api/theater'
+import { handleGoBack } from '@/util/native'
 
 @Component
 export default class VerifyCode extends ViewBase {
@@ -113,27 +114,25 @@ export default class VerifyCode extends ViewBase {
           requestType: 1, // 1=注册 2=修改密码
           requestId: applicationStore.state.requestId
         })
-        // 这里有点绕，备注一下
-        // 当页面类型是申请入驻的帐号时，0表示这个用户未注册过，可以继续注册 0只给申请用户使用
-        // 当页面类型是修改密码时，手机号未注册的时候，api会返回相应的code=8007224
-        switch (res.code) {
-          case 0:
-            setRequestId(res.data.requestId) // 更新store的值
-            this.changePage(2)
-            break
-          case 8007408:
-            // 公司状态为待审核
-            await this.$router.push({ name: 'submit', query: { show: '1' } })
-            break
-          case 8007223:
-            toast('您已开通广告商平台，请登录')
-            break
-          case 8007225:
-            // 已经开通了账号，但是未开通广告商平台账号
-            await this.$router.push({ name: 'submit', query: { show: '2' } })
-            break
-          default:
-            toast(res.msg)
+        // 目前只区分注册和未注册
+        if (res.code == 0) {
+          setRequestId(res.data.requestId) // 更新store的值
+          this.changePage(2)
+        } else if (String(res.code).indexOf('900') > -1) {
+          // 900是api的errCode 留在此页 例如验证码错误
+          toast(res.msg)
+        } else if (String(res.code).indexOf('800') > -1) {
+          // 800是服务端的errCode，返回登录页 例如已注册过了
+          toast(res.msg)
+          setTimeout(async () => {
+            const obj = {
+              params: {
+                isCloseWindow: true,
+                refreshWindow: true
+              }
+            }
+            await handleGoBack(obj)
+          }, 1000)
         }
       } catch (ex) {
         this.handleError(ex)

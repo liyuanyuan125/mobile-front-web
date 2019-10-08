@@ -1,13 +1,24 @@
 <template>
-  <!-- 状态区 -->
-  <div class="statusarea">
-    <i class="reBack" title="返回"></i>
-    <b class="kefu" title="客服"></b>
-    <h4 class="status">待审核</h4>
-    <p class="desc">平台审核广告中…</p>
-    <div class="but">
-      <button>编辑</button>
-    </div>
+  <!--其他基本信息 -->
+  <div class="payinfo">
+    <dl>
+      <dd>
+        <i>广告片编号</i>
+        <em>432432423423423</em>
+      </dd>
+      <dd>
+        <i>创建时间</i>
+        <em>2019-08-12 17:53:00</em>
+      </dd>
+      <dd>
+        <i>创建时间</i>
+        <em>2019-08-12 17:53:00</em>
+      </dd>
+      <dd>
+        <i>创建时间</i>
+        <em>2019-08-12 17:53:00</em>
+      </dd>
+    </dl>
   </div>
 </template>
 

@@ -1,8 +1,10 @@
 <template>
   <div class="viewpage">
-    <StatusArea />
+    <StatusArea v-if="videoDetail.adStatusInfo" :statusInfo="videoDetail.adStatusInfo" />
     <VideoInfoArea />
     <SampleArea />
+    <PayInfoArea />
+    <BaseInfoArea />
   </div>
 </template>
 
@@ -11,7 +13,8 @@ import { Component, Vue } from 'vue-property-decorator'
 import StatusArea from './components/statusArea.vue'
 import VideoInfoArea from './components/videoInfoArea.vue'
 import SampleArea from './components/sampleArea.vue'
-
+import PayInfoArea from './components/payArea.vue'
+import BaseInfoArea from './components/baseInfoArea.vue'
 import { getVideoDetail } from '@/api/advertiser.ts'
 import { toast } from '@/util/toast'
 
@@ -19,12 +22,14 @@ import { toast } from '@/util/toast'
   components: {
     StatusArea,
     VideoInfoArea,
-    SampleArea
+    SampleArea,
+    PayInfoArea,
+    BaseInfoArea
   }
 })
 export default class ResultReport extends Vue {
   adId: string = ''
-  orderDetail: any = {}
+  videoDetail: any = {}
 
   beforeMount() {
     const vid = this.$route.params.adId
@@ -37,7 +42,7 @@ export default class ResultReport extends Vue {
     try {
       const res: any = await getVideoDetail({ adId })
       if (res.code === 0) {
-        this.orderDetail = res.data
+        this.videoDetail = res.data
       } else {
         toast(res.msg)
       }

@@ -70,7 +70,8 @@ export default class SetPassWord extends ViewBase {
         })
         if (res.code === 0) {
           // toast('注册成功')
-          // 成功后返回登录页
+          // 成功后去往注册成功页
+          this.changePage(3)
         } else {
           toast('注册失败，请联系客服')
           this.handleError(res.msg)

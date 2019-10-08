@@ -43,6 +43,12 @@ export default new Router({
       name: 'rechargerule',
       component: () => import('./views/help/recharge/index.vue')
     },
+    // 广告主协议
+    {
+      path: '/help/agreement',
+      name: 'agreement',
+      component: () => import('./views/help/agreement/index.vue')
+    },
     // 修改密码
     {
       path: '/apply',

@@ -1,10 +1,279 @@
 .viewpage {
-  padding: 0 90px;
+
   font-size: 30px;
   color: #1E386F;
   line-height: 1;
 }
 
-.getmobile {
-  padding: 50px 0;
+.wrap {
+  padding: 50px 90px;
+
+  .tit {
+    font-size: 42px;
+    line-height: 1;
+    color: #1E386F;
+  }
+}
+
+.radiobox {
+  margin-top: 40px;
+  display: flex;
+
+  label {
+    flex: 1;
+    width: 50%;
+    font-size: 30px;
+    line-height: 32px;
+    color: #404D66;
+    position: relative;
+    padding-left: 45px;
+  }
+
+  .radio {
+    background: #fff;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #DFEAF8;
+    border-radius: 50%;
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    &::after {
+      background: #fff;
+      width: 16px;
+      height: 16px;
+      content: '';
+      border-radius: 50%;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%)
+    }
+
+  }
+
+  .check {
+    border: 2px solid #A5BEF8;
+    width: 29px;
+    height: 29px;
+
+    &::after {
+      background: #A5BEF8;
+    }
+  }
+
+}
+
+.inputctrl {
+  position: relative;
+  border-bottom: #dfeaf8 1px solid;
+  box-sizing: content-box;
+
+  .text {
+    width: 100%;
+    height: 30px;
+    // line-height: 84px;
+    font-size: 30px;
+    color: #404d66;
+    padding: 27px 0;
+  }
+
+  .text::-webkit-input-placeholder {
+    color: #afbed4;
+  }
+
+  .del {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    background: url('../assets/del.png') no-repeat center;
+    background-size: 100%;
+    margin-top: -15px;
+  }
+}
+
+.fillinfo {
+  margin-top: 55px;
+
+  dt {
+    font-size: 24px;
+    line-height: 1;
+    color: #a5bef8;
+    margin-top: 40px;
+    padding-left: 30px;
+    position: relative;
+
+    i {
+      border: 2px solid #DFEAF8;
+      width: 24px;
+      height: 24px;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0;
+      line-height: 0
+    }
+
+    .checked {
+      border-color: #A5BEF8;
+
+      &::after {
+        background: #A5BEF8;
+        content: '';
+        width: 16px;
+        height: 16px;
+        position: absolute;
+        left: 2px;
+        top: 2px;
+        overflow: hidden;
+      }
+    }
+  }
+}
+
+.subbuttonbox {
+  margin-top: 50px;
+
+  button {
+    background: #A5BEF8;
+    line-height: 110px;
+    padding: 0;
+    border: none;
+    color: #1E386F;
+    font-size: 36px;
+    text-align: center;
+    width: 100%;
+    border-radius: 55px;
+
+    &.disabled {
+      background: #AFBED4;
+      color: #404D66;
+    }
+  }
+}
+
+.gologin {
+  position: fixed;
+  width: 100%;
+  text-align: center;
+  left: 0;
+  bottom: 75px;
+  font-size: 28px;
+  line-height: 28px;
+  color: #899ab3;
+
+  i {
+    color: #a5bef8;
+  }
+}
+
+.verifytip {
+  margin: 30px 0 70px;
+  font-size: 28px;
+  color: #a5bef8;
+
+  em {
+    display: inline-block;
+    margin-left: 10px;
+    color: #404d66;
+  }
+}
+
+.verifycode .text {
+  font-size: 50px;
+  letter-spacing: 20px;
+}
+
+.sendTip {
+  font-size: 28px;
+  color: #899ab3;
+  margin-top: 30px;
+}
+
+.sendAgain {
+  font-size: 28px;
+  color: #3c8eff;
+  margin-top: 30px;
+}
+
+.password {
+  margin-top: 130px;
+
+  .hide {
+    width: 36px;
+    height: 18px;
+    background: url('../assets/hide.png') no-repeat center;
+    background-size: cover;
+  }
+
+  .show {
+    width: 36px;
+    height: 24px;
+    background: url('../assets/noHide.png') no-repeat center;
+    background-size: cover;
+  }
+}
+
+.regsuccess {
+  display: flex;
+  flex-direction: column;
+
+  .flexone {
+    flex: 1;
+
+    .bgbox {
+      background: url("../assets/succbg.jpg") no-repeat center bottom #A5BEF8;
+      background-size: 100% auto;
+      height: 100%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .textbox {
+      margin-bottom: 80px;
+      text-align: center;
+      color: #2E2F5A;
+      font-size: 40px;
+      line-height: 55px;
+
+      h4 {
+        font-size: 60px;
+        line-height: 1.1;
+        padding-bottom: 20px;
+      }
+    }
+  }
+
+  .flexsec {
+    padding: 90px;
+
+    button {
+      background: #A5BEF8;
+      border: 4px solid #A5BEF8;
+      width: 100%;
+      line-height: 100px;
+      font-size: 40px;
+      box-sizing: border-box;
+      text-align: center;
+      color: #2E2F5A;
+      padding: 0;
+      display: block;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, .2);
+      border-radius: 50px;
+    }
+
+    .holdon {
+      background: #fff;
+      color: #7AA0F5;
+      border-color: #A0BBF9;
+      margin-top: 40px;
+      box-shadow: none;
+    }
+  }
 }

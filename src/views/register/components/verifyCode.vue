@@ -1,127 +1,164 @@
 <template>
-  <div class="companyBox">
-    <dl>
-      <dd>
-        <span class="input">
-          <input type="text" class="inputTxt" placeholder="企业名称" v-model="companyItem.companyName" />
-        </span>
-      </dd>
-      <dd>
-        <span class="input">
-          <input type="text" class="inputTxt" placeholder="联系人姓名" v-model="companyItem.contact" />
-        </span>
-      </dd>
-      <dd>
-        <span class="input">
-          <input
-            type="number"
-            class="inputTxt"
-            maxlength="11"
-            placeholder="手机号码"
-            v-model="companyItem.contactTel"
-          />
-        </span>
-      </dd>
-      <dd class="areaBox">
-        <span class="selectbox">
-          <select
-            class="select"
-            :style="{color:!companyItem.provinceId ? '' :'#404d66'}"
-            v-model="companyItem.provinceId"
-            @change="selectProvince(companyItem.provinceId)"
-          >
-            <option value="0">企业所在省份</option>
-            <option
-              v-for="pro in provinceList"
-              :key="pro.provinceId"
-              :value="pro.provinceId"
-            >{{pro.provinceName}}</option>
-          </select>
-        </span>
-        <span class="selectbox">
-          <select
-            class="select"
-            v-model="companyItem.cityId"
-            :style="{color:!companyItem.cityId ? '' :'#404d66'}"
-          >
-            <option value="0">城市</option>
-            <option
-              v-for="city in cityList"
-              :key="city.cityId"
-              :value="city.cityId"
-            >{{city.cityName}}</option>
-          </select>
-        </span>
-      </dd>
-      <dd>
-        <select
-          class="select"
-          v-model="companyItem.qualificationId"
-          :style="{color:companyItem.qualificationId === 'NULL' ? '' :'#404d66'}"
-        >
-          <option
-            v-for="quality in qualificationList"
-            :key="quality.key"
-            :value="quality.key"
-          >{{quality.text}}</option>
-        </select>
-      </dd>
-      <dd class="uploadFile">
-        <div class="row">
-          <span @click="uploadImg">
-            <img :src="credentialImg" v-if="credentialImg" alt="营业执照" />
-            <em v-else>上传营业执照</em>
-          </span>
-        </div>
-      </dd>
-      <dd>
-        <span class="input">
-          <input
-            type="tel"
-            maxlength="11"
-            class="inputTxt"
-            placeholder="推荐人手机号码"
-            v-model="companyItem.recommendTel"
-          />
-        </span>
-      </dd>
-    </dl>
+  <div class="wrap">
+    <div class="tit">输入验证码</div>
+    <div class="verifytip">
+      <span>验证码已发送至</span>
+      <em>+86 {{phoneNum}}</em>
+    </div>
+    <div class="inputctrl verifycode">
+      <input
+        class="text"
+        ref="verifyVal"
+        type="number"
+        v-model="value"
+        v-on:input="butLight"
+        oninput="if(value.length > 6)value = value.slice(0, 6)"
+        onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))&&(/[^+-.*]/.test(event.key))"
+        @keyup="butLight"
+      />
+      <i class="del" v-show="clear" @click="clearNum"></i>
+    </div>
+    <div class="subbuttonbox">
+      <button :class="button?'button':'button disabled'" @click="verifyCodeBut">下一步</button>
+    </div>
+    <div :class="again?'sendAgain':'sendTip'" @click="sendAgain">
+      <p>
+        重新发送
+        <span v-show="!again">（{{time}}s）</span>
+      </p>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
+import { validataCode } from '@/fn/validateRules'
 import ViewBase from '@/util/ViewBase'
-import { handleUploadImage } from '@/util/native'
+import applicationStore, { setRequestId } from '../store'
+import { toast } from '@/util/toast'
+import { verifySmsCode, getSmsCode } from '@/api/theater'
+import { handleGoBack } from '@/util/native'
 
 @Component
 export default class VerifyCode extends ViewBase {
-  @Prop({ type: Object }) companyItem!: object
+  // @Prop({ type: String, default: '' }) phoneNum!: string
+  @Prop({ type: Boolean }) pageOn!: boolean
+  // @Prop({ type: Boolean }) resetPwd!: boolean
+  /** 进入下一页页面函数 */
+  @Prop({ type: Function }) changePage!: (id: number) => Promise<boolean>
 
-  provinceData: any = undefined // 所有城市数据
-  provinceList: any = [] // 省份列表
-  cityList: any = [] // 城市列表
-  qualificationList: any = [] // 企业类型列表
-  credentialImg = ''
+  value: any = ''
+  time: string = '60'
+  page: number = 2
+  clear: boolean = false
+  again: boolean = false
+  button: boolean = false
+  phoneNum: string = ''
 
-  /**
-   * 调取原生上传图片
-   */
-  async uploadImg() {
-    const obj = {
-      params: {
-        sourceType: 3, // 1从相册选取 2拍照上传 3都有
-        imageCount: 1 // 图片数量
-      },
-      callBackName: 'uploadImageCallBack' // 客户端回调JS方法
+  @Watch('pageOn', { deep: true }) // 进入页面开始倒计时
+  watchPageOn(val: boolean) {
+    if (val) {
+      this.phoneNum = applicationStore.state.userMobile
+      this.getInputFocus()
+      this.timeFunc()
     }
-    const result: any = await handleUploadImage(obj)
+  }
 
-    // 防止操作中途停止时报错
-    if (result) {
-      const resultJSON = JSON.parse(result)
-      this.credentialImg = resultJSON.data.imageList[0].url
-      this.$emit('credentialFileId', resultJSON.data.imageList[0].fileId)
+  @Watch('value', { deep: true })
+  watchValue(val: any) {
+    this.clear = !!val
+  }
+
+  // 让 input 获取焦点
+  getInputFocus() {
+    const vfocus: any = this.$refs.verifyVal
+    vfocus.focus()
+  }
+
+  clearNum() {
+    this.value = ''
+    this.button = false
+    this.getInputFocus()
+  }
+
+  butLight() {
+    this.button = !validataCode(this.value)
+  }
+
+  timeFunc() {
+    // 倒计时开始时，input 框就获取焦点
+    this.getInputFocus()
+    const init: any = '60'
+    let t: any = init
+    const timer: any = setInterval(() => {
+      if (t == 1) {
+        this.again = true // 重新发送显示
+        this.time = init // 显示时间重置
+        clearInterval(timer)
+      } else {
+        t = t - 1
+        this.time = t
+      }
+    }, 1000)
+  }
+
+  // 校验验证码
+  async verifyCodeBut() {
+    if (!this.button) {
+      return
+    } else {
+      try {
+        const res = await verifySmsCode({
+          phoneNum: this.phoneNum,
+          vcode: this.value,
+          requestType: 1, // 1=注册 2=修改密码
+          requestId: applicationStore.state.requestId
+        })
+        // 目前只区分注册和未注册
+        if (res.code == 0) {
+          setRequestId(res.data.requestId) // 更新store的值
+          this.changePage(2)
+        } else if (String(res.code).indexOf('900') > -1) {
+          // 900是api的errCode 留在此页 例如验证码错误
+          toast(res.msg)
+        } else if (String(res.code).indexOf('800') > -1) {
+          // 800是服务端的errCode，返回登录页 例如已注册过了
+          toast(res.msg)
+          setTimeout(async () => {
+            const obj = {
+              params: {
+                isCloseWindow: true,
+                refreshWindow: true
+              }
+            }
+            await handleGoBack(obj)
+          }, 1000)
+        }
+      } catch (ex) {
+        this.handleError(ex)
+      }
+    }
+  }
+
+  // 重新发送验证码
+  async sendAgain() {
+    if (!this.again) {
+      return
+    } else {
+      try {
+        const res = await getSmsCode({ phoneNum: this.phoneNum })
+        // 0 ===获取验证码成功
+        // 1 ===获取验证码失败
+        if (res.code == 0) {
+          this.again = false
+          this.timeFunc()
+          setRequestId(res.data.requestId) // 更新store的值
+        } else {
+          toast(res.msg)
+        }
+      } catch (ex) {
+        this.handleError(ex)
+      }
     }
   }
 }

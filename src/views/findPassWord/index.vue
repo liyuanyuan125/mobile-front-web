@@ -1,6 +1,6 @@
 <template>
-  <div class="apply">
-    <NumPage v-show="page1" :pageType="pageType" :changePage="changePage" @logNum="getNum" />
+  <div :class="pageType =='1' ? 'adver' : 'apply'">
+    <NumPage v-show="page1" :changePage="changePage" @logNum="getNum" />
     <CheckPage
       v-show="page2"
       :phoneNum="phoneNum"
@@ -30,11 +30,11 @@ export default class Apply extends Vue {
   page2 = false
   page3 = false
   phoneNum: string = ''
-  pageType: any = '' // 1=申请入驻 2=修改密码
+  pageType: any = '' // 1=广告主端 2=影院端   仅样式不一样
 
   mounted() {
     this.pageType = this.$route.query.type || '1'
-    document.title = this.pageType === '1' ? '申请入驻' : '找回密码'
+    document.title = '找回密码'
   }
 
   getNum(val: any) {
@@ -60,7 +60,8 @@ export default class Apply extends Vue {
 </script>
 
 <style lang="less" scoped>
-.apply {
+.apply,
+.adver {
   position: relative;
   padding: 100px 92px 0;
 }

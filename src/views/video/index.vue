@@ -1,0 +1,58 @@
+<template>
+  <div class="viewpage">
+    <StatusArea v-if="videoDetail.adStatusInfo" :statusInfo="videoDetail.adStatusInfo" />
+    <VideoInfoArea />
+    <SampleArea />
+    <PayInfoArea />
+    <BaseInfoArea />
+  </div>
+</template>
+
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+import StatusArea from './components/statusArea.vue'
+import VideoInfoArea from './components/videoInfoArea.vue'
+import SampleArea from './components/sampleArea.vue'
+import PayInfoArea from './components/payArea.vue'
+import BaseInfoArea from './components/baseInfoArea.vue'
+import { getVideoDetail } from '@/api/advertiser.ts'
+import { toast } from '@/util/toast'
+
+@Component({
+  components: {
+    StatusArea,
+    VideoInfoArea,
+    SampleArea,
+    PayInfoArea,
+    BaseInfoArea
+  }
+})
+export default class ResultReport extends Vue {
+  adId: string = ''
+  videoDetail: any = {}
+
+  beforeMount() {
+    const vid = this.$route.params.adId
+    this.adId = vid
+    this.getVideoDetail(vid)
+  }
+
+  // 获取报告详情 563、516、515、424 468
+  async getVideoDetail(adId: string) {
+    try {
+      const res: any = await getVideoDetail({ adId })
+      if (res.code === 0) {
+        this.videoDetail = res.data
+      } else {
+        toast(res.msg)
+      }
+    } catch (ex) {
+      toast(ex)
+    }
+  }
+}
+</script>
+
+<style lang="less" scoped>
+@import 'less/main.less';
+</style>

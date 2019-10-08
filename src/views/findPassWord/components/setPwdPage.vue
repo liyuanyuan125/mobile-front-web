@@ -1,6 +1,6 @@
 <template>
   <div class="num">
-    <div class="tit">{{pageType==='1' ? '设置登录密码' :'设置新密码' }}</div>
+    <div class="tit">设置新密码</div>
     <div class="password">
       <input
         class="text"
@@ -30,7 +30,6 @@ import { toast } from '@/util/toast'
 export default class SetPwdPage extends ViewBase {
   /** 进入下一页页面函数 */
   @Prop({ type: Function }) changePage!: (id: number) => Promise<boolean>
-  @Prop({ type: String, default: '1' }) pageType!: string
 
   page: number = 3
   password: any = ''
@@ -55,10 +54,6 @@ export default class SetPwdPage extends ViewBase {
   async confirmLogin() {
     if (!this.button) {
       return
-    } else if (this.pageType === '1') {
-      // 申请注册页
-      setPassword(this.password)
-      this.$router.push({ name: 'application' })
     } else {
       try {
         const res: any = await modifyPassWord({
@@ -76,6 +71,9 @@ export default class SetPwdPage extends ViewBase {
             }
           }
           await handleGoBack(obj)
+        } else {
+          toast('密码重置失败，请重试')
+          this.handleError(res.msg)
         }
       } catch (ex) {
         this.handleError(ex)

@@ -14,12 +14,6 @@
       <i class="del" v-show="clear" @click="clearNum"></i>
     </div>
     <button :class="button?'button':'button disabled'" @click="getVerifyCode">获取验证码</button>
-    <div class="numTip" v-show="pageType === '1'">
-      <p>
-        已有账号?
-        <span @click="goBackApp">立即登录</span>
-      </p>
-    </div>
   </div>
 </template>
 
@@ -35,7 +29,6 @@ import { handleGoBack } from '@/util/native'
 @Component
 export default class NumPage extends ViewBase {
   @Prop({ type: String, default: '' }) phoneNum!: string
-  @Prop({ type: String, default: '1' }) pageType!: string
 
   /** 进入下一页页面函数 */
   @Prop({ type: Function }) changePage!: (id: number) => Promise<boolean>
@@ -105,9 +98,9 @@ export default class NumPage extends ViewBase {
   text-align: right;
   p {
     font-size: 28px;
-    color: @tip-color;
+    color: #899ab3;
     span {
-      color: @but-color;
+      color: #3c8eff;
     }
   }
 }

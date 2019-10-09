@@ -22,6 +22,7 @@ export default class StatusArea extends ViewBase {
   @Prop({ type: Object }) statusInfo!: any
 
   statusTit = ''
+  statusDesc: string = ''
 
   mounted() {
     this.formatStatus()
@@ -36,18 +37,23 @@ export default class StatusArea extends ViewBase {
         break
       case 1:
         this.statusTit = '<i>2</i>待审批'
+        this.statusDesc = '平台审核广告中…'
         break
       case 2:
         this.statusTit = '待支付'
+        this.statusDesc = '平台审核广告中…'
         break
       case 3:
         this.statusTit = '待转码'
+        this.statusDesc = '平台审核广告中…'
         break
       case 4:
         this.statusTit = '<i>2</i>已完成'
+        this.statusDesc = '平台审核广告中…'
         break
       case 5:
         this.statusTit = '<i>3</i>未通过'
+        this.statusDesc = '平台审核广告中…'
         break
       case 6:
         this.statusTit = '已取消'

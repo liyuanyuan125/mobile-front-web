@@ -6,7 +6,7 @@
     </div>
     <h3 v-if="userGender">性别占比</h3>
     <div class="usergender">
-      <PieGraph :dataOption="userGender" />
+      <PieGraph :dataOption="userGenderData" />
     </div>
   </div>
 </template>
@@ -27,11 +27,12 @@ export default class DataUserStatus extends ViewBase {
   @Prop({ type: Array }) userAges!: any
   @Prop({ type: Array }) userGender!: any
 
-  userAgesData: any = []
-  userGenderLegend: any = []
+  userAgesData: any = {}
+  userGenderData: any = {}
 
   created() {
     this.formatAgesData()
+    this.formatGenderLegend()
   }
 
   // 处理年龄数据
@@ -45,6 +46,30 @@ export default class DataUserStatus extends ViewBase {
     this.userAgesData = {
       xData,
       yData
+    }
+  }
+
+  // 处理年龄legend数据
+  formatGenderLegend() {
+    const legendData = []
+    for (const item of this.userGender) {
+      legendData.push({
+        name: item.name,
+        icon: 'circle',
+        textStyle: {
+          color: '#8798AF',
+          fontSize: 16
+        }
+      })
+    }
+    this.userGenderData = {
+      data: this.userGender,
+      legendData,
+      legendX: 'right',
+      legendY: 'middle',
+      orient: 'vertical',
+      size: ['40%', '65%'],
+      position: ['35%', '50%']
     }
   }
 }

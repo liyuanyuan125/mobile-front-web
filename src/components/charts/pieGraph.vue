@@ -10,35 +10,18 @@ import ViewBase from '@/util/ViewBase'
 import echarts from 'echarts'
 import { find } from 'lodash'
 import { tooltipStyles } from '@/util/echarts'
-const defaultColor: any = ['#85B9FF', '#9FDECF', '#FFCB84', '#FF8080', '#dddeef']
+const defaultColor: any = ['#85B9FF', '#FF8080', '#9FDECF', '#FFCB84', '#dddeef']
 
 @Component({
   components: {}
 })
 // 基础面积图
 export default class PieGraph extends ViewBase {
-  @Prop({ type: Array }) genderOption!: any
+  @Prop({ type: Object }) dataOption!: any
   @Prop({ type: Array, default: () => defaultColor }) bgColor: any
 
-  // chart数据
-  chartData: any = {
-    xData: [],
-    yData: []
-  }
   mounted() {
-    this.formatChartData()
     this.updateCharts()
-  }
-
-  // 格式化数据
-  formatChartData() {
-    const xData = []
-    const yData = []
-    for (const item of this.genderOption) {
-      this.chartData.xData.push(item.name)
-      this.chartData.yData.push(item.value)
-    }
-    // console.log(this.bgColor)
   }
 
   // 接口没调
@@ -49,14 +32,21 @@ export default class PieGraph extends ViewBase {
     const myChart = echarts.init(chartEl)
     const option: any = {
       tooltip: {
-        trigger: 'item',
-        formatter: '{a} <br/>{b}: {c} ({d}%)'
+        show: false
+        // trigger: 'item',
+        // formatter: '{a} <br/>{b}: {c} ({d}%)'
       },
       legend: {
-        orient: 'vertical',
-        x: 'right',
-        y: 'middle',
-        data: this.chartData.xData
+        orient: this.dataOption.orient, // 方向 横或竖
+        x: this.dataOption.legendX, // 位置
+        y: this.dataOption.legendY,
+        data: this.dataOption.legendData,
+        itemWidth: 8,
+        itemGap: 15, // 图例之间的距离
+        align: 'left', // 图例对齐方向
+        left: '63%',
+        selectedMode: false, // 图例选择的模式，控制是否可以通过点击图例改变系列的显示状态
+        formatter: (name: string) => this.handleLegendLayout(name)
       },
       grid: {
         left: '15px',
@@ -68,15 +58,45 @@ export default class PieGraph extends ViewBase {
       series: [
         {
           type: 'pie',
-          hoverOffset: 5,
-          center: ['40%', '50%'],
-          radius: ['45%', '80%'],
-          data: this.genderOption
+          selectedOffset: 3,
+          label: {
+            show: false
+          },
+          // markPoint: {
+          //   emphasis: {
+          //     itemStyle: {
+          //       opacity: 1
+          //     }
+          //   }
+          // },
+
+          center: this.dataOption.position,
+          radius: this.dataOption.size,
+          data: this.dataOption.data
         }
       ]
     }
     // console.save(option, `${new Date()}.json`)
     myChart.setOption(option)
+  }
+
+  // 处理legend显示格式
+  handleLegendLayout(name: string) {
+    const nameArr = []
+    const dataArr = []
+    for (const item of this.dataOption.data) {
+      nameArr.push(item.name)
+      dataArr.push(item.value)
+    }
+    let index = 0
+    const labels = nameArr
+    const counts = dataArr
+    labels.forEach((value, i) => {
+      if (value == name) {
+        index = i
+      }
+    })
+    return name + ' ' + counts[index] + '%'
   }
 }
 </script>

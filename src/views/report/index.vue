@@ -58,9 +58,9 @@ export default class ResultReport extends Vue {
   }
 
   // 获取报告详情 563、516、515、424
-  async getReportDetail(orderID: string) {
+  async getReportDetail(orderId: string) {
     try {
-      const res: any = await getReportDetail({ orderID })
+      const res: any = await getReportDetail({ orderId })
       if (res.code === 0) {
         this.orderDetail = res.data
       } else {

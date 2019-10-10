@@ -2,37 +2,59 @@
   <div>
     <div class="putprogress">
       <!-- <button class="addbudget">追加费用</button> -->
-      <dl>
-        <dt>总金额 ￥{{progress.totalAmount}} {{progress.totalAmountUnit}}</dt>
+      <dl ref="progress">
+        <dt>
+          总金额
+          <strong>￥{{progress.totalAmount}}</strong>
+          {{progress.totalAmountUnit}}
+        </dt>
         <dd>
           <div class="progress expend">
             <span>
-              <b style=" width:40%"></b>
+              <b :style="{width:progress.paidAmountPercent+'%'}"></b>
             </span>
-            <em>已支出 ￥{{progress.paidAmount}} {{progress.paidAmountUnit}}</em>
+            <em ref="paidAmount">
+              已支出
+              <strong>￥{{progress.paidAmount}}</strong>
+              {{progress.paidAmountUnit}}
+            </em>
           </div>
         </dd>
-        <dt>总曝光人次 {{progress.totalViewCount}} {{progress.totalViewCountUnit}}</dt>
+        <dt>
+          总曝光人次
+          <strong>{{progress.totalViewCount}}</strong>
+          {{progress.totalViewCountUnit}}
+        </dt>
         <dd>
           <div class="progress exposure">
             <span>
-              <b style="width:70%"></b>
+              <b :style="{width:progress.viewCountPercent+'%'}"></b>
             </span>
-            <em>已曝光人次 {{progress.viewCount}}{{progress.viewCountUnit}}</em>
+            <em ref="viewCount">
+              已曝光人次
+              <strong>{{progress.viewCount}}</strong>
+              {{progress.viewCountUnit}}
+            </em>
           </div>
         </dd>
         <dt>
           <div class="col">
-            <b>投放开始时间 {{progress.putStartDate}}</b>
+            <b>
+              投放开始时间
+              <strong>{{progress.putStartDate}}</strong>
+            </b>
             <span>预估结束时间 {{progress.putEndDate}}</span>
           </div>
         </dt>
         <dd>
           <div class="progress puted">
             <span>
-              <b style="width:20%"></b>
+              <b :style="{width:progress.putDaysPercent+'%'}"></b>
             </span>
-            <em>已投放{{progress.putDays}}天</em>
+            <em ref="putDays">
+              已投放
+              <strong>{{progress.putDays}}</strong>天
+            </em>
           </div>
         </dd>
       </dl>
@@ -43,19 +65,19 @@
           <p>
             <b>{{progress.viewCount}}</b>
           </p>
-          <p class="desc">已曝光人次 {{progress.viewCountUnit ? `（${progress.viewCountUnit}）` : ''}}</p>
+          <p class="desc">已曝光人次{{progress.viewCountUnit ? `(${progress.viewCountUnit})` : ''}}</p>
         </dd>
         <dd>
           <p>
             <b>{{progress.viewScene}}</b>
           </p>
-          <p class="desc">已曝光场次 {{progress.viewSceneUnit ? `（${progress.viewSceneUnit}）` : ''}}</p>
+          <p class="desc">已曝光场次{{progress.viewSceneUnit ? `(${progress.viewSceneUnit})` : ''}}</p>
         </dd>
         <dd>
           <p>
             <b>{{progress.paidAmount}}</b>
           </p>
-          <p class="desc">已支出金额 {{progress.paidAmountUnit ? `（${progress.paidAmountUnit}）` : ''}}</p>
+          <p class="desc">已支出金额{{progress.paidAmountUnit ? `(${progress.paidAmountUnit})` : ''}}</p>
         </dd>
       </dl>
     </div>
@@ -73,7 +95,54 @@ export default class PutProgress extends ViewBase {
   @Prop({ type: Object }) progress!: any
 
   mounted() {
-    // todo
+    const progress: any = this.$refs.progress
+    const proWidth = progress.clientWidth
+    this.getPaidPer(proWidth)
+    this.getViewPersonPer(proWidth)
+    this.getPutDaysPer(proWidth)
+  }
+
+  // 计算已支出标签的位置
+  getPaidPer(width: number) {
+    const paidAmount: any = this.$refs.paidAmount
+    const wid = paidAmount.clientWidth
+    const widPer = (wid / width) * 100
+    const apiWid = this.progress.paidAmountPercent
+    // 标签内容不固定，动态获取标签的宽度，再算出百分比，
+    // 和API返回的比较，动态获取的大就为0，API返回的大用API的
+    if (widPer > apiWid) {
+      paidAmount.style.left = 0
+    } else {
+      paidAmount.style.right = 100 - apiWid + '%'
+    }
+  }
+
+  // 计算已曝光标签的位置
+  getViewPersonPer(width: number) {
+    const viewCount: any = this.$refs.viewCount
+    const wid = viewCount.clientWidth
+    const widPer = (wid / width) * 100
+    const apiWid = this.progress.viewCountPercent
+    // 标签内容不固定，动态获取标签的宽度，和API返回的比较，动态获取的大就为0，API返回的大用API的
+    if (widPer > apiWid) {
+      viewCount.style.left = 0
+    } else {
+      viewCount.style.right = 100 - apiWid + '%'
+    }
+  }
+
+  // 计算已曝光天数标签的位置
+  getPutDaysPer(width: number) {
+    const putDays: any = this.$refs.putDays
+    const wid = putDays.clientWidth
+    const widPer = (wid / width) * 100
+    const apiWid = this.progress.putDaysPercent
+    // 标签内容不固定，动态获取标签的宽度，和API返回的比较，动态获取的大就为0，API返回的大用API的
+    if (widPer > apiWid) {
+      putDays.style.left = 0
+    } else {
+      putDays.style.right = 100 - apiWid + '%'
+    }
   }
 }
 </script>

@@ -8,33 +8,16 @@
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import echarts from 'echarts'
-import { find } from 'lodash'
 
 @Component({
   components: {}
 })
 // 横向柱状图
 export default class BarGraphRow extends ViewBase {
-  @Prop({ type: Array }) dataOption!: any
+  @Prop({ type: Object }) dataOption!: any
 
-  // chart数据
-  chartData: any = {
-    xData: [],
-    yData: []
-  }
   mounted() {
-    this.formatChartData()
     this.updateCharts()
-  }
-
-  // 格式化数据
-  formatChartData() {
-    const xData = []
-    const yData = []
-    for (const item of this.dataOption) {
-      this.chartData.xData.push(item.value)
-      this.chartData.yData.push(item.cityName)
-    }
   }
 
   // 画图
@@ -51,7 +34,7 @@ export default class BarGraphRow extends ViewBase {
 
       yAxis: {
         type: 'category',
-        data: this.chartData.yData,
+        data: this.dataOption.yData,
         inverse: true, // 是否反向 有点搞不明白,false就是从小到大排序
         silent: true,
         axisLabel: {
@@ -84,7 +67,7 @@ export default class BarGraphRow extends ViewBase {
 
       series: [
         {
-          data: this.chartData.xData,
+          data: this.dataOption.xData,
           type: 'bar',
           barGap: '50%',
           barCategoryGap: '50%',
@@ -101,18 +84,7 @@ export default class BarGraphRow extends ViewBase {
           },
           itemStyle: {
             color: (params: any) => {
-              const colorList: any = [
-                '#FF8080',
-                '#FFCB84',
-                '#9FDECF',
-                '#D9E0E9',
-                '#D9E0E9',
-                '#D9E0E9',
-                '#D9E0E9',
-                '#D9E0E9',
-                '#D9E0E9',
-                '#D9E0E9'
-              ]
+              const colorList: any = ['#FF8080', '#FFCB84', '#9FDECF', '#D9E0E9']
               return colorList[params.dataIndex]
             }
             // opacity: 0.4

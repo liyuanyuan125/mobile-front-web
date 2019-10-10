@@ -10,14 +10,14 @@
       </li>
     </ul>
     <div class="chartbox">
-      <div :style="{opacity:buttonIndex == 1 ? 1 :0}">
-        <AreaBasic :dataOption="dataTrend.showCost" :key="1" />
+      <div :style="{opacity:showCost,zIndex:showCost}">
+        <LineGraph :dataOption="showCostData" />
       </div>
-      <div :style="{opacity:buttonIndex == 2 ? 1 :0}">
-        <AreaBasic :dataOption="dataTrend.showPerson" :key="2" />
+      <div :style="{opacity:showPerson,zIndex:showPerson}">
+        <LineGraph :dataOption="showPersonData" />
       </div>
-      <div :style="{opacity:buttonIndex == 3 ? 1 :0}">
-        <AreaBasic :dataOption="dataTrend.showScene" :key="3" />
+      <div :style="{opacity:showScene,zIndex:showScene}">
+        <LineGraph :dataOption="showSceneData" />
       </div>
     </div>
   </div>
@@ -26,11 +26,11 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
-import AreaBasic from '../echarts/dataTrend.vue'
+import LineGraph from '@/components/charts/lineGraph.vue'
 
 @Component({
   components: {
-    AreaBasic
+    LineGraph
   }
 })
 export default class DataTrend extends ViewBase {
@@ -50,11 +50,77 @@ export default class DataTrend extends ViewBase {
       id: 3
     }
   ]
+  // button切换签
   buttonIndex: number = 1
+  // 控制相应的chart显示
+  showCost: number = 1
+  showPerson: number = 0
+  showScene: number = 0
+  // 处理相应的数据
+  showCostData: any = {}
+  showPersonData: any = {}
+  showSceneData: any = {}
+
+  created() {
+    this.formatCostData()
+    this.formatPersonData()
+    this.formatSceneData()
+  }
+  // 处理金额支出
+  formatCostData() {
+    const xData = []
+    const yData = []
+    for (const item of this.dataTrend.showCost.data) {
+      xData.push(item.date)
+      yData.push(item.value)
+    }
+    this.showCostData = {
+      xData,
+      yData,
+      title: '支出金额',
+      unit: this.dataTrend.showCost.dataUnit,
+      type: 1
+    }
+  }
+  // 处理曝光人次
+  formatPersonData() {
+    const xData = []
+    const yData = []
+    for (const item of this.dataTrend.showPerson.data) {
+      xData.push(item.date)
+      yData.push(item.value)
+    }
+    this.showPersonData = {
+      xData,
+      yData,
+      title: '曝光人次',
+      unit: this.dataTrend.showPerson.dataUnit,
+      type: 2
+    }
+  }
+  // 处理曝光场次
+  formatSceneData() {
+    const xData = []
+    const yData = []
+    for (const item of this.dataTrend.showScene.data) {
+      xData.push(item.date)
+      yData.push(item.value)
+    }
+    this.showSceneData = {
+      xData,
+      yData,
+      title: '曝光场次',
+      unit: this.dataTrend.showScene.dataUnit,
+      type: 3
+    }
+  }
 
   changeIndex(event: any) {
     const ind = event.target.dataset.index
     this.buttonIndex = Number(ind)
+    this.showCost = ind == '1' ? 1 : 0
+    this.showPerson = ind == '2' ? 1 : 0
+    this.showScene = ind == '3' ? 1 : 0
   }
 }
 </script>

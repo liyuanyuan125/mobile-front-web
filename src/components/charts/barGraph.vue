@@ -8,33 +8,16 @@
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import echarts from 'echarts'
-import { find } from 'lodash'
 
 @Component({
   components: {}
 })
-// 基础面积图
-export default class UserAge extends ViewBase {
-  @Prop({ type: Array }) ageOption!: any
+// 普通柱状图
+export default class BarGraph extends ViewBase {
+  @Prop({ type: Object }) dataOption!: any
 
-  // chart数据
-  chartData: any = {
-    xData: [],
-    yData: []
-  }
   mounted() {
-    this.formatChartData()
     this.updateCharts()
-  }
-
-  // 格式化数据
-  formatChartData() {
-    const xData = []
-    const yData = []
-    for (const item of this.ageOption) {
-      this.chartData.xData.push(item.range)
-      this.chartData.yData.push(item.value)
-    }
   }
 
   // 画图
@@ -44,10 +27,32 @@ export default class UserAge extends ViewBase {
     chartEl.innerHTML = ''
     const myChart = echarts.init(chartEl)
     const option: any = {
+      tooltip: {
+        show: true,
+        trigger: 'axis',
+        confine: true, // 限制在图表的区域内
+        // 去掉指示线
+        axisPointer: {
+          type: 'none'
+        },
+        backgroundColor: '#fff',
+        padding: [6, 15],
+        formatter:
+          // tslint:disable-next-line:max-line-length
+          '<p style="font-size:26px;line-height:1.1"><span style="display:inline-block;margin-right:6px;border-radius:10px;width:10px;height:10px;background-color:#7AA0F5; vertical-align:middle"></span>{c}%</p><p style="color:#8798AF;font-size:14px; margin-left:16px;">{b}</p>',
+        textStyle: {
+          fontSize: '14px',
+          color: '#2E2F5A'
+        },
+        extraCssText:
+          'box-shadow: 0 2px 10px rgba(212, 212, 212, 0.5);border-radius:8px'
+      },
+
       xAxis: {
         type: 'category',
-        data: this.chartData.xData,
+        data: this.dataOption.xData,
         axisLabel: {
+          interval: 0,
           textStyle: {
             color: '#8798AF',
             fontSize: '20px'
@@ -55,7 +60,7 @@ export default class UserAge extends ViewBase {
         },
         axisLine: {
           lineStyle: {
-            color: 'rgba(151, 167, 195, 0.45)'
+            color: '#D0D7E4'
           }
         },
         axisTick: {
@@ -100,16 +105,10 @@ export default class UserAge extends ViewBase {
 
       series: [
         {
-          data: this.chartData.yData,
+          data: this.dataOption.yData,
           type: 'bar',
           smooth: true,
           // legendHoverLink: true,
-          label: {
-            normal: {
-              show: false,
-              position: 'outside'
-            }
-          },
           itemStyle: {
             color: '#7AA0F5',
             opacity: 0.4

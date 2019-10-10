@@ -2,11 +2,11 @@
   <div class="userStatus">
     <h3 v-if="userAges">年龄占比</h3>
     <div class="userage">
-      <UserAge v-if="userAges" :ageOption="userAges" />
+      <BarGraph :dataOption="userAgesData" />
     </div>
     <h3 v-if="userGender">性别占比</h3>
     <div class="usergender">
-      <UserGender v-if="userGender" :genderOption="userGender" :bgColor="bgColor" />
+      <PieGraph :dataOption="userGenderData" />
     </div>
   </div>
 </template>
@@ -14,22 +14,64 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
-import UserAge from '../echarts/userAge.vue'
-import UserGender from '../echarts/userGender.vue'
+import BarGraph from '@/components/charts/barGraph.vue'
+import PieGraph from '@/components/charts/pieGraph.vue'
 
 @Component({
   components: {
-    UserAge,
-    UserGender
+    BarGraph,
+    PieGraph
   }
 })
 export default class DataUserStatus extends ViewBase {
   @Prop({ type: Array }) userAges!: any
   @Prop({ type: Array }) userGender!: any
-  bgColor: any = ['#85B9FF', '#FF8080']
-  // mounted() {
-  //   console.log(this.userAges, this.userGender)
-  // }
+
+  userAgesData: any = {}
+  userGenderData: any = {}
+
+  created() {
+    this.formatAgesData()
+    this.formatGenderLegend()
+  }
+
+  // 处理年龄数据
+  formatAgesData() {
+    const xData = []
+    const yData = []
+    for (const item of this.userAges) {
+      xData.push(item.range)
+      yData.push(item.value)
+    }
+    this.userAgesData = {
+      xData,
+      yData
+    }
+  }
+
+  // 处理年龄legend数据
+  formatGenderLegend() {
+    const legendData = []
+    for (const item of this.userGender) {
+      legendData.push({
+        name: item.name,
+        icon: 'circle',
+        textStyle: {
+          color: '#8798AF',
+          fontSize: 16
+        }
+      })
+    }
+    this.userGenderData = {
+      data: this.userGender,
+      legendData,
+      legendX: 'right',
+      legendY: 'middle',
+      orient: 'vertical',
+      size: ['40%', '65%'],
+      position: ['35%', '50%']
+    }
+  }
 }
 </script>
 

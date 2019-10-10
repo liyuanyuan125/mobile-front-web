@@ -61,6 +61,7 @@ export default class ResultReport extends Vue {
     const reportId = this.$route.params.orderId
     this.orderId = reportId
     this.getReportDetail(reportId)
+    document.body.style.background = '#FBFBFB'
   }
 
   // 获取报告详情 563、516、515、424

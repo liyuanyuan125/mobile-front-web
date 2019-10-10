@@ -60,6 +60,10 @@
       </dl>
     </div>
     <div class="statistics">
+      <div class="tit">
+        <h3>曝光明细</h3>
+        <span title="查看" @click="goList"></span>
+      </div>
       <dl>
         <dd>
           <p>
@@ -87,12 +91,14 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
+import { openAppLinkClient } from '@/util/native'
 
 @Component({
   components: {}
 })
 export default class PutProgress extends ViewBase {
   @Prop({ type: Object }) progress!: any
+  @Prop({ type: String }) orderId!: string
 
   mounted() {
     const progress: any = this.$refs.progress
@@ -143,6 +149,18 @@ export default class PutProgress extends ViewBase {
     } else {
       putDays.style.right = 100 - apiWid + '%'
     }
+  }
+
+  // 去往列表页
+  async goList(page: string) {
+    const applink = 'reportRelateDateList'
+    const objectData = {
+      applinkData:
+        'jydataadvertiser://scheme?p=' + applink + '&orderId=' + this.orderId,
+      originUrl: location.href
+    }
+    const obj = { params: objectData }
+    await openAppLinkClient(obj)
   }
 }
 </script>

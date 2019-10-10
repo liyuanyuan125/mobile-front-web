@@ -5,9 +5,19 @@
     <div class="userage">
       <BarGraph :dataOption="userAgesData" />
     </div>
-    <h4>性别占比</h4>
-    <div class="usergender">
-      <PieGraph :dataOption="userGenderData" />
+    <div class="col">
+      <div>
+        <h4>性别占比</h4>
+        <div class="usergender">
+          <PieGraph :dataOption="userGenderData" />
+        </div>
+      </div>
+      <div>
+        <h4>婚恋状态</h4>
+        <div class="usergender">
+          <PieGraph :dataOption="userGenderData" />
+        </div>
+      </div>
     </div>
     <h4>消费偏好</h4>
     <div class="usergender">

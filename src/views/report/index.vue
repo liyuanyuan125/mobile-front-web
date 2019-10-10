@@ -3,12 +3,17 @@
     <div class="viewer">
       <TopBar />
       <PlanInfo :planInfo="orderDetail.planInfo" v-if="orderDetail.planInfo" />
-      <PutProgress :progress="orderDetail.reportCount" v-if="orderDetail.reportCount" />
+      <PutProgress
+        :progress="orderDetail.reportCount"
+        v-if="orderDetail.reportCount"
+        :orderId="this.orderId"
+      />
       <DataTrend :dataTrend="orderDetail.dataTrend" v-if="orderDetail.dataTrend" />
       <DataTotal
         :cinemaCount="orderDetail.planInfo.coverCinemaCount"
         :movieCount="orderDetail.planInfo.coverMovieCount"
         v-if="orderDetail.planInfo"
+        :orderId="this.orderId"
       />
       <DataUserStatus
         :userAges="orderDetail.userAges"
@@ -19,6 +24,7 @@
         :cityTier="orderDetail.cityTier"
         :cityProfile="orderDetail.cityProfile"
         v-if="orderDetail.cityTier || orderDetail.cityProfile"
+        :orderId="this.orderId"
       />
     </div>
   </div>

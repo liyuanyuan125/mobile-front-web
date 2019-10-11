@@ -10,7 +10,7 @@ export async function getReportDetail(query: any) {
 }
 
 /**
- * 获取广告详情页
+ * 获取广告片详情页
  * @param query  object
  */
 export async function getVideoDetail(query: any) {
@@ -19,11 +19,20 @@ export async function getVideoDetail(query: any) {
 }
 
 /**
- * 找回密码时重新设置密码
+ * 获取电影详情页
  * @param query  object
  */
-export async function modifyPassWord(query: any) {
-    const res = await post('/customer/accounts/change_password', query)
+export async function getMovieDetail(query: any) {
+    const res = await get('/movie/detail', query)
+    return res
+}
+
+/**
+ * 获取影院详情页
+ * @param query  object
+ */
+export async function getCinemaDetail(query: any) {
+    const res = await get('/cinema/detail', query)
     return res
 }
 

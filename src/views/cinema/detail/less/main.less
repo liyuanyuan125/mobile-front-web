@@ -23,21 +23,39 @@
 // 影院信息
 .cinemainfo {
     margin: 10px 30px 0;
+    position: relative;
+    padding-right: 110px;
+
+    .location {
+        background: url("../assets/location.png") no-repeat 0 0;
+        background-size: 100%;
+        width: 80px;
+        height: 80px;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        margin-top: -40px;
+    }
 
     h2 {
         font-size: 36px;
         line-height: 50px;
         font-weight: normal;
     }
+
+    .address {
+        margin-top: 12px;
+        line-height: 37px;
+    }
 }
 
-// boxoffice
-.boxoffice {
+// 数据统计
+.cinemadata {
     background: #fff;
     border-radius: 20px;
     margin: 30px 30px 0;
     padding: 38px 0;
-    box-shadow: 0 0 20px rgba(18, 92, 164, .1);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, .1);
 
     dl {
         display: flex;
@@ -56,10 +74,10 @@
         }
 
         .desc {
-            font-size: 24px;
-            line-height: 33px;
+            font-size: 26px;
+            line-height: 37px;
             color: #8798AF;
-            margin-top: 13px;
+            margin-top: 7px;
         }
 
         &::after {
@@ -77,4 +95,48 @@
             display: none;
         }
     }
+}
+
+// 用户画像
+.portrait {
+    background: #fff;
+    margin: 30px 30px 0;
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 2px 20px rgba(216, 216, 216, .4);
+
+    h3 {
+        font-size: 36px;
+        line-height: 50px;
+        padding-bottom: 10px;
+    }
+
+    h4 {
+        font-size: 30px;
+        line-height: 42px;
+    }
+
+    .userage,
+    .usergender {
+        margin-top: 30px;
+    }
+
+    .userage {
+        padding-bottom: 50px;
+    }
+
+    .col {
+        display: flex;
+
+        >div {
+            flex: 1;
+            width: 50%;
+        }
+    }
+}
+
+// 加入投放
+.joinplan {
+    // fd
+    position: relative;
 }

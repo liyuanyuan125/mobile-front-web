@@ -37,10 +37,10 @@ export default class ResultReport extends Vue {
     this.getVideoDetail(vid)
   }
 
-  // 获取报告详情 563、516、515、424 468
-  async getVideoDetail(adId: string) {
+  // 获取报告详情  468
+  async getVideoDetail(adVideoId: string) {
     try {
-      const res: any = await getVideoDetail({ adId })
+      const res: any = await getVideoDetail({ adVideoId })
       if (res.code === 0) {
         this.videoDetail = res.data
       } else {

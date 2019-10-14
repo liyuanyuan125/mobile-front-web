@@ -1,7 +1,7 @@
 <template>
-  <div class="viewpage">
-    <StatusArea v-if="videoDetail.adStatusInfo" :statusInfo="videoDetail.adStatusInfo" />
-    <VideoInfoArea />
+  <div class="viewpage" v-if="videoDetail">
+    <StatusArea :statusInfo="videoDetail.adVideoStatusInfo" />
+    <VideoInfoArea :videoInfo="videoDetail.videoInfo" />
     <SampleArea />
     <PayInfoArea />
     <BaseInfoArea />
@@ -29,7 +29,7 @@ import { toast } from '@/util/toast'
 })
 export default class ResultReport extends Vue {
   adId: string = ''
-  videoDetail: any = {}
+  videoDetail: any = null
 
   beforeMount() {
     const vid = this.$route.params.adId

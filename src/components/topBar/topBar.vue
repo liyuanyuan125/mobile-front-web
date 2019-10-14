@@ -45,7 +45,6 @@ export default class TopBar extends Vue {
     height: 22px;
     border-left: 4px solid #fff;
     border-bottom: 4px solid #fff;
-    // transform: ;
     position: absolute;
     left: 50%;
     top: 50%;

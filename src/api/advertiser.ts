@@ -14,7 +14,7 @@ export async function getReportDetail(query: any) {
  * @param query  object
  */
 export async function getVideoDetail(query: any) {
-    const res = await get('/xadvert/videos/info', query)
+    const res = await get('/xadvert/video/info', query)
     return res
 }
 
@@ -44,4 +44,3 @@ export async function submitApplicationInfo(query: any) {
     const res = await post('/customer/accounts/register', query)
     return res
 }
-

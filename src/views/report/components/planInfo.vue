@@ -1,7 +1,8 @@
 <template>
   <div class="userinfo">
     <div class="userbox">
-      <img :src="companyLogo" alt="用户名称" class="img" />
+      <img v-if="companyLogo" :src="companyLogo" alt="公司名称" class="img" />
+      <img v-if="!companyLogo" src="@/assets/logo.png" alt="公司名称" class="img" />
       <h3>{{planInfo.planName}}</h3>
       <p>{{planInfo.videoName}} | {{planInfo.videoLength}}</p>
     </div>
@@ -22,7 +23,7 @@ export default class BaseInfo extends ViewBase {
 
   mounted() {
     const url = this.planInfo.companyLogo.url
-    this.companyLogo = url ? url : '@/assets/logon.png'
+    this.companyLogo = url
   }
 }
 </script>

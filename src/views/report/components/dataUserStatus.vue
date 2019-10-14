@@ -65,6 +65,7 @@ export default class DataUserStatus extends ViewBase {
     this.userGenderData = {
       data: this.userGender,
       legendData,
+      legendLeft: '63%',
       legendX: 'right',
       legendY: 'middle',
       orient: 'vertical',

@@ -21,6 +21,7 @@ export default class PieGraph extends ViewBase {
   @Prop({ type: Array, default: () => defaultColor }) bgColor: any
 
   mounted() {
+    console.log('this.dataOption', this.dataOption)
     this.updateCharts()
   }
 
@@ -44,7 +45,7 @@ export default class PieGraph extends ViewBase {
         itemWidth: 8,
         itemGap: 15, // 图例之间的距离
         align: 'left', // 图例对齐方向
-        left: '63%',
+        left: this.dataOption.legendLeft,
         selectedMode: false, // 图例选择的模式，控制是否可以通过点击图例改变系列的显示状态
         formatter: (name: string) => this.handleLegendLayout(name)
       },

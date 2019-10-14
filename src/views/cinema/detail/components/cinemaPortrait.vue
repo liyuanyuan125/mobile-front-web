@@ -22,7 +22,7 @@
     <h4>消费偏好</h4>
     <div class="usergender">
       <BarGraphRow :dataOption="userPerferData" />
-      <p>{{portrait.consumePerfer.desc}}</p>
+      <p class="perferdesc">{{portrait.consumePerfer.desc}}</p>
     </div>
   </div>
 </template>
@@ -68,17 +68,17 @@ export default class CinemaPortrait extends ViewBase {
     }
   }
 
-  // 处理年龄legend数据
+  // 处理性别数据
   formatGenderLegend() {
     const legendData = []
-    const userGender = []
+    const userGenderObj = []
     for (const item of this.portrait.userGender) {
-      userGender.push({
+      userGenderObj.push({
         name: item.type,
         value: item.value
       })
       legendData.push({
-        name: item.name,
+        name: item.type,
         icon: 'circle',
         textStyle: {
           color: '#8798AF',
@@ -87,17 +87,18 @@ export default class CinemaPortrait extends ViewBase {
       })
     }
     this.userGenderData = {
-      data: userGender,
+      data: userGenderObj,
       legendData,
-      legendX: 'right',
-      legendY: 'middle',
-      orient: 'vertical',
+      legendX: 'center',
+      legendY: 'bottom',
+      legendLeft: 0,
+      orient: 'horizontal',
       size: ['40%', '65%'],
-      position: ['35%', '50%']
+      position: ['50%', '50%']
     }
   }
 
-  // 处理一下城市线数据
+  // 处理消费偏好的数据
   formatPerferData() {
     const xData = []
     const yData = []

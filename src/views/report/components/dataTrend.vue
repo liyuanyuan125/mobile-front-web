@@ -79,7 +79,7 @@ export default class DataTrend extends ViewBase {
       yData,
       title: '支出金额',
       unit: this.dataTrend.showCost.dataUnit,
-      type: 1
+      type: 1 // 区分是否是金额还是人次 1是钱 2是人
     }
   }
   // 处理曝光人次

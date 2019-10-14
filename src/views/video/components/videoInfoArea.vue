@@ -2,18 +2,10 @@
   <!--广告片信息 -->
   <div class="videoinfo">
     <dl>
-      <dt>2019款Wey Beta ONE的新车发布影院广告</dt>
-      <dd>
-        <i>广告规格</i>
-        <em>01: 30</em>
-      </dd>
-      <dd>
-        <i>广告规格</i>
-        <em>www.anyoneyunpan.com</em>
-      </dd>
-      <dd>
-        <i>广告规格</i>
-        <em>01: 30</em>
+      <dt>{{videoInfo.adName}}</dt>
+      <dd v-for="item in videoInfo.AttributeList" :key="item.keyName" v-show="item.value">
+        <i>{{item.keyName}}</i>
+        <em>{{keyName.value}}</em>
       </dd>
     </dl>
   </div>
@@ -27,7 +19,7 @@ import ViewBase from '@/util/ViewBase'
   components: {}
 })
 export default class VideoInfoArea extends ViewBase {
-  @Prop({ type: Object }) progress!: any
+  @Prop({ type: Object }) videoInfo!: any
 
   mounted() {
     // todo

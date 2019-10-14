@@ -1,57 +1,14 @@
 <template>
-  <div class="chiefpeople">
+  <div class="chiefpeople" v-if="chiefData">
     <h3>主创人员</h3>
     <div class="peoplelist">
       <dl>
-        <dd>
+        <dd v-for="(item,index) in chiefpeople" :key="item.actorName + index">
           <i class="img">
-            <img
-              src="http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/06/24/190624120656994516.jpg"
-            />
+            <img :src="item.imgUrl" :alt="item.actorName" />
           </i>
-          <h5>田元生</h5>
-          <p>导演</p>
-        </dd>
-        <dd>
-          <i class="img">
-            <img
-              src="http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/04/23/190423000129911846.jpg"
-            />
-          </i>
-          <h5>吴京</h5>
-          <p>饰：方五洲</p>
-        </dd>
-        <dd>
-          <i class="img">
-            <img
-              src="http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/06/24/190624120656994516.jpg"
-            />
-          </i>
-          <h5>章子怡</h5>
-        </dd>
-        <dd>
-          <i class="img">
-            <img
-              src="http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/06/24/190624120656994516.jpg"
-            />
-          </i>
-          <h5>张译</h5>
-        </dd>
-        <dd>
-          <i class="img">
-            <img
-              src="http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/04/23/190423000129911846.jpg"
-            />
-          </i>
-          <h5>井柏然</h5>
-        </dd>
-        <dd>
-          <i class="img">
-            <img
-              src="http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/06/24/190624120656994516.jpg"
-            />
-          </i>
-          <h5>胡歌</h5>
+          <h5>{{item.actorName}}</h5>
+          <p>{{item.characterName? '饰 ' + item.characterName : ''}}</p>
         </dd>
       </dl>
     </div>
@@ -59,13 +16,36 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
+import { imgProxy } from '@/fn/imgProxy'
 
 @Component({
   components: {}
 })
-export default class ChiefPeople extends ViewBase {}
+export default class ChiefPeople extends ViewBase {
+  @Prop({ type: Array }) chiefData: any
+
+  chiefpeople: any = []
+
+  created() {
+    // 处理一下格式
+    for (const item of this.chiefData) {
+      // 处理图片 https://picagent.piaoshen-dev.com/picture/cut_picture?uri=
+      let imgUrl = ''
+      switch (item.coverUrl.source) {
+        case 'piaoshen':
+          imgUrl = item.coverUrl.url ? imgProxy(item.coverUrl.url, 160, 240) : ''
+          break
+        default:
+          imgUrl = item.coverUrl.url
+          break
+      }
+      item.imgUrl = imgUrl
+      this.chiefpeople.push(item)
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>

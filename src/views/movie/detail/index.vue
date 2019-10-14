@@ -1,12 +1,16 @@
 <template>
-  <div class="viewpage">
+  <div class="viewpage" v-if="detail">
     <div class="viewer">
       <TopBar />
-      <MovieInfo />
-      <BoxOffice />
-      <WatchTimes />
-      <UserPortrait />
-      <ChiefPeople />
+      <MovieInfo :movieInfo="detail.movieInfo" />
+      <BoxOffice :movieData="detail.movieData" :hasShowTime="hasShowTime" />
+      <WatchTimes
+        :viewData="detail.viewPerson"
+        :wantSeeData="detail.wantSeePerson"
+        :hasShowTime="hasShowTime"
+      />
+      <UserPortrait :userAges="detail.userAges" :userGender="detail.userGender" />
+      <ChiefPeople :chiefData="detail.chiefPeople" />
       <!-- <canvas id="myCanvas" width="10" height="10" />
       <ul>
         <li v-for="(item,index) in rgbArr" :key="index" :style="{background: 'rgba('+item+')'}">
@@ -28,6 +32,8 @@ import BoxOffice from './components/boxOffice.vue'
 import WatchTimes from './components/watchTimes.vue'
 import UserPortrait from './components/userPortrait.vue'
 import ChiefPeople from './components/chiefPeople.vue'
+import { getMovieDetail } from '@/api/advertiser'
+import { toast } from '@/util/toast'
 
 @Component({
   components: {
@@ -42,9 +48,33 @@ import ChiefPeople from './components/chiefPeople.vue'
 export default class MovieDetail extends Vue {
   backgroundRGA: string = ''
   rgbArr: any = []
+  detail: any = null
+  movieId: string = ''
+  hasShowTime: boolean = true
 
   mounted() {
-    // this.getRGBList()
+    // this.getMovieDetail()
+  }
+  beforeMount() {
+    const mid = this.$route.params.movieId
+    this.movieId = mid
+    this.getMovieDetail(mid)
+    document.body.style.background = '#FBFBFB'
+  }
+
+  // 获取电影资料
+  async getMovieDetail(movieId: string) {
+    try {
+      const res: any = await getMovieDetail({ movieId })
+      if (res.code === 0) {
+        this.detail = res.data
+        this.hasShowTime = res.data.movieInfo.isShowTime
+      } else {
+        toast(res.msg)
+      }
+    } catch (ex) {
+      toast(ex)
+    }
   }
 
   getRGBList() {

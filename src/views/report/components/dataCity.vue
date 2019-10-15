@@ -39,7 +39,7 @@ export default class DataCity extends ViewBase {
   }
 
   // 处理一下城市线数据
-  formatProfileData() {
+  formatCityTierData() {
     const legendData = []
     for (const item of this.cityTier) {
       legendData.push({
@@ -63,8 +63,8 @@ export default class DataCity extends ViewBase {
     }
   }
 
-  // 处理一下城市线数据
-  formatCityTierData() {
+  // 处理一下城市分布
+  formatProfileData() {
     const xData = []
     const yData = []
     for (const item of this.cityProfile) {
@@ -73,7 +73,8 @@ export default class DataCity extends ViewBase {
     }
     this.cityProfileData = {
       xData,
-      yData
+      yData,
+      labelFormatter: '{c}%'
     }
   }
 

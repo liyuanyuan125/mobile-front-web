@@ -3,13 +3,13 @@
     <dl v-if="hasShowTime">
       <dd>
         <p>
-          <b>{{movieData.wantSeeShow}}</b>
+          <b>{{movieData.wantSeeShow ? movieData.wantSeeShow: '-'}}</b>
         </p>
         <p class="desc">累计想看人数{{movieData.wantSeeShowUnit ? `(${movieData.wantSeeShowUnit})` : ''}}</p>
       </dd>
       <dd>
         <p>
-          <b>{{movieData.realTimeBoxOffice}}</b>
+          <b>{{movieData.realTimeBoxOffice ? movieData.realTimeBoxOffice :'-'}}</b>
         </p>
         <p
           class="desc"
@@ -17,7 +17,7 @@
       </dd>
       <dd>
         <p>
-          <b>{{movieData.totalBoxOffice}}</b>
+          <b>{{movieData.totalBoxOffice ? movieData.totalBoxOffice : '-'}}</b>
         </p>
         <p
           class="desc"
@@ -27,13 +27,13 @@
     <dl v-if="!hasShowTime">
       <dd>
         <p>
-          <b>{{movieData.wantSeeShow}}</b>
+          <b>{{movieData.wantSeeShow ? movieData.wantSeeShow : '-'}}</b>
         </p>
         <p class="desc">累计想看人数{{movieData.wantSeeShowUnit ? `(${movieData.wantSeeShowUnit})` : ''}}</p>
       </dd>
       <dd>
         <p>
-          <b>{{movieData.newWantSeeShow}}</b>
+          <b>{{movieData.newWantSeeShow ? movieData.newWantSeeShow : '-'}}</b>
         </p>
         <p
           class="desc"

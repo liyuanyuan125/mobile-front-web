@@ -19,6 +19,15 @@
         color: #2E2F5A;
     }
 }
+.fixbar{
+    position: fixed;
+    left: 0;
+    top:0;
+    width: 100%;
+    opacity: 0;
+    z-index: 10;
+    transition: all linear .2s;
+}
 
 // 影院信息
 .cinemainfo {
@@ -46,6 +55,34 @@
     .address {
         margin-top: 12px;
         line-height: 37px;
+    }
+    .discount{
+        margin-top: 10px;
+        color: #2E2F5A;
+        .price{
+            font-size: 46px;
+            font-weight: normal;
+            margin-right: 9px;
+
+            i{
+                font-size: 30px;
+            }
+        }
+        span{
+            color: #6675A9;
+            font-size: 26px;
+        }
+        .through{
+            text-decoration:line-through;
+        }
+        .disdesc{
+            border: 1px solid #2E2F5A;
+            border-radius: 4px;
+            padding:0 9px;
+            line-height: 32px;
+            font-size: 22px;
+            margin-left: 15px;
+        }
     }
 }
 
@@ -127,10 +164,19 @@
 
     .col {
         display: flex;
+        margin-top: 25px;
 
         >div {
+            padding-right: 4%;
             flex: 1;
-            width: 50%;
+            width: 48%;
+            &:last-child{
+                padding-right: 0;
+            }
+        }
+        .usergender{
+            background: #FBFBFB;
+            border-radius: 20px;
         }
     }
 

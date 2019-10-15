@@ -3,13 +3,15 @@
     <span class="location" title="定位" @click="goCinemaMap"></span>
     <h2>{{cinemaInfo.cinemaName}}</h2>
     <p class="address">{{cinemaInfo.cinemaAddress}}</p>
-    <!-- <div>
-      ￥
-      <b>{{cinemaInfo.discountPrice}}</b>
-      <span>￥{{cinemaInfo.viewPrice}}</span>
+    <div class="discount">
+      <strong class="price">
+        <i>￥</i>
+        <b>{{cinemaInfo.discountPrice}}650</b>
+      </strong>
+      <span class="through">￥{{cinemaInfo.viewPrice}}1,300</span>
       <span>/千次曝光</span>
-      <em>{{cinemaInfo.discountDesc}}</em>
-    </div>-->
+      <em class="disdesc">{{cinemaInfo.discountDesc}}限时五折</em>
+    </div>
   </div>
 </template>
 

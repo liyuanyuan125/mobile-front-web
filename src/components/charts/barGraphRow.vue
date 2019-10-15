@@ -8,6 +8,7 @@
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import echarts from 'echarts'
+const defaultColor = ['#FF8080', '#FFCB84', '#9FDECF', '#D9E0E9']
 
 @Component({
   components: {}
@@ -15,6 +16,7 @@ import echarts from 'echarts'
 // 横向柱状图
 export default class BarGraphRow extends ViewBase {
   @Prop({ type: Object }) dataOption!: any
+  @Prop({ type: Array, default: () => defaultColor }) bgcolor: any
 
   mounted() {
     this.updateCharts()
@@ -77,14 +79,14 @@ export default class BarGraphRow extends ViewBase {
             show: true,
             position: 'right',
             distance: 10,
-            formatter: '{c}%',
+            formatter: this.dataOption.labelFormatter,
             color: '#2E2F5A',
             fontWeight: 'bold',
             fontSize: 14
           },
           itemStyle: {
             color: (params: any) => {
-              const colorList: any = ['#FF8080', '#FFCB84', '#9FDECF', '#D9E0E9']
+              const colorList: any = this.bgcolor
               return colorList[params.dataIndex]
             }
             // opacity: 0.4

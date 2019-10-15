@@ -1,6 +1,9 @@
 <template>
   <div class="viewpage" v-if="detail">
     <div class="viewer">
+      <div class="fixbar" :style="{opacity:scrollTop}">
+        <TopBar :title="detail.cinemaInfo.cinemaName" :styleline="'background:#A0BBF9'" />
+      </div>
       <TopBar />
       <CinemaInfo :cinemaInfo="detail.cinemaInfo" />
       <CinemaData :cinemaData="detail.cinemaData" />
@@ -33,12 +36,20 @@ export default class CinemaDetail extends Vue {
   detail: any = null
   portrait: any = null
   cinemaId: string = ''
+  scrollTop: number = 0
 
   beforeMount() {
     const cid = this.$route.params.cinemaId
     this.cinemaId = cid
     this.getCinemaDetail(cid)
     document.body.style.background = '#FBFBFB'
+  }
+  mounted() {
+    window.addEventListener('scroll', this.getScroll)
+  }
+
+  destroyed() {
+    window.removeEventListener('scroll', this.getScroll)
   }
 
   // 获取报告详情 10103
@@ -59,6 +70,15 @@ export default class CinemaDetail extends Vue {
     } catch (ex) {
       toast(ex)
     }
+  }
+
+  // 监听滚动显示顶部导航
+  getScroll() {
+    const topNum =
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop
+    this.scrollTop = topNum > 0 ? 1 : 0
   }
 }
 </script>

@@ -88,17 +88,11 @@ export default class MovieDetail extends Vue {
 
   // 监听滚动显示顶部导航
   getScroll() {
-    // this.indexNumTop = $('#index_num').offset().top
     const topNum =
       window.pageYOffset ||
       document.documentElement.scrollTop ||
       document.body.scrollTop
     this.scrollTop = topNum > 0 ? 1 : 0
-    // if (topNum > 100) {
-    //   window.removeEventListener('scroll', this.getScroll)
-    // } else {
-    //   window.addEventListener('scroll', this.getScroll)
-    // }
   }
 
   getRGBList() {

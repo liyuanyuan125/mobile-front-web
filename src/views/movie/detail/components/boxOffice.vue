@@ -4,39 +4,40 @@
       <dd>
         <p>
           <b>{{movieData.wantSeeShow}}</b>
-          {{movieData.wantSeeShowUnit}}
         </p>
-        <p class="desc">累计想看人数</p>
+        <p class="desc">累计想看人数{{movieData.wantSeeShowUnit ? `(${movieData.wantSeeShowUnit})` : ''}}</p>
       </dd>
       <dd>
         <p>
           <b>{{movieData.realTimeBoxOffice}}</b>
-          {{movieData.realTimeBoxOfficeUnit}}
         </p>
-        <p class="desc">今日实时票房</p>
+        <p
+          class="desc"
+        >今日实时票房{{movieData.realTimeBoxOfficeUnit ? `(${movieData.realTimeBoxOfficeUnit})` : ''}}</p>
       </dd>
       <dd>
         <p>
           <b>{{movieData.totalBoxOffice}}</b>
-          {{movieData.totalBoxOfficeUnit}}
         </p>
-        <p class="desc">累计票房</p>
+        <p
+          class="desc"
+        >累计票房{{movieData.totalBoxOfficeUnit ? `(${movieData.totalBoxOfficeUnit})` : ''}}</p>
       </dd>
     </dl>
     <dl v-if="!hasShowTime">
       <dd>
         <p>
           <b>{{movieData.wantSeeShow}}</b>
-          {{movieData.wantSeeShowUnit}}
         </p>
-        <p class="desc">累计想看人数</p>
+        <p class="desc">累计想看人数{{movieData.wantSeeShowUnit ? `(${movieData.wantSeeShowUnit})` : ''}}</p>
       </dd>
       <dd>
         <p>
           <b>{{movieData.newWantSeeShow}}</b>
-          {{movieData.newWantSeeShowUnit}}
         </p>
-        <p class="desc">昨日新增想看人数</p>
+        <p
+          class="desc"
+        >昨日新增想看人数{{movieData.newWantSeeShowUnit ? `(${movieData.newWantSeeShowUnit})` : ''}}</p>
       </dd>
     </dl>
   </div>

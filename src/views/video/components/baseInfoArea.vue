@@ -2,21 +2,9 @@
   <!--其他基本信息 -->
   <div class="payinfo">
     <dl>
-      <dd>
-        <i>广告片编号</i>
-        <em>432432423423423</em>
-      </dd>
-      <dd>
-        <i>创建时间</i>
-        <em>2019-08-12 17:53:00</em>
-      </dd>
-      <dd>
-        <i>创建时间</i>
-        <em>2019-08-12 17:53:00</em>
-      </dd>
-      <dd>
-        <i>创建时间</i>
-        <em>2019-08-12 17:53:00</em>
+      <dd v-for="(item,index) in baseInfo.attributeList" :key="item.keyName+index" v-show="item.value">
+        <i>{{item.keyName}}</i>
+        <em>{{item.value}}</em>
       </dd>
     </dl>
   </div>
@@ -30,7 +18,7 @@ import ViewBase from '@/util/ViewBase'
   components: {}
 })
 export default class BaseInfoArea extends ViewBase {
-  @Prop({ type: Object }) progress!: any
+  @Prop({ type: Object }) baseInfo!: any
 
   mounted() {
     // todo

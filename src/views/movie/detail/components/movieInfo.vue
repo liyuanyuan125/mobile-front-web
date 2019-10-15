@@ -8,7 +8,7 @@
       <p>{{movieInfo.releaseDesc}}</p>
       <div class="exponentbox" v-if="movieInfo.score">
         <strong>{{movieInfo.score}}</strong>
-        <p class="ques">鲸娱指数</p>
+        <p class="ques" @click="showNote">鲸娱指数</p>
       </div>
     </div>
   </div>
@@ -18,6 +18,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import { imgProxy } from '@/fn/imgProxy'
+import { alert } from '@/util/toast'
 
 @Component({
   components: {}
@@ -46,6 +47,16 @@ export default class MovieInfo extends ViewBase {
       const bias = this.movieInfo.country ? ' / ' : ''
       this.genreName = bias + genreList.join(' / ')
     }
+  }
+
+  // 显示说明
+  showNote() {
+    alert({
+      title: '关于鲸鱼指数',
+      message:
+        '影片在一定周期内的综合表现指标，由想看数/票房，口碑，全网资讯量及讨论，搜索等互动量加权计算得出',
+      showConfirmButton: true
+    })
   }
 }
 </script>

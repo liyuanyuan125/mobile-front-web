@@ -1,5 +1,5 @@
 <template>
-  <div :class="['topbar',barColor]">
+  <div :class="['topbar',barColor]" :style="styleline">
     <span class="reBack"></span>
     <h1 class="title">{{title}}</h1>
   </div>
@@ -15,7 +15,7 @@ export default class TopBar extends Vue {
    */
   @Prop({ type: String, default: '' }) title!: string
   @Prop({ type: String, default: 'transparent' }) bgColor!: string
-  @Prop({ type: String, default: '' }) styleline!: any
+  @Prop({ type: String, default: '' }) styleline!: any // 自定义样式
   @Prop({ type: String, default: 'white' }) barColor: any // 黑或白
 
   // barColor:string = 'white'
@@ -26,9 +26,10 @@ export default class TopBar extends Vue {
 .topbar {
   height: 88px;
   line-height: 88px;
+  position: relative;
 }
 .title {
-  color: #333;
+  color: #fff;
   font-size: 36px;
   text-align: center;
   font-weight: normal;

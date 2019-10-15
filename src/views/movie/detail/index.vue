@@ -1,6 +1,9 @@
 <template>
   <div class="viewpage" v-if="detail">
     <div class="viewer">
+      <div class="fixbar" :style="{opacity:scrollTop}">
+        <TopBar :title="detail.movieInfo.movieNameCn" :styleline="'background:#60a3e9'" />
+      </div>
       <TopBar />
       <MovieInfo :movieInfo="detail.movieInfo" />
       <BoxOffice :movieData="detail.movieData" :hasShowTime="hasShowTime" />
@@ -51,10 +54,16 @@ export default class MovieDetail extends Vue {
   detail: any = null
   movieId: string = ''
   hasShowTime: boolean = true
+  scrollTop: number = 0
 
   mounted() {
-    // this.getMovieDetail()
+    window.addEventListener('scroll', this.getScroll)
   }
+
+  destroyed() {
+    window.removeEventListener('scroll', this.getScroll)
+  }
+
   beforeMount() {
     const mid = this.$route.params.movieId
     this.movieId = mid
@@ -75,6 +84,21 @@ export default class MovieDetail extends Vue {
     } catch (ex) {
       toast(ex)
     }
+  }
+
+  // 监听滚动显示顶部导航
+  getScroll() {
+    // this.indexNumTop = $('#index_num').offset().top
+    const topNum =
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop
+    this.scrollTop = topNum > 0 ? 1 : 0
+    // if (topNum > 100) {
+    //   window.removeEventListener('scroll', this.getScroll)
+    // } else {
+    //   window.addEventListener('scroll', this.getScroll)
+    // }
   }
 
   getRGBList() {

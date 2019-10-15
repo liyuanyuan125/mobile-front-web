@@ -2,13 +2,13 @@
   <div class="chiefpeople" v-if="chiefData">
     <h3>主创人员</h3>
     <div class="peoplelist">
-      <dl>
+      <dl :style="{width:dlWidth}">
         <dd v-for="(item,index) in chiefpeople" :key="item.actorName + index">
           <i class="img">
             <img :src="item.imgUrl" :alt="item.actorName" />
           </i>
           <h5>{{item.actorName}}</h5>
-          <p>{{item.characterName? '饰 ' + item.characterName : ''}}</p>
+          <p>{{item.characterName}}</p>
         </dd>
       </dl>
     </div>
@@ -27,8 +27,12 @@ export default class ChiefPeople extends ViewBase {
   @Prop({ type: Array }) chiefData: any
 
   chiefpeople: any = []
+  dlWidth: string = ''
 
   created() {
+    // 第个dd宽度是180
+    // this.dlWidth = (this.chiefData.length * 180) / 0.75 + 'px'
+    this.dlWidth = (100 / 7.5) * 18 + 'px'
     // 处理一下格式
     for (const item of this.chiefData) {
       // 处理图片 https://picagent.piaoshen-dev.com/picture/cut_picture?uri=

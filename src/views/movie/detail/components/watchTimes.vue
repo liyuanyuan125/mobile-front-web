@@ -1,5 +1,5 @@
 <template>
-  <div class="watchtimes">
+  <div class="watchtimes" v-if="viewData.data.length || viewData.data.length">
     <div v-if="hasShowTime">
       <div class="tit">
         <h3>近7日观影人次</h3>
@@ -37,8 +37,8 @@ export default class WatchTimes extends ViewBase {
     this.formatWantSeeData()
   }
 
-  viewDataTrend: any = {}
-  wantSeeDataTrend: any = {}
+  viewDataTrend: any = null
+  wantSeeDataTrend: any = null
 
   // 处理观影人次
   formatViewData() {

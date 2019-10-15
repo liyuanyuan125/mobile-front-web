@@ -16,7 +16,7 @@ import ViewBase from '@/util/ViewBase'
   components: {}
 })
 export default class SampleArea extends ViewBase {
-  @Prop({ type: Object }) progress!: any
+  @Prop({ type: Object }) sampleInfo!: any
 
   mounted() {
     // todo

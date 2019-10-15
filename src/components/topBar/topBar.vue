@@ -1,12 +1,13 @@
 <template>
   <div :class="['topbar',barColor]" :style="styleline">
-    <span class="reBack"></span>
+    <span class="reBack" @click="goBack"></span>
     <h1 class="title">{{title}}</h1>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
+import { handleGoBack } from '@/util/native'
 
 @Component({})
 export default class TopBar extends Vue {
@@ -19,6 +20,14 @@ export default class TopBar extends Vue {
   @Prop({ type: String, default: 'white' }) barColor: any // 黑或白
 
   // barColor:string = 'white'
+  goBack() {
+    const objectData = {
+      isCloseWindow: true,
+      refreshWindow: true
+    }
+    const obj = { params: objectData }
+    await handleGoBack(obj)
+  }
 }
 </script>
 

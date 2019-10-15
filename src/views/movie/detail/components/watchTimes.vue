@@ -1,18 +1,22 @@
 <template>
-  <div class="watchtimes" v-if="viewData.data.length || viewData.data.length">
+  <div class="watchtimes" v-if="viewData.data.length || wantSeeData.data.length">
     <div v-if="hasShowTime">
       <div class="tit">
         <h3>近7日观影人次</h3>
         <span>{{viewData.showDate}}</span>
       </div>
-      <LineGraph :dataOption="viewDataTrend" />
+      <div style="margin-top:20px">
+        <LineGraph :dataOption="viewDataTrend" />
+      </div>
     </div>
-    <div v-if="hasShowTime">
+    <div v-if="!hasShowTime">
       <div class="tit">
         <h3>近7日想看人次</h3>
         <span>{{wantSeeData.showDate}}</span>
       </div>
-      <LineGraph :dataOption="wantSeeDataTrend" />
+      <div style="margin-top:20px">
+        <LineGraph :dataOption="wantSeeDataTrend" />
+      </div>
     </div>
   </div>
 </template>

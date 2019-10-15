@@ -39,9 +39,13 @@ export default class TopBar extends Vue {
 }
 .title {
   color: #fff;
-  font-size: 36px;
+  font-size: 32px;
   text-align: center;
   font-weight: normal;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 0 88px;
+  overflow: hidden;
 }
 .reBack {
   width: 88px;

@@ -20,7 +20,7 @@ export default class TopBar extends Vue {
   @Prop({ type: String, default: 'white' }) barColor: any // 黑或白
 
   // barColor:string = 'white'
-  goBack() {
+  async goBack() {
     const objectData = {
       isCloseWindow: true,
       refreshWindow: true

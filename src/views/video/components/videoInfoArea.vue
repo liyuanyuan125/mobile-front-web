@@ -3,9 +3,9 @@
   <div class="videoinfo">
     <dl>
       <dt>{{videoInfo.adName}}</dt>
-      <dd v-for="item in videoInfo.AttributeList" :key="item.keyName" v-show="item.value">
+      <dd v-for="(item,index) in videoAttr" :key="item.keyName + index" v-show="item.value">
         <i>{{item.keyName}}</i>
-        <em>{{keyName.value}}</em>
+        <em>{{item.value}}</em>
       </dd>
     </dl>
   </div>
@@ -21,8 +21,9 @@ import ViewBase from '@/util/ViewBase'
 export default class VideoInfoArea extends ViewBase {
   @Prop({ type: Object }) videoInfo!: any
 
-  mounted() {
-    // todo
+  videoAttr: any = []
+  created() {
+    this.videoAttr = this.videoInfo.AttributeList
   }
 }
 </script>

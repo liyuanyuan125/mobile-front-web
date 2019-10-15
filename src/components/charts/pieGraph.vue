@@ -21,7 +21,6 @@ export default class PieGraph extends ViewBase {
   @Prop({ type: Array, default: () => defaultColor }) bgColor: any
 
   mounted() {
-    console.log('this.dataOption', this.dataOption)
     this.updateCharts()
   }
 

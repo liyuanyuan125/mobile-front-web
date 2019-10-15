@@ -26,8 +26,6 @@ export default class StatusArea extends ViewBase {
   @Prop({ type: Object }) statusInfo!: any
 
   statusTit = ''
-
-  mounted() {}
 }
 </script>
 

@@ -32,13 +32,13 @@ export default class WatchTimes extends ViewBase {
   @Prop({ type: Object }) wantSeeData: any
   @Prop({ type: Boolean }) hasShowTime!: boolean
 
+  viewDataTrend: any = null
+  wantSeeDataTrend: any = null
+
   created() {
     this.formatViewData()
     this.formatWantSeeData()
   }
-
-  viewDataTrend: any = null
-  wantSeeDataTrend: any = null
 
   // 处理观影人次
   formatViewData() {

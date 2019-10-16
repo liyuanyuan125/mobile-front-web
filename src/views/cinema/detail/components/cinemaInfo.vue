@@ -4,13 +4,20 @@
     <h2>{{cinemaInfo.cinemaName}}</h2>
     <p class="address">{{cinemaInfo.cinemaAddress}}</p>
     <div class="discount">
-      <strong class="price">
+      <div v-if="cinemaInfo.discountPrice">
+        <strong class="price">
+          <i>￥</i>
+          <b>{{cinemaInfo.discountPrice}}</b>
+        </strong>
+        <span class="through">￥{{cinemaInfo.viewPrice}}</span>
+        <span>/千次曝光（15s）</span>
+        <em class="disdesc" v-if="cinemaInfo.discountDesc">{{cinemaInfo.discountDesc}}限时五折</em>
+      </div>
+      <strong class="price" v-if="!cinemaInfo.discountPrice">
         <i>￥</i>
-        <b>{{cinemaInfo.discountPrice}}650</b>
+        <b>{{cinemaInfo.viewPrice}}</b>
+        <i>/千次曝光（15s）</i>
       </strong>
-      <span class="through">￥{{cinemaInfo.viewPrice}}1,300</span>
-      <span>/千次曝光</span>
-      <em class="disdesc">{{cinemaInfo.discountDesc}}限时五折</em>
     </div>
   </div>
 </template>

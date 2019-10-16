@@ -55,6 +55,7 @@
             v-on:input="changeBtnStatus"
             oninput="if(value.length > 11)value = value.slice(0, 11)"
             ref="getPhoneNumber"
+            pattern="[0-9]*"
           />
           <i class="del" v-show="userMobile.length" @click="clearTxt('userMobile')"></i>
         </div>
@@ -69,6 +70,7 @@
             oninput="if(value.length > 11)value = value.slice(0, 11)"
             v-on:input="changeBtnStatus"
             ref="getPhoneNumber"
+            pattern="[0-9]*"
           />
           <i class="del" v-show="recommendMobile.length" @click="clearTxt('recommendMobile')"></i>
         </div>
@@ -219,7 +221,6 @@ export default class GetMobile extends ViewBase {
   chectkInfo() {
     // 验证信息是否含有特殊符号或空格
     const reg = /^[\u4e00-\u9fa5_a-zA-Z0-9]+$/
-    console.log(reg.test(this.companyName))
     if (!reg.test(this.companyName)) {
       toast('企业名称仅支持中文、字母、数字')
       return false

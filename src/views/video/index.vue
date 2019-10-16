@@ -80,7 +80,7 @@ export default class ResultReport extends Vue {
             this.delVideo()
           })
           .catch(() => {
-            console.log('点击了取消按钮噢')
+            // console.log('点击了取消按钮噢')
           })
         break
       case 'cancel':

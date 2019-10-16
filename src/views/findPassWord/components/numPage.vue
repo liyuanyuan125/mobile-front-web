@@ -8,6 +8,7 @@
         v-model="inValue"
         placeholder="请输入您的手机号码"
         v-on:input="butLight"
+        pattern="[0-9]*"
         oninput="if(value.length > 11)value = value.slice(0, 11)"
         ref="getPhoneNumber"
       />

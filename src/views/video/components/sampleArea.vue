@@ -15,6 +15,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
+import { imgProxy } from '@/fn/imgProxy'
 
 @Component({
   components: {}

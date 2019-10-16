@@ -19,6 +19,24 @@ export async function getVideoDetail(query: any) {
 }
 
 /**
+ * 取消广告片
+ * @param query  object
+ */
+export async function cancelVideoDetail(query: any) {
+    const res = await post('/xadvert/video/cancel', query)
+    return res
+}
+
+/**
+ * 删除广告片
+ * @param query  object
+ */
+export async function delVideoDetail(query: any) {
+    const res = await post('/xadvert/video/delete', query)
+    return res
+}
+
+/**
  * 获取电影详情页
  * @param query  object
  */

@@ -1,3 +1,6 @@
+.viewpage{
+    padding-bottom: 125px;
+}
 .statusarea {
     background: #A5BEF8;
     padding: 50px;
@@ -94,12 +97,13 @@
 
         i {
             color: #899AB3;
-            flex: 1;
+            white-space: nowrap;
         }
 
         em {
-            white-space: nowrap;
+            // 
             text-align: right;
+            flex: 1;
         }
     }
 }
@@ -112,6 +116,52 @@
     h4 {
         font-size: 30px;
         line-height: 1.1;
+    }
+
+    .videobox{
+        position: relative;
+        margin-top: 40px;
+
+        .play{
+            background: url("../assets/play.png") no-repeat center center;
+            background-size: 100%;
+            width: 70px;
+            height: 70px;
+            position: absolute;
+            left: 50%;
+            top:50%;
+            transform: translate(-50%,-50%);
+            z-index: 4;
+        }
+        .info{
+            background: linear-gradient(to top,rgba(0,0,0,.3),transparent);
+            width: 100%;
+            font-size: 26px;
+            line-height: 80px;
+            padding: 0  20px;
+            color: #fff;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            z-index: 3;
+        }
+        img,video{
+            width: 100%;
+            height: 100%;
+            display: block;
+            position: relative;
+            z-index: 2;
+        }
+        video{
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 3;
+            opacity: 0;
+        }
     }
 }
 
@@ -152,7 +202,7 @@
 
 .baseinfo {
     padding: 50px 30px;
-    border-bottom: 1px solid #DFEAF8;
+    // border-bottom: 1px solid #DFEAF8;
     color: #404D66;
 
     dt {
@@ -169,21 +219,23 @@
 
         i {
             color: #899AB3;
-            flex: 1;
+            white-space: nowrap;
         }
 
         em {
-            white-space: nowrap;
+            
+            flex: 1;
             text-align: right;
         }
     }
 }
 
 .btncancel{
+    background: #fff;
     border-top: 1px solid #DFEAF8;
     line-height: 126px;
     position: fixed;
-    font-size: 16px;
+    font-size: 26px;
     text-align: center;
     width: 100%;
     left: 0;

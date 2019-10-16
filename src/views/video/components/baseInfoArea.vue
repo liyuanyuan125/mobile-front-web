@@ -1,8 +1,12 @@
 <template>
   <!--其他基本信息 -->
-  <div class="payinfo">
+  <div class="baseinfo">
     <dl>
-      <dd v-for="(item,index) in baseInfo.attributeList" :key="item.keyName+index" v-show="item.value">
+      <dd
+        v-for="(item,index) in baseInfo.attributeList"
+        :key="item.keyName+index"
+        v-show="item.value"
+      >
         <i>{{item.keyName}}</i>
         <em>{{item.value}}</em>
       </dd>

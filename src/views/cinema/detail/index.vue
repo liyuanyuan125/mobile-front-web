@@ -8,9 +8,9 @@
       <CinemaInfo :cinemaInfo="detail.cinemaInfo" />
       <CinemaData :cinemaData="detail.cinemaData" />
       <CinemaPortrait :portrait="portrait" />
-      <div class="joinplan">
+      <!-- <div class="joinplan">
         <button>加入投放</button>
-      </div>
+      </div>-->
     </div>
   </div>
 </template>

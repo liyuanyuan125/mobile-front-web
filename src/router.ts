@@ -81,8 +81,8 @@ export default new Router({
     },
     // 广告片详情
     {
-      path: '/video/detail/:adId',
-      name: 'resultreport',
+      path: '/video/detail/:videoId',
+      name: 'videodetail',
       component: () => import('./views/video/index.vue')
     }
   ]

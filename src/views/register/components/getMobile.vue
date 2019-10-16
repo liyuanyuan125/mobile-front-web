@@ -26,9 +26,9 @@
           <input
             class="text"
             type="text"
-            v-model="companyName"
+            v-model.trim="companyName"
             v-on:input="changeBtnStatus"
-            placeholder="企业名称"
+            placeholder="企业名称 (中文、字母、数字,2~100字)"
           />
           <i class="del" v-show="companyName.length" @click="clearTxt('companyName')"></i>
         </div>
@@ -38,8 +38,8 @@
           <input
             class="text"
             type="text"
-            v-model="userName"
-            placeholder="姓名"
+            v-model.trim="userName"
+            placeholder="姓名 (中文、字母、数字,2~6字)"
             v-on:input="changeBtnStatus"
           />
           <i class="del" v-show="userName.length" @click="clearTxt('userName')"></i>
@@ -183,6 +183,9 @@ export default class GetMobile extends ViewBase {
   async getVerifyCode() {
     if (!this.btnStatus) {
       return
+    }
+    if (!this.chectkInfo()) {
+      return
     } else {
       try {
         const res = await getSmsCode({
@@ -209,6 +212,28 @@ export default class GetMobile extends ViewBase {
       } catch (ex) {
         this.handleError(ex)
       }
+    }
+  }
+
+  // 验证信息
+  chectkInfo() {
+    // 验证信息是否含有特殊符号或空格
+    const reg = /^[\u4e00-\u9fa5_a-zA-Z0-9]+$/
+    console.log(reg.test(this.companyName))
+    if (!reg.test(this.companyName)) {
+      toast('企业名称仅支持中文、字母、数字')
+      return false
+    } else if (this.companyName.length < 2 || this.companyName.length > 100) {
+      toast('企业名称字数允许2-100个字')
+      return false
+    } else if (!reg.test(this.userName)) {
+      toast('姓名仅支持中文、字母、数字')
+      return false
+    } else if (this.userName.length < 2 || this.userName.length > 100) {
+      toast('姓名字数允许2-100个字')
+      return false
+    } else {
+      return true
     }
   }
 

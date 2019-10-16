@@ -55,6 +55,7 @@
             v-on:input="changeBtnStatus"
             oninput="if(value.length > 11)value = value.slice(0, 11)"
             ref="getPhoneNumber"
+            pattern="[0-9]*"
           />
           <i class="del" v-show="userMobile.length" @click="clearTxt('userMobile')"></i>
         </div>
@@ -69,6 +70,7 @@
             oninput="if(value.length > 11)value = value.slice(0, 11)"
             v-on:input="changeBtnStatus"
             ref="getPhoneNumber"
+            pattern="[0-9]*"
           />
           <i class="del" v-show="recommendMobile.length" @click="clearTxt('recommendMobile')"></i>
         </div>

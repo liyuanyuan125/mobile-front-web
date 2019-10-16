@@ -6,7 +6,7 @@
         class="text"
         :type="inputType"
         v-model="password"
-        placeholder="请输入6～16位新密码"
+        placeholder="请输入新密码 (数字、字母，6～16位)"
         maxlength="16"
         onkeypress="return (/[a-zA-Z\d]/.test(String.fromCharCode(event.keyCode)))"
         @keyup="butLight"
@@ -54,6 +54,9 @@ export default class SetPwdPage extends ViewBase {
   async confirmLogin() {
     if (!this.button) {
       return
+    }
+    if (!this.checkPassWord()) {
+      return
     } else {
       try {
         const res: any = await modifyPassWord({
@@ -78,6 +81,21 @@ export default class SetPwdPage extends ViewBase {
       } catch (ex) {
         this.handleError(ex)
       }
+    }
+  }
+
+  // 验证一下验证码
+  checkPassWord() {
+    const reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,10}$/
+    if (
+      !reg.test(this.password) ||
+      this.password.length > 16 ||
+      this.password.length < 6
+    ) {
+      toast('密码为6-16位字母、数字')
+      return false
+    } else {
+      return true
     }
   }
 }

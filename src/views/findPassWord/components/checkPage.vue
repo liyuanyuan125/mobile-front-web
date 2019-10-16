@@ -9,6 +9,7 @@
       <input
         class="text"
         ref="verifyVal"
+        pattern="[0-9]*"
         type="number"
         v-model="value"
         v-on:input="butLight"

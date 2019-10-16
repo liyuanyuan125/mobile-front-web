@@ -11,7 +11,6 @@
         ref="verifyVal"
         type="number"
         v-model="value"
-        pattern="[0-9]*"
         v-on:input="butLight"
         oninput="if(value.length > 6)value = value.slice(0, 6)"
         onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))&&(/[^+-.*]/.test(event.key))"

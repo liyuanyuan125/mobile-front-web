@@ -20,7 +20,7 @@ import BaseInfoArea from './components/baseInfoArea.vue'
 import { getVideoDetail, cancelVideoDetail, delVideoDetail } from '@/api/advertiser.ts'
 import { toast } from '@/util/toast'
 import { Dialog } from 'vant'
-import { openAppLinkClient } from '@/util/native'
+import { openAppLinkClient, handleGoBack } from '@/util/native'
 
 @Component({
   components: {
@@ -108,9 +108,9 @@ export default class ResultReport extends Vue {
       const res: any = await cancelVideoDetail({ adVideoId: this.videoId })
       if (res.code === 0) {
         toast('取消成功')
-        this.videoCancel = false
-        this.videoCanDel = true
-        console(res)
+        // this.videoCancel = false
+        // this.videoCanDel = true
+        // console(res)
       } else {
         toast(res.msg)
       }

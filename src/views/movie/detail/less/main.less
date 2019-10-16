@@ -74,8 +74,11 @@
         }
 
         h5 {
-
+            word-break: break-all;
+            word-wrap: wrap;
             opacity: .5;
+            margin-top: 14px;
+            line-height: 1.2;
         }
 
         p {
@@ -266,11 +269,17 @@
         font-size: 30px;
         line-height: 42px;
         margin-top: 15px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
 
     p {
         font-size: 26px;
         color: #8798AF;
         line-break: 37px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
 }

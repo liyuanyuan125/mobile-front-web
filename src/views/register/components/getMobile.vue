@@ -148,6 +148,8 @@ export default class GetMobile extends ViewBase {
   changeRadioType(e: any) {
     const idx = e.target.dataset.type
     this.userType = idx
+    // 当切换了类型后，重新监听一下数据
+    this.changeBtnStatus()
     // 如果是个人时，将公司名称清空
     if (idx === '2') {
       this.companyName = ''
@@ -221,13 +223,16 @@ export default class GetMobile extends ViewBase {
   chectkInfo() {
     // 验证信息是否含有特殊符号或空格
     const reg = /^[\u4e00-\u9fa5_a-zA-Z0-9]+$/
-    if (!reg.test(this.companyName)) {
-      toast('企业名称仅支持中文、字母、数字')
-      return false
-    } else if (this.companyName.length < 2 || this.companyName.length > 100) {
-      toast('企业名称字数允许2-100个字')
-      return false
-    } else if (!reg.test(this.userName)) {
+    if (this.userType === '1') {
+      if (!reg.test(this.companyName)) {
+        toast('企业名称仅支持中文、字母、数字')
+        return false
+      } else if (this.companyName.length < 2 || this.companyName.length > 100) {
+        toast('企业名称字数允许2-100个字')
+        return false
+      }
+    }
+    if (!reg.test(this.userName)) {
       toast('姓名仅支持中文、字母、数字')
       return false
     } else if (this.userName.length < 2 || this.userName.length > 100) {

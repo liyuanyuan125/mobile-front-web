@@ -5,7 +5,7 @@ import { get, post, put, del } from '@/fn/ajax'
  * @param query  object
  */
 export async function getSmsCode(query: any) {
-    const res = await post('/customer/accounts/register_get_sms_code', query)
+    const res = await post('/customer/accounts/get_sms_code', query)
     return res
 }
 

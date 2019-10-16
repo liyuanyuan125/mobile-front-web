@@ -62,7 +62,10 @@ export default class NumPage extends ViewBase {
       return
     } else {
       try {
-        const res = await getSmsCode({ phoneNum: this.inValue })
+        const res = await getSmsCode({
+          phoneNum: this.inValue,
+          requestType: 1 //1:注册   2:修改密码
+        })
         // 0 ===获取验证码成功
         // 1 ===获取验证码失败
         if (res.code == 0) {

@@ -221,7 +221,6 @@ export default class GetMobile extends ViewBase {
   chectkInfo() {
     // 验证信息是否含有特殊符号或空格
     const reg = /^[\u4e00-\u9fa5_a-zA-Z0-9]+$/
-    console.log(reg.test(this.companyName))
     if (!reg.test(this.companyName)) {
       toast('企业名称仅支持中文、字母、数字')
       return false

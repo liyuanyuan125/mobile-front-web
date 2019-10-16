@@ -20,6 +20,7 @@ import BaseInfoArea from './components/baseInfoArea.vue'
 import { getVideoDetail, cancelVideoDetail, delVideoDetail } from '@/api/advertiser.ts'
 import { toast } from '@/util/toast'
 import { Dialog } from 'vant'
+import { openAppLinkClient } from '@/util/native'
 
 @Component({
   components: {
@@ -123,9 +124,14 @@ export default class ResultReport extends Vue {
     try {
       const res: any = await delVideoDetail({ adVideoId: this.videoId })
       if (res.code === 0) {
-        toast('删除成功')
-        setTimeout(() => {
-          console.log('回列表页')
+        toast('删除成功', 1500)
+        setTimeout(async () => {
+          const objectData = {
+            isCloseWindow: true,
+            refreshWindow: true
+          }
+          const obj = { params: objectData }
+          await handleGoBack(obj)
         }, 1500)
         // console(res)
       } else {

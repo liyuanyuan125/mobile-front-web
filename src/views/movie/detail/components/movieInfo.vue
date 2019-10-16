@@ -2,6 +2,12 @@
   <div class="movieinfo">
     <div class="moviebox">
       <img :src="coverImg" :alt="movieInfo.movieNameCn" class="img" />
+      <img
+        src="@/assets/person-default.png"
+        :alt="movieInfo.movieNameCn"
+        v-if="!coverImg"
+        class="img"
+      />
       <h3>{{movieInfo.movieNameCn}}</h3>
       <h5>{{movieInfo.movieNameEn}}</h5>
       <p>{{movieInfo.country}} {{genreName}}</p>

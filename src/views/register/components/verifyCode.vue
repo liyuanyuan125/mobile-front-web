@@ -10,6 +10,7 @@
         class="text"
         ref="verifyVal"
         type="number"
+        pattern="[0-9]*"
         v-model="value"
         v-on:input="butLight"
         oninput="if(value.length > 6)value = value.slice(0, 6)"

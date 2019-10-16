@@ -5,7 +5,8 @@
       <dl :style="{width:dlWidth}">
         <dd v-for="(item,index) in chiefpeople" :key="item.actorName + index">
           <i class="img">
-            <img :src="item.imgUrl" :alt="item.actorName" />
+            <img :src="item.imgUrl" :alt="item.actorName" v-if="item.imgUrl" />
+            <img src="@/assets/person-default.png" :alt="item.actorName" v-if="!item.imgUrl" />
           </i>
           <h5>{{item.actorName}}</h5>
           <p>{{item.characterName}}</p>

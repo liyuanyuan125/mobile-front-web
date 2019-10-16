@@ -1,5 +1,5 @@
 <template>
-  <div class="viewpage" v-if="detail">
+  <div class="viewpage" v-if="detail && !movieErr">
     <div class="viewer">
       <div class="fixbar" :style="{opacity:scrollTop}">
         <TopBar :title="detail.movieInfo.movieNameCn" :styleline="'background:#60a3e9'" />
@@ -49,6 +49,7 @@ import { toast } from '@/util/toast'
   }
 })
 export default class MovieDetail extends Vue {
+  movieErr: boolean = false
   backgroundRGA: string = ''
   rgbArr: any = []
   detail: any = null

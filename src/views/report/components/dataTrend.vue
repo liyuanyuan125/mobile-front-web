@@ -70,48 +70,57 @@ export default class DataTrend extends ViewBase {
   formatCostData() {
     const xData = []
     const yData = []
-    for (const item of this.dataTrend.showCost.data) {
-      xData.push(item.date)
-      yData.push(item.value)
-    }
-    this.showCostData = {
-      xData,
-      yData,
-      title: '支出金额',
-      unit: this.dataTrend.showCost.dataUnit,
-      type: 1 // 区分是否是金额还是人次 1是钱 2是人
+    const trend = this.dataTrend.showCost.data
+    if (trend && trend.length) {
+      for (const item of this.dataTrend.showCost.data) {
+        xData.push(item.date)
+        yData.push(item.value)
+      }
+      this.showCostData = {
+        xData,
+        yData,
+        title: '支出金额',
+        unit: this.dataTrend.showCost.dataUnit,
+        type: 1 // 区分是否是金额还是人次 1是钱 2是人
+      }
     }
   }
   // 处理曝光人次
   formatPersonData() {
     const xData = []
     const yData = []
-    for (const item of this.dataTrend.showPerson.data) {
-      xData.push(item.date)
-      yData.push(item.value)
-    }
-    this.showPersonData = {
-      xData,
-      yData,
-      title: '曝光人次',
-      unit: this.dataTrend.showPerson.dataUnit,
-      type: 2
+    const trend = this.dataTrend.showPerson.data
+    if (trend && trend.length) {
+      for (const item of this.dataTrend.showPerson.data) {
+        xData.push(item.date)
+        yData.push(item.value)
+      }
+      this.showPersonData = {
+        xData,
+        yData,
+        title: '曝光人次',
+        unit: this.dataTrend.showPerson.dataUnit,
+        type: 2
+      }
     }
   }
   // 处理曝光场次
   formatSceneData() {
     const xData = []
     const yData = []
-    for (const item of this.dataTrend.showScene.data) {
-      xData.push(item.date)
-      yData.push(item.value)
-    }
-    this.showSceneData = {
-      xData,
-      yData,
-      title: '曝光场次',
-      unit: this.dataTrend.showScene.dataUnit,
-      type: 3
+    const trend = this.dataTrend.showScene.data
+    if (trend && trend.length) {
+      for (const item of this.dataTrend.showScene.data) {
+        xData.push(item.date)
+        yData.push(item.value)
+      }
+      this.showSceneData = {
+        xData,
+        yData,
+        title: '曝光场次',
+        unit: this.dataTrend.showScene.dataUnit,
+        type: 3
+      }
     }
   }
 

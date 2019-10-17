@@ -1,6 +1,7 @@
 <template>
   <div class="content-wrap">
-    <div ref="refChart" class="chart-wrap"></div>
+    <div class="chart-default" v-if="!dataOption"></div>
+    <div ref="refChart" v-if="dataOption" class="chart-wrap"></div>
   </div>
 </template>
 
@@ -19,7 +20,9 @@ export default class BarGraphRow extends ViewBase {
   @Prop({ type: Array, default: () => defaultColor }) bgcolor: any
 
   mounted() {
-    this.updateCharts()
+    if (this.dataOption) {
+      this.updateCharts()
+    }
   }
 
   // 画图
@@ -112,6 +115,12 @@ export default class BarGraphRow extends ViewBase {
   position: relative;
   width: 100%;
   height: 600px;
+}
+.chart-default {
+  background: url('../../assets/data-null.png') no-repeat center;
+  background-size: 201px auto;
+  width: 100%;
+  height: 100%;
 }
 .chart-wrap {
   width: 100%;

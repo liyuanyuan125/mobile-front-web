@@ -88,7 +88,6 @@ export default class SetPassWord extends ViewBase {
   // 验证一下验证码
   checkPassWord() {
     const reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/
-    console.log(reg.test(this.password))
     if (
       !reg.test(this.password) ||
       this.password.length > 16 ||

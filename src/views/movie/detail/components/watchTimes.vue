@@ -48,16 +48,19 @@ export default class WatchTimes extends ViewBase {
   formatViewData() {
     const xData = []
     const yData = []
-    for (const item of this.viewData.data) {
-      xData.push(item.date)
-      yData.push(item.value)
-    }
-    this.viewDataTrend = {
-      xData,
-      yData,
-      title: '观影人次',
-      unit: this.viewData.dataUnit,
-      type: 2 // 区分是否是金额还是人次 1是钱 2是人
+    const trend = this.viewData.data
+    if (trend && trend.length) {
+      for (const item of this.viewData.data) {
+        xData.push(item.date)
+        yData.push(item.value)
+      }
+      this.viewDataTrend = {
+        xData,
+        yData,
+        title: '观影人次',
+        unit: this.viewData.dataUnit,
+        type: 2 // 区分是否是金额还是人次 1是钱 2是人
+      }
     }
   }
 
@@ -65,16 +68,19 @@ export default class WatchTimes extends ViewBase {
   formatWantSeeData() {
     const xData = []
     const yData = []
-    for (const item of this.wantSeeData.data) {
-      xData.push(item.date)
-      yData.push(item.value)
-    }
-    this.wantSeeDataTrend = {
-      xData,
-      yData,
-      title: '想看人次',
-      unit: this.wantSeeData.dataUnit,
-      type: 2
+    const trend = this.wantSeeData.data
+    if (trend && trend.length) {
+      for (const item of this.wantSeeData.data) {
+        xData.push(item.date)
+        yData.push(item.value)
+      }
+      this.wantSeeDataTrend = {
+        xData,
+        yData,
+        title: '想看人次',
+        unit: this.wantSeeData.dataUnit,
+        type: 2
+      }
     }
   }
 }

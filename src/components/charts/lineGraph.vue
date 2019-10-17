@@ -1,5 +1,8 @@
 <template>
-  <div class="chart-wrap" ref="refChart"></div>
+  <div class="content-wrap">
+    <div class="chart-default" v-if="!dataOption"></div>
+    <div class="chart-wrap" v-if="dataOption" ref="refChart"></div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -23,7 +26,9 @@ export default class LineGraph extends ViewBase {
   dataUnit: string = '(元)'
 
   mounted() {
-    this.updateCharts()
+    if (this.dataOption) {
+      this.updateCharts()
+    }
   }
 
   // 接口没调
@@ -183,6 +188,13 @@ export default class LineGraph extends ViewBase {
   width: 100%;
   height: 400px;
 }
+.chart-default {
+  background: url('../../assets/data-null.png') no-repeat center;
+  background-size: 201px auto;
+  width: 100%;
+  height: 100%;
+}
+
 .chart-wrap {
   // position: absolute;
   // left: 0;

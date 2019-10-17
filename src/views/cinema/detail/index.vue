@@ -7,6 +7,7 @@
       <TopBar />
       <CinemaInfo :cinemaInfo="detail.cinemaInfo" />
       <CinemaData :cinemaData="detail.cinemaData" />
+      <WatchTimes :cinemaTrend="detail.viewPerson" />
       <CinemaPortrait :portrait="portrait" />
       <!-- <div class="joinplan">
         <button>加入投放</button>
@@ -21,6 +22,7 @@ import TopBar from '@/components/topBar'
 import CinemaInfo from './components/cinemaInfo.vue'
 import CinemaData from './components/cinemaData.vue'
 import CinemaPortrait from './components/cinemaPortrait.vue'
+import WatchTimes from './components/watchTimes.vue'
 import { getCinemaDetail } from '@/api/advertiser'
 import { toast } from '@/util/toast'
 
@@ -29,6 +31,7 @@ import { toast } from '@/util/toast'
     TopBar,
     CinemaInfo,
     CinemaData,
+    WatchTimes,
     CinemaPortrait
   }
 })

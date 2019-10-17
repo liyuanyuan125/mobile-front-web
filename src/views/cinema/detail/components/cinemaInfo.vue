@@ -1,8 +1,10 @@
 <template>
-  <div class="cinemainfo">
-    <span class="location" title="定位" @click="goCinemaMap"></span>
-    <h2>{{cinemaInfo.cinemaName}}</h2>
-    <p class="address">{{cinemaInfo.cinemaAddress}}</p>
+  <div>
+    <div class="cinemainfo">
+      <span class="location" title="定位" @click="goCinemaMap"></span>
+      <h2>{{cinemaInfo.cinemaName}}</h2>
+      <p class="address">{{cinemaInfo.cinemaAddress}}</p>
+    </div>
     <div class="discount">
       <div v-if="cinemaInfo.discountPrice">
         <strong class="price">
@@ -11,7 +13,9 @@
         </strong>
         <span class="through">￥{{cinemaInfo.viewPrice}}</span>
         <span>/千次曝光（15s）</span>
-        <em class="disdesc" v-if="cinemaInfo.discountDesc">{{cinemaInfo.discountDesc}}限时五折</em>
+        <p>
+          <em class="disdesc" v-if="cinemaInfo.discountDesc">{{cinemaInfo.discountDesc}}限时五折</em>
+        </p>
       </div>
       <strong class="price" v-if="!cinemaInfo.discountPrice">
         <i>￥</i>

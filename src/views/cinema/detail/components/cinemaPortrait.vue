@@ -19,12 +19,10 @@
         </div>
       </div>
     </div>
-    <div style="margin-top:40px" v-if="userPerferData">
-      <h4>消费偏好</h4>
-      <div class="usergender">
-        <BarGraphRow :dataOption="userPerferData" :bgcolor="perferColor" />
-        <p class="perferdesc">{{portrait.consumePerfer.desc}}</p>
-      </div>
+    <h4 style="margin-top:40px">消费偏好</h4>
+    <div class="usergender">
+      <BarGraphRow :dataOption="userPerferData" :bgcolor="perferColor" />
+      <p class="perferdesc" v-if="portrait.consumePerfer">{{portrait.consumePerfer.desc}}</p>
     </div>
   </div>
 </template>
@@ -64,13 +62,16 @@ export default class CinemaPortrait extends ViewBase {
   formatAgesData() {
     const xData = []
     const yData = []
-    for (const item of this.portrait.userAges) {
-      xData.push(item.range)
-      yData.push(item.value)
-    }
-    this.userAgesData = {
-      xData,
-      yData
+    const rait = this.portrait.userAges
+    if (rait && rait.length) {
+      for (const item of rait) {
+        xData.push(item.range)
+        yData.push(item.value)
+      }
+      this.userAgesData = {
+        xData,
+        yData
+      }
     }
   }
 
@@ -78,29 +79,32 @@ export default class CinemaPortrait extends ViewBase {
   formatGenderLegend() {
     const legendData = []
     const userGenderObj = []
-    for (const item of this.portrait.userGender) {
-      userGenderObj.push({
-        name: item.type,
-        value: item.value
-      })
-      legendData.push({
-        name: item.type,
-        icon: 'circle',
-        textStyle: {
-          color: '#8798AF',
-          fontSize: 16
-        }
-      })
-    }
-    this.userGenderData = {
-      data: userGenderObj,
-      legendData,
-      legendX: 'left',
-      legendY: '65%',
-      legendLeft: 20,
-      orient: 'vertical',
-      size: ['40%', '65%'],
-      position: ['50%', '35%']
+    const rait = this.portrait.userGender
+    if (rait && rait.length) {
+      for (const item of rait) {
+        userGenderObj.push({
+          name: item.type,
+          value: item.value
+        })
+        legendData.push({
+          name: item.type,
+          icon: 'circle',
+          textStyle: {
+            color: '#8798AF',
+            fontSize: 16
+          }
+        })
+      }
+      this.userGenderData = {
+        data: userGenderObj,
+        legendData,
+        legendX: 'left',
+        legendY: '65%',
+        legendLeft: 20,
+        orient: 'vertical',
+        size: ['40%', '65%'],
+        position: ['50%', '35%']
+      }
     }
   }
 
@@ -108,29 +112,32 @@ export default class CinemaPortrait extends ViewBase {
   formatMaritalLegend() {
     const legendData = []
     const userMaritalObj = []
-    for (const item of this.portrait.userMarital) {
-      userMaritalObj.push({
-        name: item.status,
-        value: item.value
-      })
-      legendData.push({
-        name: item.status,
-        icon: 'circle',
-        textStyle: {
-          color: '#8798AF',
-          fontSize: 16
-        }
-      })
-    }
-    this.userMaritalData = {
-      data: userMaritalObj,
-      legendData,
-      legendX: 'center',
-      legendY: '65%',
-      legendLeft: 20,
-      orient: 'vertical',
-      size: ['40%', '65%'],
-      position: ['50%', '35%']
+    const rait = this.portrait.userMarital
+    if (rait && rait.length) {
+      for (const item of rait) {
+        userMaritalObj.push({
+          name: item.status,
+          value: item.value
+        })
+        legendData.push({
+          name: item.status,
+          icon: 'circle',
+          textStyle: {
+            color: '#8798AF',
+            fontSize: 16
+          }
+        })
+      }
+      this.userMaritalData = {
+        data: userMaritalObj,
+        legendData,
+        legendX: 'center',
+        legendY: '65%',
+        legendLeft: 20,
+        orient: 'vertical',
+        size: ['40%', '65%'],
+        position: ['50%', '35%']
+      }
     }
   }
 
@@ -138,14 +145,17 @@ export default class CinemaPortrait extends ViewBase {
   formatPerferData() {
     const xData = []
     const yData = []
-    for (const item of this.portrait.consumePerfer.data) {
-      yData.push(item.type)
-      xData.push(item.value)
-    }
-    this.userPerferData = {
-      xData,
-      yData,
-      labelFormatter: '{c}'
+    const rait = this.portrait.consumePerfer
+    if (rait && rait.data.length) {
+      for (const item of rait.data) {
+        yData.push(item.type)
+        xData.push(item.value)
+      }
+      this.userPerferData = {
+        xData,
+        yData,
+        labelFormatter: '{c}'
+      }
     }
   }
 }

@@ -25,6 +25,7 @@ import CinemaPortrait from './components/cinemaPortrait.vue'
 import WatchTimes from './components/watchTimes.vue'
 import { getCinemaDetail } from '@/api/advertiser'
 import { toast } from '@/util/toast'
+import { setNavBarStatus } from '@/util/native'
 
 @Component({
   components: {
@@ -46,7 +47,19 @@ export default class CinemaDetail extends Vue {
     this.cinemaId = cid
     this.getCinemaDetail(cid)
     document.body.style.background = '#FBFBFB'
+    this.hideNavBarStatus()
   }
+
+  // 隐藏导航
+  async hideNavBarStatus() {
+    const objectData = {
+      isShowNavBar: false,
+      isWebViewOnScreenTop: true
+    }
+    const obj = { params: objectData }
+    await setNavBarStatus(obj)
+  }
+
   mounted() {
     window.addEventListener('scroll', this.getScroll)
   }

@@ -20,7 +20,7 @@ import BaseInfoArea from './components/baseInfoArea.vue'
 import { getVideoDetail, cancelVideoDetail, delVideoDetail } from '@/api/advertiser.ts'
 import { toast } from '@/util/toast'
 import { Dialog } from 'vant'
-import { openAppLinkClient, handleGoBack } from '@/util/native'
+import { openAppLinkClient, handleGoBack, setNavBarStatus } from '@/util/native'
 
 @Component({
   components: {
@@ -40,6 +40,17 @@ export default class ResultReport extends Vue {
     const vid = this.$route.params.videoId
     this.videoId = vid
     this.getVideoDetail(vid)
+    this.hideNavBarStatus()
+  }
+
+  // 隐藏导航
+  async hideNavBarStatus() {
+    const objectData = {
+      isShowNavBar: false,
+      isWebViewOnScreenTop: true
+    }
+    const obj = { params: objectData }
+    await setNavBarStatus(obj)
   }
 
   // 获取报告详情  468 待转码和已完成不能删除

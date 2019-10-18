@@ -37,6 +37,7 @@ import UserPortrait from './components/userPortrait.vue'
 import ChiefPeople from './components/chiefPeople.vue'
 import { getMovieDetail } from '@/api/advertiser'
 import { toast } from '@/util/toast'
+import { setNavBarStatus } from '@/util/native'
 
 @Component({
   components: {
@@ -70,6 +71,17 @@ export default class MovieDetail extends Vue {
     this.movieId = mid
     this.getMovieDetail(mid)
     document.body.style.background = '#FBFBFB'
+    this.hideNavBarStatus()
+  }
+
+  // 隐藏导航
+  async hideNavBarStatus() {
+    const objectData = {
+      isShowNavBar: false,
+      isWebViewOnScreenTop: true
+    }
+    const obj = { params: objectData }
+    await setNavBarStatus(obj)
   }
 
   // 获取电影资料

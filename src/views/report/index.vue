@@ -41,6 +41,7 @@ import DataUserStatus from './components/dataUserStatus.vue' // 年龄和性别�
 import DataCity from './components/dataCity.vue' // 城市相关
 import { getReportDetail } from '@/api/advertiser.ts'
 import { toast } from '@/util/toast'
+import { setNavBarStatus } from '@/util/native'
 
 @Component({
   components: {
@@ -62,6 +63,17 @@ export default class ResultReport extends Vue {
     this.orderId = reportId
     this.getReportDetail(reportId)
     document.body.style.background = '#FBFBFB'
+    this.hideNavBarStatus()
+  }
+
+  // 隐藏导航
+  async hideNavBarStatus() {
+    const objectData = {
+      isShowNavBar: false,
+      isWebViewOnScreenTop: true
+    }
+    const obj = { params: objectData }
+    await setNavBarStatus(obj)
   }
 
   // 获取报告详情 563、516、515、424

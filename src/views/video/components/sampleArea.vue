@@ -2,12 +2,12 @@
   <!--广告片信息 -->
   <div class="videosample">
     <h4>广告小样</h4>
-    <div class="videobox" @click="playVideo">
+    <div class="videobox">
       <!-- <span class="info">{{sampleInfo.videoName}}</span> -->
-      <span class="play" v-if="sampleInfo.videoCoverUrl.url"></span>
-      <img :src="coverImg" v-if="sampleInfo.videoCoverUrl.url" />
-      <img src="../assets/cover.png" v-if="!sampleInfo.videoCoverUrl.url" />
-      <video :src="sampleInfo.videoUrl" ref="video"></video>
+      <span class="play" v-if="sampleInfo.videoCoverUrl.url" @click="playVideo"></span>
+      <img :src="coverImg" v-if="sampleInfo.videoCoverUrl.url" @click="playVideo" />
+      <img src="../assets/cover.png" v-if="!sampleInfo.videoCoverUrl.url" @click="playVideo" />
+      <video :src="'https:' + sampleInfo.videoUrl" ref="video" controls></video>
     </div>
   </div>
 </template>
@@ -37,7 +37,25 @@ export default class SampleArea extends ViewBase {
 
   playVideo() {
     const vid: any = this.$refs.video
+    vid.style.zIndex = 3
+    vid.style.opacity = 1
     vid.play()
+    if (vid.ended) {
+      vid.style.zIndex = 1
+      vid.style.opacity = 0
+    }
+    vid.addEventListener('ended', () => {
+      vid.style.zIndex = 1
+      vid.style.opacity = 0
+    })
+    if (vid.pause) {
+      vid.style.zIndex = 1
+      vid.style.opacity = 0
+    }
+    vid.addEventListener('pause', () => {
+      vid.style.zIndex = 1
+      vid.style.opacity = 0
+    })
   }
 }
 </script>

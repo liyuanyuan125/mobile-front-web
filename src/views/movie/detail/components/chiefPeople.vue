@@ -1,7 +1,8 @@
 <template>
-  <div class="chiefpeople" v-if="chiefData">
+  <div class="chiefpeople">
     <h3>主创人员</h3>
-    <div class="peoplelist">
+    <div class="peopledefault" v-if="!chiefData || !chiefData.length"></div>
+    <div class="peoplelist" v-if="chiefData">
       <dl :style="{width:dlWidth}">
         <dd v-for="(item,index) in chiefpeople" :key="item.actorName + index">
           <i class="img">

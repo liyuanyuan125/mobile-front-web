@@ -10,7 +10,7 @@
     </h4>
     <p class="desc">{{statusInfo.adVideoStatusDesc}}</p>
     <div class="but" v-if="statusInfo.hasCanEdit">
-      <button>编辑</button>
+      <button @click="goEditVideo">编辑</button>
     </div>
   </div>
 </template>
@@ -25,8 +25,26 @@ import { openAppLinkClient, handleGoBack } from '@/util/native'
 })
 export default class StatusArea extends ViewBase {
   @Prop({ type: Object }) statusInfo!: any
+  @Prop({ type: String }) videoId!: string
 
   statusTit = ''
+
+  // 去编辑视频页
+  async goEditVideo() {
+    let applink = ''
+    if (this.statusInfo.adVideoType == 1) {
+      applink = 'editAdVideoLocation'
+    } else if (this.statusInfo.adVideoType == 2) {
+      applink = 'editAdVideoNetPan'
+    }
+    const objectData = {
+      applinkData:
+        'jydataadvertiser://scheme?p=' + applink + '&adVideoId=' + this.videoId,
+      originUrl: location.href
+    }
+    const obj = { params: objectData }
+    await openAppLinkClient(obj)
+  }
 
   // 返回上一页
   async goBack() {

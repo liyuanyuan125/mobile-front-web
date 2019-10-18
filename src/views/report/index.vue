@@ -1,7 +1,7 @@
 <template>
   <div class="viewpage">
     <div class="viewer">
-      <TopBar />
+      <TopBar barColor="black" />
       <PlanInfo :planInfo="orderDetail.planInfo" v-if="orderDetail.planInfo" />
       <PutProgress
         :progress="orderDetail.reportCount"

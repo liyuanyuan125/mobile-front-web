@@ -1,6 +1,6 @@
 <template>
   <div class="viewpage" v-if="videoDetail">
-    <StatusArea :statusInfo="videoDetail.adVideoStatusInfo" />
+    <StatusArea :statusInfo="videoDetail.adVideoStatusInfo" :videoId="videoId" />
     <VideoInfoArea :videoInfo="videoDetail.videoInfo" />
     <SampleArea :sampleInfo="videoDetail.adSampleInfo" v-if="videoDetail.adSampleInfo.videoUrl" />
     <!-- <PayInfoArea /> -->

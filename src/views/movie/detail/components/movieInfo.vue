@@ -38,7 +38,7 @@ export default class MovieInfo extends ViewBase {
   mounted() {
     // 处理封面图
     const coverUrl = this.movieInfo.coverUrl
-    if (coverUrl.type == 'piaoshen') {
+    if (coverUrl.source == 'piaoshen') {
       this.coverImg = coverUrl.url ? imgProxy(coverUrl.url, 160, 210) : ''
     } else {
       this.coverImg = coverUrl.url

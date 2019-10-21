@@ -75,6 +75,9 @@ export default class NumPage extends ViewBase {
           setPhoneNumber(this.inValue) // 更新store的值
         } else {
           toast(res.msg)
+          setTimeout(async () => {
+            await this.goBackApp()
+          }, 1500)
         }
       } catch (ex) {
         this.handleError(ex)

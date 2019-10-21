@@ -212,6 +212,9 @@ export default class GetMobile extends ViewBase {
           this.changePage(1)
         } else {
           toast(res.msg)
+          setTimeout(async () => {
+            await this.goLogin()
+          }, 1500)
         }
       } catch (ex) {
         this.handleError(ex)

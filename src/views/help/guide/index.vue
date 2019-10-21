@@ -21,26 +21,37 @@
         <img src="./assets/stepdesc.jpg" />
       </div>
       <div class="step01">
-        <img src="./assets/step011.jpg" />
+        <img src="./assets/step011.jpg" class="img01" />
       </div>
       <div class="step01">
-        <img src="./assets/step012.jpg" />
+        <img src="./assets/step012.jpg" class="img02" />
       </div>
       <div class="step01">
-        <img src="./assets/step02.jpg" />
+        <img src="./assets/step02.jpg" class="img03" />
       </div>
       <div class="step01">
-        <img src="./assets/step03.jpg" />
+        <img src="./assets/step03.jpg" class="img04" />
       </div>
     </div>
     <div class="box report" ref="report">
       <img src="./assets/reportimg.jpg" />
+    </div>
+    <div class="btnbox">
+      <dl>
+        <dd>
+          <button @click="goAppLink('home')">回首页</button>
+        </dd>
+        <dd>
+          <button class="kf" @click="goAppLink('kefu')">在线客服</button>
+        </dd>
+      </dl>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import { openAppLinkClient } from '@/util/native'
 
 @Component({})
 export default class Guide extends Vue {
@@ -52,15 +63,11 @@ export default class Guide extends Vue {
   mounted() {
     document.documentElement.style.background = '#A5BEF8'
     window.addEventListener('scroll', this.getScroll)
-  }
-  beforeUpdate() {
     // 计算如何投放和查看报告的位置
     const step: any = this.$refs.step
     const report: any = this.$refs.report
-    const desc: any = this.$refs.desc
     this.scrollStep = step.offsetTop
     this.scrollReport = report.offsetTop
-    // console.log('top', step.offsetTop, report.offsetTop)
   }
 
   destroyed() {
@@ -70,6 +77,17 @@ export default class Guide extends Vue {
   // 切换tab
   changeTab(val: number) {
     this.tabIdx = val
+    switch (this.tabIdx) {
+      case 1:
+        document.documentElement.scrollTop = 0
+        break
+      case 2:
+        document.documentElement.scrollTop = this.scrollStep
+        break
+      case 3:
+        document.documentElement.scrollTop = this.scrollReport
+        break
+    }
   }
 
   // 监听滚动显示顶部导航
@@ -87,6 +105,20 @@ export default class Guide extends Vue {
     if (topNum > this.scrollReport) {
       this.tabIdx = 3
     }
+  }
+
+  // applink
+  async goAppLink(type: string) {
+    let applink = 'homePage'
+    if (type === 'kefu') {
+      applink = 'hotLinePage'
+    }
+    const objectData = {
+      applinkData: 'jydataadvertiser://scheme?p=' + applink,
+      originUrl: location.href
+    }
+    const obj = { params: objectData }
+    await openAppLinkClient(obj)
   }
 }
 </script>

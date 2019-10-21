@@ -97,12 +97,12 @@ export default class Guide extends Vue {
       document.documentElement.scrollTop ||
       document.body.scrollTop
     // console.log('scr', topNum)
-    if (topNum > this.scrollStep) {
+    if (topNum >= this.scrollStep) {
       this.tabIdx = 2
     } else {
       this.tabIdx = 1
     }
-    if (topNum > this.scrollReport) {
+    if (topNum >= this.scrollReport) {
       this.tabIdx = 3
     }
   }

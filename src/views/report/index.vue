@@ -1,7 +1,7 @@
 <template>
   <div class="viewpage">
     <div class="viewer">
-      <TopBar barColor="black" />
+      <TopBar barColor="black" v-if="!barShow" />
       <PlanInfo :planInfo="orderDetail.planInfo" v-if="orderDetail.planInfo" />
       <PutProgress
         :progress="orderDetail.reportCount"
@@ -57,6 +57,7 @@ import { setNavBarStatus } from '@/util/native'
 export default class ResultReport extends Vue {
   orderId: string = ''
   orderDetail: any = {}
+  barShow: any = ''
 
   beforeMount() {
     const reportId = this.$route.params.orderId
@@ -64,6 +65,7 @@ export default class ResultReport extends Vue {
     this.getReportDetail(reportId)
     document.body.style.background = '#FBFBFB'
     this.hideNavBarStatus()
+    this.barShow = this.$route.query.show
   }
 
   // 隐藏导航

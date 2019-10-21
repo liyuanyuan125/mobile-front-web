@@ -1,8 +1,8 @@
 <template>
   <div class="userinfo">
     <div class="userbox">
-      <img v-if="companyLogo" :src="companyLogo" alt="公司名称" class="img" />
-      <img v-if="!companyLogo" src="@/assets/logo.png" alt="公司名称" class="img" />
+      <img v-if="companyLogo" :src="companyLogo" :alt="planInfo.planName" class="img" />
+      <img v-if="!companyLogo" src="../assets/default.png" :alt="planInfo.planName" class="img" />
       <h3>{{planInfo.planName}}</h3>
       <p>{{planInfo.videoName}} | {{planInfo.videoLength}}</p>
     </div>

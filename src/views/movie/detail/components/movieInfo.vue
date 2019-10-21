@@ -14,7 +14,7 @@
       <p>{{movieInfo.releaseDesc}}</p>
       <div class="exponentbox" v-if="movieInfo.score">
         <strong>{{movieInfo.score}}</strong>
-        <p class="ques" @click="showNote">鲸娱指数</p>
+        <p class="ques" @click="showNote">鲸鱼指数</p>
       </div>
     </div>
   </div>

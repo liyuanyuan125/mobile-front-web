@@ -59,11 +59,11 @@ export default class MovieDetail extends Vue {
   scrollTop: number = 0
 
   mounted() {
-    window.addEventListener('scroll', this.getScroll)
+    window.addEventListener('scroll', this.getScroll())
   }
 
   destroyed() {
-    window.removeEventListener('scroll', this.getScroll)
+    window.removeEventListener('scroll', this.getScroll())
   }
 
   beforeMount() {

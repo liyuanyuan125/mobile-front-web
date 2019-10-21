@@ -3,8 +3,11 @@
     <div class="logo">全网精准娱乐营销平台</div>
     <div class="desc">高效移动工作平台</div>
     <div class="btnbox">
-      <button class="iosbtn">Ios下载</button>
-      <button class="androidbtn">Android下载</button>
+      <a class="iosbtn" href="https://itunes.apple.com/cn/app/id1477971483?mt=8">Ios下载</a>
+      <a
+        class="androidbtn"
+        href="https://aiads-file.oss-cn-beijing.aliyuncs.com/MISC/MISC/bm4nkrrlqfo000804kb0.apk"
+      >Android下载</a>
     </div>
   </div>
 </template>
@@ -27,7 +30,7 @@ export default class DownloadCinema extends Vue {
 .download {
   height: 100%;
   background: url('./assets/bg.jpg') no-repeat center 0;
-  background-size: 100% auto;
+  background-size: cover;
   padding-top: 1px;
 }
 .logo {
@@ -51,7 +54,7 @@ export default class DownloadCinema extends Vue {
 .btnbox {
   margin-top: 40px;
   text-align: center;
-  button {
+  a {
     width: 408px;
     height: 88px;
     border: none;
@@ -61,6 +64,7 @@ export default class DownloadCinema extends Vue {
     font-size: 0;
     line-height: 0;
     margin-bottom: 40px;
+    display: inline-block;
   }
   .iosbtn {
     background-image: url('./assets/iosbtn.png');

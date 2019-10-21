@@ -49,6 +49,12 @@ export default new Router({
       name: 'agreement',
       component: () => import('./views/help/agreement/index.vue')
     },
+    // 指南
+    {
+      path: '/help/guide',
+      name: 'guide',
+      component: () => import('./views/help/guide/index.vue')
+    },
     // 修改密码
     {
       path: '/apply',

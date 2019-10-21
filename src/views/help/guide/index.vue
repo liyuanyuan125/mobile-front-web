@@ -60,7 +60,7 @@ export default class Guide extends Vue {
     const desc: any = this.$refs.desc
     this.scrollStep = step.offsetTop
     this.scrollReport = report.offsetTop
-    console.log('top', step.offsetTop, report.offsetTop)
+    // console.log('top', step.offsetTop, report.offsetTop)
   }
 
   destroyed() {
@@ -78,8 +78,7 @@ export default class Guide extends Vue {
       window.pageYOffset ||
       document.documentElement.scrollTop ||
       document.body.scrollTop
-    console.log('scr', topNum)
-    const wid = topNum / (750 / window.innerWidth)
+    // console.log('scr', topNum)
     if (topNum > this.scrollStep) {
       this.tabIdx = 2
     } else {

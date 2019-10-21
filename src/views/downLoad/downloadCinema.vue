@@ -3,10 +3,10 @@
     <div class="logo">全网精准娱乐营销平台</div>
     <div class="desc">高效移动工作平台</div>
     <div class="btnbox">
-      <a class="iosbtn" href="https://itunes.apple.com/cn/app/id1477971483?mt=8">Ios下载</a>
+      <a class="iosbtn" href="https://itunes.apple.com/cn/app/id1477971483?mt=8">iPhone版下载</a>
       <a
         class="androidbtn"
-        href="https://aiads-file.oss-cn-beijing.aliyuncs.com/MISC/MISC/bm4nkrrlqfo000804kb0.apk"
+        href="http://aiads-file.oss-cn-beijing.aliyuncs.com/VIDEO/MISC/bmmr1b8l164g008001s0.apk"
       >Android下载</a>
     </div>
   </div>

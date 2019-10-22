@@ -4,11 +4,9 @@
     <div class="desc">高效移动工作平台</div>
     <div class="btnbox">
       <a class="iosbtn" href="https://itunes.apple.com/cn/app/id1477971483?mt=8">iPhone版下载</a>
-      <a
-        class="androidbtn"
-        href="http://aiads-file.oss-cn-beijing.aliyuncs.com/VIDEO/MISC/bmmr1b8l164g008001s0.apk"
-      >Android下载</a>
+      <a class="androidbtn" @click="wxDownload">Android下载</a>
     </div>
+    <div class="sharetip" v-show="isShowWX" @click="closeWX"></div>
   </div>
 </template>
 
@@ -19,9 +17,26 @@ import { Component, Vue } from 'vue-property-decorator'
   components: {}
 })
 export default class DownloadCinema extends Vue {
+  isShowWX: boolean = false
+
   mounted() {
     const dw: any = this.$refs.downloabox
     dw.style.height = document.body.clientHeight + 'px'
+  }
+
+  wxDownload() {
+    const ua = navigator.userAgent
+    const isWeixin = /MicroMessenger/gi.test(ua)
+    if (isWeixin) {
+      this.isShowWX = true
+    } else {
+      location.href =
+        'https://aiads-file.oss-cn-beijing.aliyuncs.com/VIDEO/MISC/JYdata_yc_V1.0.apk'
+    }
+  }
+
+  closeWX() {
+    this.isShowWX = !this.isShowWX
   }
 }
 </script>
@@ -35,9 +50,9 @@ export default class DownloadCinema extends Vue {
 }
 .logo {
   background: url('./assets/logo.png') no-repeat center 0;
-  background-size: cover;
-  width: 420px;
-  height: 218px;
+  background-size: 100% auto;
+  width: 390px;
+  height: 280px;
   margin: 140px auto 0;
   font-size: 0;
   line-height: 0;
@@ -72,5 +87,15 @@ export default class DownloadCinema extends Vue {
   .androidbtn {
     background-image: url('./assets/androidbtn.png');
   }
+}
+.sharetip {
+  background: url('./assets/share.png') no-repeat right 0 rgba(0, 0, 0, 0.8);
+  background-size: 100% auto;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 11;
 }
 </style>

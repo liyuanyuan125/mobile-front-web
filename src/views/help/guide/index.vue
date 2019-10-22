@@ -100,7 +100,6 @@ export default class Guide extends Vue {
       window.pageYOffset ||
       document.documentElement.scrollTop ||
       document.body.scrollTop
-    // console.log('scr', topNum)
     if (topNum >= this.scrollStep) {
       this.tabIdx = 2
     } else {

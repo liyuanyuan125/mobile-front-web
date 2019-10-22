@@ -13,6 +13,7 @@
     width: 100%;
     top: 0;
     left: 0;
+    z-index: 10;
 
     dl {
         display: flex;
@@ -78,6 +79,17 @@
     .step01 {
         margin-top: 100px;
         padding: 0 30px;
+        position: relative;
+
+        a {
+            background: #000;
+            position: absolute;
+            right: 30px;
+            bottom: 30px;
+            width: 270px;
+            height: 270px;
+            opacity: 0;
+        }
 
         img {
             max-width: 100%;

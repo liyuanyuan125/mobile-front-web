@@ -1,29 +1,31 @@
 <template>
-  <div class="viewpage">
+  <div class="viewpage" v-if="orderDetail">
     <div class="viewer">
+      <div class="fixbar" :style="{opacity:scrollTop}">
+        <TopBar
+          barColor="black"
+          :title="orderDetail.planInfo.planName"
+          :styleline="'background:#fff;box-shadow:0 0 20px rgba(111,131,153,.1)'"
+          v-if="!barShow"
+        />
+      </div>
       <TopBar barColor="black" v-if="!barShow" />
-      <PlanInfo :planInfo="orderDetail.planInfo" v-if="orderDetail.planInfo" />
+      <PlanInfo :planInfo="orderDetail.planInfo" />
       <PutProgress
         :progress="orderDetail.reportCount"
         v-if="orderDetail.reportCount"
         :orderId="this.orderId"
       />
-      <DataTrend :dataTrend="orderDetail.dataTrend" v-if="orderDetail.dataTrend" />
+      <DataTrend :dataTrend="orderDetail.dataTrend" />
       <DataTotal
         :cinemaCount="orderDetail.planInfo.coverCinemaCount"
         :movieCount="orderDetail.planInfo.coverMovieCount"
-        v-if="orderDetail.planInfo"
         :orderId="this.orderId"
       />
-      <DataUserStatus
-        :userAges="orderDetail.userAges"
-        :userGender="orderDetail.userGender"
-        v-if="orderDetail.userAges || orderDetail.userGender"
-      />
+      <DataUserStatus :userAges="orderDetail.userAges" :userGender="orderDetail.userGender" />
       <DataCity
         :cityTier="orderDetail.cityTier"
         :cityProfile="orderDetail.cityProfile"
-        v-if="orderDetail.cityTier || orderDetail.cityProfile"
         :orderId="this.orderId"
       />
     </div>
@@ -56,9 +58,17 @@ import { setNavBarStatus } from '@/util/native'
 })
 export default class ResultReport extends Vue {
   orderId: string = ''
-  orderDetail: any = {}
+  orderDetail: any = null
   barShow: any = ''
+  scrollTop: number = 0
 
+  mounted() {
+    window.addEventListener('scroll', this.getScroll)
+  }
+
+  destroyed() {
+    window.removeEventListener('scroll', this.getScroll)
+  }
   beforeMount() {
     const reportId = this.$route.params.orderId
     this.orderId = reportId
@@ -90,6 +100,15 @@ export default class ResultReport extends Vue {
     } catch (ex) {
       toast(ex)
     }
+  }
+
+  // 监听滚动显示顶部导航
+  getScroll() {
+    const topNum =
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop
+    this.scrollTop = topNum > 0 ? 1 : 0
   }
 }
 </script>

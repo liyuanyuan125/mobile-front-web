@@ -1,6 +1,7 @@
 <template>
-  <div class="viewpage" v-if="detail && !movieErr">
-    <div class="viewer">
+  <div :class="['viewpage',{'viewafter':movieErr}]">
+    <DataNull v-if="movieErr" />
+    <div class="viewer" v-if="detail && !movieErr">
       <div class="fixbar" :style="{opacity:scrollTop}">
         <TopBar
           :title="detail.movieInfo.movieNameCn"
@@ -41,6 +42,7 @@ import ChiefPeople from './components/chiefPeople.vue'
 import { getMovieDetail } from '@/api/advertiser'
 import { toast } from '@/util/toast'
 import { setNavBarStatus } from '@/util/native'
+import DataNull from '@/components/dataNull'
 // import VueCookies from 'vue-cookies'
 
 @Component({
@@ -50,11 +52,12 @@ import { setNavBarStatus } from '@/util/native'
     BoxOffice,
     WatchTimes,
     UserPortrait,
-    ChiefPeople
+    ChiefPeople,
+    DataNull
   }
 })
 export default class MovieDetail extends Vue {
-  movieErr: boolean = false
+  movieErr: boolean = false // 是否数据错误
   backgroundRGA: string = ''
   rgbArr: any = []
   detail: any = null
@@ -96,6 +99,7 @@ export default class MovieDetail extends Vue {
         this.detail = res.data
         this.hasShowTime = res.data.movieInfo.isShowTime
       } else {
+        this.movieErr = true
         toast(res.msg)
       }
     } catch (ex) {

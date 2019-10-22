@@ -1,6 +1,7 @@
 <template>
-  <div class="viewpage" v-if="orderDetail">
-    <div class="viewer">
+  <div class="viewpage">
+    <DataNull v-if="dataErr" />
+    <div class="viewer" v-if="orderDetail && !dataErr">
       <div class="fixbar" :style="{opacity:scrollTop}">
         <TopBar
           barColor="black"
@@ -44,6 +45,7 @@ import DataCity from './components/dataCity.vue' // 城市相关
 import { getReportDetail } from '@/api/advertiser.ts'
 import { toast } from '@/util/toast'
 import { setNavBarStatus } from '@/util/native'
+import DataNull from '@/components/dataNull'
 
 @Component({
   components: {
@@ -53,7 +55,8 @@ import { setNavBarStatus } from '@/util/native'
     DataTrend,
     DataTotal,
     DataUserStatus,
-    DataCity
+    DataCity,
+    DataNull
   }
 })
 export default class ResultReport extends Vue {
@@ -61,6 +64,7 @@ export default class ResultReport extends Vue {
   orderDetail: any = null
   barShow: any = ''
   scrollTop: number = 0
+  dataErr: boolean = false // 数据是否错误
 
   mounted() {
     window.addEventListener('scroll', this.getScroll)
@@ -95,6 +99,7 @@ export default class ResultReport extends Vue {
       if (res.code === 0) {
         this.orderDetail = res.data
       } else {
+        this.dataErr = true
         toast(res.msg)
       }
     } catch (ex) {

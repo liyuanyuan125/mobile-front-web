@@ -28,8 +28,8 @@ export default class UserPortrait extends ViewBase {
   @Prop({ type: Array }) userAges!: any
   @Prop({ type: Array }) userGender!: any
 
-  userAgesData: any = {}
-  userGenderData: any = {}
+  userAgesData: any = null
+  userGenderData: any = null
 
   created() {
     this.formatAgesData()

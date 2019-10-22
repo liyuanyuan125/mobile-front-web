@@ -1,6 +1,7 @@
 <template>
-  <div class="viewpage" v-if="detail">
-    <div class="viewer">
+  <div :class="['viewpage',{'viewafter':cinemaErr}]">
+    <DataNull v-if="cinemaErr" />
+    <div class="viewer" v-if="detail && !cinemaErr">
       <div class="fixbar" :style="{opacity:scrollTop}">
         <TopBar
           :title="detail.cinemaInfo.cinemaName"
@@ -30,6 +31,7 @@ import WatchTimes from './components/watchTimes.vue'
 import { getCinemaDetail } from '@/api/advertiser'
 import { toast } from '@/util/toast'
 import { setNavBarStatus } from '@/util/native'
+import DataNull from '@/components/dataNull'
 
 @Component({
   components: {
@@ -37,7 +39,8 @@ import { setNavBarStatus } from '@/util/native'
     CinemaInfo,
     CinemaData,
     WatchTimes,
-    CinemaPortrait
+    CinemaPortrait,
+    DataNull
   }
 })
 export default class CinemaDetail extends Vue {
@@ -45,6 +48,7 @@ export default class CinemaDetail extends Vue {
   portrait: any = null
   cinemaId: string = ''
   scrollTop: number = 0
+  cinemaErr: boolean = false
 
   beforeMount() {
     const cid = this.$route.params.cinemaId
@@ -85,6 +89,7 @@ export default class CinemaDetail extends Vue {
           consumePerfer: res.data.consumePerfer
         }
       } else {
+        this.cinemaErr = true
         toast(res.msg)
       }
     } catch (ex) {

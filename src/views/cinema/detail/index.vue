@@ -4,7 +4,7 @@
       <div class="fixbar" :style="{opacity:scrollTop}">
         <TopBar
           :title="detail.cinemaInfo.cinemaName"
-          :styleline="'background:#A0BBF9'"
+          :styleline="'background:#A0BBF9;box-shadow:0 0 20px rgba(111,131,153,.5)'"
           barColor="black"
         />
       </div>

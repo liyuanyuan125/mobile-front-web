@@ -2,7 +2,10 @@
   <div class="viewpage" v-if="detail && !movieErr">
     <div class="viewer">
       <div class="fixbar" :style="{opacity:scrollTop}">
-        <TopBar :title="detail.movieInfo.movieNameCn" :styleline="'background:#60a3e9'" />
+        <TopBar
+          :title="detail.movieInfo.movieNameCn"
+          :styleline="'background:#60a3e9;box-shadow:0 0 20px rgba(111,131,153,.5)'"
+        />
       </div>
       <TopBar />
       <MovieInfo :movieInfo="detail.movieInfo" />
@@ -38,6 +41,7 @@ import ChiefPeople from './components/chiefPeople.vue'
 import { getMovieDetail } from '@/api/advertiser'
 import { toast } from '@/util/toast'
 import { setNavBarStatus } from '@/util/native'
+// import VueCookies from 'vue-cookies'
 
 @Component({
   components: {

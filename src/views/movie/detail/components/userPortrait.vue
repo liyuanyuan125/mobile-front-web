@@ -40,39 +40,45 @@ export default class UserPortrait extends ViewBase {
   formatAgesData() {
     const xData = []
     const yData = []
-    for (const item of this.userAges) {
-      xData.push(item.range)
-      yData.push(item.value)
-    }
-    this.userAgesData = {
-      xData,
-      yData
+    const rait = this.userAges
+    if (rait && rait.length) {
+      for (const item of this.userAges) {
+        xData.push(item.range)
+        yData.push(item.value)
+      }
+      this.userAgesData = {
+        xData,
+        yData
+      }
     }
   }
 
   // 处理年龄legend数据
   formatGenderLegend() {
     const legendData = []
-    for (const item of this.userGender) {
-      legendData.push({
-        name: item.name,
-        icon: 'circle',
-        textStyle: {
-          color: '#8798AF',
-          fontSize: 14,
-          fontFamily: 'DIN Alternate'
-        }
-      })
-    }
-    this.userGenderData = {
-      data: this.userGender,
-      legendData,
-      legendLeft: '65%',
-      legendX: 'right',
-      legendY: 'middle',
-      orient: 'vertical',
-      size: ['40%', '65%'],
-      position: ['35%', '50%']
+    const rait = this.userGender
+    if (rait && rait.length) {
+      for (const item of this.userGender) {
+        legendData.push({
+          name: item.name,
+          icon: 'circle',
+          textStyle: {
+            color: '#8798AF',
+            fontSize: 13,
+            fontFamily: 'DIN Alternate'
+          }
+        })
+      }
+      this.userGenderData = {
+        data: this.userGender,
+        legendData,
+        legendLeft: '65%',
+        legendX: 'right',
+        legendY: 'middle',
+        orient: 'vertical',
+        size: ['40%', '65%'],
+        position: ['35%', '50%']
+      }
     }
   }
 }

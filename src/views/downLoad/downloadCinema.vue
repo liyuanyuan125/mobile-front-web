@@ -20,6 +20,7 @@ export default class DownloadCinema extends Vue {
   isShowWX: boolean = false
 
   mounted() {
+    document.title = '鲸鱼数据影城版'
     const dw: any = this.$refs.downloabox
     dw.style.height = document.body.clientHeight + 'px'
   }

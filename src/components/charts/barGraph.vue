@@ -42,7 +42,7 @@ export default class BarGraph extends ViewBase {
         padding: [6, 15],
         formatter:
           // tslint:disable-next-line:max-line-length
-          '<p style="font-size:26px;line-height:1.1"><span style="display:inline-block;margin-right:6px;border-radius:10px;width:10px;height:10px;background-color:#7AA0F5; vertical-align:middle"></span>{c}%</p><p style="color:#8798AF;font-size:14px; margin-left:16px;">{b}</p>',
+          '<p style="font-size:16px;line-height:1.1;font-weight:bold;font-family: DIN Alternate;"><span style="display:inline-block;margin-right:6px;border-radius:8px;width:8px;height:8px;background-color:#7AA0F5; vertical-align:middle;margin-top:-3px"></span>{c}%</p><p style="color:#8798AF;font-size:12px; margin-left:14px;">{b}</p>',
         textStyle: {
           fontSize: '14px',
           color: '#2E2F5A'
@@ -97,7 +97,7 @@ export default class BarGraph extends ViewBase {
       },
 
       grid: {
-        left: 0,
+        left: 10,
         top: '15px',
         bottom: 0,
         right: '15px',

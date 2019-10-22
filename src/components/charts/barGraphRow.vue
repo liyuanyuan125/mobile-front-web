@@ -85,7 +85,8 @@ export default class BarGraphRow extends ViewBase {
             formatter: this.dataOption.labelFormatter,
             color: '#2E2F5A',
             fontWeight: 'bold',
-            fontSize: 14
+            fontSize: 14,
+            fontFamily: 'DIN Alternate'
           },
           itemStyle: {
             color: (params: any) => {

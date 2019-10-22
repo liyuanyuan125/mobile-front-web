@@ -2,9 +2,13 @@
   <div class="viewpage" v-if="detail">
     <div class="viewer">
       <div class="fixbar" :style="{opacity:scrollTop}">
-        <TopBar :title="detail.cinemaInfo.cinemaName" :styleline="'background:#A0BBF9'" />
+        <TopBar
+          :title="detail.cinemaInfo.cinemaName"
+          :styleline="'background:#A0BBF9'"
+          barColor="black"
+        />
       </div>
-      <TopBar />
+      <TopBar barColor="black" />
       <CinemaInfo :cinemaInfo="detail.cinemaInfo" />
       <CinemaData :cinemaData="detail.cinemaData" />
       <WatchTimes :cinemaTrend="detail.viewPerson" />

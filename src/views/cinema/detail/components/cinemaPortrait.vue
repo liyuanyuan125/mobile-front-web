@@ -91,7 +91,8 @@ export default class CinemaPortrait extends ViewBase {
           icon: 'circle',
           textStyle: {
             color: '#8798AF',
-            fontSize: 16
+            fontSize: 14,
+            fontFamily: 'DIN Alternate'
           }
         })
       }
@@ -99,8 +100,8 @@ export default class CinemaPortrait extends ViewBase {
         data: userGenderObj,
         legendData,
         legendX: 'left',
-        legendY: '65%',
-        legendLeft: 20,
+        legendY: '68%',
+        legendLeft: 30,
         orient: 'vertical',
         size: ['40%', '65%'],
         position: ['50%', '35%']
@@ -124,7 +125,8 @@ export default class CinemaPortrait extends ViewBase {
           icon: 'circle',
           textStyle: {
             color: '#8798AF',
-            fontSize: 16
+            fontSize: 14,
+            fontFamily: 'DIN Alternate'
           }
         })
       }
@@ -132,8 +134,8 @@ export default class CinemaPortrait extends ViewBase {
         data: userMaritalObj,
         legendData,
         legendX: 'center',
-        legendY: '65%',
-        legendLeft: 20,
+        legendY: '68%',
+        legendLeft: 30,
         orient: 'vertical',
         size: ['40%', '65%'],
         position: ['50%', '35%']

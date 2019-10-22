@@ -49,7 +49,7 @@ export default class DataUserStatus extends ViewBase {
     }
   }
 
-  // 处理年龄legend数据
+  // 处理性别数据
   formatGenderLegend() {
     const legendData = []
     for (const item of this.userGender) {
@@ -58,19 +58,20 @@ export default class DataUserStatus extends ViewBase {
         icon: 'circle',
         textStyle: {
           color: '#8798AF',
-          fontSize: 16
+          fontSize: 14,
+          fontFamily: 'DIN Alternate'
         }
       })
     }
     this.userGenderData = {
       data: this.userGender,
       legendData,
-      legendLeft: '63%',
+      legendLeft: '58%',
       legendX: 'right',
       legendY: 'middle',
       orient: 'vertical',
-      size: ['40%', '65%'],
-      position: ['35%', '50%']
+      size: ['45%', '70%'],
+      position: ['30%', '50%']
     }
   }
 }

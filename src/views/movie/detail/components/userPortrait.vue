@@ -59,14 +59,15 @@ export default class UserPortrait extends ViewBase {
         icon: 'circle',
         textStyle: {
           color: '#8798AF',
-          fontSize: 16
+          fontSize: 14,
+          fontFamily: 'DIN Alternate'
         }
       })
     }
     this.userGenderData = {
       data: this.userGender,
       legendData,
-      legendLeft: '63%',
+      legendLeft: '65%',
       legendX: 'right',
       legendY: 'middle',
       orient: 'vertical',

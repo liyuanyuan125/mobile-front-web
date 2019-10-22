@@ -11,7 +11,14 @@ import ViewBase from '@/util/ViewBase'
 import echarts from 'echarts'
 import { find } from 'lodash'
 import { tooltipStyles } from '@/util/echarts'
-const defaultColor: any = ['#85B9FF', '#FF8080', '#9FDECF', '#FFCB84', '#dddeef']
+const defaultColor: any = [
+  '#85B9FF',
+  '#FF8080',
+  '#9FDECF',
+  '#99D8FF',
+  '#FFCB84',
+  '#B9A5FF'
+]
 
 @Component({
   components: {}
@@ -72,7 +79,12 @@ export default class PieGraph extends ViewBase {
           //     }
           //   }
           // },
-
+          itemStyle: {
+            shadowColor: 'rgba(0, 0, 0, 0.14)',
+            shadowBlur: 20,
+            shadowOffsetX: 0,
+            shadowOffsetY: 0
+          },
           center: this.dataOption.position,
           radius: this.dataOption.size,
           data: this.dataOption.data

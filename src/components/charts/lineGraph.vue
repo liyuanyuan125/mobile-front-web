@@ -71,7 +71,7 @@ export default class LineGraph extends ViewBase {
           return marker + ' ' + param[0].name + ' ' + param[0].seriesName + val
         },
         textStyle: {
-          fontSize: '14px',
+          fontSize: 12,
           color: '#2E2F5A'
         },
         extraCssText:
@@ -131,7 +131,7 @@ export default class LineGraph extends ViewBase {
       },
 
       grid: {
-        left: 0,
+        left: 10,
         top: 10,
         right: 20,
         bottom: 5,
@@ -151,13 +151,19 @@ export default class LineGraph extends ViewBase {
             color: '#7AA0F5'
           },
           showSymbol: false,
-          markPoint: {
-            symbol: 'circle'
-          },
+          // markPoint: {
+          //   symbol: 'rect',
+          //   itemStyle: {
+          //     color: '#ffffff',
+          //     borderColor: '#7AA0F5',
+          //     borderWidth: 3
+          //   }
+          // },
           itemStyle: {
-            color: '#fff',
+            color: '#000',
             borderColor: '#7AA0F5',
-            borderWidth: 3
+            borderWidth: 3,
+            z: 10
           },
           areaStyle: {
             normal: {
@@ -196,9 +202,6 @@ export default class LineGraph extends ViewBase {
 }
 
 .chart-wrap {
-  // position: absolute;
-  // left: 0;
-  // top: 0;
   width: 100%;
   height: 400px;
 }

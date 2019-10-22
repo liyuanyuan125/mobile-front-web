@@ -47,7 +47,8 @@ export default class DataCity extends ViewBase {
         icon: 'circle',
         textStyle: {
           color: '#8798AF',
-          fontSize: 12
+          fontSize: 14,
+          fontFamily: 'DIN Alternate'
         }
       })
     }
@@ -56,9 +57,9 @@ export default class DataCity extends ViewBase {
       legendData,
       legendX: 'right',
       legendY: 'middle',
-      legendLeft: '63%',
+      legendLeft: '58%',
       orient: 'vertical',
-      size: ['50%', '85%'],
+      size: ['45%', '70%'],
       position: ['30%', '50%']
     }
   }

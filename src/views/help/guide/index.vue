@@ -30,6 +30,7 @@
         <img src="./assets/step02.jpg" class="img03" />
       </div>
       <div class="step01">
+        <a href="/help/videoexplain"></a>
         <img src="./assets/step03.jpg" class="img04" />
       </div>
     </div>
@@ -62,12 +63,15 @@ export default class Guide extends Vue {
 
   mounted() {
     document.documentElement.style.background = '#A5BEF8'
-    window.addEventListener('scroll', this.getScroll)
-    // 计算如何投放和查看报告的位置
-    const step: any = this.$refs.step
-    const report: any = this.$refs.report
-    this.scrollStep = step.offsetTop
-    this.scrollReport = report.offsetTop
+    setTimeout(() => {
+      // 加了个延迟，不知道为什么step和report的位置就是算不准，初步猜测是因为图片没加载完
+      window.addEventListener('scroll', this.getScroll)
+      // 计算如何投放和查看报告的位置
+      const step: any = this.$refs.step
+      const report: any = this.$refs.report
+      this.scrollStep = step.offsetTop
+      this.scrollReport = report.offsetTop
+    }, 1000)
   }
 
   destroyed() {
@@ -97,12 +101,12 @@ export default class Guide extends Vue {
       document.documentElement.scrollTop ||
       document.body.scrollTop
     // console.log('scr', topNum)
-    if (topNum > this.scrollStep) {
+    if (topNum >= this.scrollStep) {
       this.tabIdx = 2
     } else {
       this.tabIdx = 1
     }
-    if (topNum > this.scrollReport) {
+    if (topNum >= this.scrollReport) {
       this.tabIdx = 3
     }
   }

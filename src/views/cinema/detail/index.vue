@@ -62,7 +62,6 @@ export default class CinemaDetail extends Vue {
   async hideNavBarStatus() {
     const objectData = {
       isShowNavBar: false,
-      isWebViewOnScreenTop: true,
       statusBarColor: '#A0BBF9'
     }
     const obj = { params: objectData }

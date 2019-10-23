@@ -16,7 +16,7 @@ const ajaxBaseUrl = VAR.ajaxBaseUrl
 
 const isAbsoluteUrl = (url: string) => /^[a-z][a-z0-9+.-]*:/.test(url)
 const ua = navigator.userAgent
-const isApp = ua.indexOf('JYDataCinema') > -1
+const isApp = ua.indexOf('JYDataCinema') > -1 || ua.indexOf('JYDataAdvertiser') > -1
 
 const emit = (data: any) => {
   // 延迟发出 event，以便可以被阻止

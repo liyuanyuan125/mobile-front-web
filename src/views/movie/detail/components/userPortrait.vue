@@ -1,11 +1,11 @@
 <template>
   <div class="userportrait">
     <h3>观影用户画像</h3>
-    <h4 v-if="userAges">年龄占比</h4>
+    <h4>年龄占比</h4>
     <div style="margin-top:15px">
       <BarGraph :dataOption="userAgesData" />
     </div>
-    <h4 v-if="userGender" style="margin-top:50px;">性别占比</h4>
+    <h4 style="margin-top:50px;">性别占比</h4>
     <div class="usergender">
       <PieGraph :dataOption="userGenderData" />
     </div>

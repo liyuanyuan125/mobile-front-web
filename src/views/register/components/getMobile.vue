@@ -39,7 +39,7 @@
             class="text"
             type="text"
             v-model.trim="userName"
-            placeholder="姓名 (中文、字母、数字,2~6字)"
+            placeholder="姓名 (中文、字母、数字,2~50字)"
             v-on:input="changeBtnStatus"
           />
           <i class="del" v-show="userName.length" @click="clearTxt('userName')"></i>
@@ -238,8 +238,8 @@ export default class GetMobile extends ViewBase {
     if (!reg.test(this.userName)) {
       toast('姓名仅支持中文、字母、数字')
       return false
-    } else if (this.userName.length < 2 || this.userName.length > 100) {
-      toast('姓名字数允许2-100个字')
+    } else if (this.userName.length < 2 || this.userName.length > 50) {
+      toast('姓名字数允许2-50个字')
       return false
     } else {
       return true

@@ -37,7 +37,7 @@ export default class WatchTimes extends ViewBase {
     if (trend && trend.length) {
       for (const item of this.cinemaTrend.data) {
         xData.push(item.date)
-        yData.push(item.mantimes)
+        yData.push(item.value)
       }
       this.viewDataTrend = {
         xData,

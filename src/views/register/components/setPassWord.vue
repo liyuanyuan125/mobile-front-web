@@ -25,8 +25,10 @@ import { validatePassword } from '@/fn/validateRules'
 import ViewBase from '@/util/ViewBase'
 import applicationStore from '../store'
 import { submitApplicationInfo } from '@/api/theater'
-import { handleGoBack } from '@/util/native'
+import { userHasLoginInH5 } from '@/util/native'
 import { toast } from '@/util/toast'
+import VueCookies from 'vue-cookies'
+import { devLog, devInfo } from '@/util/dev'
 
 @Component
 export default class SetPassWord extends ViewBase {
@@ -75,6 +77,19 @@ export default class SetPassWord extends ViewBase {
           // toast('注册成功')
           // 成功后去往注册成功页
           this.changePage(3)
+          // 通知APP注册成功了
+          const mi = VueCookies.get('app-token')
+          const hostArr = location.host.split('.')
+          const host = `.${hostArr[1]}.${hostArr[2]}`
+          const userCookie = `app-token=${mi};Domain=${host}`
+          devInfo('userCookie', userCookie, res.data)
+          const obj = {
+            params: {
+              userId: res.data,
+              userCookie
+            }
+          }
+          await userHasLoginInH5(obj)
         } else {
           toast('注册失败，请联系客服')
           this.handleError(res.msg)

@@ -235,10 +235,7 @@ export default class GetMobile extends ViewBase {
         return false
       }
     }
-    if (!reg.test(this.userName)) {
-      toast('姓名仅支持中文、字母、数字')
-      return false
-    } else if (this.userName.length < 2 || this.userName.length > 50) {
+    if (this.userName.length < 2 || this.userName.length > 50) {
       toast('姓名字数允许2-50个字')
       return false
     } else {
@@ -255,11 +252,6 @@ export default class GetMobile extends ViewBase {
       }
     }
     await handleGoBack(obj)
-  }
-
-  // 查看广告主协议
-  goAgreeMent() {
-    this.$router
   }
 }
 </script>

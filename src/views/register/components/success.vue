@@ -42,7 +42,7 @@ export default class SuccessPage extends ViewBase {
         applink = 'homePage'
         break
       case 'minePage':
-        applink = 'companyDetail'
+        applink = 'companyDetail&isFromRegister=YES'
         break
     }
     devInfo('applink', applink)

@@ -1,22 +1,24 @@
 <template>
-  <div :class="['viewpage',{'viewafter':cinemaErr}]">
+  <div>
     <DataNull v-if="cinemaErr" />
-    <div class="viewer" v-if="detail && !cinemaErr">
-      <div class="fixbar" :style="{opacity:scrollTop}">
-        <TopBar
-          :title="detail.cinemaInfo.cinemaName"
-          :styleline="'background:#A0BBF9;box-shadow:0 0 20px rgba(111,131,153,.5)'"
-          barColor="black"
-        />
-      </div>
-      <TopBar barColor="black" />
-      <CinemaInfo :cinemaInfo="detail.cinemaInfo" />
-      <CinemaData :cinemaData="detail.cinemaData" />
-      <WatchTimes :cinemaTrend="detail.viewPerson" />
-      <CinemaPortrait :portrait="portrait" />
-      <!-- <div class="joinplan">
+    <div class="viewpage" v-if="detail && !cinemaErr">
+      <div class="viewer">
+        <div class="fixbar" :style="{opacity:scrollTop}">
+          <TopBar
+            :title="detail.cinemaInfo.cinemaName"
+            :styleline="'background:#A0BBF9;box-shadow:0 0 20px rgba(111,131,153,.5)'"
+            barColor="black"
+          />
+        </div>
+        <TopBar barColor="black" />
+        <CinemaInfo :cinemaInfo="detail.cinemaInfo" />
+        <CinemaData :cinemaData="detail.cinemaData" />
+        <WatchTimes :cinemaTrend="detail.viewPerson" />
+        <CinemaPortrait :portrait="portrait" />
+        <!-- <div class="joinplan">
         <button>加入投放</button>
-      </div>-->
+        </div>-->
+      </div>
     </div>
   </div>
 </template>
@@ -50,19 +52,18 @@ export default class CinemaDetail extends Vue {
   scrollTop: number = 0
   cinemaErr: boolean = false
 
-  beforeMount() {
+  created() {
     const cid = this.$route.params.cinemaId
     this.cinemaId = cid
     this.getCinemaDetail(cid)
     document.body.style.background = '#FBFBFB'
-    this.hideNavBarStatus()
   }
 
   // 隐藏导航
-  async hideNavBarStatus() {
+  async hideNavBarStatus(color: string) {
     const objectData = {
       isShowNavBar: false,
-      statusBarColor: '#A0BBF9'
+      statusBarColor: color
     }
     const obj = { params: objectData }
     await setNavBarStatus(obj)
@@ -88,8 +89,10 @@ export default class CinemaDetail extends Vue {
           userMarital: res.data.userMarital,
           consumePerfer: res.data.consumePerfer
         }
+        this.hideNavBarStatus('#A0BBF9')
       } else {
         this.cinemaErr = true
+        this.hideNavBarStatus('#FBFBFB')
         toast(res.msg)
       }
     } catch (ex) {

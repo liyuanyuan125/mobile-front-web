@@ -3,7 +3,7 @@
     <h3>主创人员</h3>
     <div class="peopledefault" v-if="!chiefData || !chiefData.length"></div>
     <div class="peoplelist" v-if="chiefData">
-      <dl :style="{width:dlWidth}">
+      <dl ref="chief">
         <dd v-for="(item,index) in chiefpeople" :key="item.actorName + index">
           <i class="img">
             <img :src="item.imgUrl" :alt="item.actorName" v-if="item.imgUrl" />
@@ -31,10 +31,15 @@ export default class ChiefPeople extends ViewBase {
   chiefpeople: any = []
   dlWidth: string = ''
 
-  created() {
-    // 第个dd宽度是180
-    // this.dlWidth = (this.chiefData.length * 180) / 0.75 + 'px'
-    this.dlWidth = (100 / 7.5) * 18 + 'px'
+  mounted() {
+    const chief = this.$refs.chief as HTMLDListElement
+    if (this.chiefData.length && this.chiefData.length < 10) {
+      console.log('chief', chief.offsetWidth)
+      // 先算出每一个DD的宽度
+      const wid = (chief.offsetWidth / 10) * this.chiefData.length
+      chief.style.width = wid + 'px'
+    }
+
     // 处理一下格式
     for (const item of this.chiefData) {
       // 处理图片 https://picagent.piaoshen-dev.com/picture/cut_picture?uri=

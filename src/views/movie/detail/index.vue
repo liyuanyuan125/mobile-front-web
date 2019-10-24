@@ -1,24 +1,25 @@
 <template>
-  <div :class="['viewpage',{'viewafter':movieErr}]">
+  <div>
     <DataNull v-if="movieErr" />
-    <div class="viewer" v-if="detail && !movieErr">
-      <div class="fixbar" :style="{opacity:scrollTop}">
-        <TopBar
-          :title="detail.movieInfo.movieNameCn"
-          :styleline="'background:#60A3E9;box-shadow:0 0 20px rgba(111,131,153,.5)'"
+    <div class="viewpage" v-if="detail && !movieErr">
+      <div class="viewer">
+        <div class="fixbar" :style="{opacity:scrollTop}">
+          <TopBar
+            :title="detail.movieInfo.movieNameCn"
+            :styleline="'background:#60A3E9;box-shadow:0 0 20px rgba(111,131,153,.5)'"
+          />
+        </div>
+        <TopBar />
+        <MovieInfo :movieInfo="detail.movieInfo" />
+        <BoxOffice :movieData="detail.movieData" :hasShowTime="hasShowTime" />
+        <WatchTimes
+          :viewData="detail.viewPerson"
+          :wantSeeData="detail.wantSeePerson"
+          :hasShowTime="hasShowTime"
         />
-      </div>
-      <TopBar />
-      <MovieInfo :movieInfo="detail.movieInfo" />
-      <BoxOffice :movieData="detail.movieData" :hasShowTime="hasShowTime" />
-      <WatchTimes
-        :viewData="detail.viewPerson"
-        :wantSeeData="detail.wantSeePerson"
-        :hasShowTime="hasShowTime"
-      />
-      <UserPortrait :userAges="detail.userAges" :userGender="detail.userGender" />
-      <ChiefPeople :chiefData="detail.chiefPeople" />
-      <!-- <canvas id="myCanvas" width="10" height="10" />
+        <UserPortrait :userAges="detail.userAges" :userGender="detail.userGender" />
+        <ChiefPeople :chiefData="detail.chiefPeople" />
+        <!-- <canvas id="myCanvas" width="10" height="10" />
       <ul>
         <li v-for="(item,index) in rgbArr" :key="index" :style="{background: 'rgba('+item+')'}">
           <img
@@ -26,7 +27,8 @@
           />
           复仇者联盟
         </li>
-      </ul>-->
+        </ul>-->
+      </div>
     </div>
   </div>
 </template>
@@ -43,7 +45,6 @@ import { getMovieDetail } from '@/api/advertiser'
 import { toast } from '@/util/toast'
 import { setNavBarStatus } from '@/util/native'
 import DataNull from '@/components/dataNull'
-// import VueCookies from 'vue-cookies'
 
 @Component({
   components: {
@@ -65,6 +66,13 @@ export default class MovieDetail extends Vue {
   hasShowTime: boolean = true
   scrollTop: number = 0
 
+  created() {
+    const mid = this.$route.params.movieId
+    this.movieId = mid
+    this.getMovieDetail(mid)
+    document.body.style.background = '#FBFBFB'
+  }
+
   mounted() {
     window.addEventListener('scroll', this.getScroll)
   }
@@ -72,20 +80,11 @@ export default class MovieDetail extends Vue {
   destroyed() {
     window.removeEventListener('scroll', this.getScroll)
   }
-
-  beforeMount() {
-    const mid = this.$route.params.movieId
-    this.movieId = mid
-    this.getMovieDetail(mid)
-    document.body.style.background = '#FBFBFB'
-    this.hideNavBarStatus()
-  }
-
   // 隐藏导航
-  async hideNavBarStatus() {
+  async hideNavBarStatus(color: string) {
     const objectData = {
       isShowNavBar: false,
-      statusBarColor: '#60A3E9'
+      statusBarColor: color
     }
     const obj = { params: objectData }
     await setNavBarStatus(obj)
@@ -98,7 +97,9 @@ export default class MovieDetail extends Vue {
       if (res.code === 0) {
         this.detail = res.data
         this.hasShowTime = res.data.movieInfo.isShowTime
+        this.hideNavBarStatus('#60A3E9')
       } else {
+        this.hideNavBarStatus('#fbfbfb')
         this.movieErr = true
         toast(res.msg)
       }

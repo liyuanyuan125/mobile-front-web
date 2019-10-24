@@ -1,34 +1,36 @@
 <template>
-  <div class="viewpage">
+  <div>
     <DataNull v-if="dataErr" />
-    <div class="viewer" v-if="orderDetail && !dataErr">
-      <div class="fixbar" :style="{opacity:scrollTop}">
-        <TopBar
-          barColor="black"
-          :title="orderDetail.planInfo.planName"
-          :styleline="'background:#FBFBFB;box-shadow:0 0 20px rgba(111,131,153,.1)'"
-          v-if="!barShow"
+    <div class="viewpage" v-if="orderDetail && !dataErr">
+      <div class="viewer">
+        <div class="fixbar" :style="{opacity:scrollTop}">
+          <TopBar
+            barColor="black"
+            :title="orderDetail.planInfo.planName"
+            :styleline="'background:#FBFBFB;box-shadow:0 0 20px rgba(111,131,153,.1)'"
+            v-if="!barShow"
+          />
+        </div>
+        <TopBar barColor="black" v-if="!barShow" />
+        <PlanInfo :planInfo="orderDetail.planInfo" />
+        <PutProgress
+          :progress="orderDetail.reportCount"
+          v-if="orderDetail.reportCount"
+          :orderId="this.orderId"
+        />
+        <DataTrend :dataTrend="orderDetail.dataTrend" />
+        <DataTotal
+          :cinemaCount="orderDetail.planInfo.coverCinemaCount"
+          :movieCount="orderDetail.planInfo.coverMovieCount"
+          :orderId="this.orderId"
+        />
+        <DataUserStatus :userAges="orderDetail.userAges" :userGender="orderDetail.userGender" />
+        <DataCity
+          :cityTier="orderDetail.cityTier"
+          :cityProfile="orderDetail.cityProfile"
+          :orderId="this.orderId"
         />
       </div>
-      <TopBar barColor="black" v-if="!barShow" />
-      <PlanInfo :planInfo="orderDetail.planInfo" />
-      <PutProgress
-        :progress="orderDetail.reportCount"
-        v-if="orderDetail.reportCount"
-        :orderId="this.orderId"
-      />
-      <DataTrend :dataTrend="orderDetail.dataTrend" />
-      <DataTotal
-        :cinemaCount="orderDetail.planInfo.coverCinemaCount"
-        :movieCount="orderDetail.planInfo.coverMovieCount"
-        :orderId="this.orderId"
-      />
-      <DataUserStatus :userAges="orderDetail.userAges" :userGender="orderDetail.userGender" />
-      <DataCity
-        :cityTier="orderDetail.cityTier"
-        :cityProfile="orderDetail.cityProfile"
-        :orderId="this.orderId"
-      />
     </div>
   </div>
 </template>
@@ -73,7 +75,7 @@ export default class ResultReport extends Vue {
   destroyed() {
     window.removeEventListener('scroll', this.getScroll)
   }
-  beforeMount() {
+  created() {
     const reportId = this.$route.params.orderId
     this.orderId = reportId
     this.getReportDetail(reportId)

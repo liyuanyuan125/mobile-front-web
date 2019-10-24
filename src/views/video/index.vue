@@ -40,7 +40,7 @@ export default class ResultReport extends Vue {
   videoDetail: any = null
   videoCanDel: boolean = true
 
-  beforeMount() {
+  created() {
     const vid = this.$route.params.videoId
     this.videoId = vid
     this.getVideoDetail(vid)
@@ -136,7 +136,7 @@ export default class ResultReport extends Vue {
     try {
       const res: any = await delVideoDetail({ adVideoId: this.videoId })
       if (res.code === 0) {
-        toast('删除成功')
+        toast('删除成功', 1500)
         setTimeout(async () => {
           const objectData = {
             isCloseWindow: true,

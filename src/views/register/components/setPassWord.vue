@@ -27,7 +27,6 @@ import applicationStore from '../store'
 import { submitApplicationInfo } from '@/api/theater'
 import { userHasLoginInH5 } from '@/util/native'
 import { toast } from '@/util/toast'
-import VueCookies from 'vue-cookies'
 import { devLog, devInfo } from '@/util/dev'
 
 @Component
@@ -78,7 +77,7 @@ export default class SetPassWord extends ViewBase {
           // 成功后去往注册成功页
           this.changePage(3)
           // 通知APP注册成功了
-          const mi = VueCookies.get('app-token')
+          const mi = this.$cookies.get('app-token')
           const hostArr = location.host.split('.')
           const host = `.${hostArr[1]}.${hostArr[2]}`
           const userCookie = `app-token=${mi};Domain=${host}`

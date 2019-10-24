@@ -6,8 +6,8 @@ const pxtoviewport = require('postcss-px-to-viewport')
 
 module.exports = {
   devServer: {
-    // port: 9000,
-    // host: 'h5.aiads-dev.com',
+    port: 9000,
+    host: 'h5.aiads-dev.com',
     headers: {
       'Access-Control-Allow-Origin': '*'
     },
@@ -27,47 +27,47 @@ module.exports = {
 
   chainWebpack: config => {
     const isDev = process.env.NODE_ENV === 'development'
-      // 开发|测试|仿真|生产：aiads-dev|qas|stg|prd
-      ;[
-        {
-          env: 'dev',
-          baseUrl: isDev ? '/' : 'https://e.aiads-dev.com',
-          ajaxBaseUrl: 'https://api.aiads-dev.com'
+    // 开发|测试|仿真|生产：aiads-dev|qas|stg|prd
+    ;
+    [{
+        env: 'dev',
+        baseUrl: isDev ? '/' : 'https://e.aiads-dev.com',
+        ajaxBaseUrl: 'https://api.aiads-dev.com'
+      },
+      {
+        env: 'qas',
+        baseUrl: 'https://e.whaledata.com',
+        ajaxBaseUrl: 'https://api.whaledata.com'
+      },
+      // {
+      //   env: 'stg',
+      //   baseUrl: 'https://stg.aiads.com',
+      //   ajaxBaseUrl: 'https://fapi.stg.aiads.com'
+      // },
+      {
+        env: 'prd',
+        baseUrl: 'https://e.jydata.com',
+        ajaxBaseUrl: 'https://api.jydata.com'
+      }
+    ].forEach(it => {
+      const {
+        env
+      } = it
+      config.plugin(env === 'dev' ? 'html' : `html-${env}`).use(HtmlWebpackPlugin, [{
+        template: 'public/index.html',
+        filename: isDev && env === 'dev' ? 'index.html' : `index-aiads-${env}.html`,
+        minify: {
+          collapseWhitespace: true,
+          removeComments: true,
+          removeRedundantAttributes: true,
+          removeScriptTypeAttributes: true,
+          removeStyleLinkTypeAttributes: true,
+          useShortDoctype: true,
+          removeAttributeQuotes: true
         },
-        {
-          env: 'qas',
-          baseUrl: 'https://e.whaledata.com',
-          ajaxBaseUrl: 'https://api.whaledata.com'
-        },
-        // {
-        //   env: 'stg',
-        //   baseUrl: 'https://stg.aiads.com',
-        //   ajaxBaseUrl: 'https://fapi.stg.aiads.com'
-        // },
-        {
-          env: 'prd',
-          baseUrl: 'https://e.jydata.com',
-          ajaxBaseUrl: 'https://api.jydata.com'
-        }
-      ].forEach(it => {
-        const { env } = it
-        config.plugin(env === 'dev' ? 'html' : `html-${env}`).use(HtmlWebpackPlugin, [
-          {
-            template: 'public/index.html',
-            filename: isDev && env === 'dev' ? 'index.html' : `index-aiads-${env}.html`,
-            minify: {
-              collapseWhitespace: true,
-              removeComments: true,
-              removeRedundantAttributes: true,
-              removeScriptTypeAttributes: true,
-              removeStyleLinkTypeAttributes: true,
-              useShortDoctype: true,
-              removeAttributeQuotes: true
-            },
-            VAR: it
-          }
-        ])
-      })
+        VAR: it
+      }])
+    })
 
     config.performance.hints(false)
 

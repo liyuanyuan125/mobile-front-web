@@ -6,7 +6,7 @@
         <TopBar
           barColor="black"
           :title="orderDetail.planInfo.planName"
-          :styleline="'background:#fff;box-shadow:0 0 20px rgba(111,131,153,.1)'"
+          :styleline="'background:#FBFBFB;box-shadow:0 0 20px rgba(111,131,153,.1)'"
           v-if="!barShow"
         />
       </div>
@@ -86,7 +86,7 @@ export default class ResultReport extends Vue {
   async hideNavBarStatus() {
     const objectData = {
       isShowNavBar: false,
-      isWebViewOnScreenTop: true
+      statusBarColor: '#FBFBFB'
     }
     const obj = { params: objectData }
     await setNavBarStatus(obj)

@@ -136,7 +136,7 @@ export default class ResultReport extends Vue {
     try {
       const res: any = await delVideoDetail({ adVideoId: this.videoId })
       if (res.code === 0) {
-        toast('删除成功', 1500)
+        toast('删除成功')
         setTimeout(async () => {
           const objectData = {
             isCloseWindow: true,

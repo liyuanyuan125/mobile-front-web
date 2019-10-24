@@ -24,6 +24,7 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import { openAppLinkClient } from '@/util/native'
+import { devLog, devInfo } from '@/util/dev'
 
 @Component
 export default class SuccessPage extends ViewBase {
@@ -35,15 +36,16 @@ export default class SuccessPage extends ViewBase {
 
   // 去往列表页
   async goAppLink(type: string) {
-    let applink = 'loginPage'
+    let applink = 'homePage'
     switch (type) {
-      case 'loginPage':
-        applink = 'loginPage'
+      case 'homePage':
+        applink = 'homePage'
         break
       case 'minePage':
-        applink = 'minePage'
+        applink = 'companyDetail'
         break
     }
+    devInfo('applink', applink)
     const objectData = {
       applinkData: 'jydataadvertiser://scheme?p=' + applink,
       originUrl: location.href

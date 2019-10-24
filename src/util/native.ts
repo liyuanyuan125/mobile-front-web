@@ -151,3 +151,13 @@ export async function showImageBrowser(obj: any) {
   return data
 }
 
+/**
+ * h5登录后通知APP
+ * @param  obj app需要的内部参数
+ */
+export async function userHasLoginInH5(obj: any) {
+  const data = await callNative('userHasLoginInH5', obj)
+  devInfo(`[sayHi] native return data:`, data)
+  return data
+}
+

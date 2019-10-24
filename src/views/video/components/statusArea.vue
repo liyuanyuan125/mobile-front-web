@@ -53,8 +53,8 @@ export default class StatusArea extends ViewBase {
     //  this.statusInfo.adVideoType 1=本地 2=网盘
     let applink = 'editAdVideoLocation'
     const vid = 'adVideoId=' + this.videoId
-    const vname = 'adVideoName=' + this.videoInfo.adName
-    const netlink = 'netLink=' + this.netLink
+    const vname = 'adVideoName=' + encodeURIComponent(this.videoInfo.adName)
+    const netlink = 'netLink=' + encodeURIComponent(this.netLink)
     let linkData = 'jydataadvertiser://scheme?p=' + applink + '&' + vid + '&' + vname
     if (this.statusInfo.adVideoType == 2) {
       applink = 'editAdVideoNetPan'

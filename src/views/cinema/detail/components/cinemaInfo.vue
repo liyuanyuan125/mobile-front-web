@@ -14,7 +14,7 @@
         <span class="through">￥{{cinemaInfo.viewPrice}}</span>
         <span>/千次曝光（15s）</span>
         <p>
-          <em class="disdesc" v-if="cinemaInfo.discountDesc">{{cinemaInfo.discountDesc}}限时五折</em>
+          <em class="disdesc" v-if="cinemaInfo.discountDesc">{{cinemaInfo.discountDesc}}</em>
         </p>
       </div>
       <strong class="price" v-if="!cinemaInfo.discountPrice">

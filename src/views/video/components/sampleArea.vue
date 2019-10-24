@@ -7,7 +7,7 @@
       <span class="play" v-if="sampleInfo.videoCoverUrl.url" @click="playVideo"></span>
       <img :src="coverImg" v-if="sampleInfo.videoCoverUrl.url" @click="playVideo" />
       <img src="../assets/cover.png" v-if="!sampleInfo.videoCoverUrl.url" @click="playVideo" />
-      <video :src="'https:' + sampleInfo.videoUrl" ref="video" controls></video>
+      <video :src="sampleInfo.videoUrl" ref="video" controls></video>
     </div>
   </div>
 </template>

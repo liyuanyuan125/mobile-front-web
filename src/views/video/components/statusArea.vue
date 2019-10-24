@@ -26,20 +26,50 @@ import { openAppLinkClient, handleGoBack } from '@/util/native'
 export default class StatusArea extends ViewBase {
   @Prop({ type: Object }) statusInfo!: any
   @Prop({ type: String }) videoId!: string
+  @Prop({ type: Object }) videoInfo!: any
 
   statusTit = ''
+  netLink: string = ''
+
+  created() {
+    this.getNetLink()
+  }
+
+  // 提取下载链接=网盘地址
+  getNetLink() {
+    const att = this.videoInfo.AttributeList
+
+    if (att.length) {
+      for (const it of att) {
+        if (it.keyName === '视频链接' && it.value) {
+          this.netLink = it.value
+        }
+      }
+    }
+  }
 
   // 去编辑视频页
   async goEditVideo() {
-    let applink = ''
-    if (this.statusInfo.adVideoType == 1) {
-      applink = 'editAdVideoLocation'
-    } else if (this.statusInfo.adVideoType == 2) {
+    //  this.statusInfo.adVideoType 1=本地 2=网盘
+    let applink = 'editAdVideoLocation'
+    const vid = 'adVideoId=' + this.videoId
+    const vname = 'adVideoName=' + this.videoInfo.adName
+    const netlink = 'netLink=' + this.netLink
+    let linkData = 'jydataadvertiser://scheme?p=' + applink + '&' + vid + '&' + vname
+    if (this.statusInfo.adVideoType == 2) {
       applink = 'editAdVideoNetPan'
+      linkData =
+        'jydataadvertiser://scheme?p=' +
+        applink +
+        '&' +
+        vid +
+        '&' +
+        vname +
+        '&' +
+        netlink
     }
     const objectData = {
-      applinkData:
-        'jydataadvertiser://scheme?p=' + applink + '&adVideoId=' + this.videoId,
+      applinkData: linkData,
       originUrl: location.href
     }
     const obj = { params: objectData }

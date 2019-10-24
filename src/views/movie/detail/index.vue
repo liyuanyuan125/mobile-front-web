@@ -5,7 +5,7 @@
       <div class="fixbar" :style="{opacity:scrollTop}">
         <TopBar
           :title="detail.movieInfo.movieNameCn"
-          :styleline="'background:#60a3e9;box-shadow:0 0 20px rgba(111,131,153,.5)'"
+          :styleline="'background:#60A3E9;box-shadow:0 0 20px rgba(111,131,153,.5)'"
         />
       </div>
       <TopBar />
@@ -85,7 +85,7 @@ export default class MovieDetail extends Vue {
   async hideNavBarStatus() {
     const objectData = {
       isShowNavBar: false,
-      isWebViewOnScreenTop: true
+      statusBarColor: '#60A3E9'
     }
     const obj = { params: objectData }
     await setNavBarStatus(obj)

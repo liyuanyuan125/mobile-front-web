@@ -1,6 +1,10 @@
 <template>
   <div class="viewpage" v-if="videoDetail">
-    <StatusArea :statusInfo="videoDetail.adVideoStatusInfo" :videoId="videoId" />
+    <StatusArea
+      :statusInfo="videoDetail.adVideoStatusInfo"
+      :videoId="videoId"
+      :videoInfo="videoDetail.videoInfo"
+    />
     <VideoInfoArea :videoInfo="videoDetail.videoInfo" />
     <SampleArea :sampleInfo="videoDetail.adSampleInfo" v-if="videoDetail.adSampleInfo.videoUrl" />
     <!-- <PayInfoArea /> -->
@@ -47,7 +51,7 @@ export default class ResultReport extends Vue {
   async hideNavBarStatus() {
     const objectData = {
       isShowNavBar: false,
-      isWebViewOnScreenTop: true
+      statusBarColor: '#A5BEF8'
     }
     const obj = { params: objectData }
     await setNavBarStatus(obj)
@@ -119,9 +123,6 @@ export default class ResultReport extends Vue {
       const res: any = await cancelVideoDetail({ adVideoId: this.videoId })
       if (res.code === 0) {
         toast('取消成功')
-        // this.videoCancel = false
-        // this.videoCanDel = true
-        // console(res)
       } else {
         toast(res.msg)
       }

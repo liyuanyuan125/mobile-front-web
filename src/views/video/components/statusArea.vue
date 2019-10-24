@@ -38,14 +38,14 @@ export default class StatusArea extends ViewBase {
   // 提取下载链接=网盘地址
   getNetLink() {
     const att = this.videoInfo.AttributeList
+
     if (att.length) {
       for (const it of att) {
-        if (att.keyName === '下载连接' && att.value) {
-          this.netLink = att.value
+        if (it.keyName === '视频链接' && it.value) {
+          this.netLink = it.value
         }
       }
     }
-    console.log(this.netLink)
   }
 
   // 去编辑视频页

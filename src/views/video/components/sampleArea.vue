@@ -31,46 +31,7 @@ export default class SampleArea extends ViewBase {
     if (coverUrl.type == 'piaoshen') {
       this.coverImg = coverUrl.url ? imgProxy(coverUrl.url, 160, 210) : ''
     } else {
-      // 将图片裁切成16：9
-      const img = this.imgLoad(coverUrl.url)
-      if (img) {
-        const imgWid = img.width
-        const imgHig = img.height
-
-        if (imgWid > imgHig) {
-          // 横图，width > height
-          const newWid = (imgHig * 16) / 9
-        } else {
-          // 竖图 width < height
-        }
-        console.log('imgWid', imgWid, imgHig)
-
-        this.coverImg =
-          coverUrl.url +
-          '?x-oss-process=image/resize,m_fill,h_' +
-          imgHig +
-          ',w_' +
-          imgWid
-      }
-    }
-  }
-
-  imgLoad(url: string) {
-    const img = new Image()
-    img.src = url
-    if (img.complete) {
-      return {
-        width: img.width || 0,
-        height: img.height || 0
-      }
-    } else {
-      img.onload = () => {
-        return {
-          width: img.width || 0,
-          height: img.height || 0
-        }
-        img.onload = null
-      }
+      this.coverImg = coverUrl.url
     }
   }
 

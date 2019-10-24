@@ -7,7 +7,7 @@
       <span class="play" v-if="sampleInfo.videoCoverUrl.url" @click="playVideo"></span>
       <img :src="coverImg" v-if="sampleInfo.videoCoverUrl.url" @click="playVideo" />
       <img src="../assets/cover.png" v-if="!sampleInfo.videoCoverUrl.url" @click="playVideo" />
-      <video :src="'https:' + sampleInfo.videoUrl" ref="video" controls></video>
+      <video :src="sampleInfo.videoUrl" ref="video" controls></video>
     </div>
   </div>
 </template>
@@ -31,7 +31,46 @@ export default class SampleArea extends ViewBase {
     if (coverUrl.type == 'piaoshen') {
       this.coverImg = coverUrl.url ? imgProxy(coverUrl.url, 160, 210) : ''
     } else {
-      this.coverImg = coverUrl.url
+      // 将图片裁切成16：9
+      const img = this.imgLoad(coverUrl.url)
+      if (img) {
+        const imgWid = img.width
+        const imgHig = img.height
+
+        if (imgWid > imgHig) {
+          // 横图，width > height
+          const newWid = (imgHig * 16) / 9
+        } else {
+          // 竖图 width < height
+        }
+        console.log('imgWid', imgWid, imgHig)
+
+        this.coverImg =
+          coverUrl.url +
+          '?x-oss-process=image/resize,m_fill,h_' +
+          imgHig +
+          ',w_' +
+          imgWid
+      }
+    }
+  }
+
+  imgLoad(url: string) {
+    const img = new Image()
+    img.src = url
+    if (img.complete) {
+      return {
+        width: img.width || 0,
+        height: img.height || 0
+      }
+    } else {
+      img.onload = () => {
+        return {
+          width: img.width || 0,
+          height: img.height || 0
+        }
+        img.onload = null
+      }
     }
   }
 

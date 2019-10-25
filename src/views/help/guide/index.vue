@@ -61,8 +61,11 @@ export default class Guide extends Vue {
   scrollStep: number = 0 // 如何投放位置
   scrollReport: number = 0 // 查看报告位置
 
-  mounted() {
+  beforeCreate() {
     document.documentElement.style.background = '#A5BEF8'
+  }
+
+  mounted() {
     setTimeout(() => {
       // 加了个延迟，不知道为什么step和report的位置就是算不准，初步猜测是因为图片没加载完
       window.addEventListener('scroll', this.getScroll)

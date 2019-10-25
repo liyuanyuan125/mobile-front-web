@@ -159,6 +159,7 @@ export default class GetMobile extends ViewBase {
   // 是否同意用户协议
   changeAgreeStatus() {
     this.isAgree = !this.isAgree
+    this.changeBtnStatus()
   }
 
   // 监听 input 改变提按钮状态

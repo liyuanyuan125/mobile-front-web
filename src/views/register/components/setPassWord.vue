@@ -25,7 +25,7 @@ import { validatePassword } from '@/fn/validateRules'
 import ViewBase from '@/util/ViewBase'
 import applicationStore from '../store'
 import { submitApplicationInfo } from '@/api/theater'
-import { userHasLoginInH5 } from '@/util/native'
+import { userHasLoginInH5, setNavBarStatus } from '@/util/native'
 import { toast } from '@/util/toast'
 import { devLog, devInfo } from '@/util/dev'
 
@@ -76,6 +76,8 @@ export default class SetPassWord extends ViewBase {
           // toast('注册成功')
           // 成功后去往注册成功页
           this.changePage(3)
+          // 隐藏成功页的顶部管理区
+          this.hideNavBarStatus()
           // 通知APP注册成功了
           const mi = this.$cookies.get('app-token')
           const hostArr = location.host.split('.')
@@ -112,6 +114,16 @@ export default class SetPassWord extends ViewBase {
     } else {
       return true
     }
+  }
+
+  // 隐藏导航
+  async hideNavBarStatus() {
+    const objectData = {
+      isShowNavBar: false,
+      statusBarColor: '#A5BEF8'
+    }
+    const obj = { params: objectData }
+    await setNavBarStatus(obj)
   }
 }
 </script>

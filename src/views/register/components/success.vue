@@ -1,7 +1,7 @@
 <template>
-  <div class="regsuccess" ref="successbox">
+  <div class="regsuccess">
     <div class="flexone">
-      <div class="bgbox">
+      <div class="bgbox" ref="successbox">
         <div class="textbox">
           <h4>注册成功</h4>
           <p>
@@ -23,17 +23,11 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
-import { openAppLinkClient, setNavBarStatus } from '@/util/native'
+import { openAppLinkClient } from '@/util/native'
 import { devLog, devInfo } from '@/util/dev'
 
 @Component
 export default class SuccessPage extends ViewBase {
-  @Prop({ type: Function }) changePage!: (id: number) => Promise<boolean>
-
-  beforeCreate() {
-    this.hideNavBarStatus()
-  }
-
   mounted() {
     const exp: any = this.$refs.successbox
     exp.style.height = document.body.clientHeight + 'px'
@@ -57,16 +51,6 @@ export default class SuccessPage extends ViewBase {
     }
     const obj = { params: objectData }
     await openAppLinkClient(obj)
-  }
-
-  // 隐藏导航
-  async hideNavBarStatus() {
-    const objectData = {
-      isShowNavBar: false,
-      statusBarColor: '#A5BEF8'
-    }
-    const obj = { params: objectData }
-    await setNavBarStatus(obj)
   }
 }
 </script>

@@ -13,7 +13,7 @@
     </div>
     <div class="flexsec">
       <div>
-        <button @click="goAppLink('companyDetail')">完善信息</button>
+        <button @click="goAppLink('companyInfoDetail')">完善信息</button>
         <button class="holdon" @click="goAppLink('homePage')">稍后再说</button>
       </div>
     </div>
@@ -46,8 +46,8 @@ export default class SuccessPage extends ViewBase {
       case 'homePage':
         applink = 'homePage'
         break
-      case 'companyDetail':
-        applink = 'companyDetail&isFromRegister=YES'
+      case 'companyInfoDetail':
+        applink = 'companyInfoDetail&isFromRegister=YES'
         break
     }
     devInfo('applink', applink)

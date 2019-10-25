@@ -34,7 +34,6 @@ export default class ChiefPeople extends ViewBase {
   mounted() {
     const chief = this.$refs.chief as HTMLDListElement
     if (this.chiefData.length && this.chiefData.length < 10) {
-      console.log('chief', chief.offsetWidth)
       // 先算出每一个DD的宽度
       const wid = (chief.offsetWidth / 10) * this.chiefData.length
       chief.style.width = wid + 'px'

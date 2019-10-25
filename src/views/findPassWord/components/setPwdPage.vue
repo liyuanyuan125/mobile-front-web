@@ -67,13 +67,15 @@ export default class SetPwdPage extends ViewBase {
         if (res.code === 0) {
           toast('密码重置完成')
           // 成功后返回登录页
-          const obj = {
-            params: {
-              isCloseWindow: true,
-              refreshWindow: false
+          setTimeout(async () => {
+            const obj = {
+              params: {
+                isCloseWindow: true,
+                refreshWindow: false
+              }
             }
-          }
-          await handleGoBack(obj)
+            await handleGoBack(obj)
+          }, 1500)
         } else {
           toast('密码重置失败，请重试')
           this.handleError(res.msg)

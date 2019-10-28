@@ -68,13 +68,6 @@ export default class ResultReport extends Vue {
   scrollTop: number = 0
   dataErr: boolean = false // 数据是否错误
 
-  mounted() {
-    window.addEventListener('scroll', this.getScroll)
-  }
-
-  destroyed() {
-    window.removeEventListener('scroll', this.getScroll)
-  }
   created() {
     const reportId = this.$route.params.orderId
     this.orderId = reportId
@@ -82,6 +75,14 @@ export default class ResultReport extends Vue {
     document.body.style.background = '#FBFBFB'
     this.hideNavBarStatus()
     this.barShow = this.$route.query.show
+  }
+
+  mounted() {
+    window.addEventListener('scroll', this.getScroll)
+  }
+
+  destroyed() {
+    window.removeEventListener('scroll', this.getScroll)
   }
 
   // 隐藏导航

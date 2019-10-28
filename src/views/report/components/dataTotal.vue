@@ -40,7 +40,7 @@ export default class DataTotal extends ViewBase {
         applink = 'reportRelateCinemaList'
         break
       case 'movie':
-        applink = 'reportRelateMoiveList'
+        applink = 'reportRelateMovieList'
         break
     }
     const objectData = {

@@ -5,7 +5,7 @@
       已有帐号？
       <i @click.stop="goLogin">立即登录</i>
     </div>
-    <div class="radiobox">
+    <!-- <div class="radiobox">
       <label
         v-for="item in radioType"
         :key="item.value"
@@ -19,7 +19,7 @@
         ></i>
         {{item.name}}
       </label>
-    </div>
+    </div>-->
     <dl class="fillinfo">
       <dd v-show="userType == '1'">
         <div class="inputctrl">
@@ -118,12 +118,12 @@ export default class GetMobile extends ViewBase {
       value: '2'
     }
   ]
-  userType: string = '1' // 注册类型
+  userType: string = '1' // 注册类型 1=公司 2=个人
   companyName: string = '' // 公司名称
   userName: string = '' // 用户名称
   userMobile: string = '' // 用户手机号
   recommendMobile: string = '' // 推荐人手机号
-  isAgree: boolean = true // 是否同意用户协议
+  isAgree: boolean = false // 是否同意用户协议
   btnStatus: boolean = false
 
   // 清除

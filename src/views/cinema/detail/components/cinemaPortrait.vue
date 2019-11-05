@@ -3,11 +3,11 @@
     <h3>用户画像</h3>
     <h4>年龄占比</h4>
     <div class="userage">
-      <div class="example"></div>
+      <div class="example" v-if="!portrait.showData"></div>
       <BarGraph :dataOption="userAgesData" />
     </div>
     <div class="col">
-      <span class="example"></span>
+      <span class="example" v-if="!portrait.showData"></span>
       <div>
         <h4>性别占比</h4>
         <div class="usergender">
@@ -23,7 +23,7 @@
     </div>
     <h4 style="margin-top:40px">消费偏好</h4>
     <div class="usergender">
-      <div class="example"></div>
+      <div class="example" v-if="!portrait.showData"></div>
       <BarGraphRow :dataOption="userPerferData" :bgcolor="perferColor" />
       <p class="perferdesc" v-if="portrait.consumePerfer">{{portrait.consumePerfer.desc}}</p>
     </div>

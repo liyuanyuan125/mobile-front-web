@@ -113,7 +113,8 @@ export default class CinemaDetail extends Vue {
             userAges: res.data.userAges,
             userGender: res.data.userGender,
             userMarital: res.data.userMarital,
-            consumePerfer: res.data.consumePerfer
+            consumePerfer: res.data.consumePerfer,
+            showData: res.data.showData
           }
         } else {
           // 未验证用户显示示例
@@ -121,7 +122,8 @@ export default class CinemaDetail extends Vue {
             userAges: example.userAges,
             userGender: example.userGender,
             userMarital: example.userMarital,
-            consumePerfer: example.consumePerfer
+            consumePerfer: example.consumePerfer,
+            showData: res.data.showData
           }
         }
         this.hideNavBarStatus('#A0BBF9')

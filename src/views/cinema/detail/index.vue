@@ -30,7 +30,9 @@ import CinemaInfo from './components/cinemaInfo.vue'
 import CinemaData from './components/cinemaData.vue'
 import CinemaPortrait from './components/cinemaPortrait.vue'
 import WatchTimes from './components/watchTimes.vue'
-import { getCinemaDetail } from '@/api/advertiser'
+import { example } from './components/example'
+import { getCinemaDetail, getCinemaDetailLogined } from '@/api/advertiser'
+import { autoLogin } from '@/api/theater'
 import { toast } from '@/util/toast'
 import { setNavBarStatus } from '@/util/native'
 import DataNull from '@/components/dataNull'
@@ -51,6 +53,7 @@ export default class CinemaDetail extends Vue {
   cinemaId: string = ''
   scrollTop: number = 0
   cinemaErr: boolean = false
+  isShowData: boolean = false // 是显示示例还是显示数据
 
   created() {
     const cid = this.$route.params.cinemaId
@@ -77,17 +80,49 @@ export default class CinemaDetail extends Vue {
     window.removeEventListener('scroll', this.getScroll)
   }
 
-  // 获取报告详情 10103
-  async getCinemaDetail(cinemaId: string) {
+  // 获取影院详情 10103
+  async isLogin() {
     try {
-      const res: any = await getCinemaDetail({ cinemaId })
+      const res: any = await autoLogin({})
+      if (res.code === 0) {
+        return true
+      } else {
+        return false
+      }
+    } catch (ex) {
+      toast(ex)
+    }
+  }
+
+  // 获取未影院详情 10103
+  async getCinemaDetail(cinemaId: string) {
+    const login = await this.isLogin()
+    try {
+      let res: any
+      if (login) {
+        res = await getCinemaDetail({ cinemaId })
+      } else {
+        res = await getCinemaDetailLogined({ cinemaId })
+      }
       if (res.code === 0) {
         this.detail = res.data
-        this.portrait = {
-          userAges: res.data.userAges,
-          userGender: res.data.userGender,
-          userMarital: res.data.userMarital,
-          consumePerfer: res.data.consumePerfer
+        this.isShowData = res.data.showData
+        if (res.data.showData) {
+          // 已认证的用户显示真实数据
+          this.portrait = {
+            userAges: res.data.userAges,
+            userGender: res.data.userGender,
+            userMarital: res.data.userMarital,
+            consumePerfer: res.data.consumePerfer
+          }
+        } else {
+          // 未验证用户显示示例
+          this.portrait = {
+            userAges: example.userAges,
+            userGender: example.userGender,
+            userMarital: example.userMarital,
+            consumePerfer: example.consumePerfer
+          }
         }
         this.hideNavBarStatus('#A0BBF9')
       } else {

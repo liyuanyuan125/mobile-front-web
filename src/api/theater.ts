@@ -36,3 +36,12 @@ export async function submitApplicationInfo(query: any) {
     return res
 }
 
+/**
+ * 自动登录&是否登录
+ * @param query  object
+ */
+export async function autoLogin(query: any) {
+    const res = await post('/customer/accounts/auto_login', query)
+    return res
+}
+

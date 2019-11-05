@@ -117,6 +117,9 @@
       <p>Copyright {{fullYear}} Jydata.com Inc.</p>
       <p>All rights reserved.</p>
     </div>
+    <div class="chargebtn">
+      <router-link to="/application#agreement">已阅读并同意</router-link>
+    </div>
   </div>
 </template>
 

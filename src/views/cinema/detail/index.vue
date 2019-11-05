@@ -99,7 +99,7 @@ export default class CinemaDetail extends Vue {
     const login = await this.isLogin()
     try {
       let res: any
-      if (login) {
+      if (!login) {
         res = await getCinemaDetail({ cinemaId })
       } else {
         res = await getCinemaDetailLogined({ cinemaId })

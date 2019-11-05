@@ -77,6 +77,7 @@
       </dd>
       <dt>
         <i @click.stop="changeAgreeStatus" :class="{checked:isAgree}"></i>
+        <span @click.stop="changeAgreeStatus">已阅读并同意</span>
         <router-link to="/help/agreement">《广告主合作协议》</router-link>
       </dt>
     </dl>
@@ -126,6 +127,12 @@ export default class GetMobile extends ViewBase {
   isAgree: boolean = false // 是否同意用户协议
   btnStatus: boolean = false
 
+  created() {
+    const agree = this.$route.hash
+    if (agree == '#agreement') {
+      this.isAgree = true
+    }
+  }
   // 清除
   clearTxt(name: string) {
     switch (name) {

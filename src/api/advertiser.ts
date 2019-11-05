@@ -46,10 +46,20 @@ export async function getMovieDetail(query: any) {
 }
 
 /**
- * 获取影院详情页
+ *
+ * 获取未登录的影院详情页
  * @param query  object
  */
 export async function getCinemaDetail(query: any) {
+    const res = await get('/cinema/detail', query)
+    return res
+}
+
+/**
+ * 获取登录后的影院详情页
+ * @param query  object
+ */
+export async function getCinemaDetailLogined(query: any) {
     const res = await get('/cinema/detail', query)
     return res
 }

@@ -60,7 +60,7 @@ export async function getCinemaDetail(query: any) {
  * @param query  object
  */
 export async function getCinemaDetailLogined(query: any) {
-    const res = await get('/cinema/detail', query)
+    const res = await get('/cinema/loginDetail', query)
     return res
 }
 

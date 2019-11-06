@@ -88,7 +88,7 @@ export default class SetPwdPage extends ViewBase {
 
   // 验证一下验证码
   checkPassWord() {
-    const reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,10}$/
+    const reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/
     if (
       !reg.test(this.password) ||
       this.password.length > 16 ||

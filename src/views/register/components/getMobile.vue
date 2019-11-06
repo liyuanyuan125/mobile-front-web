@@ -78,9 +78,21 @@
       <dt>
         <i @click.stop="changeAgreeStatus" :class="{checked:isAgree}"></i>
         <span @click.stop="changeAgreeStatus">已阅读并同意</span>
-        <router-link to="/help/agreement">《广告主合作协议》</router-link>
+        <a @click.stop="changeAgreeStatus">《广告主合作协议》</a>
       </dt>
     </dl>
+    <div class="agreement" v-show="isShowAgree">
+      <div class="outer">
+        <div class="inner" ref="inner">
+          <div ref="ment">
+            <Agreement />
+          </div>
+        </div>
+        <div class="chargebtn">
+          <button :disabled="disabledAgree" @click="changeAgree">已阅读并同意</button>
+        </div>
+      </div>
+    </div>
     <div class="subbuttonbox">
       <button :class="{disabled:!btnStatus}" @click="getVerifyCode">获取验证码</button>
     </div>
@@ -103,8 +115,13 @@ import { handleUploadImage } from '@/util/native'
 import { getSmsCode } from '@/api/theater'
 import { toast } from '@/util/toast'
 import { handleGoBack } from '@/util/native'
+import Agreement from '../../help/agreement/index.vue'
 
-@Component
+@Component({
+  components: {
+    Agreement
+  }
+})
 export default class GetMobile extends ViewBase {
   @Prop({ type: Function }) changePage!: (id: number) => Promise<boolean>
 
@@ -126,12 +143,29 @@ export default class GetMobile extends ViewBase {
   recommendMobile: string = '' // 推荐人手机号
   isAgree: boolean = false // 是否同意用户协议
   btnStatus: boolean = false
+  disabledAgree: boolean = true
+  isShowAgree: boolean = false
 
   created() {
     const agree = this.$route.hash
     if (agree == '#agreement') {
       this.isAgree = true
     }
+  }
+
+  mounted() {
+    // 处理用户合约
+    const inner: any = this.$refs.inner
+    const ment: any = this.$refs.ment
+    // console.log()
+    inner.addEventListener('scroll', () => {
+      const innerTop = inner.scrollTop // 滚动的位置
+      const innerHeight = inner.offsetHeight // 外层的高度
+      const mentHeight = ment.offsetHeight // 内容的高度
+      if (innerTop + 100 > mentHeight - innerHeight) {
+        this.disabledAgree = false
+      }
+    })
   }
   // 清除
   clearTxt(name: string) {
@@ -165,7 +199,18 @@ export default class GetMobile extends ViewBase {
 
   // 是否同意用户协议
   changeAgreeStatus() {
-    this.isAgree = !this.isAgree
+    if (this.isAgree === false) {
+      this.isShowAgree = true
+    } else {
+      this.isAgree = !this.isAgree
+      this.changeBtnStatus()
+    }
+  }
+
+  // 已阅读并同意用户协议
+  changeAgree() {
+    this.isShowAgree = false // 关闭弹框
+    this.isAgree = !this.isAgree // 勾选复选框
     this.changeBtnStatus()
   }
 

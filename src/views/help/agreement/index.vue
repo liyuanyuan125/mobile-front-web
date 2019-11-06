@@ -1,6 +1,6 @@
 <template>
   <div class="privacy">
-    <h4>鲸鱼数据平台广告主合作协议</h4>
+    <h4>广告主合作协议</h4>
     <dl>
       <dd
         class="indent"
@@ -112,14 +112,14 @@
       <dd>1. 提供直供服务的用户同意本公司及本平台可根据市场情况和服务费费率调整、自动更改相应的对外报价。如果需要，用户可以根据需求在此基础上再次自行进行修改；</dd>
       <dd>2. 鲸鱼数据平台运营方有权根据业务情况修改本协议条款以及各单项服务的相关条款，在必要时通过在网页上发出公告等合理方式予以公布。用户在享受各项服务时，应当及时查阅了解修改的内容，并自觉遵守本协议条款以及该单项服务的相关条款，用户点击“同意”按钮即表示完全接受协议的所有条款； 用户如继续使用本协议条款涉及的服务，则视为对修改内容的同意，当发生有关争议时，以最新的协议条款为准；用户在不同意修改内容的情况下，鲸鱼数据平台运营方有权停止使用本协议条款涉及的服务。</dd>
     </dl>
-    <div class="footer">
+    <!-- <div class="footer">
       <p>北京智能广宣科技有限公司</p>
       <p>Copyright {{fullYear}} Jydata.com Inc.</p>
       <p>All rights reserved.</p>
-    </div>
-    <div class="chargebtn">
+    </div>-->
+    <!-- <div class="chargebtn">
       <router-link to="/application#agreement">已阅读并同意</router-link>
-    </div>
+    </div>-->
   </div>
 </template>
 

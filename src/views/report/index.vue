@@ -103,7 +103,7 @@ export default class ResultReport extends Vue {
         this.orderDetail = res.data
       } else {
         this.dataErr = true
-        toast(res.msg)
+        // toast(res.msg)
       }
     } catch (ex) {
       toast(ex)

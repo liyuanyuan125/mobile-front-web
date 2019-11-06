@@ -18,6 +18,7 @@ export default class Privacy extends Vue {
   mounted() {
     const rec: any = this.$refs.recharge
     rec.style.height = document.body.clientHeight + 'px'
+    document.title = '充值规则'
   }
 }
 </script>

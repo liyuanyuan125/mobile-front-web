@@ -156,16 +156,23 @@ export default class GetMobile extends ViewBase {
   mounted() {
     // 处理用户合约
     const inner: any = this.$refs.inner
+    inner.addEventListener('scroll', this.agreeScroll)
+  }
+
+  destroyed() {
+    window.removeEventListener('scroll', this.agreeScroll)
+  }
+
+  // 计算弹出框是否滚到底
+  agreeScroll() {
+    const inner: any = this.$refs.inner
     const ment: any = this.$refs.ment
-    // console.log()
-    inner.addEventListener('scroll', () => {
-      const innerTop = inner.scrollTop // 滚动的位置
-      const innerHeight = inner.offsetHeight // 外层的高度
-      const mentHeight = ment.offsetHeight // 内容的高度
-      if (innerTop + 100 > mentHeight - innerHeight) {
-        this.disabledAgree = false
-      }
-    })
+    const innerTop = inner.scrollTop // 滚动的位置
+    const innerHeight = inner.offsetHeight // 外层的高度
+    const mentHeight = ment.offsetHeight // 内容的高度
+    if (innerTop + 100 > mentHeight - innerHeight) {
+      this.disabledAgree = false
+    }
   }
   // 清除
   clearTxt(name: string) {

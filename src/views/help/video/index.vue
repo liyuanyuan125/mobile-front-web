@@ -33,6 +33,7 @@ export default class Videoexplain extends Vue {
   mounted() {
     const exp: any = this.$refs.explain
     exp.style.height = document.body.clientHeight + 'px'
+    document.title = '新手须知'
   }
 
   // 获取报告数据 563、516、515、424

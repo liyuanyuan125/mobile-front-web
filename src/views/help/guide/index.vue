@@ -66,6 +66,7 @@ export default class Guide extends Vue {
   }
 
   mounted() {
+    document.title = '投放指南'
     setTimeout(() => {
       // 加了个延迟，不知道为什么step和report的位置就是算不准，初步猜测是因为图片没加载完
       window.addEventListener('scroll', this.getScroll)

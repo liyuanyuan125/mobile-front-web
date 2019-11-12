@@ -81,7 +81,7 @@ export default class SetPassWord extends ViewBase {
           // 通知APP注册成功了
           const mi = this.$cookies.get('app-token')
           const hostArr = location.host.split('.')
-          const host = `.${hostArr[1]}.${hostArr[2]}`
+          const host = `${hostArr[1]}.${hostArr[2]}`
           const userCookie = `app-token=${mi};Domain=${host}`
           devInfo('userCookie', userCookie, res.data)
           const obj = {

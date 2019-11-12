@@ -1,10 +1,9 @@
 <template>
   <div class="download" ref="downloabox">
-    <div class="logo">全网精准娱乐营销平台</div>
-    <div class="desc">高效移动工作平台</div>
     <div class="btnbox">
-      <a class="iosbtn" href="https://itunes.apple.com/cn/app/id1477971483?mt=8">iPhone版下载</a>
-      <a class="androidbtn" @click="wxDownload">Android下载</a>
+      <a class="iosbtn" href="https://itunes.apple.com/cn/app/id1478240682?mt=8">立即下载</a>
+      <!-- <a class="androidbtn" @click="wxDownload">Android下载</a> -->
+      <p>目前仅支持 iOS 和 Android</p>
     </div>
     <div class="sharetip" v-show="isShowWX" @click="closeWX"></div>
   </div>
@@ -21,6 +20,7 @@ export default class DownloadCinema extends Vue {
 
   mounted() {
     document.title = '鲸鱼数据影城版'
+    document.documentElement.style.backgroundColor = '#A5BEF8'
     const dw: any = this.$refs.downloabox
     dw.style.height = document.documentElement.clientHeight + 'px'
   }
@@ -45,48 +45,34 @@ export default class DownloadCinema extends Vue {
 <style lang="less" scoped>
 .download {
   height: 100%;
-  background: url('./assets/bg.jpg') no-repeat center 0;
+  background: url('./assets/adbg.jpg') no-repeat center bottom #a5bef8;
   background-size: cover;
   padding-top: 1px;
 }
-.logo {
-  background: url('./assets/logo.png') no-repeat center 0;
-  background-size: 100% auto;
-  width: 390px;
-  height: 280px;
-  margin: 140px auto 0;
-  font-size: 0;
-  line-height: 0;
-}
-.desc {
-  background: url('./assets/desc.png') no-repeat center 0;
-  background-size: 100% auto;
-  width: 296px;
-  height: 117px;
-  margin: 100px auto 0;
-  font-size: 0;
-  line-height: 0;
-}
+
 .btnbox {
-  margin-top: 40px;
   text-align: center;
+  position: absolute;
+  bottom: 70px;
+  left: 0;
+  width: 100%;
   a {
-    width: 408px;
-    height: 88px;
-    border: none;
-    padding: 0;
-    background: no-repeat 0 0;
-    background-size: 100% auto;
-    font-size: 0;
-    line-height: 0;
-    margin-bottom: 40px;
+    width: 340px;
+    height: 100px;
+    background: #fff;
+    font-size: 34px;
+    line-height: 100px;
+    text-align: center;
     display: inline-block;
+    border-radius: 50px;
+    color: #1e386f;
+    box-shadow: 0 4px 20px rgba(43, 69, 128, 0.3);
   }
-  .iosbtn {
-    background-image: url('./assets/iosbtn.png');
-  }
-  .androidbtn {
-    background-image: url('./assets/androidbtn.png');
+  p {
+    margin-top: 14px;
+    color: #1e386f;
+    font-size: 24px;
+    line-height: 33px;
   }
 }
 .sharetip {

@@ -11,13 +11,19 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: () => import('./views/downLoad/download.vue')
     },
     // jssdk 联调用
     {
       path: '/jssdk',
       name: 'jssdk',
       component: () => import('./views/sdk/index.vue')
+    },
+    // 影院端下载
+    {
+      path: '/download/ad',
+      name: 'downloadAdvertiser',
+      component: () => import('./views/downLoad/download.vue')
     },
     // 影院端下载
     {

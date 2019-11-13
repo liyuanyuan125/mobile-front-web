@@ -1,7 +1,7 @@
 <template>
   <div class="download" ref="downloabox">
     <div class="btnbox">
-      <a class="iosbtn" href="https://itunes.apple.com/cn/app/id1478240682?mt=8">立即下载</a>
+      <a class="iosbtn" :href="dlUrl">立即下载</a>
       <!-- <a class="androidbtn" @click="wxDownload">Android下载</a> -->
       <p>目前仅支持 iOS 和 Android</p>
     </div>
@@ -17,12 +17,25 @@ import { Component, Vue } from 'vue-property-decorator'
 })
 export default class DownloadCinema extends Vue {
   isShowWX: boolean = false
+  dlUrl: string = ''
 
   mounted() {
     document.title = '鲸鱼数据影城版'
     document.documentElement.style.backgroundColor = '#A5BEF8'
     const dw: any = this.$refs.downloabox
     dw.style.height = document.documentElement.clientHeight + 'px'
+    const ua = navigator.userAgent.toLowerCase()
+    // const bIsApple =
+    //   ua.indexOf('ipad') > 0 || ua.indexOf('iphone') || ua.indexOf('mac os')
+    //     ? true
+    //     : false
+    const bIsAndroid = ua.indexOf('android') > -1 ? true : false
+    console.log('bIsAndroid', bIsAndroid)
+    if (bIsAndroid) {
+      this.dlUrl = 'https://aiads-file.oss-cn-beijing.aliyuncs.com/APK/JYdata_V1.1.apk'
+    } else {
+      this.dlUrl = 'https://itunes.apple.com/cn/app/id1478240682?mt=8'
+    }
   }
 
   wxDownload() {

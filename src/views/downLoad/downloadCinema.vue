@@ -32,7 +32,7 @@ export default class DownloadCinema extends Vue {
       this.isShowWX = true
     } else {
       location.href =
-        'https://aiads-file.oss-cn-beijing.aliyuncs.com/VIDEO/MISC/JYdata_yc_V1.0.apk'
+        'https://aiads-file.oss-cn-beijing.aliyuncs.com/APK/JYdata_yc_v1.0.1.apk'
     }
   }
 

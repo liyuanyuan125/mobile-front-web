@@ -30,7 +30,6 @@ export default class DownloadCinema extends Vue {
     //     ? true
     //     : false
     const bIsAndroid = ua.indexOf('android') > -1 ? true : false
-    console.log('bIsAndroid', bIsAndroid)
     if (bIsAndroid) {
       this.dlUrl = 'https://aiads-file.oss-cn-beijing.aliyuncs.com/APK/JYdata_V1.1.apk'
     } else {

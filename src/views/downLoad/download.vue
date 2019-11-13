@@ -1,7 +1,7 @@
 <template>
   <div class="download" ref="downloabox">
     <div class="btnbox">
-      <a class="iosbtn" :href="dlUrl">立即下载</a>
+      <a class="iosbtn" @click="wxDownload">立即下载</a>
       <!-- <a class="androidbtn" @click="wxDownload">Android下载</a> -->
       <p>目前仅支持 iOS 和 Android</p>
     </div>
@@ -24,27 +24,26 @@ export default class DownloadCinema extends Vue {
     document.documentElement.style.backgroundColor = '#A5BEF8'
     const dw: any = this.$refs.downloabox
     dw.style.height = document.documentElement.clientHeight + 'px'
-    const ua = navigator.userAgent.toLowerCase()
+
     // const bIsApple =
     //   ua.indexOf('ipad') > 0 || ua.indexOf('iphone') || ua.indexOf('mac os')
     //     ? true
     //     : false
-    const bIsAndroid = ua.indexOf('android') > -1 ? true : false
-    if (bIsAndroid) {
-      this.dlUrl = 'https://aiads-file.oss-cn-beijing.aliyuncs.com/APK/JYdata_V1.1.apk'
-    } else {
-      this.dlUrl = 'https://itunes.apple.com/cn/app/id1478240682?mt=8'
-    }
   }
 
   wxDownload() {
-    const ua = navigator.userAgent
-    const isWeixin = /MicroMessenger/gi.test(ua)
-    if (isWeixin) {
-      this.isShowWX = true
+    const ua = navigator.userAgent.toLowerCase()
+    const isWeixin = ua.indexOf('micromessenger') > -1
+    const bIsAndroid = ua.indexOf('android') > -1 ? true : false
+    if (bIsAndroid) {
+      if (isWeixin) {
+        this.isShowWX = true
+      } else {
+        location.href =
+          'https://aiads-file.oss-cn-beijing.aliyuncs.com/APK/JYdata_V1.1.apk'
+      }
     } else {
-      location.href =
-        'https://aiads-file.oss-cn-beijing.aliyuncs.com/VIDEO/MISC/JYdata_yc_V1.0.apk'
+      location.href = 'https://itunes.apple.com/cn/app/id1478240682?mt=8'
     }
   }
 

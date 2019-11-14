@@ -20,7 +20,7 @@ export default class DownloadCinema extends Vue {
   dlUrl: string = ''
 
   mounted() {
-    document.title = '鲸鱼数据影城版'
+    document.title = '鲸鱼数据'
     document.documentElement.style.backgroundColor = '#A5BEF8'
     const dw: any = this.$refs.downloabox
     dw.style.height = document.documentElement.clientHeight + 'px'

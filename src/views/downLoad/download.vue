@@ -56,7 +56,7 @@ export default class DownloadCinema extends Vue {
 <style lang="less" scoped>
 .download {
   height: 100%;
-  background: url('./assets/adbg.jpg') no-repeat center bottom #a5bef8;
+  background: url('./assets/adbg.jpg') no-repeat center 0 #a5bef8;
   background-size: 100% auto;
   padding-top: 1px;
 }
@@ -64,7 +64,7 @@ export default class DownloadCinema extends Vue {
 .btnbox {
   text-align: center;
   position: absolute;
-  bottom: 70px;
+  top: 950px;
   left: 0;
   width: 100%;
   a {
@@ -80,7 +80,7 @@ export default class DownloadCinema extends Vue {
     box-shadow: 0 4px 20px rgba(43, 69, 128, 0.3);
   }
   p {
-    margin-top: 14px;
+    margin-top: 30px;
     color: #1e386f;
     font-size: 24px;
     line-height: 33px;

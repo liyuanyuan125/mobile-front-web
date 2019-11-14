@@ -57,7 +57,7 @@ export default class DownloadCinema extends Vue {
 .download {
   height: 100%;
   background: url('./assets/adbg.jpg') no-repeat center bottom #a5bef8;
-  background-size: cover;
+  background-size: 100% auto;
   padding-top: 1px;
 }
 

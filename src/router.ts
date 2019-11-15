@@ -55,6 +55,12 @@ export default new Router({
       name: 'agreement',
       component: () => import('./views/help/agreement/index.vue')
     },
+    // 影城端协议
+    {
+      path: '/help/cinemament',
+      name: 'cinemament',
+      component: () => import('./views/help/agreementCinema/index.vue')
+    },
     // 指南
     {
       path: '/help/guide',

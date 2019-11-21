@@ -56,9 +56,10 @@ export default class BarGraph extends ViewBase {
         data: this.dataOption.xData,
         axisLabel: {
           interval: 0,
+          // X轴上字的样式
           textStyle: {
             color: '#8798AF',
-            fontSize: '20px'
+            fontSize: this.dataOption.xData.length > 6 ? 7 : 9
           }
         },
         axisLine: {

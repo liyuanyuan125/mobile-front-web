@@ -57,10 +57,10 @@ export default class DataCity extends ViewBase {
       legendData,
       legendX: 'right',
       legendY: 'middle',
-      legendLeft: '58%',
+      legendLeft: '55%',
       orient: 'vertical',
       size: ['45%', '70%'],
-      position: ['30%', '50%']
+      position: ['27%', '50%']
     }
   }
 

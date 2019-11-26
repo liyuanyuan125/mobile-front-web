@@ -40,7 +40,7 @@ export default class DownloadCinema extends Vue {
         this.isShowWX = true
       } else {
         location.href =
-          'https://aiads-file.oss-cn-beijing.aliyuncs.com/APK/JYdata_V1.1.apk'
+          'https://aiads-file.oss-cn-beijing.aliyuncs.com/APK/JyData_P_df_v1.0.2_release.apk'
       }
     } else {
       location.href = 'https://itunes.apple.com/cn/app/id1478240682?mt=8'

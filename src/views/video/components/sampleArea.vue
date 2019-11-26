@@ -40,18 +40,10 @@ export default class SampleArea extends ViewBase {
     vid.style.zIndex = 3
     vid.style.opacity = 1
     vid.play()
-    if (vid.ended) {
-      vid.style.zIndex = 1
-      vid.style.opacity = 0
-    }
     vid.addEventListener('ended', () => {
       vid.style.zIndex = 1
       vid.style.opacity = 0
     })
-    if (vid.pause) {
-      vid.style.zIndex = 1
-      vid.style.opacity = 0
-    }
     vid.addEventListener('pause', () => {
       vid.style.zIndex = 1
       vid.style.opacity = 0

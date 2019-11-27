@@ -24,11 +24,11 @@ export default class DownloadCinema extends Vue {
     document.documentElement.style.backgroundColor = '#A5BEF8'
     const dw: any = this.$refs.downloabox
     dw.style.height = document.documentElement.clientHeight + 'px'
-
-    // const bIsApple =
-    //   ua.indexOf('ipad') > 0 || ua.indexOf('iphone') || ua.indexOf('mac os')
-    //     ? true
-    //     : false
+    // const _hmt = _hmt || []
+    const hm = document.createElement('script')
+    hm.src = 'https://hm.baidu.com/hm.js?b801b33c94b9bf63b69243906991f317'
+    const s: any = document.getElementsByTagName('script')[0]
+    s.parentNode.insertBefore(hm, s)
   }
 
   wxDownload() {

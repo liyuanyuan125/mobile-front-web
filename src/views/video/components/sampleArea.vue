@@ -37,7 +37,7 @@ export default class SampleArea extends ViewBase {
 
   playVideo() {
     const vid: any = this.$refs.video
-    vid.style.zIndex = 3
+    vid.style.zIndex = 5
     vid.style.opacity = 1
     vid.play()
     vid.addEventListener('ended', () => {

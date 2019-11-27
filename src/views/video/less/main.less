@@ -1,6 +1,3 @@
-.viewpage{
-    padding-bottom: 125px;
-}
 .statusarea {
     background: #A5BEF8;
     padding: 50px;
@@ -42,8 +39,9 @@
     .status {
         font-size: 36px;
         line-height: 1.1;
-        i{
-            background: no-repeat  center center;
+
+        i {
+            background: no-repeat center center;
             background-size: 100%;
             width: 44px;
             height: 44px;
@@ -52,10 +50,12 @@
             vertical-align: middle;
             margin-right: 10px;
         }
-        .succ{
+
+        .succ {
             background-image: url("../assets/right.png")
         }
-        .fail{
+
+        .fail {
             background-image: url("../assets/warn.png")
         }
     }
@@ -87,11 +87,11 @@
         font-size: 30px;
         line-height: 1.5;
         margin-bottom: 10px;
-        overflow:hidden;
-        text-overflow:ellipsis;
-        display:-webkit-box;
-        -webkit-line-clamp:2;//想要的行数
-        -webkit-box-orient:vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; //想要的行数
+        -webkit-box-orient: vertical;
     }
 
     dd {
@@ -124,27 +124,28 @@
         line-height: 1.1;
     }
 
-    .videobox{
+    .videobox {
         position: relative;
         margin-top: 40px;
 
-        .play{
+        .play {
             background: url("../assets/play.png") no-repeat center center;
             background-size: 100%;
             width: 70px;
             height: 70px;
             position: absolute;
             left: 50%;
-            top:50%;
-            transform: translate(-50%,-50%);
+            top: 50%;
+            transform: translate(-50%, -50%);
             z-index: 4;
         }
-        .info{
-            background: linear-gradient(to top,rgba(0,0,0,.3),transparent);
+
+        .info {
+            background: linear-gradient(to top, rgba(0, 0, 0, .3), transparent);
             width: 100%;
             font-size: 26px;
             line-height: 80px;
-            padding: 0  20px;
+            padding: 0 20px;
             color: #fff;
             text-overflow: ellipsis;
             overflow: hidden;
@@ -154,14 +155,17 @@
             bottom: 0;
             z-index: 3;
         }
-        img,video{
+
+        img,
+        video {
             width: 100%;
             height: 100%;
             display: block;
             position: relative;
             z-index: 2;
         }
-        video{
+
+        video {
             position: absolute;
             left: 0;
             top: 0;
@@ -229,22 +233,19 @@
         }
 
         em {
-            
+
             flex: 1;
             text-align: right;
         }
     }
 }
 
-.btncancel{
+.btncancel {
     background: #fff;
     border-top: 1px solid #DFEAF8;
     line-height: 126px;
-    position: fixed;
     font-size: 26px;
     text-align: center;
     width: 100%;
-    left: 0;
-    bottom: 0;
     color: #FD3E72;
 }

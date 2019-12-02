@@ -220,8 +220,9 @@ export default class DownloadCinema extends Vue {
     flex: 1;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     flex-direction: column;
+    height: 735px;
 
     .logo {
       background: url('./assets/adlogo.png') no-repeat center 0;

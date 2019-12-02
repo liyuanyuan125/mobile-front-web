@@ -72,3 +72,30 @@ export async function submitApplicationInfo(query: any) {
     const res = await post('/customer/accounts/register', query)
     return res
 }
+
+/**
+ * 获取下载页的用户手机验证码
+ * @param query  object
+ */
+export async function getDLSmsCode(query: any) {
+    const res = await post('/xadvert/downloads/send_sms', query)
+    return res
+}
+
+/**
+ * 验证下载页用户手机验证码
+ * @param query  object
+ */
+export async function checkDLSmsCode(query: any) {
+    const res = await post('/xadvert/downloads/check_sms', query)
+    return res
+}
+
+/**
+ * 提交下载页用户手机验证三
+ * @param query  object
+ */
+export async function submitDLSmsCode(query: any) {
+    const res = await post('/xadvert/downloads/log', query)
+    return res
+}

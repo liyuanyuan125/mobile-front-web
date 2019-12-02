@@ -1,8 +1,8 @@
 <template>
   <div class="viewpage">
-    <GetMobile :changePage="changePage" v-show="stepOne" />
+    <GetMobile :changePage="changePage" v-show="stepOne" :guestShow="guestShow" />
     <VerifyCode :changePage="changePage" v-show="stepSec" :pageOn="stepSec" />
-    <SetPassWord :changePage="changePage" v-show="stepThr" />
+    <SetPassWord :changePage="changePage" v-show="stepThr" :guestShow="guestShow" />
     <SuccessPage :changePage="changePage" v-show="stepFor" />
   </div>
 </template>
@@ -29,6 +29,15 @@ export default class Application extends Vue {
   stepSec: boolean = false
   stepThr: boolean = false
   stepFor: boolean = false
+  guestShow: boolean = false
+
+  created() {
+    // bne9ska23akgpsoe1gl0
+    const g: any = this.$route.query.g
+    if (g) {
+      this.guestShow = true
+    }
+  }
 
   // 切换页面
   changePage(page: number) {

@@ -45,3 +45,12 @@ export async function autoLogin(query: any) {
     return res
 }
 
+/**
+ * 根据密文获取客户信息
+ * @param query  object
+ */
+export async function getGuestInfo(query: any) {
+    const res = await get('/customer/accounts/crm_c/', query)
+    return res
+}
+

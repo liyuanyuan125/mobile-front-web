@@ -70,7 +70,8 @@ export default class SetPassWord extends ViewBase {
           accountType: sto.state.userType,
           companyName: sto.state.companyName,
           contact: sto.state.userName,
-          recommendTel: sto.state.recommendPhone
+          recommendTel: sto.state.recommendPhone,
+          customerId: sto.state.guestId
         })
         if (res.code === 0) {
           // toast('注册成功')

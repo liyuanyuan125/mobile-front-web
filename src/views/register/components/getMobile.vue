@@ -41,8 +41,9 @@
             v-model.trim="userName"
             placeholder="姓名 (中文、字母、数字,2~50字)"
             v-on:input="changeBtnStatus"
+            :disabled="guestShow"
           />
-          <i class="del" v-show="userName.length" @click="clearTxt('userName')"></i>
+          <i class="del" v-show="userName.length && !guestShow" @click="clearTxt('userName')"></i>
         </div>
       </dd>
       <dd>
@@ -56,8 +57,9 @@
             oninput="if(value.length > 11)value = value.slice(0, 11)"
             ref="getPhoneNumber"
             pattern="[0-9]*"
+            :disabled="guestShow"
           />
-          <i class="del" v-show="userMobile.length" @click="clearTxt('userMobile')"></i>
+          <i class="del" v-show="userMobile.length  && !guestShow" @click="clearTxt('userMobile')"></i>
         </div>
       </dd>
       <dd>
@@ -71,8 +73,13 @@
             v-on:input="changeBtnStatus"
             ref="getPhoneNumber"
             pattern="[0-9]*"
+            :disabled="guestShow"
           />
-          <i class="del" v-show="recommendMobile.length" @click="clearTxt('recommendMobile')"></i>
+          <i
+            class="del"
+            v-show="recommendMobile.length  && !guestShow"
+            @click="clearTxt('recommendMobile')"
+          ></i>
         </div>
       </dd>
       <dt>
@@ -109,10 +116,11 @@ import {
   setCompanyName,
   setUserName,
   setUserMobile,
-  setRecommendPhone
+  setRecommendPhone,
+  setGuestId
 } from '../store'
 import { handleUploadImage } from '@/util/native'
-import { getSmsCode } from '@/api/theater'
+import { getSmsCode, getGuestInfo } from '@/api/theater'
 import { toast } from '@/util/toast'
 import { handleGoBack } from '@/util/native'
 import Agreement from '../../help/agreement/index.vue'
@@ -124,6 +132,7 @@ import Agreement from '../../help/agreement/index.vue'
 })
 export default class GetMobile extends ViewBase {
   @Prop({ type: Function }) changePage!: (id: number) => Promise<boolean>
+  @Prop({ type: Boolean }) guestShow!: boolean
 
   // 注册类型
   radioType: any = [
@@ -145,11 +154,18 @@ export default class GetMobile extends ViewBase {
   btnStatus: boolean = false
   disabledAgree: boolean = true
   isShowAgree: boolean = false
+  // guestShow: boolean = false // 是否是从crm后台过来的
 
   created() {
     const agree = this.$route.hash
     if (agree == '#agreement') {
       this.isAgree = true
+    }
+    // 是否是从crm后台过来的
+    if (this.guestShow) {
+      const g: any = this.$route.query.g
+      this.getGuest(g)
+      this.guestShow = true
     }
   }
 
@@ -240,6 +256,33 @@ export default class GetMobile extends ViewBase {
         !validataTel(this.userMobile) &&
         recomVali &&
         this.isAgree
+    }
+  }
+
+  // 根据密文获取用户信息
+  async getGuest(uid: string) {
+    try {
+      const res = await getGuestInfo({ uid })
+      if (res.code == 0) {
+        this.userName = res.data.guestContactName
+        this.userMobile = res.data.guestMobile
+        this.companyName = res.data.guestCompanyName
+        this.recommendMobile = res.data.businessMobile
+        setRequestId(res.data.requestId)
+        setUserType(this.userType)
+        setUserName(this.userName)
+        setUserMobile(this.userMobile)
+        setRecommendPhone(this.recommendMobile)
+        setCompanyName(this.companyName)
+        setGuestId(res.data.guestId)
+      } else {
+        toast(res.msg)
+        setTimeout(async () => {
+          await this.goLogin()
+        }, 1500)
+      }
+    } catch (ex) {
+      this.handleError(ex)
     }
   }
 

@@ -11,7 +11,8 @@ const applicationStore = new Vuex.Store({
         userName: '',
         userMobile: '',
         password: '',
-        recommendPhone: ''
+        recommendPhone: '',
+        guestId: ''
     },
     mutations: {
         requestId(state, value: string) {
@@ -35,6 +36,9 @@ const applicationStore = new Vuex.Store({
         recommendPhone(state, value: string) {
             state.recommendPhone = value
         },
+        guestId(state, value: string) {
+            state.guestId = value
+        }
     }
 })
 
@@ -59,6 +63,9 @@ export function setPassword(value?: string) {
 }
 export function setRecommendPhone(value?: string) {
     applicationStore.commit('recommendPhone', value)
+}
+export function setGuestId(value?: string) {
+    applicationStore.commit('guestId', value)
 }
 
 export default applicationStore

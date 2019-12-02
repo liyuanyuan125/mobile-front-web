@@ -10,6 +10,7 @@ import tryParseJson from '@/fn/tryParseJson'
 import { AjaxResult } from '@/util/types'
 import { getApiSignature } from '@/util/native'
 import { random } from '@/fn/string'
+import signa from '@/fn/signature'
 
 
 const ajaxBaseUrl = VAR.ajaxBaseUrl
@@ -34,7 +35,7 @@ const perfectData = ({ code, data, msg }: any = {}) => {
   } as AjaxResult
 }
 
-// 获取签名
+// 从APP获取签名
 const xhr = async (options: any) => {
   // 为防止接口并发时，传递了相同的callbackName,
   // 将 callbackName 改为动态，'getApiSignature' + 随机数 + 'CallBack'
@@ -60,6 +61,8 @@ const xhr = async (options: any) => {
   }
 }
 
+
+
 const request = async (url: string, opts: object) => {
   const isAbs = isAbsoluteUrl(url)
 
@@ -70,13 +73,16 @@ const request = async (url: string, opts: object) => {
     ...opts,
   }
   let finalConfig = config
-  // 处理一下非 app 报错的问题 临时
+  let lastHeader = config.headers
+  // 获取签名 在APP时，由APP生成签名 在非APP里，则用JS生成签名
   if (isApp) {
-    // 签名
     const signature = await xhr(config)
-    const lastHeader = Object.assign({}, config.headers, signature)
-    finalConfig = Object.assign({}, config, { headers: lastHeader })
+    lastHeader = Object.assign({}, config.headers, signature)
+  } else {
+    const xhrClient = signa(config)
+    lastHeader = Object.assign({}, config.headers, xhrClient)
   }
+  finalConfig = Object.assign({}, config, { headers: lastHeader })
 
   let res: any
   try {

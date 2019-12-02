@@ -10,7 +10,7 @@ export default class ApiHelper {
 
     public generateSignature(timeStamp: number, query: string, postData: string) {
         let signature = ''
-        query = query.replace('http://', 'https://')
+        // query = query.replace('http://', 'https://')
         signature += this.channelCode
         signature += this.clientKey
         signature += timeStamp
@@ -24,7 +24,6 @@ export default class ApiHelper {
                 signature += postData
             }
         }
-        // logger.info("XHR", signature);
         return md5(signature)
     }
 
@@ -48,15 +47,6 @@ export default class ApiHelper {
         return strArr.join('&')
     }
 
-    // 生成随机32位的字符串
-    public createRandom32() {
-        let text = ''
-        const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-        for (let i = 0; i < 32; i++) {
-            text += possible.charAt(Math.floor(Math.random() * possible.length))
-        }
-        return text
-    }
 
     public flatParamObjectValue(key: string, value: any) {
         const childObjectValueArr: any = []

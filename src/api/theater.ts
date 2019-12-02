@@ -50,7 +50,7 @@ export async function autoLogin(query: any) {
  * @param query  object
  */
 export async function getGuestInfo(query: any) {
-    const res = await get('/customer/accounts/crm_c/', query)
+    const res = await get('/customer/accounts/crm_c', query)
     return res
 }
 

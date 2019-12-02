@@ -26,6 +26,7 @@
                   type="number"
                   pattern="[0-9]*"
                   v-model="code"
+                  v-on:input="changeBtnStatus"
                   placeholder="请输入验证码"
                   oninput="if(value.length > 6)value = value.slice(0, 6)"
                   onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))&&(/[^+-.*]/.test(event.key))"
@@ -40,7 +41,7 @@
             </div>
           </dd>
           <dd>
-            <button class="sub" @click="checkSmsCode">立即获取APP</button>
+            <button class="sub" :disabled="btnAllow" @click="checkSmsCode">立即获取APP</button>
           </dd>
         </dl>
       </div>
@@ -72,6 +73,7 @@ export default class DownloadCinema extends Vue {
   uid: any = ''
   time: any = 60 // 倒计时
   again: boolean = false // 是否重新发送
+  btnAllow: boolean = true // 下载按钮是否可点
 
   mounted() {
     document.title = '鲸鱼数据'
@@ -116,27 +118,32 @@ export default class DownloadCinema extends Vue {
     }
   }
 
+  // 监听输入框
+  changeBtnStatus() {
+    if (this.code && this.code.length === 6 && this.userMobile) {
+      this.btnAllow = false
+    } else {
+      // toast('请正确填写验证码')
+      this.getInputFocus()
+    }
+  }
+
   // 验证验证码 getDLSmsCode
   async checkSmsCode() {
-    if (!this.code || this.code.length !== 6) {
-      toast('请正确填写验证')
-      this.getInputFocus()
-    } else {
-      try {
-        const res = await checkDLSmsCode({
-          mobile: this.userMobile,
-          guid: this.guid,
-          smsCode: this.code
-        })
-        if (res.code == 0) {
-          // 提交log
-          this.subGuestInfo()
-        } else {
-          toast(res.msg)
-        }
-      } catch (ex) {
-        throw ex
+    try {
+      const res = await checkDLSmsCode({
+        mobile: this.userMobile,
+        guid: this.guid,
+        smsCode: this.code
+      })
+      if (res.code == 0) {
+        // 提交log
+        this.subGuestInfo()
+      } else {
+        toast(res.msg)
       }
+    } catch (ex) {
+      throw ex
     }
   }
 
@@ -249,6 +256,10 @@ export default class DownloadCinema extends Vue {
         font-size: 34px;
         border-radius: 50px;
       }
+      .sub[disabled] {
+        opacity: 0.6;
+        color: #a5a5a5;
+      }
     }
   }
 
@@ -318,7 +329,7 @@ export default class DownloadCinema extends Vue {
   color: #3757ad;
   font-size: 30px;
   border-radius: 50px;
-  line-height: 92px;
+  line-height: 90px;
   width: 230px;
   text-align: center;
   margin-left: 15px;

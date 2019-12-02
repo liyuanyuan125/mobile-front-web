@@ -10,7 +10,7 @@
                 class="text"
                 type="number"
                 v-model="userMobile"
-                placeholder="手机号"
+                placeholder="请输入手机号"
                 oninput="if(value.length > 11)value = value.slice(0, 11)"
                 ref="getPhoneNumber"
                 pattern="[0-9]*"
@@ -26,6 +26,7 @@
                   type="number"
                   pattern="[0-9]*"
                   v-model="code"
+                  placeholder="请输入验证码"
                   oninput="if(value.length > 6)value = value.slice(0, 6)"
                   onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))&&(/[^+-.*]/.test(event.key))"
                   @keyup="butLight"
@@ -78,11 +79,13 @@ export default class DownloadCinema extends Vue {
     this.uid = this.$route.query.fromuid
     const dw: any = this.$refs.downloabox
     dw.style.minHeight = document.documentElement.clientHeight + 'px'
-    // const _hmt = _hmt || []
-    const hm = document.createElement('script')
-    hm.src = 'https://hm.baidu.com/hm.js?b801b33c94b9bf63b69243906991f317'
-    const s: any = document.getElementsByTagName('script')[0]
-    s.parentNode.insertBefore(hm, s)
+    const prd = location.href.indexOf('jydata') > -1
+    if (prd) {
+      const hm = document.createElement('script')
+      hm.src = 'https://hm.baidu.com/hm.js?b801b33c94b9bf63b69243906991f317'
+      const s: any = document.getElementsByTagName('script')[0]
+      s.parentNode.insertBefore(hm, s)
+    }
   }
 
   destroy() {
@@ -219,6 +222,7 @@ export default class DownloadCinema extends Vue {
     align-items: center;
     justify-content: flex-end;
     flex-direction: column;
+    height: 735px;
 
     .logo {
       background: url('./assets/adlogo.png') no-repeat center 0;
@@ -255,7 +259,7 @@ export default class DownloadCinema extends Vue {
       height: 595px;
       position: relative;
       &::after {
-        background: linear-gradient(transparent, #a5bef8);
+        background-image: linear-gradient(rgba(165, 190, 248, 0), #a5bef8);
         width: 100%;
         height: 180px;
         content: '';
@@ -273,7 +277,7 @@ export default class DownloadCinema extends Vue {
   border: #8aa9ef 4px solid;
   box-sizing: content-box;
   border-radius: 50px;
-  padding: 0 25px;
+  padding: 0 31px;
 
   .text {
     background: none;

@@ -33,6 +33,7 @@ import { devLog, devInfo } from '@/util/dev'
 export default class SetPassWord extends ViewBase {
   /** 进入下一页页面函数 */
   @Prop({ type: Function }) changePage!: (id: number) => Promise<boolean>
+  @Prop({ type: Boolean }) guestShow!: boolean
 
   page: number = 3
   password: any = ''

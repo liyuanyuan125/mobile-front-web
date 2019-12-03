@@ -14,7 +14,7 @@
     <div class="flexsec">
       <div>
         <button @click="goAppLink('companyInfoDetail')">完善信息</button>
-        <button class="holdon" @click="goAppLink('homePage')">稍后再说</button>
+        <!-- <button class="holdon" @click="goAppLink('homePage')">稍后再说</button> -->
       </div>
     </div>
   </div>

@@ -49,7 +49,7 @@
     <div class="flexsec">
       <div class="bg"></div>
     </div>
-    <div class="sharetip" v-show="isShowWX" @click="closeWX"></div>
+    <div class="sharetip" v-show="isShowWX"></div>
   </div>
 </template>
 
@@ -87,6 +87,14 @@ export default class DownloadCinema extends Vue {
       hm.src = 'https://hm.baidu.com/hm.js?b801b33c94b9bf63b69243906991f317'
       const s: any = document.getElementsByTagName('script')[0]
       s.parentNode.insertBefore(hm, s)
+    }
+
+    // 判断是安卓的微信用户，直接提示用户在浏览器里打开
+    const ua = navigator.userAgent.toLowerCase()
+    const isWeixin = ua.indexOf('micromessenger') > -1
+    const bIsAndroid = ua.indexOf('android') > -1 ? true : false
+    if (isWeixin && bIsAndroid) {
+      this.isShowWX = true
     }
   }
 
@@ -139,6 +147,8 @@ export default class DownloadCinema extends Vue {
       if (res.code == 0) {
         // 提交log
         this.subGuestInfo()
+        // 去下载
+        this.wxDownload()
       } else {
         toast(res.msg)
       }
@@ -155,7 +165,7 @@ export default class DownloadCinema extends Vue {
         uid: this.uid
       })
       if (res.code == 0) {
-        this.wxDownload()
+        // this.wxDownload()
       } else {
         toast(res.msg)
       }
@@ -336,5 +346,15 @@ export default class DownloadCinema extends Vue {
 }
 .codebtn[disabled] {
   opacity: 0.5;
+}
+.sharetip {
+  background: url('./assets/share.png') no-repeat right 0 rgba(0, 0, 0, 0.8);
+  background-size: 100% auto;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 11;
 }
 </style>

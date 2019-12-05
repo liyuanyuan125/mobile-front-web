@@ -11,7 +11,7 @@
       </dd>
       <dd>
         <b>{{cinemaData.showPerson ? cinemaData.showPerson : '-'}}</b>
-        <p class="desc">日均曝光人次</p>
+        <p class="desc">近30天日均人次</p>
       </dd>
     </dl>
   </div>

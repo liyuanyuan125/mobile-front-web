@@ -208,12 +208,14 @@ export default class DownloadCinema extends Vue {
     const isWeixin = ua.indexOf('micromessenger') > -1
     const bIsAndroid = ua.indexOf('android') > -1 ? true : false
     if (bIsAndroid) {
-      if (isWeixin) {
-        this.isShowWX = true
-      } else {
-        location.href =
-          'https://aiads-file.oss-cn-beijing.aliyuncs.com/APK/JyData_P_df_v1.0.3_release.apk'
-      }
+      // if (isWeixin) {
+      //   this.isShowWX = true
+      // } else {
+
+      // }
+      location.href =
+        'https://a.app.qq.com/o/simple.jsp?pkgname=com.jydata.monitor.advertiser'
+      // 'https://aiads-file.oss-cn-beijing.aliyuncs.com/APK/JyData_P_df_v1.0.3_release.apk'
     } else {
       location.href = 'https://itunes.apple.com/cn/app/id1478240682?mt=8'
     }

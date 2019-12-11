@@ -28,6 +28,7 @@ import { submitApplicationInfo } from '@/api/theater'
 import { userHasLoginInH5, setNavBarStatus } from '@/util/native'
 import { toast } from '@/util/toast'
 import { devLog, devInfo } from '@/util/dev'
+import { isJyApp } from '@/fn/ua'
 
 @Component
 export default class SetPassWord extends ViewBase {
@@ -78,8 +79,6 @@ export default class SetPassWord extends ViewBase {
           // toast('注册成功')
           // 成功后去往注册成功页
           this.changePage(3)
-          // 隐藏成功页的顶部管理区
-          this.hideNavBarStatus()
           // 通知APP注册成功了
           const mi = this.$cookies.get('app-token')
           const hostArr = location.host.split('.')
@@ -92,7 +91,13 @@ export default class SetPassWord extends ViewBase {
               userCookie
             }
           }
-          await userHasLoginInH5(obj)
+
+          if (isJyApp()) {
+            // 判断是否是APP，是APP而告诉APP登录
+            await userHasLoginInH5(obj)
+            // 隐藏成功页的顶部管理区
+            this.hideNavBarStatus()
+          }
         } else {
           toast('注册失败，请联系客服')
           this.handleError(res.msg)

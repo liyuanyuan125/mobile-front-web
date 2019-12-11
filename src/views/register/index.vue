@@ -2,8 +2,8 @@
   <div class="viewpage">
     <GetMobile :changePage="changePage" v-show="stepOne" :guestShow="guestShow" />
     <VerifyCode :changePage="changePage" v-show="stepSec" :pageOn="stepSec" />
-    <SetPassWord :changePage="changePage" v-show="stepThr" :guestShow="guestShow" />
-    <SuccessPage :changePage="changePage" v-show="stepFor" />
+    <SetPassWord :changePage="changePage" v-show="stepThr" />
+    <SuccessPage :changePage="changePage" v-show="stepFor" :guestShow="guestShow" />
   </div>
 </template>
 

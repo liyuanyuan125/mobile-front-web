@@ -90,12 +90,12 @@ export default class DownloadCinema extends Vue {
     }
 
     // 判断是安卓的微信用户，直接提示用户在浏览器里打开
-    const ua = navigator.userAgent.toLowerCase()
-    const isWeixin = ua.indexOf('micromessenger') > -1
-    const bIsAndroid = ua.indexOf('android') > -1 ? true : false
-    if (isWeixin && bIsAndroid) {
-      this.isShowWX = true
-    }
+    // const ua = navigator.userAgent.toLowerCase()
+    // const isWeixin = ua.indexOf('micromessenger') > -1
+    // const bIsAndroid = ua.indexOf('android') > -1 ? true : false
+    // if (isWeixin && bIsAndroid) {
+    //   this.isShowWX = true
+    // }
   }
 
   destroy() {

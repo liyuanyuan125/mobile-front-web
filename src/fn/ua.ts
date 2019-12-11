@@ -2,7 +2,7 @@
  * 获取userAgent
  */
 export function ua() {
-    const userAgent = navigator.userAgent.toLowerCase()
+    const userAgent = navigator.userAgent
     return userAgent
 }
 

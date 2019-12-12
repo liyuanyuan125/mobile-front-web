@@ -1,7 +1,7 @@
 <template>
   <div class="wrap">
     <p class="tit">广告主申请入驻</p>
-    <div class="gologin">
+    <div class="gologin" v-if="!guestShow">
       已有帐号？
       <i @click.stop="goLogin">立即登录</i>
     </div>

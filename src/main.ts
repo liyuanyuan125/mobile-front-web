@@ -7,6 +7,12 @@ import router from './router'
 import store from './store'
 import './registerServiceWorker'
 import VueCookies from 'vue-cookies'
+import vconsole from 'vconsole'
+
+if (process.env.VUE_APP_MODE !== 'production') {
+  const vConsole = new vconsole()
+}
+
 Vue.use(VueCookies)
 
 Vue.config.productionTip = false

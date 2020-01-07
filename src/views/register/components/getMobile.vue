@@ -110,6 +110,7 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import { validataTel } from '@/fn/validateRules'
+import { isJyApp } from '@/fn/ua'
 import {
   setRequestId,
   setUserType,
@@ -277,9 +278,9 @@ export default class GetMobile extends ViewBase {
         setGuestId(res.data.guestId)
       } else {
         toast(res.msg)
-        setTimeout(async () => {
-          await this.goLogin()
-        }, 1500)
+        // setTimeout(async () => {
+        //   await this.goLogin()
+        // }, 1500)
       }
     } catch (ex) {
       this.handleError(ex)
@@ -297,7 +298,8 @@ export default class GetMobile extends ViewBase {
       try {
         const res = await getSmsCode({
           phoneNum: this.userMobile,
-          requestType: 1 // 1:注册   2:修改密码
+          requestType: 1, // 1:注册   2:修改密码
+          companyName: this.companyName
         })
         // 0 ===获取验证码成功
         // 1 ===获取验证码失败
@@ -315,9 +317,12 @@ export default class GetMobile extends ViewBase {
           this.changePage(1)
         } else {
           toast(res.msg)
-          setTimeout(async () => {
-            await this.goLogin()
-          }, 1500)
+          if (res.code === 8007228 && isJyApp()) {
+            // 已注册并且是在 app 里，返回登录页
+            setTimeout(async () => {
+              await this.goLogin()
+            }, 1500)
+          }
         }
       } catch (ex) {
         this.handleError(ex)

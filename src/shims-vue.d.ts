@@ -10,3 +10,4 @@ interface VarType {
 }
 
 declare const VAR: VarType
+declare module 'VConsole'

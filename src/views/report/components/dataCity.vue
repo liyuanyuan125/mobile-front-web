@@ -1,14 +1,19 @@
 <template>
-  <div class="userStatus">
-    <h3 v-if="cityTier">线城市占比</h3>
-    <div class="userage">
-      <PieGraph :dataOption="cityTierData" />
+  <div class="cityStatus">
+    <div class="cityper">
+      <h3 v-if="cityTier">线城市占比</h3>
+      <div class="userage">
+        <PieGraph :dataOption="cityTierData" />
+      </div>
     </div>
-    <h3 v-if="cityProfile" style="margin-top:30px;">城市分布占比</h3>
-    <div class="usergender">
-      <BarGraphRow :dataOption="cityProfileData" />
+    <div class="cityperline" v-if="!renderNew">
+      <h3 v-if="cityProfile">城市分布占比</h3>
+      <div class="usergender">
+        <BarGraphRow :dataOption="cityProfileData" />
+      </div>
+      <div class="morecity" @click="goCityList">查看全部城市</div>
     </div>
-    <div class="morecity" @click="goCityList">查看全部城市</div>
+    <DataCityList :cityList="cityList" v-if="renderNew" />
   </div>
 </template>
 
@@ -17,18 +22,22 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import BarGraphRow from '@/components/charts/barGraphRow.vue'
 import PieGraph from '@/components/charts/pieGraph.vue'
+import DataCityList from './dataCityList.vue' // 城市占比列表
 import { openAppLinkClient } from '@/util/native'
 
 @Component({
   components: {
     BarGraphRow,
-    PieGraph
+    PieGraph,
+    DataCityList
   }
 })
 export default class DataCity extends ViewBase {
   @Prop({ type: Array }) cityTier!: any
   @Prop({ type: Array }) cityProfile!: any
   @Prop({ type: String }) orderId!: string
+  @Prop({ type: Array }) cityList!: any
+  @Prop({ type: Boolean }) renderNew!: boolean
 
   cityTierData: any = {}
   cityProfileData: any = {}

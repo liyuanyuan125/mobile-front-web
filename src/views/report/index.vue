@@ -2,8 +2,9 @@
   <div>
     <DataNull v-if="dataErr" />
     <div class="viewpage" v-if="orderDetail && !dataErr">
+      <div class="reshare" @click="renderPage" v-if="!renderNew && appVer">导出</div>
       <div class="viewer">
-        <div class="fixbar" :style="{opacity:scrollTop}">
+        <div class="fixbar" :style="{opacity:scrollTop}" v-if="!renderNew">
           <TopBar
             barColor="black"
             :title="orderDetail.planInfo.planName"
@@ -11,32 +12,50 @@
             v-if="!barShow"
           />
         </div>
-        <TopBar barColor="black" v-if="!barShow" />
+        <TopBar barColor="black" v-if="!barShow && !renderNew" />
         <PlanInfo :planInfo="orderDetail.planInfo" />
         <PutProgress
           :progress="orderDetail.reportCount"
           v-if="orderDetail.reportCount"
-          :orderId="this.orderId"
+          :orderId="orderId"
         />
-        <DataTrend :dataTrend="orderDetail.dataTrend" />
+
+        <DataTrend :dataTrend="orderDetail.dataTrend" v-if="!renderNew" />
+        <DataTrendList :dataTrend="dataList" v-if="renderNew" />
+
         <DataTotal
           :cinemaCount="orderDetail.planInfo.coverCinemaCount"
           :movieCount="orderDetail.planInfo.coverMovieCount"
-          :orderId="this.orderId"
+          :orderId="orderId"
+          v-if="!renderNew"
         />
+        <DataCinemaList :cinemaList="cinemaList" v-if="renderNew" />
+        <DataMovieList :movieList="movieList" v-if="renderNew" />
+
         <DataUserStatus :userAges="orderDetail.userAges" :userGender="orderDetail.userGender" />
+
         <DataCity
           :cityTier="orderDetail.cityTier"
           :cityProfile="orderDetail.cityProfile"
           :orderId="this.orderId"
+          :cityList="cityList"
+          :renderNew="renderNew"
         />
+        <div class="nulldiv"></div>
+        <div class="footer" v-if="renderNew">
+          <div class="lr">
+            <img src="../../assets/qrdownload.png" />
+            <h4>鲸鱼数据APP</h4>
+            <p>银幕映前广告 在线精准投放</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import TopBar from '@/components/topBar'
 import PlanInfo from './components/planInfo.vue' // 用户信息
 import PutProgress from './components/putProgress.vue' // 投放进度
@@ -44,9 +63,17 @@ import DataTrend from './components/dataTrend.vue' // 数据趋势
 import DataTotal from './components/dataTotal.vue' // 影院和电影统计
 import DataUserStatus from './components/dataUserStatus.vue' // 年龄和性别占比
 import DataCity from './components/dataCity.vue' // 城市相关
-import { getReportDetail } from '@/api/advertiser.ts'
-import { toast } from '@/util/toast'
-import { setNavBarStatus } from '@/util/native'
+import DataTrendList from './components/dataTrendList.vue' // 数据超势表格
+import DataCinemaList from './components/dataCinemaList.vue' // 相关影院列表
+import DataMovieList from './components/dataMovieList.vue' // 相关影片列表
+import {
+  getReportDetail,
+  getReportCinemaList,
+  getReportMovieList,
+  getReportCityList
+} from '@/api/advertiser.ts'
+import { toast, alert } from '@/util/toast'
+import { setNavBarStatus, startCaptureImage } from '@/util/native'
 import DataNull from '@/components/dataNull'
 
 @Component({
@@ -58,7 +85,10 @@ import DataNull from '@/components/dataNull'
     DataTotal,
     DataUserStatus,
     DataCity,
-    DataNull
+    DataNull,
+    DataTrendList,
+    DataCinemaList,
+    DataMovieList
   }
 })
 export default class ResultReport extends Vue {
@@ -67,14 +97,22 @@ export default class ResultReport extends Vue {
   barShow: any = ''
   scrollTop: number = 0
   dataErr: boolean = false // 数据是否错误
+  renderNew: boolean = false // 是否重新渲染了页面
+  dataList: any = [] // 趋势列表
+  cinemaList: any = [] // 影院列表
+  movieList: any = [] // 影片列表
+  cityList: any = [] // 影片列表
+  appVer: boolean = false //根据 APP 版本号判断是否显示分享
 
   created() {
     const reportId = this.$route.params.orderId
     this.orderId = reportId
     this.getReportDetail(reportId)
     document.body.style.background = '#FBFBFB'
+    this.getAppVersion()
     this.hideNavBarStatus()
     this.barShow = this.$route.query.show
+    console.log('ua', navigator.userAgent)
   }
 
   mounted() {
@@ -83,6 +121,18 @@ export default class ResultReport extends Vue {
 
   destroyed() {
     window.removeEventListener('scroll', this.getScroll)
+  }
+
+  // 根据 app 版本判断是否显示下载按钮
+  getAppVersion() {
+    const ua = navigator.userAgent.toLowerCase()
+    const ar = ua.split('(webview')[0].split('/')
+    const ver = parseFloat(ar[ar.length - 1]) * 100
+    const isIos = ua.indexOf('jydataadvertiser_ios') > -1 && ver >= 130
+    const isAndroid = ua.indexOf('jydataadvertiser_android') > -1 && ver >= 120
+    if (isIos || isAndroid) {
+      this.appVer = true
+    }
   }
 
   // 隐藏导航
@@ -101,12 +151,146 @@ export default class ResultReport extends Vue {
       const res: any = await getReportDetail({ orderId })
       if (res.code === 0) {
         this.orderDetail = res.data
+        this.formatTrend(res.data.dataTrend)
       } else {
         this.dataErr = true
-        // toast(res.msg)
       }
     } catch (ex) {
       toast(ex)
+    }
+  }
+
+  // 处理趋势数据
+  formatTrend(trend: any) {
+    const len = trend.showCost.data.length
+    const cost = trend.showCost.data
+    const person = trend.showPerson.data
+    const scene = trend.showScene.data
+    const trendArr = []
+    for (let i = 0; i < len; i++) {
+      const trendObj = {
+        date: '',
+        cost: 0,
+        person: 0,
+        scene: 0
+      }
+      trendObj.date = cost[i].year + '-' + cost[i].date
+      trendObj.cost = cost[i].valueStr
+      trendObj.person = person[i].valueStr
+      trendObj.scene = scene[i].valueStr
+      trendArr.push(trendObj)
+    }
+    this.dataList = trendArr
+  }
+
+  // 获取报告详情相关影院
+  async getReportCinemaList(orderId: string) {
+    try {
+      const res: any = await getReportCinemaList({
+        orderId,
+        pageIndex: 1,
+        pageSize: 100
+      })
+      if (res.code === 0) {
+        this.cinemaList = res.data.cinemaList
+      } else {
+        // this.dataErr = true
+        toast(res.msg)
+      }
+    } catch (ex) {
+      toast(ex)
+    }
+  }
+
+  // 获取报告详情相关影片
+  async getReportMovieList(orderId: string) {
+    try {
+      const res: any = await getReportMovieList({
+        orderId,
+        pageIndex: 1,
+        pageSize: 30
+      })
+      if (res.code === 0) {
+        this.movieList = res.data.movieList
+      } else {
+        // this.dataErr = true
+        toast(res.msg)
+      }
+    } catch (ex) {
+      toast(ex)
+    }
+  }
+
+  // 获取报告详情相关城市
+  async getReportCityList(orderId: string) {
+    try {
+      const res: any = await getReportCityList({
+        orderId,
+        pageIndex: 1,
+        pageSize: 30
+      })
+      if (res.code === 0) {
+        this.cityList = res.data.cityList
+      } else {
+        // this.dataErr = true
+        toast(res.msg)
+      }
+    } catch (ex) {
+      toast(ex)
+    }
+  }
+
+  renderPage() {
+    const reportId = this.$route.params.orderId
+    this.getReportCinemaList(reportId)
+    this.getReportMovieList(reportId)
+    this.getReportCityList(reportId)
+    this.renderNew = true
+  }
+
+  // 重新渲染页面
+  @Watch('renderNew') // 进入页面开始倒计时
+  watchPageOn() {
+    if (this.renderNew) {
+      this.$nextTick(() => {
+        setTimeout(() => {
+          this.captureImage()
+        }, 1000)
+      })
+    }
+  }
+
+  //  截屏
+  async captureImage() {
+    const obj = {
+      callBackName: 'callBackCaptureImage'
+    }
+    const result: any = await startCaptureImage(obj)
+    const resultJSON = JSON.parse(result)
+    if (!resultJSON.success && !resultJSON.code) {
+      alert({
+        title: '导出图片成功',
+        message: '请在手机文件夹中查看生成的图片',
+        showConfirmButton: true,
+        beforeClose: (action: any, done: any) => {
+          if (action === 'confirm') {
+            this.renderNew = false
+            done()
+          }
+        }
+      })
+    } else {
+      alert({
+        title: '导出图片失败',
+        message: '请重试',
+        showConfirmButton: true,
+        beforeClose: (action: any, done: any) => {
+          if (action === 'confirm') {
+            this.renderNew = false
+            done()
+          }
+        }
+      })
     }
   }
 

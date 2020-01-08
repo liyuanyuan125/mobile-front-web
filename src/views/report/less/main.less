@@ -2,7 +2,20 @@
     min-height: 100%;
     background: #FBFBFB;
     color: #2E2F5A;
-    padding-bottom: 30px;
+    padding-bottom: 1px;
+    position: relative;
+    .reshare{
+        background: url("../../../assets/ico-download.png") no-repeat center center;
+        background-size: 38px auto;
+        position: absolute;
+        right: 10px;
+        top:0;
+        width: 88px;
+        height: 88px;
+        z-index: 10000001;
+        line-height: 0;
+        font-size: 0;
+    }
 }
 
 .fixbar {
@@ -298,6 +311,76 @@
         }
     }
 }
+// 数据趋势 list
+.datatrendlist {
+    background: #fff;
+    margin: 30px 30px 0;
+    border-radius: 20px;
+    box-shadow: 0 2px 30px rgba(216, 216, 216, .5);
+
+    .tit {
+        display: flex;
+        line-height: 50px;
+        padding: 40px 30px 30px 30px;
+        h3 {
+            font-size: 36px;
+            flex: 1;
+        }
+        span{
+            color: #8798AF;
+            font-size: 24px;
+            text-align: right;
+        }
+    }
+    dl{
+        margin: 0 10px;
+        padding-bottom: 10px;
+    }
+    dt{
+        background: #D4E6FF;
+        line-height: 60px;
+        display: flex;
+        font-size: 24px;
+        color: #1E386F;
+        span{
+            flex: 1.5;
+            text-align: center;
+        }
+        span:first-child{
+            flex: 2;
+            padding-left: 30px;
+            text-align: left;
+        }
+    }
+    dd{
+        display: flex;
+        color: #1E386F;
+        font-size: 24px;
+        line-height: 64px;
+        span{
+            flex: 1.5;
+            align-items:center;
+            display: flex;
+            justify-content: center;
+        }
+        span:first-child{
+            flex: 2;
+            text-align: left;
+            line-height: 34px;
+            padding: 15px 0 15px 30px;
+            justify-content:left;
+        }
+    }
+    dd:nth-child(odd){
+        background: #F7F7F7;
+    }
+}
+.citylist{
+    background: none;
+    margin: 0;
+    box-shadow: none;
+    border-radius: 0;
+}
 
 // 总数据
 .datatotal {
@@ -378,6 +461,7 @@
 
 // ageGender
 .userStatus {
+    
     background: #fff;
     margin: 30px 30px 0;
     border-radius: 20px;
@@ -399,4 +483,62 @@
         padding-bottom: 50px;
     }
 
+}
+.cityStatus {
+    background: #fff;
+    margin: 30px 30px 0;
+    border-radius: 20px;
+    // padding: 35px;
+    box-shadow: 0 2px 20px rgba(216, 216, 216, .4);
+
+    h3 {
+        font-size: 36px;
+        line-height: 50px;
+        flex: 1;
+    }
+
+    .userage,
+    .usergender {
+        margin-top: 30px;
+    }
+
+    .userage {
+        padding-bottom: 50px;
+    }
+    .cityper{
+        padding:35px 35px 0;
+    }
+    .cityperline{
+        padding:0 35px 35px;
+    }
+}
+.footer{
+    background: #D4E6FF;
+    position: relative;
+    padding: 70px 110px;
+    margin-top: 30px;
+    .lr{
+        position: relative;
+        min-height: 140px;
+        padding-left: 160px;
+        img{
+            position: absolute;
+            left: 0;
+            top:0;
+            width: 140px;
+        }
+        h4{
+            font-size:36px;
+            line-height: 1;
+            padding-top: 20px;
+        }
+        p{
+            font-size: 30px;
+            line-height: 1;
+            margin-top: 28px;
+        }
+    }
+}
+.nulldiv{
+    height: 30px;
 }

@@ -161,3 +161,13 @@ export async function userHasLoginInH5(obj: any) {
   return data
 }
 
+/**
+ * 截图
+ * @param  obj app需要的内部参数
+ */
+export async function startCaptureImage(obj: any) {
+  const data = await callNative('startCaptureImage', obj)
+  devInfo(`[sayHi] native return data:`, data)
+  return data
+}
+

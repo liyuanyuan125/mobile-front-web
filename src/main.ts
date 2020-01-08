@@ -9,8 +9,8 @@ import './registerServiceWorker'
 import VueCookies from 'vue-cookies'
 import vconsole from 'vconsole'
 
-if (process.env.VUE_APP_MODE !== 'production') {
-  // const vConsole = new vconsole()
+if (process.env.NODE_ENV !== 'production') {
+  const vConsole = new vconsole()
 }
 
 Vue.use(VueCookies)

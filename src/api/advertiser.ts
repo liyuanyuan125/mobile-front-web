@@ -10,6 +10,33 @@ export async function getReportDetail(query: any) {
 }
 
 /**
+ * 获取报告详情的相关影院列表
+ * @param query  object
+ */
+export async function getReportCinemaList(query: any) {
+    const res = await get('/xadvert/plan/report/cinemaList', query)
+    return res
+}
+
+/**
+ * 获取报告详情的相关城市列表
+ * @param query  object
+ */
+export async function getReportCityList(query: any) {
+    const res = await get('/xadvert/plan/report/cityList', query)
+    return res
+}
+
+/**
+ * 获取报告详情的相关影片列表
+ * @param query  object
+ */
+export async function getReportMovieList(query: any) {
+    const res = await get('/xadvert/plan/report/movieList', query)
+    return res
+}
+
+/**
  * 获取广告片详情页
  * @param query  object
  */

@@ -40,3 +40,27 @@ export function isJyApp() {
         return false
     }
 }
+
+/**
+ * 判断是否是IOS广告主端
+ */
+export function isJyAdvIos() {
+    const agent = ua()
+    if (agent.indexOf('JYDataAdvertiser_iOs') > -1) {
+        return true
+    } else {
+        return false
+    }
+}
+
+/**
+ * 判断是否是安卓广告主端
+ */
+export function isJyAdvAndroid() {
+    const agent = ua()
+    if (agent.indexOf('JYDataAdvertiser_Android') > -1) {
+        return true
+    } else {
+        return false
+    }
+}

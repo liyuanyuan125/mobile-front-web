@@ -127,7 +127,8 @@ export default class ResultReport extends Vue {
   getAppVersion() {
     const ua = navigator.userAgent.toLowerCase()
     const ar = ua.split('(webview')[0].split('/')
-    const ver = parseFloat(ar[ar.length - 1]) * 100
+    const ver = Number(ar[ar.length - 1].split('.').join(''))
+    //ios版本大于1.3.0，android版本大于1.2.0才支持截屏 jssdk
     const isIos = ua.indexOf('jydataadvertiser_ios') > -1 && ver >= 130
     const isAndroid = ua.indexOf('jydataadvertiser_android') > -1 && ver >= 120
     if (isIos || isAndroid) {

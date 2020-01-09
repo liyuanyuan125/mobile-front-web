@@ -102,7 +102,7 @@ export default class ResultReport extends Vue {
   cinemaList: any = [] // 影院列表
   movieList: any = [] // 影片列表
   cityList: any = [] // 影片列表
-  appVer: boolean = false //根据 APP 版本号判断是否显示分享
+  appVer: boolean = false // 根据 APP 版本号判断是否显示分享
 
   created() {
     const reportId = this.$route.params.orderId
@@ -112,7 +112,6 @@ export default class ResultReport extends Vue {
     this.getAppVersion()
     this.hideNavBarStatus()
     this.barShow = this.$route.query.show
-    console.log('ua', navigator.userAgent)
   }
 
   mounted() {
@@ -128,7 +127,7 @@ export default class ResultReport extends Vue {
     const ua = navigator.userAgent.toLowerCase()
     const ar = ua.split('(webview')[0].split('/')
     const ver = Number(ar[ar.length - 1].split('.').join(''))
-    //ios版本大于1.3.0，android版本大于1.2.0才支持截屏 jssdk
+    // ios版本大于1.3.0，android版本大于1.2.0才支持截屏 jssdk
     const isIos = ua.indexOf('jydataadvertiser_ios') > -1 && ver >= 130
     const isAndroid = ua.indexOf('jydataadvertiser_android') > -1 && ver >= 120
     if (isIos || isAndroid) {

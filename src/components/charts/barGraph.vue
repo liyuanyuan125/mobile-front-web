@@ -32,6 +32,8 @@ export default class BarGraph extends ViewBase {
       setTimeout(() => {
         this.changeCanvas()
       }, 800)
+    } else {
+      this.updateCharts()
     }
   }
 

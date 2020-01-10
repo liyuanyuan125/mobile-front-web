@@ -43,6 +43,8 @@ export default class PieGraph extends ViewBase {
       setTimeout(() => {
         this.changeCanvas()
       }, 800)
+    } else {
+      this.updateCharts()
     }
   }
 

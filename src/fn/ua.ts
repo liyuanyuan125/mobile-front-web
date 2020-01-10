@@ -64,3 +64,19 @@ export function isJyAdvAndroid() {
         return false
     }
 }
+
+/**
+ * 导出当前广告主app的版本
+ */
+export function getAppVersion() {
+    const agent: string = navigator.userAgent.toLowerCase()
+    const ar = agent.split('(webview')[0].split('/')
+    const ver = Number(ar[ar.length - 1].split('.').join(''))
+    const isIos = agent.indexOf('jydataadvertiser_ios') > -1
+    const isAndroid = agent.indexOf('jydataadvertiser_android') > -1
+    if (isIos || isAndroid) {
+        return ver
+    } else {
+        return 0
+    }
+}

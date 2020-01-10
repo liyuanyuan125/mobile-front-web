@@ -13,7 +13,9 @@
           />
         </div>
         <TopBar barColor="black" v-if="!barShow && !renderNew" />
+
         <PlanInfo :planInfo="orderDetail.planInfo" />
+
         <PutProgress
           :progress="orderDetail.reportCount"
           v-if="orderDetail.reportCount"
@@ -32,7 +34,11 @@
         <DataCinemaList :cinemaList="cinemaList" v-if="renderNew" />
         <DataMovieList :movieList="movieList" v-if="renderNew" />
 
-        <DataUserStatus :userAges="orderDetail.userAges" :userGender="orderDetail.userGender" />
+        <DataUserStatus
+          :userAges="orderDetail.userAges"
+          :userGender="orderDetail.userGender"
+          :isRenderImg="renderNew"
+        />
 
         <DataCity
           :cityTier="orderDetail.cityTier"
@@ -124,6 +130,7 @@ export default class ResultReport extends Vue {
 
   // 根据 app 版本判断是否显示下载按钮
   getAppVersion() {
+    // Fn 里有个方法
     const ua = navigator.userAgent.toLowerCase()
     const ar = ua.split('(webview')[0].split('/')
     const ver = Number(ar[ar.length - 1].split('.').join(''))

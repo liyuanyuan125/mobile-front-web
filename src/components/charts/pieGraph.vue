@@ -27,10 +27,34 @@ const defaultColor: any = [
 export default class PieGraph extends ViewBase {
   @Prop({ type: Object }) dataOption!: any
   @Prop({ type: Array, default: () => defaultColor }) bgColor: any
+  @Prop({ type: Boolean }) isRenderImg!: boolean
 
   mounted() {
     if (this.dataOption) {
       this.updateCharts()
+    }
+  }
+
+  // 重新渲染页面
+  @Watch('isRenderImg')
+  watchPageOn() {
+    if (this.isRenderImg) {
+      // this.updateCharts()
+      setTimeout(() => {
+        this.changeCanvas()
+      }, 800)
+    }
+  }
+
+  // 将canvas 转成图
+  changeCanvas() {
+    const chartEl = this.$refs.refChart as HTMLDivElement
+    const canvasEl = chartEl.getElementsByTagName('canvas')[0] as HTMLCanvasElement
+    if (canvasEl) {
+      const image = new Image()
+      image.src = canvasEl.toDataURL('image/png')
+      image.style.width = '100%'
+      chartEl.innerHTML = `<img src="${image.src}" style="width:100%" />`
     }
   }
 

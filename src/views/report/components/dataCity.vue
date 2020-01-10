@@ -3,7 +3,7 @@
     <div class="cityper">
       <h3 v-if="cityTier">线城市占比</h3>
       <div class="userage">
-        <PieGraph :dataOption="cityTierData" />
+        <PieGraph :dataOption="cityTierData" :isRenderImg="renderNew" />
       </div>
     </div>
     <div class="cityperline" v-if="!renderNew">
@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import BarGraphRow from '@/components/charts/barGraphRow.vue'
 import PieGraph from '@/components/charts/pieGraph.vue'
@@ -45,6 +45,15 @@ export default class DataCity extends ViewBase {
   created() {
     this.formatCityTierData()
     this.formatProfileData()
+  }
+
+  // 重新渲染页面
+  @Watch('renderNew') // 进入页面开始倒计时
+  watchPageOn() {
+    if (this.renderNew) {
+      this.formatCityTierData()
+      this.formatProfileData()
+    }
   }
 
   // 处理一下城市线数据

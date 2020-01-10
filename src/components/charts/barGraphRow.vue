@@ -18,6 +18,7 @@ const defaultColor = ['#FF8080', '#FFCB84', '#9FDECF', '#D9E0E9']
 export default class BarGraphRow extends ViewBase {
   @Prop({ type: Object }) dataOption!: any
   @Prop({ type: Array, default: () => defaultColor }) bgcolor: any
+  // @Prop({ type: Boolean }) isChangeImg!: boolean
 
   mounted() {
     if (this.dataOption) {
@@ -126,6 +127,9 @@ export default class BarGraphRow extends ViewBase {
 .chart-wrap {
   width: 100%;
   height: 600px;
+  img {
+    width: 100%;
+  }
 }
 .chart-wrap:empty {
   display: flex;

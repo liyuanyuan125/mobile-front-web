@@ -81,6 +81,7 @@ import {
 import { toast, alert } from '@/util/toast'
 import { setNavBarStatus, startCaptureImage } from '@/util/native'
 import DataNull from '@/components/dataNull'
+import { isJyApp } from '@/fn/ua'
 
 @Component({
   components: {
@@ -116,7 +117,9 @@ export default class ResultReport extends Vue {
     this.getReportDetail(reportId)
     document.body.style.background = '#FBFBFB'
     this.getAppVersion()
-    this.hideNavBarStatus()
+    if (isJyApp()) {
+      this.hideNavBarStatus()
+    }
     this.barShow = this.$route.query.show
   }
 
@@ -126,6 +129,7 @@ export default class ResultReport extends Vue {
 
   destroyed() {
     window.removeEventListener('scroll', this.getScroll)
+    window.removeEventListener('touchmove', this.getMoveTouch)
   }
 
   // 根据 app 版本判断是否显示下载按钮
@@ -259,6 +263,7 @@ export default class ResultReport extends Vue {
   @Watch('renderNew') // 进入页面开始倒计时
   watchPageOn() {
     if (this.renderNew) {
+      window.addEventListener('touchmove', this.getMoveTouch, { passive: false })
       this.$nextTick(() => {
         setTimeout(() => {
           this.captureImage()
@@ -269,6 +274,7 @@ export default class ResultReport extends Vue {
 
   //  截屏
   async captureImage() {
+    window.removeEventListener('touchmove', this.getMoveTouch, false)
     const obj = {
       callBackName: 'callBackCaptureImage'
     }
@@ -299,6 +305,11 @@ export default class ResultReport extends Vue {
         }
       })
     }
+  }
+
+  // 监听滚动事件，防止用户在点了截屏按后去滚动图片
+  getMoveTouch(e: any) {
+    e.preventDefault()
   }
 
   // 监听滚动显示顶部导航

@@ -1,8 +1,12 @@
 <template>
   <div>
     <DataNull v-if="dataErr" />
-    <div class="viewpage" v-if="orderDetail && !dataErr">
-      <div class="reshare" @click="renderPage" v-if="!renderNew">导出</div>
+    <div
+      class="viewpage"
+      v-if="orderDetail && !dataErr"
+      :style="{paddingTop:renderNew ? '20px' :''}"
+    >
+      <div class="reshare" @click="renderPage" v-if="!renderNew && appVer">导出</div>
       <div class="viewer">
         <div class="fixbar" :style="{opacity:scrollTop}" v-if="!renderNew">
           <TopBar

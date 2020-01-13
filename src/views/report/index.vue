@@ -2,7 +2,7 @@
   <div>
     <DataNull v-if="dataErr" />
     <div class="viewpage" v-if="orderDetail && !dataErr">
-      <div class="reshare" @click="renderPage" v-if="!renderNew && appVer">导出</div>
+      <div class="reshare" @click="renderPage" v-if="!renderNew">导出</div>
       <div class="viewer">
         <div class="fixbar" :style="{opacity:scrollTop}" v-if="!renderNew">
           <TopBar
@@ -81,7 +81,7 @@ import {
 import { toast, alert } from '@/util/toast'
 import { setNavBarStatus, startCaptureImage } from '@/util/native'
 import DataNull from '@/components/dataNull'
-import { isJyApp } from '@/fn/ua'
+import { isJyApp, getAppVersion, isJyAdvIos, isJyAdvAndroid } from '@/fn/ua'
 
 @Component({
   components: {
@@ -110,6 +110,7 @@ export default class ResultReport extends Vue {
   movieList: any = [] // 影片列表
   cityList: any = [] // 影片列表
   appVer: boolean = false // 根据 APP 版本号判断是否显示分享
+  isTouchMove: boolean = false
   getCount: number = 0
 
   created() {
@@ -117,7 +118,7 @@ export default class ResultReport extends Vue {
     this.orderId = reportId
     this.getReportDetail(reportId)
     document.body.style.background = '#FBFBFB'
-    this.getAppVersion()
+    this.getAppVer()
     if (isJyApp()) {
       this.hideNavBarStatus()
     }
@@ -126,11 +127,12 @@ export default class ResultReport extends Vue {
 
   mounted() {
     window.addEventListener('scroll', this.getScroll)
+    // window.addEventListener('touchmove', this.getMoveTouch, { passive: false })
   }
 
   destroyed() {
     window.removeEventListener('scroll', this.getScroll)
-    window.removeEventListener('touchmove', this.getMoveTouch)
+    document.documentElement.removeEventListener('touchmove', this.getMoveTouch)
   }
 
   // 获取报告详情 563、516、515、424
@@ -147,6 +149,7 @@ export default class ResultReport extends Vue {
       toast(ex)
     }
   }
+
   // 获取报告详情相关影院
   async getReportCinemaList(orderId: string) {
     try {
@@ -159,7 +162,6 @@ export default class ResultReport extends Vue {
         this.cinemaList = res.data.cinemaList
         this.getCount += 1
       } else {
-        // this.dataErr = true
         toast(res.msg)
       }
     } catch (ex) {
@@ -179,7 +181,6 @@ export default class ResultReport extends Vue {
         this.movieList = res.data.movieList
         this.getCount += 1
       } else {
-        // this.dataErr = true
         toast(res.msg)
       }
     } catch (ex) {
@@ -208,14 +209,11 @@ export default class ResultReport extends Vue {
   }
 
   // 根据 app 版本判断是否显示下载按钮
-  getAppVersion() {
-    // Fn 里有个方法
-    const ua = navigator.userAgent.toLowerCase()
-    const ar = ua.split('(webview')[0].split('/')
-    const ver = Number(ar[ar.length - 1].split('.').join(''))
+  getAppVer() {
+    const ver = getAppVersion()
     // ios版本大于1.3.0，android版本大于1.2.0才支持截屏 jssdk
-    const isIos = ua.indexOf('jydataadvertiser_ios') > -1 && ver >= 130
-    const isAndroid = ua.indexOf('jydataadvertiser_android') > -1 && ver >= 120
+    const isIos = isJyAdvIos() && ver >= 130
+    const isAndroid = isJyAdvAndroid() && ver >= 120
     if (isIos || isAndroid) {
       this.appVer = true
     }
@@ -255,6 +253,10 @@ export default class ResultReport extends Vue {
   }
 
   renderPage() {
+    document.documentElement.addEventListener('touchmove', this.getMoveTouch, {
+      passive: false
+    })
+    // document.body.addEventListener('touchmove', this.getMoveTouch, { passive: false })
     const reportId = this.$route.params.orderId
     this.getReportCinemaList(reportId)
     this.getReportMovieList(reportId)
@@ -265,6 +267,12 @@ export default class ResultReport extends Vue {
         this.getCount = 0
         this.renderNew = true
       } else {
+        document.documentElement.removeEventListener(
+          'touchmove',
+          this.getMoveTouch,
+          false
+        )
+        this.getCount = 0
         toast('网络异常，请稍后再试~')
       }
     }, 1000)
@@ -285,6 +293,7 @@ export default class ResultReport extends Vue {
 
   //  截屏
   async captureImage() {
+    document.documentElement.removeEventListener('touchmove', this.getMoveTouch, false)
     const obj = {
       callBackName: 'callBackCaptureImage'
     }
@@ -319,6 +328,7 @@ export default class ResultReport extends Vue {
 
   // 监听滚动事件，防止用户在点了截屏按后去滚动图片
   getMoveTouch(e: any) {
+    e.stopPropagation()
     e.preventDefault()
   }
 

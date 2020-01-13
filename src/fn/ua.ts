@@ -45,8 +45,8 @@ export function isJyApp() {
  * 判断是否是IOS广告主端
  */
 export function isJyAdvIos() {
-    const agent = ua()
-    if (agent.indexOf('JYDataAdvertiser_iOs') > -1) {
+    const agent = ua().toLowerCase()
+    if (agent.indexOf('jydataadvertiser_ios') > -1) {
         return true
     } else {
         return false
@@ -57,8 +57,8 @@ export function isJyAdvIos() {
  * 判断是否是安卓广告主端
  */
 export function isJyAdvAndroid() {
-    const agent = ua()
-    if (agent.indexOf('JYDataAdvertiser_Android') > -1) {
+    const agent = ua().toLowerCase()
+    if (agent.indexOf('jydataadvertiser_android') > -1) {
         return true
     } else {
         return false
@@ -69,7 +69,7 @@ export function isJyAdvAndroid() {
  * 导出当前广告主app的版本
  */
 export function getAppVersion() {
-    const agent: string = navigator.userAgent.toLowerCase()
+    const agent: string = ua().toLowerCase()
     const ar = agent.split('(webview')[0].split('/')
     const ver = Number(ar[ar.length - 1].split('.').join(''))
     const isIos = agent.indexOf('jydataadvertiser_ios') > -1

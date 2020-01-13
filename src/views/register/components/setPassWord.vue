@@ -14,7 +14,11 @@
       <i :class="show?'show':'hide'" @click="toggleShow"></i>
     </div>
     <div class="subbuttonbox">
-      <button :class="button?'button':'button disabled'" @click="confirmLogin">确认</button>
+      <button
+        :class="button?'button':'button disabled'"
+        @click="confirmLogin"
+        :disabled="doubleClick"
+      >确认</button>
     </div>
   </div>
 </template>
@@ -41,6 +45,7 @@ export default class SetPassWord extends ViewBase {
   inputType: any = 'text'
   show: boolean = true
   button: boolean = false
+  doubleClick: boolean = false // 防止用户双击
 
   toggleShow() {
     if (this.inputType == 'password') {
@@ -57,6 +62,7 @@ export default class SetPassWord extends ViewBase {
   }
 
   async confirmLogin() {
+    this.doubleClick = true
     if (!this.button) {
       return
     }
@@ -76,6 +82,7 @@ export default class SetPassWord extends ViewBase {
           customerId: sto.state.guestId
         })
         if (res.code === 0) {
+          this.doubleClick = false
           // toast('注册成功')
           // 成功后去往注册成功页
           this.changePage(3)

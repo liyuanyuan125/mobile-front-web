@@ -20,7 +20,11 @@
       <i class="del" v-show="clear" @click="clearNum"></i>
     </div>
     <div class="subbuttonbox">
-      <button :class="button?'button':'button disabled'" @click="verifyCodeBut">下一步</button>
+      <button
+        :class="button?'button':'button disabled'"
+        @click="verifyCodeBut"
+        :disabled="doubleClick"
+      >下一步</button>
     </div>
     <div :class="again?'sendAgain':'sendTip'" @click="sendAgain">
       <p>
@@ -55,6 +59,7 @@ export default class VerifyCode extends ViewBase {
   again: boolean = false
   button: boolean = false
   phoneNum: string = ''
+  doubleClick: boolean = false
 
   @Watch('pageOn', { deep: true }) // 进入页面开始倒计时
   watchPageOn(val: boolean) {
@@ -105,6 +110,7 @@ export default class VerifyCode extends ViewBase {
 
   // 校验验证码
   async verifyCodeBut() {
+    this.doubleClick = true
     if (!this.button) {
       return
     } else {
@@ -117,6 +123,7 @@ export default class VerifyCode extends ViewBase {
         })
         // 目前只区分注册和未注册
         if (res.code == 0) {
+          this.doubleClick = false
           setRequestId(res.data.requestId) // 更新store的值
           this.changePage(2)
         } else if (String(res.code).indexOf('900') > -1) {

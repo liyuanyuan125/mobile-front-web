@@ -101,7 +101,7 @@
       </div>
     </div>
     <div class="subbuttonbox">
-      <button :class="{disabled:!btnStatus}" @click="getVerifyCode">获取验证码</button>
+      <button :class="{disabled:!btnStatus}" @click="getVerifyCode" :disabled="doubleClick">获取验证码</button>
     </div>
   </div>
 </template>
@@ -155,7 +155,7 @@ export default class GetMobile extends ViewBase {
   btnStatus: boolean = false
   disabledAgree: boolean = true
   isShowAgree: boolean = false
-  // guestShow: boolean = false // 是否是从crm后台过来的
+  doubleClick: boolean = false // 防止用户双击
 
   created() {
     const agree = this.$route.hash
@@ -289,6 +289,7 @@ export default class GetMobile extends ViewBase {
 
   // 获取验证码
   async getVerifyCode() {
+    this.doubleClick = true
     if (!this.btnStatus) {
       return
     }
@@ -304,6 +305,7 @@ export default class GetMobile extends ViewBase {
         // 0 ===获取验证码成功
         // 1 ===获取验证码失败
         if (res.code == 0) {
+          this.doubleClick = false
           // this.changePage(this.page)
           // 更新store的值
           setRequestId(res.data.requestId)

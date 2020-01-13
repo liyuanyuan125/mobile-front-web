@@ -256,7 +256,6 @@ export default class ResultReport extends Vue {
     document.documentElement.addEventListener('touchmove', this.getMoveTouch, {
       passive: false
     })
-    // document.body.addEventListener('touchmove', this.getMoveTouch, { passive: false })
     const reportId = this.$route.params.orderId
     this.getReportCinemaList(reportId)
     this.getReportMovieList(reportId)
@@ -264,7 +263,6 @@ export default class ResultReport extends Vue {
     // 三个接口请求时间，加起来，如果超过1000ms，则认为是网慢，不允许用户截图
     setTimeout(() => {
       if (this.getCount === 3) {
-        this.getCount = 0
         this.renderNew = true
       } else {
         document.documentElement.removeEventListener(
@@ -272,10 +270,10 @@ export default class ResultReport extends Vue {
           this.getMoveTouch,
           false
         )
-        this.getCount = 0
         toast('网络异常，请稍后再试~')
       }
     }, 1000)
+    this.getCount = 0
   }
 
   // 重新渲染页面

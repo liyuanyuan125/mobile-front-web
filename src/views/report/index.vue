@@ -23,7 +23,7 @@
         />
 
         <DataTrend :dataTrend="orderDetail.dataTrend" v-if="!renderNew" />
-        <DataTrendList :dataTrend="dataList" v-if="renderNew" />
+        <DataTrendList :dataTrend="dataList" v-if="renderNew && dataList.length" />
 
         <DataTotal
           :cinemaCount="orderDetail.planInfo.coverCinemaCount"
@@ -31,8 +31,8 @@
           :orderId="orderId"
           v-if="!renderNew"
         />
-        <DataCinemaList :cinemaList="cinemaList" v-if="renderNew" />
-        <DataMovieList :movieList="movieList" v-if="renderNew" />
+        <DataCinemaList :cinemaList="cinemaList" v-if="renderNew && cinemaList.length" />
+        <DataMovieList :movieList="movieList" v-if="renderNew && movieList.length" />
 
         <DataUserStatus
           :userAges="orderDetail.userAges"
@@ -110,6 +110,7 @@ export default class ResultReport extends Vue {
   movieList: any = [] // 影片列表
   cityList: any = [] // 影片列表
   appVer: boolean = false // 根据 APP 版本号判断是否显示分享
+  getCount: number = 0
 
   created() {
     const reportId = this.$route.params.orderId
@@ -130,6 +131,80 @@ export default class ResultReport extends Vue {
   destroyed() {
     window.removeEventListener('scroll', this.getScroll)
     window.removeEventListener('touchmove', this.getMoveTouch)
+  }
+
+  // 获取报告详情 563、516、515、424
+  async getReportDetail(orderId: string) {
+    try {
+      const res: any = await getReportDetail({ orderId })
+      if (res.code === 0) {
+        this.orderDetail = res.data
+        this.formatTrend(res.data.dataTrend)
+      } else {
+        this.dataErr = true
+      }
+    } catch (ex) {
+      toast(ex)
+    }
+  }
+  // 获取报告详情相关影院
+  async getReportCinemaList(orderId: string) {
+    try {
+      const res: any = await getReportCinemaList({
+        orderId,
+        pageIndex: 1,
+        pageSize: 100
+      })
+      if (res.code === 0) {
+        this.cinemaList = res.data.cinemaList
+        this.getCount += 1
+      } else {
+        // this.dataErr = true
+        toast(res.msg)
+      }
+    } catch (ex) {
+      toast(ex)
+    }
+  }
+
+  // 获取报告详情相关影片
+  async getReportMovieList(orderId: string) {
+    try {
+      const res: any = await getReportMovieList({
+        orderId,
+        pageIndex: 1,
+        pageSize: 30
+      })
+      if (res.code === 0) {
+        this.movieList = res.data.movieList
+        this.getCount += 1
+      } else {
+        // this.dataErr = true
+        toast(res.msg)
+      }
+    } catch (ex) {
+      toast(ex)
+    }
+  }
+
+  // 获取报告详情相关城市
+  async getReportCityList(orderId: string) {
+    try {
+      const res: any = await getReportCityList({
+        orderId,
+        pageIndex: 1,
+        pageSize: 30
+      })
+      if (res.code === 0) {
+        this.cityList = res.data.cityList
+        this.getCount += 1
+      } else {
+        // this.dataErr = true
+        toast(res.msg)
+      }
+    } catch (ex) {
+      toast(ex)
+    }
   }
 
   // 根据 app 版本判断是否显示下载按钮
@@ -156,21 +231,6 @@ export default class ResultReport extends Vue {
     await setNavBarStatus(obj)
   }
 
-  // 获取报告详情 563、516、515、424
-  async getReportDetail(orderId: string) {
-    try {
-      const res: any = await getReportDetail({ orderId })
-      if (res.code === 0) {
-        this.orderDetail = res.data
-        this.formatTrend(res.data.dataTrend)
-      } else {
-        this.dataErr = true
-      }
-    } catch (ex) {
-      toast(ex)
-    }
-  }
-
   // 处理趋势数据
   formatTrend(trend: any) {
     const len = trend.showCost.data.length
@@ -194,69 +254,19 @@ export default class ResultReport extends Vue {
     this.dataList = trendArr
   }
 
-  // 获取报告详情相关影院
-  async getReportCinemaList(orderId: string) {
-    try {
-      const res: any = await getReportCinemaList({
-        orderId,
-        pageIndex: 1,
-        pageSize: 100
-      })
-      if (res.code === 0) {
-        this.cinemaList = res.data.cinemaList
-      } else {
-        // this.dataErr = true
-        toast(res.msg)
-      }
-    } catch (ex) {
-      toast(ex)
-    }
-  }
-
-  // 获取报告详情相关影片
-  async getReportMovieList(orderId: string) {
-    try {
-      const res: any = await getReportMovieList({
-        orderId,
-        pageIndex: 1,
-        pageSize: 30
-      })
-      if (res.code === 0) {
-        this.movieList = res.data.movieList
-      } else {
-        // this.dataErr = true
-        toast(res.msg)
-      }
-    } catch (ex) {
-      toast(ex)
-    }
-  }
-
-  // 获取报告详情相关城市
-  async getReportCityList(orderId: string) {
-    try {
-      const res: any = await getReportCityList({
-        orderId,
-        pageIndex: 1,
-        pageSize: 30
-      })
-      if (res.code === 0) {
-        this.cityList = res.data.cityList
-      } else {
-        // this.dataErr = true
-        toast(res.msg)
-      }
-    } catch (ex) {
-      toast(ex)
-    }
-  }
-
   renderPage() {
     const reportId = this.$route.params.orderId
     this.getReportCinemaList(reportId)
     this.getReportMovieList(reportId)
     this.getReportCityList(reportId)
-    this.renderNew = true
+    // 三个接口请求时间，加起来，如果超过1000ms，则认为是网慢，不允许用户截图
+    setTimeout(() => {
+      if (this.getCount === 3) {
+        this.renderNew = true
+      } else {
+        toast('网络异常，请稍后再试~')
+      }
+    }, 1000)
   }
 
   // 重新渲染页面
@@ -267,7 +277,7 @@ export default class ResultReport extends Vue {
       this.$nextTick(() => {
         setTimeout(() => {
           this.captureImage()
-        }, 1000)
+        }, 800)
       })
     }
   }

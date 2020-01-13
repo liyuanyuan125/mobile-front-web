@@ -13,7 +13,7 @@
       </div>
       <div class="morecity" @click="goCityList">查看全部城市</div>
     </div>
-    <DataCityList :cityList="cityList" v-if="renderNew" />
+    <DataCityList :cityList="cityList" v-if="renderNew && cityList.length" />
   </div>
 </template>
 

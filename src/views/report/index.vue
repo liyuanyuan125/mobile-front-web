@@ -263,6 +263,7 @@ export default class ResultReport extends Vue {
     // 三个接口请求时间，加起来，如果超过1000ms，则认为是网慢，不允许用户截图
     setTimeout(() => {
       if (this.getCount === 3) {
+        this.getCount = 0
         this.renderNew = true
       } else {
         window.removeEventListener('touchmove', this.getMoveTouch, false)

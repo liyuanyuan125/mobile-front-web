@@ -255,7 +255,6 @@ export default class ResultReport extends Vue {
   }
 
   renderPage() {
-    window.addEventListener('touchmove', this.getMoveTouch, { passive: false })
     const reportId = this.$route.params.orderId
     this.getReportCinemaList(reportId)
     this.getReportMovieList(reportId)
@@ -266,7 +265,6 @@ export default class ResultReport extends Vue {
         this.getCount = 0
         this.renderNew = true
       } else {
-        window.removeEventListener('touchmove', this.getMoveTouch, false)
         toast('网络异常，请稍后再试~')
       }
     }, 1000)
@@ -276,6 +274,7 @@ export default class ResultReport extends Vue {
   @Watch('renderNew') // 进入页面开始倒计时
   watchPageOn() {
     if (this.renderNew) {
+      document.body.scrollTop = document.documentElement.scrollTop = 0
       this.$nextTick(() => {
         setTimeout(() => {
           this.captureImage()
@@ -286,7 +285,6 @@ export default class ResultReport extends Vue {
 
   //  截屏
   async captureImage() {
-    window.removeEventListener('touchmove', this.getMoveTouch, false)
     const obj = {
       callBackName: 'callBackCaptureImage'
     }

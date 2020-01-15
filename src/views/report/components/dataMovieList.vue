@@ -1,7 +1,7 @@
 <template>
   <div class="datatrendlist">
     <div class="tit">
-      <h3>覆盖影片 | {{movieList.length}}部</h3>
+      <h3>覆盖影片 | {{count}}部</h3>
       <span>图片最多展示30部</span>
     </div>
     <dl>
@@ -30,6 +30,7 @@ import ViewBase from '@/util/ViewBase'
 })
 export default class DataMovieList extends ViewBase {
   @Prop({ type: Array }) movieList!: any
+  @Prop({ type: String }) count!: string
 }
 </script>
 

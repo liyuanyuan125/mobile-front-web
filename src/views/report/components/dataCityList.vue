@@ -1,7 +1,7 @@
 <template>
   <div class="datatrendlist citylist">
     <div class="tit">
-      <h3>城市分布占比 | {{cityList.length}}家</h3>
+      <h3>城市分布占比 | {{count}}个</h3>
       <span>图片最多展示30个</span>
     </div>
     <dl>
@@ -30,6 +30,7 @@ import ViewBase from '@/util/ViewBase'
 })
 export default class DataCityList extends ViewBase {
   @Prop({ type: Array }) cityList!: any
+  @Prop({ type: String }) count!: string
 }
 </script>
 

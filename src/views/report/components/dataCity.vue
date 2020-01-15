@@ -13,7 +13,7 @@
       </div>
       <div class="morecity" @click="goCityList">查看全部城市</div>
     </div>
-    <DataCityList :cityList="cityList" v-if="renderNew && cityList.length" />
+    <DataCityList :cityList="cityList" v-if="renderNew && cityList.length" :count="count" />
   </div>
 </template>
 
@@ -38,6 +38,7 @@ export default class DataCity extends ViewBase {
   @Prop({ type: String }) orderId!: string
   @Prop({ type: Array }) cityList!: any
   @Prop({ type: Boolean }) renderNew!: boolean
+  @Prop({ type: String }) count!: string
 
   cityTierData: any = {}
   cityProfileData: any = {}

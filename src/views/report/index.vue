@@ -6,7 +6,7 @@
       v-if="orderDetail && !dataErr"
       :style="{paddingTop:renderNew ? '20px' :''}"
     >
-      <div class="reshare" @click="renderPage" v-if="!renderNew && appVer">导出</div>
+      <div class="reshare" @click="renderPage" v-if="!renderNew ">导出</div>
       <div class="viewer">
         <div class="fixbar" :style="{opacity:scrollTop}" v-if="!renderNew">
           <TopBar
@@ -35,8 +35,16 @@
           :orderId="orderId"
           v-if="!renderNew"
         />
-        <DataCinemaList :cinemaList="cinemaList" v-if="renderNew && cinemaList.length" />
-        <DataMovieList :movieList="movieList" v-if="renderNew && movieList.length" />
+        <DataCinemaList
+          :cinemaList="cinemaList"
+          v-if="renderNew && cinemaList.length"
+          :count="orderDetail.planInfo.coverCinemaCount"
+        />
+        <DataMovieList
+          :movieList="movieList"
+          v-if="renderNew && movieList.length"
+          :count="orderDetail.planInfo.coverMovieCount"
+        />
 
         <DataUserStatus
           :userAges="orderDetail.userAges"
@@ -50,6 +58,7 @@
           :orderId="this.orderId"
           :cityList="cityList"
           :renderNew="renderNew"
+          :count="orderDetail.planInfo.coverCityCount"
         />
         <div class="nulldiv"></div>
         <div class="footer" v-if="renderNew">

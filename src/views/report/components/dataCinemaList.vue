@@ -1,7 +1,7 @@
 <template>
   <div class="datatrendlist">
     <div class="tit">
-      <h3>覆盖影院 | {{cinemaList.length}}家</h3>
+      <h3>覆盖影院 | {{count}}家</h3>
       <span>图片最多展示100家</span>
     </div>
     <dl>
@@ -30,6 +30,7 @@ import ViewBase from '@/util/ViewBase'
 })
 export default class DataCinemaList extends ViewBase {
   @Prop({ type: Array }) cinemaList!: any
+  @Prop({ type: String }) count!: string
 }
 </script>
 

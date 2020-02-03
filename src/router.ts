@@ -102,6 +102,30 @@ export default new Router({
       path: '/video/detail/:videoId',
       name: 'videodetail',
       component: () => import('./views/video/index.vue')
+    },
+    // 品牌舆情
+    {
+      path: '/sentiment/brand',
+      name: 'sentimentbrand',
+      component: () => import('./views/sentiment/brand/index.vue')
+    },
+    // kol舆情
+    {
+      path: '/sentiment/kol',
+      name: 'sentimentkol',
+      component: () => import('./views/sentiment/kol/index.vue')
+    },
+    // 影片舆情
+    {
+      path: '/sentiment/movie',
+      name: 'sentimentmovie',
+      component: () => import('./views/sentiment/movie/index.vue')
+    },
+    // 音乐舆情
+    {
+      path: '/sentiment/music',
+      name: 'sentimentmusic',
+      component: () => import('./views/sentiment/music/index.vue')
     }
   ]
 })

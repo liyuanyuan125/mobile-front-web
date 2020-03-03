@@ -115,6 +115,18 @@ export default new Router({
       name: 'sentimentkol',
       component: () => import('./views/sentiment/kol/index.vue')
     },
+     // kol舆情艺人index
+     {
+      path: '/sentiment/kol/artist',
+      name: 'sentimentkolindex',
+      component: () => import('./views/sentiment/kol/artist/index.vue')
+    },
+    // kol舆情艺人详情
+    {
+      path: '/sentiment/kol/artist/detail/:kolId',
+      name: 'sentimentkoldetail',
+      component: () => import('./views/sentiment/kol/artist/detail.vue')
+    },
     // 影片舆情
     {
       path: '/sentiment/movie',

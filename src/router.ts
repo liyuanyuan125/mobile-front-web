@@ -138,6 +138,13 @@ export default new Router({
       path: '/sentiment/music',
       name: 'sentimentmusic',
       component: () => import('./views/sentiment/music/index.vue')
+    },
+
+    // demo
+    {
+      path: '/demo/twobar',
+      name: 'demo-twobar',
+      component: () => import('./views/demo/twoBar.vue')
     }
   ]
 })

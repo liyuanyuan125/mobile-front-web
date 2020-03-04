@@ -70,12 +70,10 @@ export default class CanvasPage extends Vue {
     p {
       &:first-child {
         font-size: 46px;
-        font-family: DINAlternate-Bold,DINAlternate;
         font-weight: bold;
       }
       &:last-child {
         font-size: 26px;
-        font-family: PingFangSC-Light,PingFang SC;
         font-weight: 300;
         color: #303030;
       }

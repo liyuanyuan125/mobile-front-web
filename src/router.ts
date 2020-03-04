@@ -133,6 +133,13 @@ export default new Router({
       path: '/demo/twobar',
       name: 'demo-twobar',
       component: () => import('./views/demo/twoBar.vue')
+    },
+
+    // test canvas
+    {
+      path: '/canvas/bubble',
+      name: 'canvas-bubble',
+      component: () => import('./views/canvas/bubble.vue')
     }
   ]
 })

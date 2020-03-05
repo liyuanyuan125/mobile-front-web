@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <selectTime ref="reftimes"/>
-    <LineGraph :lineData="list"/>
+    <LineGraph :lineData="lineDatas" />
   </div>
 </template>
 
@@ -21,26 +21,25 @@ import tabs from '@/components/charts/hots/tabs.vue'
 })
 export default class BrandPage extends ViewBase {
 
-  // 热度分析
-  hotTabs = [
-    {key: 'zonghe', text: '综合热度'},
-    {key: 'weibo', text: '微博指数'},
-    {key: 'baidu', text: '百度指数'},
-    {key: 'wechat', text: '微信指数'},
-  ]
-  hotTab = ''
+  lineDatas = {
+    title: '综合分析',
+    xDate: ['01-05', '01-05', '01-05', '01-05', '01-10', '01-15', '01-20'],
+    yDate: [
+      {
+        data: [80, 932, 901, 934, 1290, 130, 1320],
+        name: '刘诗诗1'
+      },
+      {
+        data: [820, 932, 901, 914, 1290, 130, 1320],
+        name: '刘诗诗2'
+      },
+      {
+        data: [100, 32, 901, 934, 1290, 1330, 120],
+        name: '刘诗诗3'
+      },
+    ],
+  }
 
-  // 新闻资讯 12-21 对应的数据120 视频 12-21 对应数据220 依次...
-  list = [
-    ['product', '新闻资讯', '视频', '微博', '微信'],
-    ['12-21', 120, 220, 150, 320],
-    ['12-26', 132, 182, 232, 332],
-    ['12-31', 101, 220, 159, 320],
-    ['01-05', 134, 220, 190, 310],
-    ['01-10', 90, 220, 250, 120],
-    ['01-15', 230, 220, 180, 210],
-    ['01-20', 210, 220, 140, 220],
-  ]
 }
 </script>
 

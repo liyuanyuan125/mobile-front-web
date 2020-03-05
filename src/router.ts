@@ -127,6 +127,12 @@ export default new Router({
       name: 'sentimentmusic',
       component: () => import('./views/sentiment/music/index.vue')
     },
+    // 剧情舆情
+    {
+      path: '/sentiment/plot',
+      name: 'sentimentplot',
+      component: () => import('./views/sentiment/plot/index.vue')
+    },
 
     // demo
     {

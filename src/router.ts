@@ -134,6 +134,11 @@ export default new Router({
       name: 'demo-twobar',
       component: () => import('./views/demo/twoBar.vue')
     },
+    {
+      path: '/demo/chinamap',
+      name: 'demo-chinamap',
+      component: () => import('./views/demo/chinaMap.vue')
+    },
 
     // test canvas
     {

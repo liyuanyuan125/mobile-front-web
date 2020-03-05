@@ -139,12 +139,30 @@ export default new Router({
       name: 'sentimentmusic',
       component: () => import('./views/sentiment/music/index.vue')
     },
+    // 剧情舆情
+    {
+      path: '/sentiment/plot',
+      name: 'sentimentplot',
+      component: () => import('./views/sentiment/plot/index.vue')
+    },
 
     // demo
     {
       path: '/demo/twobar',
       name: 'demo-twobar',
       component: () => import('./views/demo/twoBar.vue')
+    },
+    {
+      path: '/demo/chinamap',
+      name: 'demo-chinamap',
+      component: () => import('./views/demo/chinaMap.vue')
+    },
+
+    // test canvas
+    {
+      path: '/canvas/bubble',
+      name: 'canvas-bubble',
+      component: () => import('./views/canvas/bubble.vue')
     }
   ]
 })

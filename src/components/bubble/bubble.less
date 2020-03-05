@@ -1,0 +1,134 @@
+
+@bubble7-top: 186px, 88px, 13px, 302px, 381px, 359px, 118px, 0px, 248px;
+@bubble7-left: 143px, 5px, 137px, 12px, 154px, 282px, 292px, 314px, 0px;
+@bubble7-width: 190px, 165px, 150px, 140px, 111px, 110px, 90px, 50px, 50px;
+@bubble7-color: #245FE7, #87CFFA, #6665DD, #FF7352, #4CC8D0, #FF9D86, #4CC8D0, #55C1E8, #55C1E8;
+@bubble7-opacity: 0.8, 1, 1, 1, 1, 1, 1, 0.2, 0.2;
+@bubble7-fontSize: 62px, 52px, 44px, 44px, 44px, 40px, 35px, 0, 0;
+
+@bubble6-top: 186px, 88px, 0px, 302px, 381px, 359px, 108px, 248px;
+@bubble6-left: 143px, 5px, 169px, 12px, 154px, 282px, 326px, 0px;
+@bubble6-width: 190px, 165px, 150px, 140px, 111px, 110px, 50px, 50px;
+@bubble6-color: #245FE7, #87CFFA, #6665DD, #FF7352, #4CC8D0, #FF9D86, #55C1E8, #55C1E8;
+@bubble6-opacity: 0.8, 1, 1, 1, 1, 1, 0.2, 0.2;
+@bubble6-fontSize: 62px, 52px, 44px, 44px, 44px, 40px, 0, 0;
+
+@bubble5-top: 186px, 87px, 0px, 332px, 376px, 119px, 248px;
+@bubble5-left: 168px, 26px, 169px, 50px, 263px, 319px, 0px;
+@bubble5-width: 190px, 165px, 150px, 140px, 111px, 50px, 50px;
+@bubble5-color: #245FE7, #87CFFA, #6665DD, #FF7352, #4CC8D0, #55C1E8, #55C1E8;
+@bubble5-opacity: 0.8, 1, 1, 1, 1, 0.2, 0.2;
+@bubble5-fontSize: 62px, 52px, 44px, 44px, 44px, 0, 0;
+
+@bubble4-top: 232px, 24px, 105px, 375px, 236px, 18px, 248px;
+@bubble4-left: 52px, 25px, 201px, 262px, 283px, 201px, 0px;
+@bubble4-width: 210px, 165px, 150px, 112px, 75px, 50px, 50px;
+@bubble4-color: #245FE7, #87CFFA, #6665DD, #4CC8D0, #55C1E8, #55C1E8, #FF7352;
+@bubble4-opacity: 0.8, 1, 1, 1, 0.2, 0.2, 0.5;
+@bubble4-fontSize: 62px, 52px, 44px, 44px, 0, 0, 0;
+
+@bubble3-top: 232px, 24px, 105px, 375px, 236px, 18px, 248px;
+@bubble3-left: 52px, 25px, 201px, 262px, 283px, 201px, 0px;
+@bubble3-width: 210px, 165px, 150px, 112px, 75px, 50px, 50px;
+@bubble3-color: #245FE7, #87CFFA, #6665DD, #4CC8D0, #55C1E8, #55C1E8, #FF7352;
+@bubble3-opacity: 0.8, 1, 1, 1, 0.2, 0.2, 0.5;
+@bubble3-fontSize: 62px, 52px, 44px, 44px, 0, 0, 0;
+
+@bubble2-top: 198px, 25px, 366px, 128px, 11px, 193px;
+@bubble2-left: 39px, 148px, 276px, 25px, 50px, 287px;
+@bubble2-width: 235px, 170px, 112px, 75px, 50px, 50px;
+@bubble2-color: #245FE7, #6665DD, #4CC8D0, #FF7352, #55C1E8, #55C1E8;
+@bubble2-opacity: 0.8, 1, 1, 1, 0.2, 0.2;
+@bubble2-fontSize: 62px, 52px, 44px, 44px, 35px, 0, 0;
+
+@bubble1-top: 103px, 355px, 53px, 11px, 333px;
+@bubble1-left: 63px, 255px, 224px, 50px, 14px;
+@bubble1-width: 235px, 112px, 100px, 50px, 50px;
+@bubble1-color: #245FE7, #4CC8D0, #6665DD, #55C1E8, #55C1E8;
+@bubble1-opacity: 0.8, 1, 1, 0.2, 0.2;
+@bubble1-fontSize: 62px, 52px, 44px, 35px, 0, 0;
+
+
+.bubble(@top, @left, @width, @color, @opacity, @fontSize) {
+  top: @top;
+  left: @left;
+  width: @width;
+  height: @width;
+  background: @color;
+  opacity: @opacity;
+  span {
+    &:last-child {
+     font-size: @fontSize;
+    }
+  }
+}
+
+.bubble-base {
+  text-align: center;
+  color: #FFFFFF;
+  position: absolute;
+  border-radius: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  span {
+    &:first-child {
+      font-family: PingFangSC-Light,PingFang SC;
+    }
+    &:last-child {
+    font-family:DINAlternate-Bold,DINAlternate;
+    font-weight:bold;
+    }
+  }
+}
+
+.bubble7-loop (@n, @i:1) when (@i <= @n) {
+  &:nth-child(@{i}) {
+    .bubble(extract(@bubble7-top, @i), extract(@bubble7-left, @i),extract(@bubble7-width, @i),extract(@bubble7-color, @i),extract(@bubble7-opacity, @i),extract(@bubble7-fontSize, @i));
+  }
+  .bubble7-loop(@n, (@i + 1));
+}
+
+.bubble6-loop (@n, @i:1) when (@i <= @n) {
+  &:nth-child(@{i}) {
+    .bubble(extract(@bubble6-top, @i), extract(@bubble6-left, @i),extract(@bubble6-width, @i),extract(@bubble6-color, @i),extract(@bubble6-opacity, @i),extract(@bubble6-fontSize, @i));
+  }
+  .bubble6-loop(@n, (@i + 1));
+}
+
+.bubble5-loop (@n, @i:1) when (@i <= @n) {
+  &:nth-child(@{i}) {
+    .bubble(extract(@bubble5-top, @i), extract(@bubble5-left, @i),extract(@bubble5-width, @i),extract(@bubble5-color, @i),extract(@bubble5-opacity, @i),extract(@bubble5-fontSize, @i));
+  }
+  .bubble5-loop(@n, (@i + 1));
+}
+
+.bubble4-loop (@n, @i:1) when (@i <= @n) {
+  &:nth-child(@{i}) {
+    .bubble(extract(@bubble4-top, @i), extract(@bubble4-left, @i),extract(@bubble4-width, @i),extract(@bubble4-color, @i),extract(@bubble4-opacity, @i),extract(@bubble4-fontSize, @i));
+  }
+  .bubble4-loop(@n, (@i + 1));
+}
+
+.bubble3-loop (@n, @i:1) when (@i <= @n) {
+  &:nth-child(@{i}) {
+    .bubble(extract(@bubble3-top, @i), extract(@bubble3-left, @i),extract(@bubble3-width, @i),extract(@bubble3-color, @i),extract(@bubble3-opacity, @i),extract(@bubble3-fontSize, @i));
+  }
+  .bubble3-loop(@n, (@i + 1));
+}
+
+.bubble2-loop (@n, @i:1) when (@i <= @n) {
+  &:nth-child(@{i}) {
+    .bubble(extract(@bubble2-top, @i), extract(@bubble2-left, @i),extract(@bubble2-width, @i),extract(@bubble2-color, @i),extract(@bubble2-opacity, @i),extract(@bubble2-fontSize, @i));
+  }
+  .bubble2-loop(@n, (@i + 1));
+}
+
+.bubble1-loop (@n, @i:1) when (@i <= @n) {
+  &:nth-child(@{i}) {
+    .bubble(extract(@bubble1-top, @i), extract(@bubble1-left, @i),extract(@bubble1-width, @i),extract(@bubble1-color, @i),extract(@bubble1-opacity, @i),extract(@bubble1-fontSize, @i));
+  }
+  .bubble1-loop(@n, (@i + 1));
+}

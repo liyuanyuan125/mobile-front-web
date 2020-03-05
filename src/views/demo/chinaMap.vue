@@ -84,7 +84,8 @@ export default class extends Vue {
 }
 
 .china-map {
-  width: 300px;
+  width: 100%;
+  height: 660px;
 }
 
 .action-bar {

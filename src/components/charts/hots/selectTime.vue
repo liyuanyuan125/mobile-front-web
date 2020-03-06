@@ -59,7 +59,7 @@ export default class Main extends Vue {
 .items {
   width: 200px;
   height: 60px;
-  background:rgba(255,255,255,1);
+  background: rgba(255, 255, 255, 1);
   border-radius: 30px;
   border: 2px solid rgba(235, 235, 235, 1);
   text-align: center;

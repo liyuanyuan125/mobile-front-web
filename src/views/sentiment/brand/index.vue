@@ -10,13 +10,11 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import LineGraph from '@/components/charts/hots/index.vue'
 import selectTime from '@/components/charts/hots/selectTime.vue'
-import tabs from '@/components/charts/hots/tabs.vue'
 
 @Component({
   components: {
     LineGraph,
-    selectTime,
-    tabs
+    selectTime
   }
 })
 export default class BrandPage extends ViewBase {

@@ -1,11 +1,11 @@
 <template>
   <div class="userportrait">
     <h4>性别年龄占比</h4>
-    <div style="margin-top:15px;width: 35%;display: inline-block">
-      <BarGraph :dataOption="userAgesData" />
+    <div style="margin-top:15px;width: 40%;float: left;">
+      <BarGraph :dataOption="userAgesData" :colorList="colorList" />
     </div>
-    <div style="margin-top:15px;width: 65%;display: inline-block">
-      <barGraphRow :dataOption="userGenderData" />
+    <div style="margin-top:15px;width: 60%;float: left;height: 162px;">
+      <barGraphRow :dataOption="userGenderData" :itemlist="itemlist" />
     </div>
   </div>
 </template>
@@ -29,19 +29,31 @@ export default class UserPortrait extends ViewBase {
   userAgesData: any = null
   userGenderData: any = null
 
+  colorList: any = ['#88AAF6', '#F18F8F'] // 男女比例颜色信息
+
+  itemlist: any = {
+    colorMain: '#303030',
+    borderRadius: [5, 5, 5, 5],
+    colorColumn: '#7F7D7E',
+    widthColumn: 5,
+    normalColor: [100 , 100 , 100 , 100 , 100 , 100 ],
+    bgColor: '#F0F0F0'
+  }
+
+
   created() {
+    this.formatsexData()
     this.formatAgesData()
-    this.formatAgesData1()
   }
 
   // 处理年龄数据
-  formatAgesData() {
+  formatsexData() {
     const xData = []
     const yData = []
     const rait = this.userAges
     if (rait && rait.length) {
       for (const item of this.userAges) {
-        xData.push(item.range)
+        xData.push(item.type)
         yData.push(item.value)
       }
       this.userAgesData = {
@@ -51,7 +63,7 @@ export default class UserPortrait extends ViewBase {
     }
   }
 
-  formatAgesData1() {
+  formatAgesData() {
     const xData = []
     const yData = []
     const rait = this.userGender
@@ -63,35 +75,6 @@ export default class UserPortrait extends ViewBase {
       this.userGenderData = {
         xData,
         yData
-      }
-    }
-  }
-
-  // 处理年龄legend数据
-  formatGenderLegend() {
-    const legendData = []
-    const rait = this.userGender
-    if (rait && rait.length) {
-      for (const item of this.userGender) {
-        legendData.push({
-          name: item.name,
-          icon: 'circle',
-          textStyle: {
-            color: '#8798AF',
-            fontSize: 13,
-            fontFamily: 'DIN Alternate'
-          }
-        })
-      }
-      this.userGenderData = {
-        data: this.userGender,
-        legendData,
-        legendLeft: '65%',
-        legendX: 'right',
-        legendY: 'middle',
-        orient: 'vertical',
-        size: ['40%', '65%'],
-        position: ['35%', '50%']
       }
     }
   }

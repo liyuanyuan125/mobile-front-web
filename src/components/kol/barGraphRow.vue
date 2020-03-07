@@ -2,6 +2,7 @@
   <div class="content-wrap">
     <div class="chart-default" v-if="!dataOption"></div>
     <div ref="refChart" v-if="dataOption" class="chart-wrap"></div>
+    <div class='hidden'></div>
   </div>
 </template>
 
@@ -9,7 +10,6 @@
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import echarts from 'echarts'
-const defaultColor = ['#FF8080', '#FFCB84', '#9FDECF', '#D9E0E9']
 
 @Component({
   components: {}
@@ -17,14 +17,33 @@ const defaultColor = ['#FF8080', '#FFCB84', '#9FDECF', '#D9E0E9']
 // 横向柱状图
 export default class BarGraphRow extends ViewBase {
   @Prop({ type: Object }) dataOption!: any
-  @Prop({ type: Array, default: () => defaultColor }) bgcolor: any
-  // @Prop({ type: Boolean }) isChangeImg!: boolean
+  @Prop({ type: Object, }) itemlist: any
+
+  // itemlist: any = {
+  //   colorMain: '#7CA4FF', // 右边显示数据颜色
+  //   borderRadius: [3, 3, 3, 3], // 柱形图圆角
+  //   colorColumn: '#7CA4FF', // 柱子的颜色
+  //   widthColumn: 10, // 柱子的宽度
+  //   normalColor: [100 , 100 , 100 , 100 , 100 , 100 , 100 , 100 , 100 , 100 , ] // 默认的底层数据列表,跟展示数据的长度保持一致。默认为100
+  //   bgColor: '#F0F0F0', // 柱状图条形图背景展示颜色
+  // }
+
 
   mounted() {
     if (this.dataOption) {
+      // console.log(this.dataOption.xData.length)
+      // this.add(this.normalColor.length)
       this.updateCharts()
     }
   }
+
+  // add(num: any) {
+  //   console.log(111,num)
+  //   if (num != this.dataOption.xData.length) {
+  //       this.normalColor.push(100)
+  //   }
+  //   // this.add(this.normalColor.length)
+  // }
 
   // 画图
   updateCharts() {
@@ -41,11 +60,11 @@ export default class BarGraphRow extends ViewBase {
       yAxis: {
         type: 'category',
         data: this.dataOption.yData,
-        inverse: true, // 是否反向 有点搞不明白,false就是从小到大排序
+        inverse: true,
         silent: true,
         axisLabel: {
           textStyle: {
-            color: '#8798AF',
+            color: '#303030',
             fontSize: 12
           }
         },
@@ -68,33 +87,53 @@ export default class BarGraphRow extends ViewBase {
         containLabel: true,
         show: false,
         borderWidth: 0
-        // height: '400px'
       },
 
       series: [
         {
-          data: this.dataOption.xData,
+          data: this.itemlist.normalColor,
           type: 'bar',
-          barGap: '50%',
-          barCategoryGap: '50%',
+          barGap: '-100%',
+          // barCategoryGap: '100%',
           smooth: true,
-          // legendHoverLink: true,
           label: {
             show: true,
             position: 'right',
-            distance: 10,
-            formatter: this.dataOption.labelFormatter,
-            color: '#2E2F5A',
+            formatter: (params: any) => {
+              const a: any = this.dataOption.xData
+              return a[params.dataIndex] + '%'
+            },
+            color: this.itemlist.colorMain,
             fontWeight: 'bold',
-            fontSize: 14,
+            fontSize: 12,
+          },
+          itemStyle: {
+            color: this.itemlist.bgColor,
+            barBorderRadius: this.itemlist.borderRadius,
+          },
+          emphasis: {
+            label: {
+              show: false
+            }
+          },
+          barWidth: this.itemlist.widthColumn
+        },
+        {
+          data: this.dataOption.xData,
+          type: 'bar',
+          smooth: true,
+          label: {
+            show: true,
+            position: 'right',
+            formatter: '',
+            color: this.itemlist.colorMain,
+            fontWeight: 'bold',
+            fontSize: 12,
             fontFamily: 'DIN Alternate'
           },
           itemStyle: {
-            color: (params: any) => {
-              const colorList: any = this.bgcolor
-              return colorList[params.dataIndex]
-            }
-            // opacity: 0.4
+            color: this.itemlist.colorColumn,
+            barBorderRadius: this.itemlist.borderRadius,
           },
           // 选中
           emphasis: {
@@ -102,8 +141,8 @@ export default class BarGraphRow extends ViewBase {
               show: false
             }
           },
-          barWidth: 15
-        }
+          barWidth: this.itemlist.widthColumn
+        },
       ]
     }
     // console.save(option, `${new Date()}.json`)
@@ -116,7 +155,7 @@ export default class BarGraphRow extends ViewBase {
 .content-wrap {
   position: relative;
   width: 100%;
-  height: 600px;
+  height: 100%;
 }
 .chart-default {
   background: url('../../assets/data-null.png') no-repeat center;
@@ -126,7 +165,7 @@ export default class BarGraphRow extends ViewBase {
 }
 .chart-wrap {
   width: 100%;
-  height: 600px;
+  height: 100%;
   img {
     width: 100%;
   }
@@ -147,5 +186,14 @@ export default class BarGraphRow extends ViewBase {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 9;
+}
+.hidden {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  position: absolute;
+  top: 0;
+  left: auto;
+  opacity: 0;
 }
 </style>

@@ -10,29 +10,19 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import echarts from 'echarts'
 
+
+
 @Component({
   components: {}
 })
 // 普通柱状图
 export default class BarGraph extends ViewBase {
   @Prop({ type: Object }) dataOption!: any
-  @Prop({ type: Boolean }) isRenderImg!: boolean
+  @Prop({ type: Array }) colorList: any
+
 
   mounted() {
     if (this.dataOption) {
-      this.updateCharts()
-    }
-  }
-
-  // 重新渲染页面
-  @Watch('isRenderImg')
-  watchPageOn() {
-    if (this.isRenderImg) {
-      // this.updateCharts()
-      setTimeout(() => {
-        this.changeCanvas()
-      }, 800)
-    } else {
       this.updateCharts()
     }
   }
@@ -56,27 +46,6 @@ export default class BarGraph extends ViewBase {
     chartEl.innerHTML = ''
     const myChart = echarts.init(chartEl)
     const option: any = {
-      tooltip: {
-        show: true,
-        trigger: 'axis',
-        confine: true, // 限制在图表的区域内
-        // 去掉指示线
-        axisPointer: {
-          type: 'none'
-        },
-        backgroundColor: '#fff',
-        padding: [6, 15],
-        formatter:
-          // tslint:disable-next-line:max-line-length
-          '<p style="font-size:16px;line-height:1.1;font-weight:bold;font-family: DIN Alternate;"><span style="display:inline-block;margin-right:6px;border-radius:8px;width:8px;height:8px;background-color:#7AA0F5; vertical-align:middle;margin-top:-3px"></span>{c}%</p><p style="color:#8798AF;font-size:12px; margin-left:14px;">{b}</p>',
-        textStyle: {
-          fontSize: '14px',
-          color: '#2E2F5A'
-        },
-        extraCssText:
-          'box-shadow: 0 2px 10px rgba(212, 212, 212, 0.5);border-radius:8px'
-      },
-
       xAxis: {
         type: 'category',
         data: this.dataOption.xData,
@@ -84,9 +53,14 @@ export default class BarGraph extends ViewBase {
           interval: 0,
           // X轴上字的样式
           textStyle: {
-            color: '#8798AF',
+            normal: {
+              color(params: any) {
+                const colorList: any = ['#88AAF6', '#F18F8F']
+                return colorList[params.dataIndex]
+              },
+            },
             fontSize: 14
-          }
+          },
         },
         axisLine: {
           show: false,
@@ -106,7 +80,7 @@ export default class BarGraph extends ViewBase {
           show: false,
           formatter: '{value}%',
           textStyle: {
-            color: '#8798AF',
+            // color: '#8798AF',
             fontSize: '20px'
           }
         },
@@ -120,7 +94,7 @@ export default class BarGraph extends ViewBase {
         splitLine: {
           show: false,
           lineStyle: {
-            color: 'rgba(151,167,195,.45)',
+            // color: 'rgba(151,167,195,.45)',
             type: 'dashed'
           }
         }
@@ -128,8 +102,8 @@ export default class BarGraph extends ViewBase {
 
       grid: {
         left: 10,
-        top: '15px',
-        bottom: 0,
+        top: '27px',
+        bottom: '26px',
         right: '15px',
         containLabel: true,
         show: false,
@@ -144,22 +118,18 @@ export default class BarGraph extends ViewBase {
           // legendHoverLink: true,
           itemStyle: {
             normal: {
-              color(params: any) {
-                const colorList = ['#88AAF6', '#F18F8F']
-                return colorList[params.dataIndex]
-              },
               label: {
                 show: true, // 开启显示
                 position: 'top', // 在上方显示
                 formatter: '{c}' + '%',
                 textStyle: { // 数值样式
-                  color(params: any) {
-                    const colorList = ['#88AAF6', '#F18F8F']
-                    return colorList[params.dataIndex]
-                  },
                   fontSize: 14
                 }
-                }
+              },
+              color: (params: any) => {
+                const colorList: any = this.colorList
+                return colorList[params.dataIndex]
+              }
             }
           },
           barWidth: 23
@@ -176,7 +146,7 @@ export default class BarGraph extends ViewBase {
 .content-wrap {
   position: relative;
   width: 100%;
-  height: 400px;
+  height: 350px;
 }
 .chart-default {
   background: url('../../assets/data-null.png') no-repeat center;
@@ -186,7 +156,7 @@ export default class BarGraph extends ViewBase {
 }
 .chart-wrap {
   width: 100%;
-  height: 400px;
+  height: 350px;
 }
 .chart-wrap:empty {
   display: flex;

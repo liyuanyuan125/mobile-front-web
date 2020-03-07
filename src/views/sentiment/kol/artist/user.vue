@@ -239,7 +239,7 @@ export default class KolPage extends ViewBase {
       height: 30px;
       font-size: 30px;
       font-weight: 500;
-      color :rgba(48, 48, 48, 1);
+      color: rgba(48, 48, 48, 1);
       line-height: 30px;
       margin-bottom: 50px;
       .more {

@@ -353,7 +353,6 @@ export default class KolPage extends ViewBase {
       position: absolute;
       top: 15%;
       left: 34%;
-      color: #d4d4d4;
       font-size: 80px;
       font-weight: 100;
       color: #4a4a4a;

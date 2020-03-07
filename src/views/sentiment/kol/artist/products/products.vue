@@ -231,7 +231,7 @@ export default class KolPage extends ViewBase {
 <style lang="less" scoped>
 .pages {
   width: 100%;
-  background:#F7F7F7;
+  background: #f7f7f7;
 }
 .left {
   float: left;
@@ -243,7 +243,7 @@ export default class KolPage extends ViewBase {
   width: 750px;
   height: 188px;
   padding-top: 39px;
-  background: rgba(247,247,249,1);
+  background: rgba(247, 247, 249, 1);
   div {
     display: inline-block;
     // float: left;
@@ -253,7 +253,7 @@ export default class KolPage extends ViewBase {
     height: 50px;
     font-size: 36px;
     font-weight: 500;
-    color: rgba(48,48,48,1);
+    color: rgba(48, 48, 48, 1);
     line-height: 50px;
     margin-left: 28%;
   }
@@ -283,10 +283,10 @@ export default class KolPage extends ViewBase {
     margin-right: 5%;
   }
 }
-/deep/ .van-sticky , /deep/ .van-tabs--line .van-tabs__wrap {
+/deep/ .van-sticky, /deep/ .van-tabs--line .van-tabs__wrap {
   height: 100px;
   background: rgba(255, 255, 255, 1);
-  border-radius: 60px 60px 0px 0px;
+  border-radius: 60px 60px 0 0;
 }
 .age {
   height: 450px;
@@ -327,7 +327,7 @@ export default class KolPage extends ViewBase {
         width: 40px;
         height: 40px;
         font-style: normal;
-        background: #8BABEF;
+        background: #8babef;
         text-align: center;
         line-height: 32px;
         border-radius: 50%;
@@ -353,10 +353,10 @@ export default class KolPage extends ViewBase {
       position: absolute;
       top: 15%;
       left: 34%;
-      color: #D4D4D4;
+      color: #d4d4d4;
       font-size: 80px;
       font-weight: 100;
-      color: #4A4A4A;
+      color: #4a4a4a;
       width: 60px;
       height: 60px;
       text-align: center;
@@ -382,11 +382,11 @@ export default class KolPage extends ViewBase {
   line-height: 100px;
   font-size: 30px;
 }
-/deep/ .van-tab--active , /deep/ .van-tabs__line {
-  color: #88AAF6;
+/deep/ .van-tab--active, /deep/ .van-tabs__line {
+  color: #88aaf6;
 }
 /deep/ .van-tabs__line {
-  background-color: #88AAF6;
+  background-color: #88aaf6;
 }
 
 </style>

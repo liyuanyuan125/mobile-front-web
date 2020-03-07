@@ -83,14 +83,14 @@ export default class KolPage extends ViewBase {
   width: 100%;
   display: flex;
   overflow: scroll;
-  -webkit-flex-wrap:nowrap;
-  flex-wrap:nowrap;
-  -webkit-justify-content:space-between;
-  justify-content:space-between;
+  -webkit-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
 }
 .rowfans {
-  -webkit-flex:1 0 auto;
-  flex:1 0 auto;
+  -webkit-flex: 1 0 auto;
+  flex: 1 0 auto;
   margin-top: 30px;
   width: 600px;
   height: 522px;
@@ -98,7 +98,7 @@ export default class KolPage extends ViewBase {
   border-radius: 20px;
   opacity: 0.5;
   padding: 30px;
-  margin-right: 30px;;
+  margin-right: 30px;
 }
 .but {
   margin-top: 30px;
@@ -106,7 +106,7 @@ export default class KolPage extends ViewBase {
 /deep/ .van-button--primary {
   width: 180px;
   height: 60px;
-  background:rgba(255, 255, 255, 1);
+  background: rgba(255, 255, 255, 1);
   color: #303030;
   border-radius: 30px;
   border: 2px solid rgba(235, 235, 235, 1);
@@ -116,7 +116,7 @@ export default class KolPage extends ViewBase {
   margin-left: 20px;
 }
 .chgbgc {
-  background: #88AAF6;
+  background: #88aaf6;
   color: #fff;
 }
 </style>

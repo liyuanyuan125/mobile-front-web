@@ -86,7 +86,7 @@ export default class UserPortrait extends ViewBase {
 h4 {
   font-size: 40px;
   font-weight: 500;
-  color: rgba(48,48,48,1);
+  color: rgba(48, 48, 48, 1);
   line-height: 40px;
   margin-left: 5%;
 }

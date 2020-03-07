@@ -142,7 +142,7 @@ export default class KolPage extends ViewBase {
 @import './less/main.less';
 .pages {
   width: 100%;
-  background: #F7F7F7;
+  background: #f7f7f7;
 }
 .left {
   float: left;
@@ -154,7 +154,7 @@ export default class KolPage extends ViewBase {
   width: 750px;
   height: 188px;
   padding-top: 39px;
-  background: rgba(247,247,249,1);
+  background: rgba(247, 247, 249, 1);
   div {
     display: inline-block;
     // float: left;
@@ -164,7 +164,7 @@ export default class KolPage extends ViewBase {
     height: 50px;
     font-size: 36px;
     font-weight: 500;
-    color: rgba(48,48,48,1);
+    color: rgba(48, 48, 48, 1);
     line-height: 50px;
     margin-left: 28%;
   }
@@ -202,13 +202,13 @@ export default class KolPage extends ViewBase {
     height: 40px;
     font-size: 40px;
     font-weight: 500;
-    color: rgba(48,48,48,1);
+    color: rgba(48, 48, 48, 1);
     line-height: 40px;
   }
   .sex {
     height: 300px;
     margin-top: 40px;
-    border-bottom: solid 1px #D8D8D8;
+    border-bottom: solid 1px #d8d8d8;
   }
   .age {
     height: 300px;
@@ -232,21 +232,21 @@ export default class KolPage extends ViewBase {
       width: 100%;
       height: 660px;
     }
-    border-bottom: solid 1px #D8D8D8;
+    border-bottom: solid 1px #d8d8d8;
   }
   .toplist {
     .title {
       height: 30px;
       font-size: 30px;
-      font-weight:  500;
-      color:rgba(48, 48, 48, 1);
+      font-weight: 500;
+      color :rgba(48, 48, 48, 1);
       line-height: 30px;
       margin-bottom: 50px;
       .more {
         height: 26px;
         font-size: 26px;
         font-weight: 400;
-        color: rgba(143,143,143,1);
+        color: rgba(143, 143, 143, 1);
         line-height: 30px;
         margin-right: 4%;
         position: relative;
@@ -254,8 +254,8 @@ export default class KolPage extends ViewBase {
           display: block;
           width: 20px;
           height: 20px;
-          border-top: 2px solid rgba(143,143,143,1);
-          border-right: 2px solid rgba(143,143,143,1);
+          border-top: 2px solid rgba(143, 143, 143, 1);
+          border-right: 2px solid rgba(143, 143, 143, 1);
           transform: rotate(45deg);
           -ms-transform: rotate(45deg);
           -moz-transform: rotate(45deg);

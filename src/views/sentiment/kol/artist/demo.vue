@@ -188,7 +188,7 @@ export default class KolPage extends ViewBase {
   width: 750px;
   height: 188px;
   padding-top: 39px;
-  background: rgba(247,247,249,1);
+  background: rgba(247, 247, 249, 1);
   div {
     display: inline-block;
     // float: left;
@@ -198,7 +198,7 @@ export default class KolPage extends ViewBase {
     height: 50px;
     font-size: 36px;
     font-weight: 500;
-    color: rgba(48,48,48,1);
+    color: rgba(48, 48, 48, 1);
     line-height: 50px;
     margin-left: 28%;
   }

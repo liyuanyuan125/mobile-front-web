@@ -1,76 +1,76 @@
 {
-  "name": "mobile-front-web",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint --no-fix && yarn lint:css",
-    "lint:css": "stylelint \"**/*.vue\" --syntax less",
-    "test": "yarn test:unit",
-    "test:unit": "vue-cli-service test:unit"
-  },
-  "dependencies": {
-    "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
-    "@types/echarts": "^4.1.14",
-    "axios": "^0.19.0",
-    "core-js": "^2.6.5",
-    "echarts": "^4.3.0",
-    "lodash": "^4.17.15",
-    "md5": "^2.2.1",
-    "moment": "^2.24.0",
-    "numeral": "^2.0.6",
-    "register-service-worker": "^1.6.2",
-    "universal-base64url": "^1.1.0",
-    "vant": "^2.1.2",
-    "vue": "^2.6.10",
-    "vue-class-component": "^7.0.2",
-    "vue-cookies": "^1.5.13",
-    "vue-echarts": "^5.0.0-beta.0",
-    "vue-property-decorator": "^8.1.0",
-    "vue-router": "^3.0.3",
-    "vuex": "^3.0.1"
-  },
-  "devDependencies": {
-    "@types/axios": "^0.14.0",
-    "@types/jest": "^23.1.4",
-    "@types/lodash": "^4.14.137",
-    "@types/md5": "^2.1.33",
-    "@types/numeral": "^0.0.26",
-    "@vue/cli-plugin-babel": "^3.10.0",
-    "@vue/cli-plugin-pwa": "^3.10.0",
-    "@vue/cli-plugin-typescript": "^3.10.0",
-    "@vue/cli-plugin-unit-jest": "^3.10.0",
-    "@vue/cli-service": "^3.10.0",
-    "@vue/test-utils": "1.0.0-beta.29",
-    "autoprefixer": "^9.6.1",
-    "babel-core": "7.0.0-bridge.0",
-    "babel-plugin-import": "^1.12.0",
-    "html-webpack-plugin": "^3.2.0",
-    "less": "^3.0.4",
-    "less-loader": "^4.1.0",
-    "lint-staged": "^8.1.5",
-    "postcss-px-to-viewport": "^1.1.1",
-    "stylelint": "^10.1.0",
-    "stylelint-config-standard": "^18.3.0",
-    "stylelint-processor-arbitrary-tags": "^0.1.0",
-    "ts-import-plugin": "^1.6.1",
-    "ts-jest": "^23.0.0",
-    "typescript": "^3.4.3",
-    "vconsole": "^3.3.4",
-    "vue-template-compiler": "^2.6.10"
-  },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
-  "lint-staged": {
-    "*.ts": [
-      "vue-cli-service lint",
-      "git add"
-    ],
-    "*.vue": [
-      "vue-cli-service lint",
-      "git add"
-    ]
-  }
+    "name": "mobile-front-web",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "vue-cli-service serve",
+        "build": "vue-cli-service build",
+        "lint": "vue-cli-service lint --no-fix && yarn lint:css",
+        "lint:css": "stylelint \"**/*.vue\" --syntax less",
+        "test": "yarn test:unit",
+        "test:unit": "vue-cli-service test:unit"
+    },
+    "dependencies": {
+        "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
+        "@types/echarts": "^4.1.14",
+        "axios": "^0.19.0",
+        "core-js": "^2.6.5",
+        "echarts": "^4.3.0",
+        "lodash": "^4.17.15",
+        "md5": "^2.2.1",
+        "moment": "^2.24.0",
+        "numeral": "^2.0.6",
+        "register-service-worker": "^1.6.2",
+        "universal-base64url": "^1.1.0",
+        "vant": "^2.3.0",
+        "vue": "^2.6.10",
+        "vue-class-component": "^7.0.2",
+        "vue-cookies": "^1.5.13",
+        "vue-echarts": "^5.0.0-beta.0",
+        "vue-property-decorator": "^8.1.0",
+        "vue-router": "^3.0.3",
+        "vuex": "^3.0.1"
+    },
+    "devDependencies": {
+        "@types/axios": "^0.14.0",
+        "@types/jest": "^23.1.4",
+        "@types/lodash": "^4.14.137",
+        "@types/md5": "^2.1.33",
+        "@types/numeral": "^0.0.26",
+        "@vue/cli-plugin-babel": "^3.10.0",
+        "@vue/cli-plugin-pwa": "^3.10.0",
+        "@vue/cli-plugin-typescript": "^3.10.0",
+        "@vue/cli-plugin-unit-jest": "^3.10.0",
+        "@vue/cli-service": "^3.10.0",
+        "@vue/test-utils": "1.0.0-beta.29",
+        "autoprefixer": "^9.6.1",
+        "babel-core": "7.0.0-bridge.0",
+        "babel-plugin-import": "^1.12.0",
+        "html-webpack-plugin": "^3.2.0",
+        "less": "^3.0.4",
+        "less-loader": "^4.1.0",
+        "lint-staged": "^8.1.5",
+        "postcss-px-to-viewport": "^1.1.1",
+        "stylelint": "^10.1.0",
+        "stylelint-config-standard": "^18.3.0",
+        "stylelint-processor-arbitrary-tags": "^0.1.0",
+        "ts-import-plugin": "^1.6.1",
+        "ts-jest": "^23.0.0",
+        "typescript": "^3.4.3",
+        "vconsole": "^3.3.4",
+        "vue-template-compiler": "^2.6.10"
+    },
+    "gitHooks": {
+        "pre-commit": "lint-staged"
+    },
+    "lint-staged": {
+        "*.ts": [
+            "vue-cli-service lint",
+            "git add"
+        ],
+        "*.vue": [
+            "vue-cli-service lint",
+            "git add"
+        ]
+    }
 }

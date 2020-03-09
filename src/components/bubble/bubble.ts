@@ -1,3 +1,45 @@
+import { BubbleBottomItem } from './types'
+
+/**
+ * 规范化 Data
+ * @param list 待规范化的 Data 列表
+ */
+export function normalizeData(list: BubbleBottomItem[]) {
+  const emptys: BubbleBottomItem[]  = [
+    {
+      type: '5',
+      title: '',
+      value: '-1'
+    }, {
+      type: '6',
+      title: '',
+      value: '-1'
+    }
+  ]
+
+  let result = list.map(it => {
+    if (!it.showdown) {
+      if (it.trend && it.trend <= 0) {
+        it.trend = '-'
+        it.styles = 'line-height: 10px'
+      }
+    } else {
+      if (it.trend && it.trend == 0) {
+        it.trend = '-'
+        it.styles = 'line-height: 10px'
+      } else {
+        it.trend = Math.abs(Number(it.trend))
+        it.rotate = true
+      }
+    }
+
+    return it
+  })
+
+  result = [...result, ...emptys]
+
+  return result
+}
 
 export function fillList(dataLength: number) {
   const empty = {

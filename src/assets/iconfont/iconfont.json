@@ -1,0 +1,23 @@
+{
+  "id": "1677289",
+  "name": "舆情前台",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "仅限鲸鱼数据舆情前台使用",
+  "glyphs": [
+    {
+      "icon_id": "4341728",
+      "name": "上升",
+      "font_class": "increase",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "8964020",
+      "name": "问号",
+      "font_class": "wenhao",
+      "unicode": "e63d",
+      "unicode_decimal": 58941
+    }
+  ]
+}

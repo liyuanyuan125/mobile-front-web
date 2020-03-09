@@ -1,7 +1,8 @@
 <template>
   <div class="bubble-page">
-    <BubbleCss :data="data">
+    <BubbleLeft :data="data">
       <template>
+        <!-- 示例 -->
         <div slot="right">
           <div class="content">
             <p>1,342</p>
@@ -17,17 +18,25 @@
           </div>
         </div>
       </template>
-    </BubbleCss>
+    </BubbleLeft>
+    <BubbleBottom :data="selfColumn">
+      <!-- <template>
+        <div slot="name">
+          <span>hahhhahhah</span>
+        </div>
+      </template> -->
+    </BubbleBottom>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import {BubbleCss, BubbleItem } from '@/components/bubble'
+import {BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
 
 @Component({
   components: {
-    BubbleCss
+    BubbleLeft,
+    BubbleBottom
   }
 })
 export default class CanvasPage extends Vue {
@@ -59,6 +68,25 @@ export default class CanvasPage extends Vue {
     name: '快手',
     value: 3,
   }]
+
+  selfColumn: any = [
+    {type: '1', value: '235,454', trend: '123', renderTitle: (h: any) => {
+      return h(Title, {
+        props: {
+          title: '90天累计互动'
+        },
+        on: {
+          click: this.demo
+      }})
+    }},
+    {type: '2', title: '90天累计互动', value: '1,423', trend: '-356', big: true},
+    {type: '3', title: '昨日销量排名', value: '234,234', trend: '-356', showdown: true},
+    {type: '4', title: '好感度', value: 'B+'}
+  ]
+
+  demo() {
+    // console.log('点击事件')
+  }
 }
 </script>
 

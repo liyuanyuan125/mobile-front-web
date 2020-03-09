@@ -19,13 +19,7 @@
         </div>
       </template>
     </BubbleLeft>
-    <BubbleBottom :data="selfColumn">
-      <!-- <template>
-        <div slot="name">
-          <span>hahhhahhah</span>
-        </div>
-      </template> -->
-    </BubbleBottom>
+    <BubbleBottom :data="bubbleData"></BubbleBottom>
   </div>
 </template>
 
@@ -69,7 +63,14 @@ export default class CanvasPage extends Vue {
     value: 3,
   }]
 
-  selfColumn: any = [
+  // type: 代表气泡从大到小的顺序
+  // title: 气泡数据名称
+  // value: 气泡对应的数据
+  // trend: 数据增长或下降
+  // big: 针对部分需求气泡变大， 例如：品牌详情的  90天累积互动
+  // showdown: 是否展示下降数据，例如排名需要展示下降数据；不设置则 <= 0 都显示 '-'
+  // renderTitle: 自定义title，可增加icon及功能
+  bubbleData: any = [
     {type: '1', value: '235,454', trend: '123', renderTitle: (h: any) => {
       return h(Title, {
         props: {

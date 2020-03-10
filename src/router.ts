@@ -151,6 +151,13 @@ export default new Router({
       path: '/canvas/bubble',
       name: 'canvas-bubble',
       component: () => import('./views/canvas/bubble.vue')
+    },
+
+    // test canvas
+    {
+      path: '/eacharts',
+      name: 'eacharts',
+      component: () => import('./views/eacharts/index.vue')
     }
   ]
 })

@@ -115,6 +115,29 @@ export default new Router({
       name: 'sentimentkol',
       component: () => import('./views/sentiment/kol/index.vue')
     },
+    //  // kol舆情艺人index
+    //  {
+    //   path: '/sentiment/kol/artist',
+    //   name: 'sentimentkolindex',
+    //   component: () => import('./views/sentiment/kol/artist/index.vue')
+    // },
+    {
+      path: '/sentiment/kol/artist/demo',
+      name: 'sentimentkoluser',
+      component: () => import('./views/sentiment/kol/artist/demo.vue')
+    },
+    // kol舆情用户分析
+    {
+      path: '/sentiment/kol/artist/user/:kolId',
+      name: 'sentimentkoluser',
+      component: () => import('./views/sentiment/kol/artist/user.vue')
+    },
+    // kol舆情竞品分析
+    {
+      path: '/sentiment/kol/artist/products',
+      name: 'sentimentkolproducts',
+      component: () => import('./views/sentiment/kol/artist/products/products.vue')
+    },
     // 影片舆情
     {
       path: '/sentiment/movie',

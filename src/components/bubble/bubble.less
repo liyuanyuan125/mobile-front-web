@@ -57,7 +57,7 @@
   background: @color;
   opacity: @opacity;
   span {
-    &:last-child {
+    &:nth-child(2) {
      font-size: @fontSize;
     }
   }
@@ -83,6 +83,34 @@
     }
   }
 }
+
+.bubble-bottom-base {
+  text-align: center;
+  color: #FFFFFF;
+  position: absolute;
+  border-radius: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  span {
+    &:nth-child(1) {
+      font-family: PingFangSC-Light,PingFang SC;
+    }
+    &:nth-child(2) {
+      font-family: DINAlternate-Bold,DINAlternate;
+      font-weight: bold;
+    }
+    &:nth-child(3) {
+      font-size: 28px;
+      font-family: DINAlternate-Bold,DINAlternate;
+      font-weight: bold;
+    }
+  }
+}
+
+
 
 .bubble7-loop (@n, @i:1) when (@i <= @n) {
   &:nth-child(@{i}) {
@@ -131,4 +159,21 @@
     .bubble(extract(@bubble1-top, @i), extract(@bubble1-left, @i),extract(@bubble1-width, @i),extract(@bubble1-color, @i),extract(@bubble1-opacity, @i),extract(@bubble1-fontSize, @i));
   }
   .bubble1-loop(@n, (@i + 1));
+}
+
+
+// 详情页上下结构 气泡样式
+@bubbleBottom-top: 107px, 206px, 207px, 40px, 72px, 153px;
+@bubbleBottom-left: 207px, 19px, 451px, 457px, 90px, 622px;
+@bubbleBottom-width: 220px, 180px, 190px, 140px, 70px, 50px;
+@bubbleBottom-color: #245FE7, #6665DD, #87CFFA, #4CC8D0, #8BD2FF, #55C1E8;
+@bubbleBottom-opacity: 0.8, 1, 1, 1, 0.3, 0.2;
+@bubbleBottom-fontSize: 62px, 52px, 44px, 44px, 0, 0;
+
+.bubbleBottom-loop (@n, @i:1) when (@i <= @n) {
+  .bubble-info-bottom-@{i} {
+    .bubble(extract(@bubbleBottom-top, @i), extract(@bubbleBottom-left, @i),extract(@bubbleBottom-width, @i),extract(@bubbleBottom-color, @i),extract(@bubbleBottom-opacity, @i),extract(@bubbleBottom-fontSize, @i));
+    .bubble-bottom-base()
+  }
+  .bubbleBottom-loop(@n, (@i + 1));
 }

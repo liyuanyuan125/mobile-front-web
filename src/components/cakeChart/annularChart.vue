@@ -65,34 +65,32 @@ export default class ChinaMap extends Vue {
 </script>
 
 <style lang="less" scoped>
-  .china-map{
+  .china-map {
     position: relative;
   }
-  .chart-wrap{
+  .chart-wrap {
     width: 100%;
-    height:600px;
+    height: 600px;
   }
-  .chart-mask{
+  .chart-mask {
     position: absolute;
     width: 100%;
-    height:600px;
+    height: 600px;
     top: 0;
     background: 'rabg(255,255,255,0)';
     pointer-events: none;
     display: flex;
-
     align-items: center;
     justify-content: center;
-    
   }
-  .chart-text{
+  .chart-text {
     width: 20%;
     height: 20%;
     text-align: center;
-    .proportion{
+    .proportion {
       font-size: 50px;
     }
-    .name{
+    .name {
       color: #303030;
       font-size: 24px;
     }

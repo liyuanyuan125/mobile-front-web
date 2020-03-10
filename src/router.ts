@@ -175,12 +175,10 @@ export default new Router({
       name: 'canvas-bubble',
       component: () => import('./views/canvas/bubble.vue')
     },
-
-    // test canvas
     {
-      path: '/eacharts',
-      name: 'eacharts',
-      component: () => import('./views/eacharts/index.vue')
+      path: '/demo/cakeEcharts',
+      name: 'demo-chinamap',
+      component: () => import('./views/demo/cakeEcharts.vue')
     }
   ]
 })

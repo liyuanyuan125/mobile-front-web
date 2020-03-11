@@ -46,8 +46,8 @@ export default class Main extends Vue {
 </script>
 
 <style lang='less' scoped>
-@import '~@/less/lib.less';
-@import '../com.less';
+@import '~@/views/sentiment/brand/less/lib.less';
+@import '../less/com.less';
 
 .wow-content {
   margin: 20px 0;
@@ -62,13 +62,12 @@ export default class Main extends Vue {
     font-size: 30px;
     padding-right: 10px;
   }
-  
 }
 .wow-items {
   padding: 30px 0 40px 46px;
   font-size: 30px;
   span {
-    color: rgba(48,48,48,0.5);;
+    color: rgba(48, 48, 48, .5);
     padding-left: 50px;
   }
 }

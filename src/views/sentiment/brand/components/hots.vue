@@ -102,8 +102,8 @@ export default class Main extends Vue {
 </script>
 
 <style lang='less' scoped>
-@import '~@/less/lib.less';
-@import '../com.less';
+@import '~@/views/sentiment/brand/less/lib.less';
+@import '../less/com.less';
 
 .hot-content {
   background-color: #fff;

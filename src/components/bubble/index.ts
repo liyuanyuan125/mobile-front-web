@@ -1,6 +1,8 @@
 import BubbleCanvas from './bubbleCanvas.vue'
-import BubbleCss from './bubbleCss.vue'
+import BubbleLeft from './bubbleLeft.vue'
+import BubbleBottom from './bubbleBottom.vue'
+import Title from './title.vue'
 
 export * from './types'
 
-export { BubbleCss, BubbleCanvas }
+export { BubbleLeft, BubbleBottom, BubbleCanvas, Title }

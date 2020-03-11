@@ -168,6 +168,16 @@ export default new Router({
       name: 'demo-chinamap',
       component: () => import('./views/demo/chinaMap.vue')
     },
+    {
+      path: '/demo/verticalbar',
+      name: 'demo-verticalbar',
+      component: () => import('./views/demo/verticalBar.vue')
+    },
+    {
+      path: '/demo/vslist',
+      name: 'demo-vslist',
+      component: () => import('./views/demo/vsList.vue')
+    },
 
     // test canvas
     {

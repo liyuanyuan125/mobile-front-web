@@ -1,6 +1,6 @@
 <template>
   <div class="china-map">
-    <ECharts :options="chartData" auto-resize class="chart"/>
+    <ECharts :options="chartData" auto-resize class="the-chart"/>
   </div>
 </template>
 
@@ -73,7 +73,7 @@ export default class ChinaMap extends Vue {
   width: 100%;
   height: 320px;
 }
-.chart {
+.the-chart {
   width: 100%;
   height: 100%;
 }

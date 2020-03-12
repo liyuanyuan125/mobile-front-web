@@ -1,6 +1,6 @@
 <template>
-  <div class="two-bar-chart">
-    <ECharts :options="chartData" auto-resize class="chart"/>
+  <div class="two-bar">
+    <ECharts :options="chartData" auto-resize class="the-chart"/>
   </div>
 </template>
 
@@ -74,12 +74,12 @@ export default class TwoBar extends Vue {
 </script>
 
 <style lang="less" scoped>
-.two-bar-chart {
+.two-bar {
   position: relative;
   width: 100%;
   height: 188px;
 }
-.chart {
+.the-chart {
   width: 100%;
   height: 100%;
 }

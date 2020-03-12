@@ -44,7 +44,7 @@
         </div>
       </li>
     </ul>
-    <div class="submit">
+    <div class="submit-button">
       <router-link to="" class="to-link" >查看详细报告</router-link>
     </div>
   </div>
@@ -102,7 +102,7 @@ export default class Main extends Vue {
 
 <style lang='less' scoped>
 @import '~@/views/sentiment/brand/less/lib.less';
-@import '../less/com.less';
+@import '~@/components/hotLine/com.less';
 
 .compet-content {
   margin-bottom: 20px;
@@ -171,16 +171,5 @@ li {
     }
   }
 }
-.submit {
-  .to-link {
-    display: block;
-    width: 400px;
-    margin: 60px auto;
-    line-height: 90px;
-    border-radius: 55px;
-    border: 2px solid rgba(136, 170, 246, 1);
-    color: #88aaf6;
-    text-align: center;
-  }
-}
+
 </style>

@@ -193,14 +193,11 @@ export default class Main extends Vue {
 .content-wrap {
   position: relative;
   width: 100%;
+  padding-bottom: 65px;
+  border-bottom: solid 1px #d8d8d8;
 }
 .line-echart {
   width: 100%;
   height: 500px;
-}
-.line-title {
-  display: flex;
-  justify-items: center;
-  justify-content: space-between;
 }
 </style>

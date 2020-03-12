@@ -57,6 +57,7 @@ export default class Main extends Vue {
   display: flex;
   justify-content: space-between;
   justify-items: center;
+  font-size: 38px;
 }
 .items {
   width: 200px;

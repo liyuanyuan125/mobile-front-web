@@ -1,8 +1,35 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/home.vue'
-
+import { Route } from 'vue-router'
+import { MapType } from '@/util/types'
+import { stringToBoolean } from '@/fn/typeCast'
 Vue.use(Router)
+
+/**
+ * 处理 route 中的参数类型
+ * @param config 配置
+ */
+const paramTypes = (
+  config: MapType<NumberConstructor | BooleanConstructor | StringConstructor>
+) => {
+  return ({ params }: Route) => {
+    const props = Object.entries(config).reduce((map, [key, type]) => {
+      const strVal = params[key]
+      const value = type === Number
+        ? (+strVal || 0)
+        : type === Boolean
+        ? stringToBoolean(strVal)
+        : strVal
+      map[key] = value
+      return map
+    }, {} as MapType<any>)
+    return props
+  }
+}
+
+const idProps = paramTypes({ id: Number })
+
 
 export default new Router({
   mode: 'history',
@@ -108,6 +135,19 @@ export default new Router({
       path: '/sentiment/brand',
       name: 'sentimentbrand',
       component: () => import('./views/sentiment/brand/index.vue')
+    },
+    // 平台热度 - 查看更多（通用页）
+    {
+      path: '/platform/detail/:id/:type/:name/:startTime/:endTime',
+      name: 'platform-detail',
+      component: () => import('./views/platform/details.vue'),
+      props: paramTypes({
+        id: Number,
+        type: String,
+        name: String,
+        startTime: String,
+        endTime: String
+      })
     },
     // kol舆情
     {

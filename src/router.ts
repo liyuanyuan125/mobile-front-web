@@ -220,12 +220,10 @@ export default new Router({
       name: 'demo-vslist',
       component: () => import('./views/demo/vsList.vue')
     },
-
-    // test canvas
     {
-      path: '/canvas/bubble',
-      name: 'canvas-bubble',
-      component: () => import('./views/canvas/bubble.vue')
+      path: '/demo/bubble',
+      name: 'demo-bubble',
+      component: () => import('./views/demo/bubble.vue')
     },
     {
       path: '/demo/cakeEcharts',

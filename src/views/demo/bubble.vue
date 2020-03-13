@@ -74,7 +74,7 @@ export default class CanvasPage extends Vue {
     {type: '1', value: '235,454', trend: '123', renderTitle: (h: any) => {
       return h(Title, {
         props: {
-          title: '90天累计互动'
+          title: '近90天累计互动'
         },
         on: {
           click: this.demo

@@ -12,7 +12,7 @@
           </div>
 
           <router-link to="" class="arrow">
-            <van-icon name="arrow" size="14" />
+            <van-icon name="arrow" size="20" />
           </router-link>
         </li>
       </ul>

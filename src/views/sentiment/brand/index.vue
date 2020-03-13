@@ -18,7 +18,7 @@
     <div class="dubble"> 
       <BubbleBottom :data="bubbleData" />
     </div>
-        <Hots />
+        <Hots :id="brandId" />
         <Wow />
         <User />
         <Event />
@@ -52,7 +52,11 @@ import {BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
   }
 })
 export default class BrandPage extends ViewBase {
+  @Prop({ type: Number, default: 0}) id!: number
 
+  get brandId() {
+    return this.id
+  }
   bubbleData: any = [
     {type: '1', value: '235,454', trend: '123', renderTitle: (h: any) => {
       return h(Title, {
@@ -63,7 +67,7 @@ export default class BrandPage extends ViewBase {
           click: this.demo
       }})
     }},
-    {type: '2', title: '90天累计互动', value: '1,423', trend: '-356', big: true},
+    {type: '2', title: '90天累计互动', value: '1,423', trend: '356', big: true},
     {type: '3', title: '昨日销量排名', value: '234,234', trend: '-356', showdown: true},
     {type: '4', title: '好感度', value: 'B+'}
   ]

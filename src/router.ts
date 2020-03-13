@@ -134,15 +134,16 @@ export default new Router({
     // ---------------舆情---------------
     // 品牌舆情
     {
-      path: '/sentiment/brand',
+      path: '/sentiment/brand/:id',
       name: 'sentimentbrand',
-      component: () => import('./views/sentiment/brand/index.vue')
+      component: () => import('./views/sentiment/brand/index.vue'),
+      props: idProps
     },
     // 平台热度 - 查看更多（通用页）
     {
       path: '/platform/detail/:id/:type/:name/:startTime/:endTime',
       name: 'platform-detail',
-      component: () => import('./views/platform/details.vue'),
+      component: () => import('./views/common/platform/details.vue'),
       props: paramTypes({
         id: Number,
         type: String,

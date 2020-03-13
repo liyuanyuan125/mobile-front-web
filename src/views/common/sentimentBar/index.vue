@@ -15,8 +15,8 @@ export default class SentimentBar extends Vue {
   /**
    * 属性示例
    */
-  @Prop({ type: Object, default: {} }) attribute!: SentimentBarItem //基本属性
-  @Prop({ type: Boolean, default: false }) isFixed!: boolean //是否吸顶
+  @Prop({ type: Object, default: {} }) attribute!: SentimentBarItem // 基本属性
+  @Prop({ type: Boolean, default: false }) isFixed!: boolean // 是否吸顶
 
   topbarClass: string = 'topbar'
 

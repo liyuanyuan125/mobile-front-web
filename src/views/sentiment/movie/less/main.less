@@ -1,5 +1,7 @@
 .movieinfo {
     padding: 0 30px;
+    position: relative;
+    z-index: 2;
 
     .moviebox {
         position: relative;
@@ -38,5 +40,39 @@
             opacity: .7;
         }
 
+    }
+}
+.bubble{
+    padding: 0 30px;
+    margin-top: -43px;
+    position: relative;
+    z-index: 1;
+    height: 370px;
+    overflow: hidden;
+}
+.curve{
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+}
+.curvetop{
+    background: #fff;
+    &::before{
+      content: '';
+      display: block;
+      background-color:#f7f7f9 ;  
+      height: 60px;
+      border-radius: 0 0 60px 0;
+    }
+}
+.curvebot{
+    background: #f7f7f9;
+    &::before{
+      content: '';
+      display: block;
+      background-color:#fff ;  
+      height: 60px;
+      border-radius: 60px 0 0 0;
     }
 }

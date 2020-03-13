@@ -11,7 +11,13 @@
         <p>{{baseInfo.releaseDate}}</p>
       </div>
     </div>
-    <BubbleBottom :data="bubbleData" />
+    <div class="bubble">
+      <BubbleBottom :data="bubbleData" />
+    </div>
+    <div class="curve">
+      <div class="curvetop"></div>
+      <div class="curvebot"></div>
+    </div>
   </div>
 </template>
 
@@ -61,7 +67,8 @@ export default class BaseInfoArea extends ViewBase {
 <style lang="less" scoped>
 @import '../less/main.less';
 .viewpage {
-  background-color: #f7f7f9;
-  padding-top: 130px;
+  background-color: #f2f3f6;
+  padding-top: 113px;
+  position: relative;
 }
 </style>

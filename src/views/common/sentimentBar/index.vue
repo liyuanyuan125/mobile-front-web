@@ -10,7 +10,7 @@
       <path
         d="M30,89 C13.4314575,89 0,102.431458 0,119 L0,89 L30,89 Z"
         transform="translate(0, -89)"
-        fill="#F7F7F9"
+        fill="#F2F3F6"
       />
     </svg>
   </div>
@@ -49,7 +49,7 @@ export default class SentimentBar extends Vue {
   async hideNavBarStatus() {
     const objectData = {
       isShowNavBar: false,
-      statusBarColor: this.attribute.bgColor || '#F7F7F9'
+      statusBarColor: this.attribute.bgColor || '#F2F3F6'
     }
     const obj = { params: objectData }
     await setNavBarStatus(obj)
@@ -61,12 +61,13 @@ export default class SentimentBar extends Vue {
 .topbar {
   height: 88px;
   line-height: 88px;
-  background-color: #f7f7f9;
+  background-color: #f2f3f6;
   border-radius: 0 0 44px 0;
   position: fixed;
   width: 100%;
   top: 0;
   left: 0;
+  z-index: 20;
   svg {
     position: absolute;
     left: 0;

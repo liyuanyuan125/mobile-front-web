@@ -62,6 +62,7 @@ export default class SentimentBar extends Vue {
   width: 100%;
   top: 0;
   left: 0;
+  border-radius: 0;
 }
 .title {
   color: #303030;

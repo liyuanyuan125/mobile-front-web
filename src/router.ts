@@ -189,6 +189,11 @@ export default new Router({
       path: '/demo/cakeEcharts',
       name: 'demo-chinamap',
       component: () => import('./views/demo/cakeEcharts.vue')
+    },
+    {
+      path: '/demo/webcpy',
+      name: 'demo-webcpy',
+      component: () => import('./views/demo/webcpy.vue')
     }
   ]
 })

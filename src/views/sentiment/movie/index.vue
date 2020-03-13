@@ -5,7 +5,7 @@
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
-import SentimentBar from '@/views/common/sentimentBar'
+import SentimentBar from '@/views/common/sentimentBar/index.vue'
 
 @Component({
   components: {

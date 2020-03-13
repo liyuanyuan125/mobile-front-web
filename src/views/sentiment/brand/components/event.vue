@@ -4,7 +4,7 @@
 
 <script lang='ts'>
 import { Component, Vue } from 'vue-property-decorator'
-import eventList from '@/components/eventList/event.vue'
+import eventList from '@/views/common/eventList/event.vue'
 import moment from 'moment'
 
 @Component({

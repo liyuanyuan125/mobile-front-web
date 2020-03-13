@@ -31,12 +31,6 @@ export default class Main extends Vue {
     {key: 'last_30_day', text: '最近30天'},
     {key: 'last_90_day', text: '最近90天'},
   ]
-  options = [
-    {label: 'last_7_day', value: '最近7天'},
-    {label: 'last_15_day', value: '最近15天'},
-    {label: 'last_30_day', value: '最近30天'},
-    {label: 'last_90_day', value: '最近90天'},
-  ]
   // 接口传入数据
   get beginDate() {
     switch (this.value) {

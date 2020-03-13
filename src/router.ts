@@ -19,8 +19,8 @@ const paramTypes = (
       const value = type === Number
         ? (+strVal || 0)
         : type === Boolean
-        ? stringToBoolean(strVal)
-        : strVal
+          ? stringToBoolean(strVal)
+          : strVal
       map[key] = value
       return map
     }, {} as MapType<any>)
@@ -130,6 +130,8 @@ export default new Router({
       name: 'videodetail',
       component: () => import('./views/video/index.vue')
     },
+
+    // ---------------舆情---------------
     // 品牌舆情
     {
       path: '/sentiment/brand',
@@ -180,9 +182,15 @@ export default new Router({
     },
     // 影片舆情
     {
-      path: '/sentiment/movie',
+      path: '/sentiment/movie/:movieId',
       name: 'sentimentmovie',
       component: () => import('./views/sentiment/movie/index.vue')
+    },
+    // 电视剧舆情
+    {
+      path: '/sentiment/tv/:tvId',
+      name: 'sentimenttv',
+      component: () => import('./views/sentiment/tv/index.vue')
     },
     // 音乐舆情
     {
@@ -190,13 +198,6 @@ export default new Router({
       name: 'sentimentmusic',
       component: () => import('./views/sentiment/music/index.vue')
     },
-    // 剧情舆情
-    {
-      path: '/sentiment/plot',
-      name: 'sentimentplot',
-      component: () => import('./views/sentiment/plot/index.vue')
-    },
-
     // demo
     {
       path: '/demo/twobar',

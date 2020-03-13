@@ -4,15 +4,16 @@
     <select v-model="value" class="items" >
       <option v-for="(item,index) in list"  :value="item.key">{{ item.text }}</option>
     </select>
+    
   </div>
 </template>
 
 <script lang='ts'>
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import moment from 'moment'
-// [DropdownMenu.name]: DropdownMenu,
 
-@Component
+
+@Component({})
 export default class Main extends Vue {
   /* 展示天数 默认展示最近7天 */
   @Prop({ type: String, default: 'last_7_day'}) days!: string

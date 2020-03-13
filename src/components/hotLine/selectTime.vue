@@ -4,15 +4,16 @@
     <select v-model="value" class="items" >
       <option v-for="(item,index) in list"  :value="item.key">{{ item.text }}</option>
     </select>
+    
   </div>
 </template>
 
 <script lang='ts'>
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import moment from 'moment'
-// [DropdownMenu.name]: DropdownMenu,
 
-@Component
+
+@Component({})
 export default class Main extends Vue {
   /* 展示天数 默认展示最近7天 */
   @Prop({ type: String, default: 'last_7_day'}) days!: string
@@ -29,6 +30,12 @@ export default class Main extends Vue {
     {key: 'last_15_day', text: '最近15天'},
     {key: 'last_30_day', text: '最近30天'},
     {key: 'last_90_day', text: '最近90天'},
+  ]
+  options = [
+    {label: 'last_7_day', value: '最近7天'},
+    {label: 'last_15_day', value: '最近15天'},
+    {label: 'last_30_day', value: '最近30天'},
+    {label: 'last_90_day', value: '最近90天'},
   ]
   // 接口传入数据
   get beginDate() {

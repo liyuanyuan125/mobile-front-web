@@ -36,7 +36,7 @@ export default class Main extends Vue {
   platformHeat = []
   get params() {
     return {
-      type: 'brand', // 类型： 品牌，电影，音乐等
+      type: 1, // 1 品牌 2 艺人 3 电影 4 音乐-单曲 5 音乐-专辑  6 剧集
       id: 1,
       name: '奔驰', // 天数
       startTime: this.reftimes.beginDate,

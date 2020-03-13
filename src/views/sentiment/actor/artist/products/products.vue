@@ -27,22 +27,25 @@
           <!-- 综合热度对比 -->
           <combinedHeat />
           <!-- 平台热度对比 -->
-          <platformHeat /></Tab>
+          <platformHeat @chgpublicPk='chgpublicPk' /></Tab>
         <Tab title="口碑">
           <!-- 口碑评论对比 -->
-          <publicPraise />
+          <div class='public'>
+            <publicPraise />
+          </div>
         </Tab>
         <Tab title="用户">
           <div class='userpk'>
             <div class='usertitle'>用户对比</div>
             <!-- 平台分布 -->
-            <Platform />
+            <Table :title='publicObj.title' :tabList='publicObj.tabList' :tableTitle='publicObj.tableTitle' :tableItem='publicObj.tableItem'/>
+            <!-- </div> -->
             <!-- 年龄分布 -->
             <Age />
             <!-- 性别分布 -->
             <Sex />
             <!-- 用户地域分布对比 -->
-            <Region />
+            <Table :title='regionObj.title' :tabList='regionObj.tabList' :tableTitle='regionObj.tableTitle' :tableItem='regionObj.tableItem' @chgregionPk='chgregionPk'/>
           </div>
         </Tab>
       </Tabs>
@@ -62,6 +65,8 @@ import Platform from './platform.vue'
 import Age from './age.vue'
 import Sex from './sex.vue'
 import Region from './region.vue'
+import Table from '../components/table.vue'
+
 
 import { toast } from '@/util/toast'
 import { Tab, Tabs } from 'vant'
@@ -77,6 +82,7 @@ import { Tab, Tabs } from 'vant'
     Age,
     Sex,
     Region,
+    Table
   }
 })
 export default class KolPage extends ViewBase {
@@ -87,6 +93,233 @@ export default class KolPage extends ViewBase {
 
   active: any = 0
 
+  // 平台分布
+  publicObj: any = {
+    title: '平台分布',
+    tabList: [],
+    tableTitle: [
+      {
+        key: 'yiren',
+        value: '艺人'
+      },
+      {
+        key: 'top1',
+        value: 'TOP1'
+      },
+      {
+        key: 'top2',
+        value: 'TOP2'
+      },
+      {
+        key: 'top3',
+        value: 'TOP3'
+      },
+      {
+        key: 'top4',
+        value: 'TOP4'
+      },
+      {
+        key: 'top5',
+        value: 'TOP5'
+      },
+    ],
+    tableItem: [
+      {
+        actorName: '111',
+        dataList: [
+          {
+            name: '微博123',
+            value: '12%'
+          },
+          {
+            name: '微博',
+            value: '12%'
+          },
+          {
+            name: '微博',
+            value: '12%'
+          },
+          {
+            name: '微博',
+            value: '12%'
+          },
+          {
+            name: '微博',
+            value: '12%'
+          },
+        ]
+      },
+      {
+        actorName: '222',
+        dataList: [
+          {
+            name: '微博',
+            value: '12%'
+          },
+          {
+            name: '微博',
+            value: '12%'
+          },
+          {
+            name: '微博',
+            value: '12%'
+          },
+          {
+            name: '微博',
+            value: '12%'
+          },
+          {
+            name: '微博',
+            value: '12%'
+          },
+        ]
+      },
+      {
+        actorName: '333',
+        dataList: [
+          {
+            name: '微博',
+            value: '12%'
+          },
+          {
+            name: '微博',
+            value: '12%'
+          },
+          {
+            name: '微博',
+            value: '12%'
+          },
+          {
+            name: '微博',
+            value: '12%'
+          },
+          {
+            name: '',
+            value: ''
+          }
+        ]
+      },
+    ]
+  }
+
+  // 用户地域分布
+  regionObj: any = {
+    title: '用户地域分布对比',
+    tabList: [
+      {
+        name: '城市分布',
+        key: 'city'
+      },
+      {
+        name: '省份分布',
+        key: 'province'
+      }
+    ],
+    tableTitle: [
+      {
+        key: 'yiren',
+        value: '艺人'
+      },
+      {
+        key: 'top1',
+        value: 'TOP1'
+      },
+      {
+        key: 'top2',
+        value: 'TOP2'
+      },
+      {
+        key: 'top3',
+        value: 'TOP3'
+      },
+      {
+        key: 'top4',
+        value: 'TOP4'
+      },
+      {
+        key: 'top5',
+        value: 'TOP5'
+      },
+    ],
+    tableItem: [
+      {
+        actorName: '111',
+        dataList: [
+          {
+            name: '微博123',
+            value: '12%'
+          },
+          {
+            name: '微博',
+            value: '12%'
+          },
+          {
+            name: '微博',
+            value: '12%'
+          },
+          {
+            name: '微博',
+            value: '12%'
+          },
+          {
+            name: '微博',
+            value: '12%'
+          },
+        ]
+      },
+      {
+        actorName: '222',
+        dataList: [
+          {
+            name: '微博',
+            value: '12%'
+          },
+          {
+            name: '微博',
+            value: '12%'
+          },
+          {
+            name: '微博',
+            value: '12%'
+          },
+          {
+            name: '微博',
+            value: '12%'
+          },
+          {
+            name: '微博',
+            value: '12%'
+          },
+        ]
+      },
+      {
+        actorName: '333',
+        dataList: [
+          {
+            name: '微博',
+            value: '12%'
+          },
+          {
+            name: '微博',
+            value: '12%'
+          },
+          {
+            name: '微博',
+            value: '12%'
+          },
+          {
+            name: '微博',
+            value: '12%'
+          },
+          {
+            name: '',
+            value: ''
+          }
+        ]
+      },
+    ]
+  }
+  // tan导航
   tabTitle: any = [
     {
       title: '热度',
@@ -223,6 +456,146 @@ export default class KolPage extends ViewBase {
   // 添加竞品操作
   addPerson() {
     // console.log('点击我添加一个')
+  }
+  // 平台热度对比
+  chgpublicPk(num: any) {
+    // console.log(num)
+  }
+  // 用户地域分布对比
+  chgregionPk(num: any) {
+    if (num == 'province') {
+      this.regionObj.tableItem = [
+        {
+          actorName: '111',
+          dataList: [
+            {
+              name: '微博123',
+              value: '12%'
+            },
+            {
+              name: '微博',
+              value: '12%'
+            },
+            {
+              name: '微博',
+              value: '12%'
+            },
+            {
+              name: '微博',
+              value: '12%'
+            },
+            {
+              name: '微博',
+              value: '12%'
+            },
+          ]
+        },
+        {
+          actorName: '222',
+          dataList: [
+            {
+              name: '微博',
+              value: '12%'
+            },
+            {
+              name: '微博',
+              value: '12%'
+            },
+            {
+              name: '微博',
+              value: '12%'
+            },
+            {
+              name: '微博',
+              value: '12%'
+            },
+            {
+              name: '微博',
+              value: '12%'
+            },
+          ]
+        }
+      ]
+    } else if (num == 'city') {
+      this.regionObj.tableItem = [
+        {
+          actorName: '111',
+          dataList: [
+            {
+              name: '微博123',
+              value: '12%'
+            },
+            {
+              name: '微博',
+              value: '12%'
+            },
+            {
+              name: '微博',
+              value: '12%'
+            },
+            {
+              name: '微博',
+              value: '12%'
+            },
+            {
+              name: '微博',
+              value: '12%'
+            },
+          ]
+        },
+        {
+          actorName: '222',
+          dataList: [
+            {
+              name: '微博',
+              value: '12%'
+            },
+            {
+              name: '微博',
+              value: '12%'
+            },
+            {
+              name: '微博',
+              value: '12%'
+            },
+            {
+              name: '微博',
+              value: '12%'
+            },
+            {
+              name: '微博',
+              value: '12%'
+            },
+          ]
+        },
+        {
+          actorName: '222',
+          dataList: [
+            {
+              name: '微博',
+              value: '12%'
+            },
+            {
+              name: '微博',
+              value: '12%'
+            },
+            {
+              name: '微博',
+              value: '12%'
+            },
+            {
+              name: '微博',
+              value: '12%'
+            },
+            {
+              name: '微博',
+              value: '12%'
+            },
+          ]
+        }
+      ]
+    }
+    // console.log(num)
   }
 
 }
@@ -374,7 +747,32 @@ export default class KolPage extends ViewBase {
     color: rgba(48, 48, 48, 1);
     line-height: 60px;
   }
+  .title {
+    height: 34px;
+    font-size: 34px;
+    font-weight: 500;
+    color: rgba(48, 48, 48, 1);
+    line-height: 34px;
+    margin-top: 48px;
+    margin-bottom: 40px;
+  }
 }
+.Platform {
+  padding-bottom: 50px;
+  border-bottom: 1px solid rgba(216, 216, 216, 0.5);
+}
+.public {
+  background: #fff;
+  margin-top: 20px;
+  .usertitle {
+    height: 60px;
+    font-size: 40px;
+    font-weight: 500;
+    color: rgba(48, 48, 48, 1);
+    line-height: 60px;
+  }
+}
+
 /deep/ .van-tab {
   font-weight: 500;
   color: rgba(48, 48, 48, 1);

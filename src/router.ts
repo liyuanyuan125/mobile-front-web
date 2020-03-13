@@ -151,9 +151,9 @@ export default new Router({
     },
     // kol舆情
     {
-      path: '/sentiment/kol',
-      name: 'sentimentkol',
-      component: () => import('./views/sentiment/kol/index.vue')
+      path: '/sentiment/actor',
+      name: 'sentimentactor',
+      component: () => import('./views/sentiment/actor/index.vue')
     },
     //  // kol舆情艺人index
     //  {
@@ -162,21 +162,21 @@ export default new Router({
     //   component: () => import('./views/sentiment/kol/artist/index.vue')
     // },
     {
-      path: '/sentiment/kol/artist/demo',
+      path: '/sentiment/actor/artist/demo',
       name: 'sentimentkoluser',
-      component: () => import('./views/sentiment/kol/artist/demo.vue')
+      component: () => import('./views/sentiment/actor/artist/demo.vue')
     },
     // kol舆情用户分析
     {
-      path: '/sentiment/kol/artist/user/:kolId',
-      name: 'sentimentkoluser',
-      component: () => import('./views/sentiment/kol/artist/user.vue')
+      path: '/sentiment/actor/artist/user/:kolId',
+      name: 'sentimentactoruser',
+      component: () => import('./views/sentiment/actor/artist/user.vue')
     },
     // kol舆情竞品分析
     {
-      path: '/sentiment/kol/artist/products',
+      path: '/sentiment/actor/artist/products',
       name: 'sentimentkolproducts',
-      component: () => import('./views/sentiment/kol/artist/products/products.vue')
+      component: () => import('./views/sentiment/actor/artist/products/products.vue')
     },
     // 影片舆情
     {

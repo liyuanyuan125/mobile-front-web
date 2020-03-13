@@ -9,8 +9,13 @@
       </div>
       <div class='agelist'>
         <div class='title'>用户画像</div>
-        <div class='sex'>性别占比所在位置</div>
+        <div class='sex'>
+          <sexChart :width='305' :data='sexdata'></sexChart>
+        </div>
         <div class='age'>年龄占比所在位置</div>
+      </div>
+      <div class='userlist'>
+        <annularChart :width='305' :height='300' :data='annulardata'></annularChart>
       </div>
       <div class='userlist'>
         <div class='title'>用户地域分布</div>
@@ -22,9 +27,9 @@
               :colorRange="colorRangeList[theme]"
               class="china-map"
             />
-          </div>
+        </div>
         <div class='toplist'>
-          <div class='title'>
+          <div class='title' style='margin-top: 50px;'>
             <div class='left'>TOP5省份</div>
             <div class='right more'>查看更多<span></span></div>
           </div>
@@ -45,13 +50,38 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import ChinaMap, { ChinaMapItem } from '@/components/chinaMap'
 import { toast } from '@/util/toast'
+import sexChart from '@/components/cakeChart/sexChart.vue'
+import annularChart from '@/components/cakeChart/annularChart.vue'
+
 
 @Component({
   components: {
     ChinaMap,
+    sexChart,
+    annularChart
   }
 })
 export default class KolPage extends ViewBase {
+
+  sexdata: any = {
+    data: [
+      {value: 1335, name: '男性'},
+      {value: 310, name: '女性'}],
+    title: '性别占比',
+    emphasisShow: true
+  }
+
+  annulardata: any = {
+    data: [
+      {value: 335, name: '微博'},
+      {value: 310, name: '抖音'},
+      {value: 234, name: '网易云音乐'},
+      {value: 135, name: 'QQ音乐'},
+      {value: 1548, name: '腾讯视频'}],
+    color: '', // 修改颜色
+    title: '粉丝平台分布',
+    sesnsitivity: '敏感度高'
+  }
 
   data: ChinaMapItem[] = [
     { name: '新疆', value: 1000 },
@@ -206,7 +236,7 @@ export default class KolPage extends ViewBase {
     line-height: 40px;
   }
   .sex {
-    height: 300px;
+    // height: 300px;
     margin-top: 40px;
     border-bottom: solid 1px #d8d8d8;
   }
@@ -216,7 +246,7 @@ export default class KolPage extends ViewBase {
   }
 }
 .userlist {
-  padding: 86px 30px;
+  padding: 59px 30px;
   margin-top: 20px;
   background: #fff;
   .title {
@@ -225,7 +255,6 @@ export default class KolPage extends ViewBase {
     font-weight: 500;
     color: rgba(48, 48, 48, 1);
     line-height: 40px;
-    margin-top: 86px;
   }
   .map {
     .china-map {
@@ -284,5 +313,4 @@ export default class KolPage extends ViewBase {
 .city {
   padding: 3%;
 }
-
 </style>

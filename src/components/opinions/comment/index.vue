@@ -3,7 +3,7 @@
     <div class="options-top">
         <div>
             <span class="hot">好感度
-                <img width="16px" height="16px" style="vertical-align: middle" src="./images/question.png" alt="" srcset="">
+                <img width="16px" height="16px" style="vertical-align: middle" src="../images/question.png" alt="" srcset="">
             </span>
             <div class="hot-degrees">B+</div>
         </div>
@@ -25,7 +25,7 @@
     <div class="options-bottom">
         <div class="hot-box">
             <div class="hot-box-left">
-                <img width="13px" height="16px" src="./images/hot.png" alt="" srcset="">
+                <img width="13px" height="16px" src="../images/hot.png" alt="" srcset="">
                 全网热词
             </div>
             <div class="hot-box-right">
@@ -34,7 +34,7 @@
         </div>
         <div class="hot-box">
             <div class="hot-box-left">
-                <img width="13px" height="16px" src="./images/bad.png" alt="" srcset="">
+                <img width="13px" height="16px" src="../images/bad.png" alt="" srcset="">
                 负面热词
             </div>
             <div class="hot-box-right">
@@ -67,5 +67,5 @@ export default class Options extends Vue {
 </script>
 
 <style lang="less" scoped>
-@import url(./comment.less);
+@import url(./index.less);
 </style>

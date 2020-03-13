@@ -1,19 +1,17 @@
 <template>
   <div class="demo-page">
     <contrast :optionsList='optionsList' />
-    <comment : :publicPraise='publicPraise' />
     <age :ageRangeList='ageRangeList' />
+        <comment :publicPraise='publicPraise' />
+
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-// 口碑 对比
-import contrast from '@/components/opinions/contrast.vue'
-// 口碑
-import comment from '@/components/opinions/comment.vue'
-// 年龄分布
-import age from '@/components/opinions/ageDistribution.vue'
+import contrast from '@/components/opinions/contrast/index.vue'
+import comment from '@/components/opinions/comment/index.vue'
+import age from '@/components/opinions/ageDistribution/index.vue'
 
 @Component({
   components: {

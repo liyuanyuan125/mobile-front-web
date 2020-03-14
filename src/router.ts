@@ -143,7 +143,7 @@ export default new Router({
     {
       path: '/platform/detail/:id/:type/:name/:startTime/:endTime',
       name: 'platform-detail',
-      component: () => import('./views/common/platform/details.vue'),
+      component: () => import('./views/commonPage/platform/details.vue'),
       props: paramTypes({
         id: Number,
         type: String,

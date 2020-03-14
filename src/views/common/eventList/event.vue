@@ -36,7 +36,7 @@ import moment from 'moment'
     [Icon.name]: Icon
   }
 })
-export default class Main extends Vue {
+export default class EventList extends Vue {
   /** 事件title */
   @Prop({ type: String, default: '事件跟踪' }) eventName!: string
   /** 更多事件分析 跳转参数 */

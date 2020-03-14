@@ -185,7 +185,7 @@ export default new Router({
     {
       path: '/sentiment/movie/:movieId',
       name: 'sentimentmovie',
-      component: () => import('./views/sentiment/movie/index.vue')
+      component: () => import('./views/sentiment/movie/detail/index.vue')
     },
     // 电视剧舆情
     {

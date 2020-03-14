@@ -5,7 +5,7 @@
       <div class="bubbles">
         <div :class="['bubble-info-bottom-'+ item.type, item.big ? 'bubble-info-bottom-big' : '']" :key="index" v-for="(item, index) in dataList">
           <template>
-            <span v-if="!item.renderTitle">{{ item.title || '' }}</span>
+            <span class="title" v-if="!item.renderTitle">{{ item.title || '' }}</span>
             <render-title v-else :render="item.renderTitle" :index="index"></render-title>
           </template>
           <span>{{item.value != -1 ? item.value : ''}}</span>
@@ -58,7 +58,7 @@ export default class Bubble extends Vue {
   .mask {
     z-index: 1;
     background: #f2f3f6;
-    opacity: .5;
+    opacity: 0;
   }
   .bubble-content {
     z-index: 2;
@@ -66,6 +66,9 @@ export default class Bubble extends Vue {
       position: absolute;
       width: 100%;
       height: 100%;
+      .title {
+        opacity: 0.7;
+      }
     }
     .bubbleBottom-loop(6);
     .bubble-info-bottom-big {

@@ -1,5 +1,8 @@
 <template>
   <div class="demo-page">
+    <div class="contrast-h3">
+        <h3>口碑评论</h3>
+    </div>
     <div class="contrast-top">
         <span @click="changeAge(ins)" v-for="(it, ins) in list" :key="ins" :class="[ indexs == ins ? 'contrast-title active' : 'contrast-title']">
             {{it}}

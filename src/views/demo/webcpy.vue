@@ -11,13 +11,13 @@
 import { Component, Vue } from 'vue-property-decorator'
 import contrast from '@/components/opinions/contrast/index.vue'
 import comment from '@/components/opinions/comment/index.vue'
-import age from '@/components/opinions/ageDistribution/index.vue'
+import Age from '@/components/opinions/ageDistribution/index.vue'
 
 @Component({
   components: {
     contrast,
     comment,
-    age
+    Age
   }
 })
 export default class DemoPage extends Vue {

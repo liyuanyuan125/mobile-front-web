@@ -10,7 +10,7 @@
 <script lang='ts'>
 import { Component, Vue } from 'vue-property-decorator'
 import { Icon, Toast } from 'vant'
-import UserPortrait from '../artist/components/userPortrait.vue'
+import UserPortrait from '@/views/common/user/userPortrait.vue'
 
 
 @Component({

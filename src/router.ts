@@ -152,35 +152,31 @@ export default new Router({
         endTime: String
       })
     },
+
     // kol舆情
     {
-      path: '/sentiment/actor',
+      path: '/sentiment/actor/detail/:id',
       name: 'sentimentactor',
-      component: () => import('./views/sentiment/actor/index.vue')
+      component: () => import('./views/sentiment/actor/detail/index.vue')
     },
-    //  // kol舆情艺人index
-    //  {
-    //   path: '/sentiment/kol/artist',
-    //   name: 'sentimentkolindex',
-    //   component: () => import('./views/sentiment/kol/artist/index.vue')
-    // },
     {
-      path: '/sentiment/actor/artist/demo',
+      path: '/sentiment/actor/rivalAnalysis/demo',
       name: 'sentimentkoluser',
-      component: () => import('./views/sentiment/actor/artist/demo.vue')
+      component: () => import('./views/sentiment/actor/rivalAnalysis/demo.vue')
     },
     // kol舆情用户分析
     {
-      path: '/sentiment/actor/artist/user/:kolId',
+      path: '/sentiment/actor/userAnalysis/:userId',
       name: 'sentimentactoruser',
-      component: () => import('./views/sentiment/actor/artist/user.vue')
+      component: () => import('./views/sentiment/actor/userAnalysis/user.vue')
     },
     // kol舆情竞品分析
     {
-      path: '/sentiment/actor/artist/products',
+      path: '/sentiment/actor/rivalAnalysis/products',
       name: 'sentimentkolproducts',
       component: () => import('./views/sentiment/actor/artist/products/products.vue')
     },
+
     // 影片舆情
     {
       path: '/sentiment/movie/:movieId',

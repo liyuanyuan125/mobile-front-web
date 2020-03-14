@@ -30,13 +30,15 @@
       <BubbleBottom :data="bubbleData" />
     </div>
     <!-- 热度分析 -->
-    <Hots />
+    <Hots :id='0'/>
     <!-- 口碑评论 -->
     <!-- 待更换 -->
     <Public />
     <!-- 用户分析 -->
     <User />
+    <!-- 营销事件 -->
     <Event />
+    <!-- 相似艺人 -->
     <Competing /> 
   </div>
 </template>
@@ -55,8 +57,8 @@ import {BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
 
 @Component({
   components: {
-    [Tab.name]: Tab,
-    [Tabs.name]: Tabs,
+    Tab,
+    Tabs,
     Icon,
     BubbleBottom,
     Hots,

@@ -169,7 +169,6 @@ export default class KolPage extends ViewBase {
 </script>
 
 <style lang="less" scoped>
-@import './less/main.less';
 .pages {
   width: 100%;
   background: #f7f7f7;

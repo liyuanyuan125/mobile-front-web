@@ -82,7 +82,6 @@ export default class UserPortrait extends ViewBase {
 </script>
 
 <style lang="less" scoped>
-@import '../less/main.less';
 h4 {
   font-size: 40px;
   font-weight: 500;

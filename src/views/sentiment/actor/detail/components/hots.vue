@@ -1,34 +1,31 @@
 <template>
   <div class="hot-content">
-    <selectTime ref="reftimes"/>
-    <hotLine :lineData="lineDatas" v-if="xDate.length > 1" />
-    <platFormList 
+    <hotLine 
+      :lineDatas="lineDatas"
       :platformList="platformHeat"
       :params="params"
-      v-if="platformHeat.length > 1" 
+      v-if="this.yDate.length"
+      ref="hots"
     />
   </div>
 </template>
 
 <script lang='ts'>
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 import { getList } from '@/api/brand'
 import { toast } from '@/util/toast'
-
-import hotLine from '@/components/hotLine/line.vue'
-import platFormList from '@/components/hotLine/platform.vue'
-import selectTime from '@/components/hotLine/selectTime.vue'
+import hotLine from '@/components/hotLine'
 
 
 @Component({
   components: {
-    hotLine,
-    selectTime,
-    platFormList
+    hotLine
   }
 })
 
 export default class Main extends Vue {
+  @Prop({ type: Number, default: 0}) id!: number
+
   xDate = []
   yDate = []
   eventList = []
@@ -36,30 +33,34 @@ export default class Main extends Vue {
   platformHeat = []
   get params() {
     return {
-      type: 'brand', // 类型： 品牌，电影，音乐等
+      type: 1, // 1 品牌 2 艺人 3 电影 4 音乐-单曲 5 音乐-专辑  6 剧集
       id: 1,
-      name: '哈哈哈', // 天数
-      startTime: this.reftimes.beginDate,
-      endTime: this.reftimes.endDate
+      name: '奔驰', // 天数
+      startTime: 20200304, // this.startTime,
+      endTime: 20200310 // this.endTime
     }
+  }
+
+  get startTime() {
+    return (this.$refs.hots as any).startTime
+  }
+
+  get endTime() {
+    return (this.$refs.hots as any).endTime
   }
 
   get lineDatas() {
     return {
-      title: '综合热度',
+      title: '综合分析',
       xDate: this.xDate, // 格式 ['20201212', '20121122', '20121122','20121122','20121122','20121122','20121122']
       eventList: this.eventList,
       yDate: [
         {
           data: this.yDate, // 格式 [333,33333,303333333,33333,333,33333,303333333]
-          name: '热度值'
+          name: '热点'
         }
       ]
    }
-  }
-
-  get reftimes() {
-    return (this.$refs.reftimes as any)
   }
 
   mounted() {
@@ -72,9 +73,9 @@ export default class Main extends Vue {
         overAllHeatList,
         platformHeatList
       } } = await getList({
-        brandId: 1,
-        startTime: 20200304, // this.reftimes.beginDate
-        endTime: 20200310 // this.reftimes.endDate
+        brandId: 1, // this.id
+        startTime: 20200304, // this.endTime
+        endTime: 20200310 // this.endTime
       })
       this.xDate = (overAllHeatList || []).map((it: any) => it.date)
       this.yDate = (overAllHeatList || []).map((it: any) => it.value)

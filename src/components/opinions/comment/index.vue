@@ -1,14 +1,14 @@
 <template>
-  <div class="demo-page">
+  <div class="options-page">
     <div class="options-h3">
         <div>口碑评论</div>
     </div>
     <div class="options-top">
         <div>
-            <span class="hot">好感度
+            <span class="hot">{{hotQuery.text}}
                 <img width="16px" height="16px" style="vertical-align: middle" src="../images/question.png" alt="" srcset="">
             </span>
-            <div class="hot-degrees">B+</div>
+            <div class="hot-degrees">{{hotQuery.value}}</div>
         </div>
         <div class="options-right">
             <div class="options-progress" v-for="(it, inedx) in publicPraise.appraiseList" :key="inedx">
@@ -65,7 +65,7 @@ const publicPraise = {
 })
 export default class Options extends Vue {
     @Prop({ required: true, default:  () => publicPraise}) publicPraise?: any
-
+    @Prop({ required: true, default:  () => ({ text: '', value: ''})}) hotQuery?: any
 }
 </script>
 

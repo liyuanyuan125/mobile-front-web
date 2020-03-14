@@ -1,8 +1,8 @@
 <template>
-  <div class="demo-page">
+  <div class="options-page">
     <div class="contrast-h3">
         <div>{{title}}</div>
-        <router-link class="more" :to="to" >查看更多<van-icon name="arrow" size="20" /></router-link>
+        <router-link class="more" :to="to" >查看更多<Icon name="arrow" size="18" /></router-link>
     </div>
     <div class="contrast-top">
         <span @click="changeAge(ins)" v-for="(it, ins) in ageRangeList" :key="ins" :class="[ indexs == ins ? 'contrast-title active' : 'contrast-title']">
@@ -36,11 +36,12 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
-import { Progress } from 'vant'
+import { Progress, Icon } from 'vant'
 
 @Component({
     components: {
-        Progress
+        Progress,
+        Icon
     }
 })
 export default class Options extends Vue {

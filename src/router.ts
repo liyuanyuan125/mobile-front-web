@@ -191,9 +191,9 @@ export default new Router({
       component: () => import('./views/demo/cakeEcharts.vue')
     },
     {
-      path: '/demo/webcpy',
-      name: 'demo-webcpy',
-      component: () => import('./views/demo/webcpy.vue')
+      path: '/demo/options',
+      name: 'demo-options',
+      component: () => import('./views/demo/options.vue')
     }
   ]
 })

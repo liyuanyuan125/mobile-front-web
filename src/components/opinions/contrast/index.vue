@@ -1,5 +1,5 @@
 <template>
-  <div class="demo-page">
+  <div class="options-page">
     <Time v-model='days' />
     <div class="contrast-top">
         <span @click="changeAge(ins)" v-for="(it, ins) in list" :key="ins" :class="[ indexs == ins ? 'contrast-title active' : 'contrast-title']">
@@ -37,6 +37,9 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import { Progress } from 'vant'
 import moment from 'moment'
 import Time from './time.vue'
+import { FetchResult, FetchData } from './type'
+import { toast } from '@/util/toast'
+
 const list = [
     '正面评论',
     '中性评论',
@@ -54,14 +57,17 @@ const optionsList = {
     }
 })
 export default class Options extends Vue {
-    @Prop({ required: true, default: () => optionsList}) optionsList?: any
-    /* 开始时间 结束时间 */
-    @Prop({ type: Object, default: () => ({}) }) value!: any
-    /* 展示天数 默认展示最近7天 */
-    @Prop({ type: String, default: 'last_7_day'}) days!: string
+    /* 查询请求 */
+    @Prop({ type: Function, required: true })
+    fetch!: (query?: any) => Promise<FetchResult>
+    /* 查询条件 */
+    @Prop({ type: Object, default: () => ({}) }) query!: object
+
     /* 接口传参日期格式 */
     @Prop({type: String, default: 'YYYYMMDD'}) timeFormat!: string
 
+    optionsList: any = optionsList
+    days = 'last_7_day'
     // 接口传入数据
     get startTime() {
         switch (this.days) {
@@ -100,12 +106,22 @@ export default class Options extends Vue {
         this.optionsMessage = val.goodList
     }
 
+    async uplist() {
+        try {
+            const { data } = await this.fetch({
+                ...this.query,
+                startTime: this.startTime,
+                endTime: this.endTime
+            })
+            this.optionsList = data
+        } catch (ex) {
+            toast(ex)
+        }
+    }
+
     @Watch('days', { immediate: true})
     watchdays(val: any) {
-        this.$emit('input', {
-            startTime: this.startTime,
-            endTime: this.endTime
-        })
+        this.uplist()
     }
 }
 </script>

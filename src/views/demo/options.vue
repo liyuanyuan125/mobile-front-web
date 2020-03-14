@@ -1,9 +1,8 @@
 <template>
   <div class="demo-page">
-    <contrast :optionsList='optionsList' v-model="time" />
+    <contrast :fetch="fetch" :query="query" />
+    <comment :publicPraise='publicPraise' :hotQuery="hotQuery" />
     <age :to="to" :ageRangeList='ageRangeList' />
-    <comment :publicPraise='publicPraise' />
-
   </div>
 </template>
 
@@ -21,21 +20,16 @@ import Age from '@/components/opinions/ageDistribution/index.vue'
   }
 })
 export default class DemoPage extends Vue {
-    time = {}
+    // 查看更多
     to = {
         name: 'demo-twobar'
     }
-    optionsList = {
-        goodList: [
-            {
-                rivalName: '奔驰',
-                percent: 12.35,
-                hotWordList: [
-                    '你好'
-                ]
-            }
-        ]
+    // 口碑评论 好感度
+    hotQuery = {
+        text: '好感度',
+        value: 'B+'
     }
+    // 年龄分布数据
     ageRangeList = [
         {
             ageType: '20-30',
@@ -56,6 +50,7 @@ export default class DemoPage extends Vue {
             ]
         }
     ]
+    // 口碑评论 数据
     publicPraise = {
         appraiseList: [
             {
@@ -78,11 +73,34 @@ export default class DemoPage extends Vue {
             1, 2, 3, 4
         ]
     }
+
+    // 口碑评论补充数据
+    query = {
+        movieIdList: 12345
+    }
+    // 口碑评论 查询
+    fetch = async (query: any) => { // query: 查询参数
+        return {
+            code: '',
+            msg: '',
+            data: {
+                goodList: [
+                    {
+                        rivalName: query.startTime,
+                        percent: 12.35,
+                        hotWordList: [
+                            '你好'
+                        ]
+                    }
+                ]
+            }
+        }
+    }
 }
 </script>
 
 <style lang="less" scoped>
 .demo-page {
-  padding: 20px;
+  background: #d8d8d8;
 }
 </style>

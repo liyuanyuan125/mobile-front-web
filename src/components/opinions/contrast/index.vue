@@ -1,6 +1,6 @@
 <template>
   <div class="options-page">
-    <Time v-model='days' />
+    <Time v-model='days' :title="title" />
     <div class="contrast-top">
         <span @click="changeAge(ins)" v-for="(it, ins) in list" :key="ins" :class="[ indexs == ins ? 'contrast-title active' : 'contrast-title']">
             {{it}}
@@ -62,6 +62,9 @@ export default class Options extends Vue {
     fetch!: (query?: any) => Promise<FetchResult>
     /* 查询条件 */
     @Prop({ type: Object, default: () => ({}) }) query!: object
+
+    /* 标题name */
+    @Prop({ type: String, default: '口碑评论对比'}) title!: string
 
     /* 接口传参日期格式 */
     @Prop({type: String, default: 'YYYYMMDD'}) timeFormat!: string

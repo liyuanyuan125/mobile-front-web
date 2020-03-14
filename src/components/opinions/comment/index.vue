@@ -1,7 +1,7 @@
 <template>
   <div class="options-page">
     <div class="options-h3">
-        <div>口碑评论</div>
+        <div>{{title}}</div>
     </div>
     <div class="options-top">
         <div>
@@ -66,6 +66,8 @@ const publicPraise = {
 export default class Options extends Vue {
     @Prop({ required: true, default:  () => publicPraise}) publicPraise?: any
     @Prop({ required: true, default:  () => ({ text: '', value: ''})}) hotQuery?: any
+    /* 标题name */
+    @Prop({ type: String, default: '口碑评论'}) title!: string
 }
 </script>
 

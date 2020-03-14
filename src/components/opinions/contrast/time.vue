@@ -15,7 +15,7 @@ export default class Main extends Vue {
   /* 展示天数 默认展示最近7天 */
   @Prop({ type: String, default: 'last_7_day'}) value!: string
   /* 标题name */
-  @Prop({ type: String, default: '口碑评论对比'}) title!: string
+  @Prop({ type: String, default: ''}) title!: string
 
   days = this.value
   list = [

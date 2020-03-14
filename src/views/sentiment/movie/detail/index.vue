@@ -55,6 +55,208 @@ export default class MoviePage extends ViewBase {
     materialsCount: '1,213.3万',
     heatTrend: 0
   }
+  wantSeeTrend = {
+    dailyGainList: [
+      {
+        date: 1583719155000,
+        eventList: [
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          }
+        ],
+        value: 1300
+      },
+      {
+        date: 1583805555000,
+        eventList: [
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          }
+        ],
+        value: 32132
+      },
+      {
+        date: 1583891955000,
+        eventList: [
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          }
+        ],
+        value: 323132
+      },
+      {
+        date: 1583978355000,
+        eventList: [
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          }
+        ],
+        value: 12313
+      },
+      {
+        date: 1584064755000,
+        eventList: [
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          }
+        ],
+        value: 320
+      }
+    ],
+    totalGainList: [
+      {
+        date: 1583979088061,
+        ' eventList': [
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '132323'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '132323'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '132323'
+          }
+        ],
+        value: 32311323
+      },
+      {
+        date: 1583979088061,
+        ' eventList': [
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '132323'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '132323'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '132323'
+          }
+        ],
+        value: 32311323
+      },
+      {
+        date: 1583979088061,
+        ' eventList': [
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '132323'
+          }
+        ],
+        value: 32311323
+      },
+      {
+        date: 1583979088061,
+        ' eventList': [
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '132323'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '132323'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '132323'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '132323'
+          }
+        ],
+        value: 32311323
+      },
+      {
+        date: 1583979088061,
+        ' eventList': [
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '132323'
+          }
+        ],
+        value: 32311323
+      }
+    ]
+  }
   eventList = []
   actorList = [
     {

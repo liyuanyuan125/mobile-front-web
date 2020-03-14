@@ -1,7 +1,7 @@
 <template>
   <div class="demo-page">
     <div class="contrast-h3">
-        <h3>口碑评论</h3>
+        <div>{{title}}</div>
     </div>
     <div class="contrast-top">
         <span @click="changeAge(ins)" v-for="(it, ins) in ageRangeList" :key="ins" :class="[ indexs == ins ? 'contrast-title active' : 'contrast-title']">
@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import { Progress } from 'vant'
 
 @Component({
@@ -43,11 +43,17 @@ import { Progress } from 'vant'
     }
 })
 export default class Options extends Vue {
+    /* 年龄分布数据 */
     @Prop({ required: true, default:  []}) ageRangeList?: any
+
+    /* 年龄分布标题 */
+    @Prop({ type: String, default: '年龄分布'}) title!: string
+
     indexs: any = 0
     changeAge(ins: number) {
         this.indexs = ins
     }
+
 }
 </script>
 

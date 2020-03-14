@@ -1,7 +1,7 @@
 <template>
   <div class="topbar" :style="attribute.cusStyle">
     <span class="reBack" @click="goBack"></span>
-    <h1 :class="['title']" v-show="titleShow">{{attribute.title}}</h1>
+    <h1 :class="['title']" v-show="titleShow || hasTitle">{{attribute.title}}</h1>
     <div class="tool">
       <i class="ico-pk"></i>
       <i class="ico-digg"></i>
@@ -27,14 +27,26 @@ export default class SentimentBar extends Vue {
    * 属性示例
    */
   @Prop({ type: Object, default: {} }) attribute!: SentimentBarItem // 基本属性
-  @Prop({ type: Boolean, default: false }) titleShow!: boolean // 是否显示标题
+  @Prop({ type: Boolean, default: false }) titleShow?: boolean // 是否显示标题
 
-  topbarClass: string = 'topbar'
+  hasTitle: boolean = false
 
   mounted() {
-    // todo
+    window.addEventListener('scroll', this.getScroll)
   }
 
+  destroyed() {
+    window.removeEventListener('scroll', this.getScroll)
+  }
+
+  // 监听滚动显示顶部导航的标题
+  getScroll() {
+    const topNum =
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop
+    this.hasTitle = topNum > 0 ? true : false
+  }
   // 返回上一页
   async goBack() {
     const objectData = {

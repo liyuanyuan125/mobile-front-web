@@ -1,7 +1,10 @@
 <template>
-  <div>
+  <div class="page">
     <SentimentBar :attribute="topbar" />
     <BaseInfoArea :baseInfo="movieInfo" :overView="movieOverView" />
+    <ActorList v-if="actorList && actorList.length" :actorList="actorList" />
+    <ProduceList v-if="produceList && produceList.length" :produceList="produceList" />
+    <!-- <EventList /> -->
   </div>
 </template>
 
@@ -10,18 +13,21 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import BaseInfoArea from './components/movieInfo.vue' // 影片基本信息
-// import ActorList from '@/views/common/actorList/index.vue' // 主创人员
+// import EventList from '@/views/common/eventList/event.vue'
+import ActorList from '@/views/common/actorList/index.vue' // 主创人员
+import ProduceList from '@/views/common/produceList/index.vue' // 出品发行
 // import hotLine from '@/components/hotLine'
 
 @Component({
   components: {
     SentimentBar,
-    BaseInfoArea
-    // ActorList
+    BaseInfoArea,
+    // EventList,
+    ActorList,
+    ProduceList
   }
 })
 export default class MoviePage extends ViewBase {
-  // topbar
   topbar = {
     title: '流浪地球',
     diggShow: true,
@@ -49,6 +55,7 @@ export default class MoviePage extends ViewBase {
     materialsCount: '1,213.3万',
     heatTrend: 0
   }
+  eventList = []
   actorList = [
     {
       actorId: 906,
@@ -68,7 +75,7 @@ export default class MoviePage extends ViewBase {
         url:
           'http://piaoshen.oss-cn-beijing.aliyuncs.com/news/images/2019/07/11/B06EDD23EEED60C418B4.jpg'
       },
-      character: '饰：刘培强'
+      character: '饰 刘培强'
     },
     {
       actorId: 893,
@@ -78,7 +85,7 @@ export default class MoviePage extends ViewBase {
         url:
           'http://piaoshen.oss-cn-beijing.aliyuncs.com/movie/images/2020/02/03/62102C34026872169FAF.jpg'
       },
-      character: '饰：刘启'
+      character: '饰 刘启'
     },
     {
       actorId: 885,
@@ -88,7 +95,7 @@ export default class MoviePage extends ViewBase {
         url:
           'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/04/18/190418020626211394.jpg'
       },
-      character: '饰：王磊'
+      character: '饰 王磊'
     },
     {
       actorId: 890,
@@ -98,7 +105,7 @@ export default class MoviePage extends ViewBase {
         url:
           'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/04/18/190418052014658253.jpg'
       },
-      character: '饰：韩子昂'
+      character: '饰 韩子昂'
     },
     {
       actorId: 896,
@@ -108,7 +115,7 @@ export default class MoviePage extends ViewBase {
         url:
           'http://piaoshen.oss-cn-beijing.aliyuncs.com/news/images/2019/10/15/63C87F8158A679D70A25.jpg'
       },
-      character: '饰：韩朵朵'
+      character: '饰 韩朵朵'
     },
     {
       actorId: 179289,
@@ -118,7 +125,7 @@ export default class MoviePage extends ViewBase {
         url:
           'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/04/18/190418052014803156.jpg'
       },
-      character: '饰：Mike'
+      character: '饰 Mike'
     },
     {
       actorId: 884,
@@ -128,7 +135,7 @@ export default class MoviePage extends ViewBase {
         url:
           'http://piaoshen.oss-cn-beijing.aliyuncs.com/news/images/2019/11/21/D1A74C1E0D84CB90BE91.jpg'
       },
-      character: '饰：周倩'
+      character: '饰 周倩'
     },
     {
       actorId: 901,
@@ -138,7 +145,7 @@ export default class MoviePage extends ViewBase {
         url:
           'http://piaoshen.oss-cn-beijing.aliyuncs.com/news/images/2019/07/11/7F0CE6B3F5362EB77105.jpg'
       },
-      character: '饰：李一一'
+      character: '饰 李一一'
     },
     {
       actorId: 909,
@@ -148,7 +155,7 @@ export default class MoviePage extends ViewBase {
         url:
           'http://piaoshen.oss-cn-beijing.aliyuncs.com/news/images/2019/09/16/FD18B0E3BE81539812C7.jpg'
       },
-      character: '饰：何连科'
+      character: '饰 何连科'
     },
     {
       actorId: 480556,
@@ -181,9 +188,21 @@ export default class MoviePage extends ViewBase {
       character: ''
     }
   ]
-  produceList = ['北京文化', '北京文化', '北京文化']
+  produceList = [
+    '新疆华夏天山电影院线有限责任公司',
+    '霍尔果斯腾影影视发行有限公司',
+    '上海淘票票影视文化有限公司',
+    '北京聚合影联文化传媒有限公司',
+    '珠江影业传媒股份有限公司',
+    '中国电影股份有限公司',
+    '北京影拓星瀚网络科技有限公司',
+    '北京国影纵横电影发行有限公司'
+  ]
 }
 </script>
 
 <style lang="less" scoped>
+.page {
+  color: #303030;
+}
 </style>

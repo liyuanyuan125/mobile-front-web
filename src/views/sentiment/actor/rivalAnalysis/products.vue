@@ -58,14 +58,12 @@
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
-import combinedHeat from './combinedHeat.vue'
-import platformHeat from './platformHeat.vue'
-import publicPraise from './publicPraise.vue'
-import Platform from './platform.vue'
-import Age from './age.vue'
-import Sex from './sex.vue'
-import Region from './region.vue'
-import Table from '../components/table.vue'
+import combinedHeat from './components/combinedHeat.vue'
+import platformHeat from './components/platformHeat.vue'
+import publicPraise from './components/publicPraise.vue'
+import Age from './components/age.vue'
+import Sex from './components/sex.vue'
+import Table from '@/views/common/table/table.vue'
 
 
 import { toast } from '@/util/toast'
@@ -78,10 +76,8 @@ import { Tab, Tabs } from 'vant'
     combinedHeat,
     platformHeat,
     publicPraise,
-    Platform,
     Age,
     Sex,
-    Region,
     Table
   }
 })

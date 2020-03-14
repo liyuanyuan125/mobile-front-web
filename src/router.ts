@@ -174,7 +174,7 @@ export default new Router({
     {
       path: '/sentiment/actor/rivalAnalysis/products',
       name: 'sentimentkolproducts',
-      component: () => import('./views/sentiment/actor/artist/products/products.vue')
+      component: () => import('./views/sentiment/actor/rivalAnalysis/products.vue')
     },
 
     // 影片舆情

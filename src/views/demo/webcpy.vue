@@ -1,8 +1,8 @@
 <template>
   <div class="demo-page">
     <contrast :optionsList='optionsList' v-model="time" />
-    <age :ageRangeList='ageRangeList' />
-        <comment :publicPraise='publicPraise' />
+    <age :to="to" :ageRangeList='ageRangeList' />
+    <comment :publicPraise='publicPraise' />
 
   </div>
 </template>
@@ -22,6 +22,9 @@ import Age from '@/components/opinions/ageDistribution/index.vue'
 })
 export default class DemoPage extends Vue {
     time = {}
+    to = {
+        name: 'demo-twobar'
+    }
     optionsList = {
         goodList: [
             {

@@ -2,6 +2,7 @@
   <div class="demo-page">
     <div class="contrast-h3">
         <div>{{title}}</div>
+        <router-link class="more" :to="to" >查看更多<van-icon name="arrow" size="20" /></router-link>
     </div>
     <div class="contrast-top">
         <span @click="changeAge(ins)" v-for="(it, ins) in ageRangeList" :key="ins" :class="[ indexs == ins ? 'contrast-title active' : 'contrast-title']">
@@ -45,7 +46,7 @@ import { Progress } from 'vant'
 export default class Options extends Vue {
     /* 年龄分布数据 */
     @Prop({ required: true, default:  []}) ageRangeList?: any
-
+    @Prop({ required: true, default:  ({})}) to?: any
     /* 年龄分布标题 */
     @Prop({ type: String, default: '年龄分布'}) title!: string
 

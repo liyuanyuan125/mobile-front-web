@@ -66,7 +66,7 @@ export default class Bubble extends Vue {
   .mask {
     z-index: 1;
     background: #f2f3f6;
-    opacity: .5;
+    opacity: 0;
   }
   .bubble-content {
     z-index: 2;

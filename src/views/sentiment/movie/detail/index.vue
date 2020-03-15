@@ -2,6 +2,8 @@
   <div class="page">
     <SentimentBar :attribute="topbar" />
     <BaseInfoArea :baseInfo="movieInfo" :overView="movieOverView" />
+    <WantSeeTrend :dataTrend="wantSeeTrend" />
+    <BoxOffice />
     <ActorList v-if="actorList && actorList.length" :actorList="actorList" />
     <ProduceList v-if="produceList && produceList.length" :produceList="produceList" />
     <!-- <EventList /> -->
@@ -13,6 +15,8 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import BaseInfoArea from './components/movieInfo.vue' // 影片基本信息
+import WantSeeTrend from './components/wantSeeTrend.vue' // 想看趋势
+import BoxOffice from './components/boxOffice.vue' // 影片票房
 // import EventList from '@/views/common/eventList/event.vue'
 import ActorList from '@/views/common/actorList/index.vue' // 主创人员
 import ProduceList from '@/views/common/produceList/index.vue' // 出品发行
@@ -22,6 +26,8 @@ import ProduceList from '@/views/common/produceList/index.vue' // 出品发行
   components: {
     SentimentBar,
     BaseInfoArea,
+    WantSeeTrend,
+    BoxOffice,
     // EventList,
     ActorList,
     ProduceList

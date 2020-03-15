@@ -32,6 +32,7 @@ export default class SentimentBar extends Vue {
   hasTitle: boolean = false
 
   mounted() {
+    this.hideNavBarStatus()
     window.addEventListener('scroll', this.getScroll)
   }
 

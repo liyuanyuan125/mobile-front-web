@@ -20,11 +20,11 @@ export default class ModuleTitle extends Vue {
    * 属性示例
    */
   @Prop({ type: String, default: '' }) title!: string
-  @Prop({ type: String }) appLink!: string //applink 参数跳 app
+  @Prop({ type: String }) appLink!: string // applink 参数跳 app
   @Prop({ type: String, default: '' }) href!: any // 自定义样式 页面跳转
 
   mounted() {
-    console.log('applink', this.appLink)
+    // console.log('applink', this.appLink)
   }
 
   // 跳转

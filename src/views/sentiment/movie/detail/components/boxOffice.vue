@@ -83,8 +83,6 @@ export default class BoxOffice extends ViewBase {
   yDate: any = []
   eventList: any = []
 
-  mounted() {}
-
   // 处理 trend 数据
   formatChartData() {
     return {

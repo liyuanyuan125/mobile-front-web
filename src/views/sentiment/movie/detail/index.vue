@@ -4,6 +4,7 @@
     <BaseInfoArea :baseInfo="movieInfo" :overView="movieOverView" />
     <WantSeeTrend :dataTrend="wantSeeTrend" />
     <BoxOffice />
+    <PraiseComment :favorable="movieInfo.favorable" :publicPraise="publicPraise" />
     <ActorList v-if="actorList && actorList.length" :actorList="actorList" />
     <ProduceList v-if="produceList && produceList.length" :produceList="produceList" />
     <!-- <EventList /> -->
@@ -17,6 +18,7 @@ import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import BaseInfoArea from './components/movieInfo.vue' // 影片基本信息
 import WantSeeTrend from './components/wantSeeTrend.vue' // 想看趋势
 import BoxOffice from './components/boxOffice.vue' // 影片票房
+import PraiseComment from '@/views/common/praiseComment/index.vue' // 口碑评论
 // import EventList from '@/views/common/eventList/event.vue'
 import ActorList from '@/views/common/actorList/index.vue' // 主创人员
 import ProduceList from '@/views/common/produceList/index.vue' // 出品发行
@@ -28,6 +30,7 @@ import ProduceList from '@/views/common/produceList/index.vue' // 出品发行
     BaseInfoArea,
     WantSeeTrend,
     BoxOffice,
+    PraiseComment,
     // EventList,
     ActorList,
     ProduceList
@@ -262,6 +265,29 @@ export default class MoviePage extends ViewBase {
         value: 32311323
       }
     ]
+  }
+  favorable = {
+    text: '好感度',
+    value: 'B+'
+  }
+  // 口碑评论 数据
+  publicPraise = {
+    appraiseList: [
+      {
+        raisePercent: 12,
+        raiseName: '正面评价'
+      },
+      {
+        raisePercent: 32,
+        raiseName: '负面评价'
+      },
+      {
+        raisePercent: 23,
+        raiseName: '中性评价'
+      }
+    ],
+    hotWordList: ['劲暴', '太帅了', '要严肃', '四个字的'],
+    badWordList: ['劲暴', '太帅', '严肃', '四个字的']
   }
   eventList = []
   actorList = [

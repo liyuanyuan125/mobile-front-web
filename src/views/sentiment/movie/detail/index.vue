@@ -2,9 +2,12 @@
   <div class="page">
     <SentimentBar :attribute="topbar" />
     <BaseInfoArea :baseInfo="movieInfo" :overView="movieOverView" />
+    <WantSeeTrend :dataTrend="wantSeeTrend" />
+    <BoxOffice />
+    <PraiseComment :favorable="movieInfo.favorable" :publicPraise="publicPraise" />
+    <EventList :eventList="eventList" />
     <ActorList v-if="actorList && actorList.length" :actorList="actorList" />
     <ProduceList v-if="produceList && produceList.length" :produceList="produceList" />
-    <!-- <EventList /> -->
   </div>
 </template>
 
@@ -13,7 +16,10 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import BaseInfoArea from './components/movieInfo.vue' // 影片基本信息
-// import EventList from '@/views/common/eventList/event.vue'
+import WantSeeTrend from './components/wantSeeTrend.vue' // 想看趋势
+import BoxOffice from './components/boxOffice.vue' // 影片票房
+import PraiseComment from '@/views/common/praiseComment/index.vue' // 口碑评论
+import EventList from '@/views/common/eventList/event.vue' // 事件跟踪
 import ActorList from '@/views/common/actorList/index.vue' // 主创人员
 import ProduceList from '@/views/common/produceList/index.vue' // 出品发行
 // import hotLine from '@/components/hotLine'
@@ -22,7 +28,10 @@ import ProduceList from '@/views/common/produceList/index.vue' // 出品发行
   components: {
     SentimentBar,
     BaseInfoArea,
-    // EventList,
+    WantSeeTrend,
+    BoxOffice,
+    PraiseComment,
+    EventList,
     ActorList,
     ProduceList
   }
@@ -55,7 +64,344 @@ export default class MoviePage extends ViewBase {
     materialsCount: '1,213.3万',
     heatTrend: 0
   }
-  eventList = []
+  wantSeeTrend = {
+    dailyGainList: [
+      {
+        date: 1583719155000,
+        eventList: [
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          }
+        ],
+        value: 1300
+      },
+      {
+        date: 1583805555000,
+        eventList: [
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          }
+        ],
+        value: 32132
+      },
+      {
+        date: 1583891955000,
+        eventList: [
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          }
+        ],
+        value: 323132
+      },
+      {
+        date: 1583978355000,
+        eventList: [
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          }
+        ],
+        value: 12313
+      },
+      {
+        date: 1584064755000,
+        eventList: [
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '231332'
+          }
+        ],
+        value: 320
+      }
+    ],
+    totalGainList: [
+      {
+        date: 1583979088061,
+        ' eventList': [
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '132323'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '132323'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '132323'
+          }
+        ],
+        value: 32311323
+      },
+      {
+        date: 1583979088061,
+        ' eventList': [
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '132323'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '132323'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '132323'
+          }
+        ],
+        value: 32311323
+      },
+      {
+        date: 1583979088061,
+        ' eventList': [
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '132323'
+          }
+        ],
+        value: 32311323
+      },
+      {
+        date: 1583979088061,
+        ' eventList': [
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '132323'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '132323'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '132323'
+          },
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '132323'
+          }
+        ],
+        value: 32311323
+      },
+      {
+        date: 1583979088061,
+        ' eventList': [
+          {
+            eventName: '花木兰首映获好评',
+            eventId: '132323'
+          }
+        ],
+        value: 32311323
+      }
+    ]
+  }
+  favorable = {
+    text: '好感度',
+    value: 'B+'
+  }
+  // 口碑评论 数据
+  publicPraise = {
+    appraiseList: [
+      {
+        raisePercent: 12,
+        raiseName: '正面评价'
+      },
+      {
+        raisePercent: 32,
+        raiseName: '负面评价'
+      },
+      {
+        raisePercent: 23,
+        raiseName: '中性评价'
+      }
+    ],
+    hotWordList: ['劲暴', '太帅了', '要严肃', '四个字的'],
+    badWordList: ['劲暴', '太帅', '严肃', '四个字的']
+  }
+  eventList = [
+    {
+      eventName: '乔乔的异想世界获最佳喜剧片剪辑',
+      eventId: '12332',
+      creatTime: 1584146173812,
+      target: [
+        {
+          targetCode: '1',
+          targetName: '正面'
+        }
+      ],
+      interactiveList: [
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '100万+'
+        },
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '1,212'
+        }
+      ]
+    },
+    {
+      eventName: '冲奥片"乔乔的异想世界"曝豪华卡司幕后',
+      eventId: '12332',
+      creatTime: 1584146173812,
+      target: [
+        {
+          targetCode: '1',
+          targetName: '热点'
+        },
+        {
+          targetCode: '2',
+          targetName: '负面'
+        }
+      ],
+      interactiveList: [
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '100万+'
+        },
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '1,212'
+        },
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '100万+'
+        }
+      ]
+    },
+    {
+      eventName: '乔乔的异想世界获最佳喜剧片剪辑',
+      eventId: '12332',
+      creatTime: 1584146173812,
+      target: [
+        {
+          targetCode: '1',
+          targetName: '热点'
+        },
+        {
+          targetCode: '2',
+          targetName: '负面'
+        }
+      ],
+      interactiveList: [
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '100万+'
+        },
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '1,212'
+        },
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '100万+'
+        }
+      ]
+    }
+  ]
   actorList = [
     {
       actorId: 906,

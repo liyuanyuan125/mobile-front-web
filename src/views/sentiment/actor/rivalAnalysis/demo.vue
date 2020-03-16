@@ -24,7 +24,7 @@
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
-import UserPortrait from './components/userPortrait.vue'
+import UserPortrait from '@/views/common/user/userPortrait.vue'
 import ChinaMap, { ChinaMapItem } from '@/components/chinaMap'
 import city from './components/city.vue'
 import { toast } from '@/util/toast'

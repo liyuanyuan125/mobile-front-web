@@ -5,9 +5,9 @@
     <WantSeeTrend :dataTrend="wantSeeTrend" />
     <BoxOffice />
     <PraiseComment :favorable="movieInfo.favorable" :publicPraise="publicPraise" />
+    <EventList :eventList="eventList" />
     <ActorList v-if="actorList && actorList.length" :actorList="actorList" />
     <ProduceList v-if="produceList && produceList.length" :produceList="produceList" />
-    <!-- <EventList /> -->
   </div>
 </template>
 
@@ -19,7 +19,7 @@ import BaseInfoArea from './components/movieInfo.vue' // 影片基本信息
 import WantSeeTrend from './components/wantSeeTrend.vue' // 想看趋势
 import BoxOffice from './components/boxOffice.vue' // 影片票房
 import PraiseComment from '@/views/common/praiseComment/index.vue' // 口碑评论
-// import EventList from '@/views/common/eventList/event.vue'
+import EventList from '@/views/common/eventList/event.vue' // 事件跟踪
 import ActorList from '@/views/common/actorList/index.vue' // 主创人员
 import ProduceList from '@/views/common/produceList/index.vue' // 出品发行
 // import hotLine from '@/components/hotLine'
@@ -31,7 +31,7 @@ import ProduceList from '@/views/common/produceList/index.vue' // 出品发行
     WantSeeTrend,
     BoxOffice,
     PraiseComment,
-    // EventList,
+    EventList,
     ActorList,
     ProduceList
   }
@@ -289,7 +289,119 @@ export default class MoviePage extends ViewBase {
     hotWordList: ['劲暴', '太帅了', '要严肃', '四个字的'],
     badWordList: ['劲暴', '太帅', '严肃', '四个字的']
   }
-  eventList = []
+  eventList = [
+    {
+      eventName: '乔乔的异想世界获最佳喜剧片剪辑',
+      eventId: '12332',
+      creatTime: 1584146173812,
+      target: [
+        {
+          targetCode: '1',
+          targetName: '正面'
+        }
+      ],
+      interactiveList: [
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '100万+'
+        },
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '1,212'
+        }
+      ]
+    },
+    {
+      eventName: '冲奥片"乔乔的异想世界"曝豪华卡司幕后',
+      eventId: '12332',
+      creatTime: 1584146173812,
+      target: [
+        {
+          targetCode: '1',
+          targetName: '热点'
+        },
+        {
+          targetCode: '2',
+          targetName: '负面'
+        }
+      ],
+      interactiveList: [
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '100万+'
+        },
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '1,212'
+        },
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '100万+'
+        }
+      ]
+    },
+    {
+      eventName: '乔乔的异想世界获最佳喜剧片剪辑',
+      eventId: '12332',
+      creatTime: 1584146173812,
+      target: [
+        {
+          targetCode: '1',
+          targetName: '热点'
+        },
+        {
+          targetCode: '2',
+          targetName: '负面'
+        }
+      ],
+      interactiveList: [
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '100万+'
+        },
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '1,212'
+        },
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '100万+'
+        }
+      ]
+    }
+  ]
   actorList = [
     {
       actorId: 906,

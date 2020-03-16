@@ -32,14 +32,14 @@ export default class Main extends Vue {
           }
         ], // 格式为string[]或者object[]待定 最多2个标签
         interactiveList: [
-          {
-            url: '//aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/MISC/blrhmtpe2o7g008ukpig.jpg',
-            text: '10万+'
-          },
-          {
-            url: '//aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/MISC/blrhmtpe2o7g008ukpig.jpg',
-            text: '200万+'
-          },
+          // {
+          //   url: '//aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/MISC/blrhmtpe2o7g008ukpig.jpg',
+          //   text: '10万+'
+          // },
+          // {
+          //   url: '//aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/MISC/blrhmtpe2o7g008ukpig.jpg',
+          //   text: '200万+'
+          // },
         ]
       },
       {
@@ -51,14 +51,14 @@ export default class Main extends Vue {
           targetName: '正面'
         }],
         interactiveList: [
-          {
-            url: '//aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/MISC/blrhmtpe2o7g008ukpig.jpg',
-            text: '10万+'
-          },
-          {
-            url: '//aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/MISC/blrhmtpe2o7g008ukpig.jpg',
-            text: '80万+'
-          },
+          // {
+          //   url: '//aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/MISC/blrhmtpe2o7g008ukpig.jpg',
+          //   text: '10万+'
+          // },
+          // {
+          //   url: '//aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/MISC/blrhmtpe2o7g008ukpig.jpg',
+          //   text: '80万+'
+          // },
         ]
       },
    ]

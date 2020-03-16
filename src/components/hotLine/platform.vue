@@ -10,7 +10,7 @@
             startTime: params.startTime,
             endTime: params.endTime
           }
-        }" >查看更多<van-icon name="arrow" size="20" /></router-link>
+        }" >查看更多<van-icon name="arrow" class="arrow" size="15" /></router-link>
       </div>
       <ul class="platform-item">
         <li class="flex-box flex-between" v-for="item in platformList" :key="item.platformId">

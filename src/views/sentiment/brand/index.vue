@@ -1,51 +1,34 @@
 <template>
   <div class="content">
-
-    <div class="header">
-      <img :src="brandInfo.brandLogo.url" class="img" />
-      <div>
-        <p class="brand-name">{{brandInfo.brandName}}</p>
-        <p v-if="brandInfo.rankingName && !brandInfo.rankingId " class="event-name">{{brandInfo.rankingName}}</p>
-        <p v-if="brandInfo.rankingName && brandInfo.rankingId">
-          <router-link to="" class="event-name flex-box">
-            <i>{{brandInfo.rankingName}}</i>
-            <van-icon name="arrow" size="13" class="icon-arrow" />
-          </router-link> 
-        </p>
-      </div>
-    </div>
-
-    <div class="dubble"> 
-      <BubbleBottom :data="bubbleData" />
-    </div>
-        <Hots :id="brandId" />
-        <Wow />
-        <User />
-        <Event />
-        <Competing /> 
+    <SentimentBar :attribute="topbar" />
+    <brandInfoArea :brandInfo="brandInfo" :bubbleData="bubbleData"/>
+    <Hots :id="id" />
+    <User />
+        <!-- <Event />
+        <Competing />  -->
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
-import { Tab, Tabs, Icon } from 'vant'
+import { toast } from '@/util/toast'
+import { getList } from './data'
+import SentimentBar from '@/views/common/sentimentBar/index.vue'
+import brandInfoArea from './components/brandInfo.vue'
+
 import Hots from './components/hots.vue'
-import Wow from './components/wow.vue'
 import User from './components/users.vue'
 import Event from './components/event.vue'
 import Competing from './components/competing.vue'
-import { toast } from '@/util/toast'
-import {BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
+
+
 
 @Component({
   components: {
-    [Tab.name]: Tab,
-    [Tabs.name]: Tabs,
-    [Icon.name]: Icon,
-    BubbleBottom,
+    SentimentBar,
+    brandInfoArea,
     Hots,
-    Wow,
     User,
     Event,
     Competing
@@ -54,37 +37,46 @@ import {BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
 export default class BrandPage extends ViewBase {
   @Prop({ type: Number, default: 0}) id!: number
 
-  get brandId() {
-    return this.id
-  }
-  bubbleData: any = [
-    {type: '1', value: '235,454', trend: '123', renderTitle: (h: any) => {
-      return h(Title, {
-        props: {
-          title: '90天累计互动'
-        },
-        on: {
-          click: this.demo
-      }})
-    }},
-    {type: '2', title: '90天累计互动', value: '1,423', trend: '356', big: true},
-    {type: '3', title: '昨日销量排名', value: '234,234', trend: '-356', showdown: true},
-    {type: '4', title: '好感度', value: 'B+'}
-  ]
-
-  brandInfo = {
-    brandName: '梅赛德斯-奔驰',
-    brandId: 1,
-    brandLogo: {
-      source: '',
-      url: '//aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/MISC/blrhmtpe2o7g008ukpig.jpg'
-    },
-    rankingId: '', // 有值则加热搜事件链接
-    rankingName: '#奔驰大G开进故宫', // 有值则显示模块，无则不显示模块
+  topbar = {
+    title: '流浪地球',
+    diggShow: true,
+    pkShow: true
   }
 
-  demo() {
-    toast('近90天内，物料新增的点赞、评论、转发、阅读或播放的累计之和')
+  bubbleData: any = {}
+  brandInfo: any = {}
+
+  // brandInfo = {
+  //   brandName: '梅赛德斯-奔驰',
+  //   brandId: 1,
+  //   brandLogo: {
+  //     url: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/05/06/190506000002357372.jpg',
+  //     source: 'piaoshen'
+  //   },
+  //   rankingId: '', // 有值则加热搜事件链接
+  //   rankingName: '#奔驰大G开进故宫', // 有值则显示模块，无则不显示模块
+  // }
+
+  mounted() {
+    this.brandDetail()
+  }
+
+  async brandDetail() {
+    const brandId = this.id
+    try {
+      const { data: {
+        brandInfo,
+        brandOverView,
+        publicPraise, // 口碑
+        userAnalysis // 用户分析
+      } } = await getList({brandId})
+
+      this.brandInfo = brandInfo // 头部基础信息
+      this.bubbleData = brandOverView // 气泡数据
+
+    } catch (ex) {
+      toast(ex)
+    }
   }
 }
 </script>
@@ -112,31 +104,6 @@ export default class BrandPage extends ViewBase {
     }
     .van-tabs__line {
       background-color: #88aaf6;
-    }
-  }
-}
-.header {
-  display: flex;
-  padding: 20px 40px 0;
-  .img {
-    border-radius: 10px;
-    width: 210px;
-    height: 210px;
-    margin-right: 30px;
-  }
-  .brand-name {
-    font-size: 40px;
-    color: #303030;
-    min-height: 116px;
-  }
-  .event-name {
-    border-radius: 26px;
-    background: #fff;
-    padding: 6px 20px;
-    font-size: 26px;
-    color: #7ca4ff;
-    .icon-arrow {
-      padding-left: 10px;
     }
   }
 }

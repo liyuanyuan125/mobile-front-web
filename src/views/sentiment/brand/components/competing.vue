@@ -65,7 +65,7 @@ export default class Main extends Vue {
     {
       rivaCover: {
         url: '//aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/MISC/blrhmtpe2o7g008ukpig.jpg',
-        source: 'cccc'
+        source: 'jydata'
       },
       rivalId: null,
       rivalName: '当前品牌',

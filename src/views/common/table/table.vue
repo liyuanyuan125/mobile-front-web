@@ -1,31 +1,35 @@
 <template>
   <div class='main' v-if='show'>
-      <div class='title'>{{title}}</div>
-      <div class='but' v-if='regionPk != ""'>
-        <Button class='chg' v-for='(item) in tabList' :key='item.key' :class="{'chgbgc': regionPk == item.key}" type="primary" @click='chgregionPk(item.key)'>{{item.name}}</Button>
-        <!-- <Button class='fans' :class="{'chgbgc': regionPk == 1}" type="primary" @click='chgregionPk(1)'>城市分布</Button> -->
-        <!-- <Button class='chg' :class="{'chgbgc': regionPk == 2}" type="primary" @click='chgregionPk(2)'>省份分布</Button> -->
-      </div>
-      <List
-        class='table'
-      >
-      <ul class='titleul'>
-          <li class='table-title' v-for='item in tableTitle' :key='item.key'>
-            {{item.value}}
-         </li>
-      </ul>
-        
-        <div class='table-item' v-for='(item, index ) in tableItem' :key='index' :style="{background:(String(index / 2).indexOf('.') == 1 ? 'backgroundColor':'#fff')}">
-          <div class='table-item-title'>{{item.actorName}}</div>
-          <ul class='table-item-ul'>
-            <li v-for='(itemlist, index ) in item.dataList' :key='index'>
-              <div v-if='itemlist.name != ""' class='top'>{{itemlist.name}}</div>
-              <div v-if='itemlist.name != ""' class='bottom'>{{itemlist.value}}</div>
-              <div v-if='itemlist.name == ""'>--</div>
-            </li>
-          </ul>
+      <ModuleTitle :title="title" />
+      <!-- <div class='title'>{{title}}</div> -->
+      <div style='padding: 0 15px'>
+        <div class='but' v-if='regionPk != ""'>
+          <Button class='chg' v-for='(item) in tabList' :key='item.key' :class="{'chgbgc': regionPk == item.key}" type="primary" @click='chgregionPk(item.key)'>{{item.name}}</Button>
+          <!-- <Button class='fans' :class="{'chgbgc': regionPk == 1}" type="primary" @click='chgregionPk(1)'>城市分布</Button> -->
+          <!-- <Button class='chg' :class="{'chgbgc': regionPk == 2}" type="primary" @click='chgregionPk(2)'>省份分布</Button> -->
         </div>
-      </List>
+        <List
+          class='table'
+        >
+        <ul class='titleul'>
+            <li class='table-title' v-for='item in tableTitle' :key='item.key'>
+              {{item.value}}
+          </li>
+        </ul>
+          
+          <div class='table-item' v-for='(item, index ) in tableItem' :key='index' :style="{background:(String(index / 2).indexOf('.') == 1 ? 'backgroundColor':'#fff')}">
+            <div class='table-item-title'>{{item.actorName}}</div>
+            <ul class='table-item-ul'>
+              <li v-for='(itemlist, index ) in item.dataList' :key='index'>
+                <div v-if='itemlist.name != ""' class='top'>{{itemlist.name}}</div>
+                <div v-if='itemlist.name != ""' class='bottom'>{{itemlist.value}}</div>
+                <div v-if='itemlist.name == ""'>--</div>
+              </li>
+            </ul>
+          </div>
+        </List>
+      </div>
+      
   </div>
 </template>
 
@@ -35,11 +39,13 @@ import ViewBase from '@/util/ViewBase'
 import { toast } from '@/util/toast'
 import { List } from 'vant'
 import { Button } from 'vant'
+import ModuleTitle from '@/components/sentimentTitle'
 
 @Component({
   components: {
     List,
     Button,
+    ModuleTitle
   }
 })
 export default class KolPage extends ViewBase {
@@ -69,6 +75,7 @@ export default class KolPage extends ViewBase {
 .main {
   width: 100%;
   background: #fff;
+  margin-top: 50px;
 }
 .title {
   height: 34px;

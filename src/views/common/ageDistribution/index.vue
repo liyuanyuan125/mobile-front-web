@@ -2,7 +2,7 @@
   <div class="options-page">
     <div class="contrast-h3">
         <div>{{title}}</div>
-        <router-link class="more" :to="to" >查看更多<Icon name="arrow" size="18" /></router-link>
+        <router-link class="more" :to="href" >查看更多<Icon name="arrow" size="18" /></router-link>
     </div>
     <div class="contrast-top">
         <span @click="changeAge(ins)" v-for="(it, ins) in ageRangeList" :key="ins" :class="[ indexs == ins ? 'contrast-title active' : 'contrast-title']">
@@ -37,6 +37,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import { Progress, Icon } from 'vant'
+import { AgeRangeList } from './type'
 
 @Component({
     components: {
@@ -46,8 +47,9 @@ import { Progress, Icon } from 'vant'
 })
 export default class Options extends Vue {
     /* 年龄分布数据 */
-    @Prop({ required: true, default:  []}) ageRangeList?: any
-    @Prop({ required: true, default:  ({})}) to?: any
+    @Prop({ required: true, default:  []}) ageRangeList?: AgeRangeList[]
+    /* 跳转页面 */
+    @Prop({ required: true, default:  ({})}) href?: any
     /* 年龄分布标题 */
     @Prop({ type: String, default: '年龄分布'}) title!: string
 

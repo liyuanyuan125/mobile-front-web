@@ -733,10 +733,10 @@ export default class KolPage extends ViewBase {
   }
 }
 .userpk {
-  padding: 50px 30px;
   background: #fff;
   margin-top: 20px;
   .usertitle {
+    padding: 50px 30px;
     height: 60px;
     font-size: 40px;
     font-weight: 500;

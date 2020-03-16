@@ -35,7 +35,7 @@
     <!-- 待更换 -->
     <Public />
     <!-- 用户分析 -->
-    <User />
+    <UserPortrait :userAges="userDetail.userAges" :userGender="userDetail.userGender" />
     <!-- 营销事件 -->
     <Event />
     <!-- 相似艺人 -->
@@ -51,7 +51,8 @@ import ViewBase from '@/util/ViewBase'
 import { Tab, Tabs, Icon } from 'vant'
 import Hots from './components/hots.vue'
 import Public from './components/public.vue'
-import User from './components/users.vue'
+import UserPortrait from '@/views/common/user/userPortrait.vue'
+// import User from './components/users.vue'
 import Event from './components/event.vue'
 import Competing from './components/competing.vue'
 import Works from './components/works.vue'
@@ -66,7 +67,7 @@ import {BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
     BubbleBottom,
     Hots,
     Public,
-    User,
+    UserPortrait,
     Event,
     Competing,
     Works
@@ -99,6 +100,45 @@ export default class KolPage extends ViewBase {
     rankingId: '', // 有值则加热搜事件链接
     rankingNum: '热搜No.8',
     rankingName: '#1111111111111', // 有值则显示模块，无则不显示模块
+  }
+
+  userDetail: any = {
+    userAges: [
+      {
+        type: '男',
+        value: 40.9,
+      },
+      {
+        type: '女',
+        value: 59.1,
+      }
+    ],
+    userGender: [
+      {
+        type: '≥19岁',
+        value: 40.9,
+      },
+      {
+        type: '20-24',
+        value: 59.1,
+      },
+      {
+        type: '25-29',
+        value: 40.9,
+      },
+      {
+        type: '30-34',
+        value: 40.9,
+      },
+      {
+        type: '35-39',
+        value: 40.9,
+      },
+      {
+        type: '≥40岁',
+        value: 40.9,
+      },
+    ]
   }
 
   demo() {

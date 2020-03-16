@@ -216,6 +216,14 @@ export default new Router({
       name: 'demo-vslist',
       component: () => import('./views/demo/vsList.vue')
     },
+
+    {
+      path: '/demo/tabnav',
+      name: 'demo-tabnav',
+      component: () => import('./views/demo/tabnav.vue')
+    },
+
+    // test canvas
     {
       path: '/demo/bubble',
       name: 'demo-bubble',

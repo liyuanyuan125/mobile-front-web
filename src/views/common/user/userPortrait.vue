@@ -1,6 +1,6 @@
 <template>
   <div class="userportrait">
-    <h4>性别年龄占比</h4>
+    <!-- <h4>性别年龄占比</h4> -->
     <div style="margin-top:15px;width: 40%;float: left;">
       <BarGraph :dataOption="userAgesData" :colorList="colorList" />
     </div>
@@ -82,7 +82,6 @@ export default class UserPortrait extends ViewBase {
 </script>
 
 <style lang="less" scoped>
-@import '../less/main.less';
 h4 {
   font-size: 40px;
   font-weight: 500;
@@ -90,5 +89,7 @@ h4 {
   line-height: 40px;
   margin-left: 5%;
 }
-
+.userportrait {
+  height: 350px;
+}
 </style>

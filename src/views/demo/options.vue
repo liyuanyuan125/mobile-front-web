@@ -1,27 +1,30 @@
 <template>
   <div class="demo-page">
-    <contrast :fetch="fetch" :query="query" />
-    <comment :publicPraise='publicPraise' :hotQuery="hotQuery" />
-    <age :to="to" :ageRangeList='ageRangeList' />
+    <MarketContrast :fetch="fetch" :query="query" />
+    <MarketComment  :href="href" :publicPraise='publicPraise' :hotQuery="hotQuery" />
+    <AgeDistribution :href="href" :ageRangeList='ageRangeList' />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import contrast from '@/components/opinions/contrast/index.vue'
-import comment from '@/components/opinions/comment/index.vue'
-import Age from '@/components/opinions/ageDistribution/index.vue'
+// 口碑评论对比
+import MarketContrast from '@/views/common/marketContrast/index.vue'
+// 口碑评论
+import MarketComment from '@/views/common/marketComment/index.vue'
+// 年龄分布
+import AgeDistribution from '@/views/common/ageDistribution/index.vue'
 
 @Component({
   components: {
-    contrast,
-    comment,
-    Age
+    MarketContrast,
+    MarketComment,
+    AgeDistribution
   }
 })
 export default class DemoPage extends Vue {
     // 查看更多
-    to = {
+    href = {
         name: 'demo-twobar'
     }
     // 口碑评论 好感度

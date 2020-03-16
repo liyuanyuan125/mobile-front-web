@@ -39,7 +39,9 @@
     <!-- 营销事件 -->
     <Event />
     <!-- 相似艺人 -->
-    <Competing /> 
+    <Competing />
+    <!-- 作品分析 -->
+    <Works />
   </div>
 </template>
 
@@ -52,6 +54,7 @@ import Public from './components/public.vue'
 import User from './components/users.vue'
 import Event from './components/event.vue'
 import Competing from './components/competing.vue'
+import Works from './components/works.vue'
 import { toast } from '@/util/toast'
 import {BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
 
@@ -65,7 +68,8 @@ import {BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
     Public,
     User,
     Event,
-    Competing
+    Competing,
+    Works
   }
 })
 export default class KolPage extends ViewBase {

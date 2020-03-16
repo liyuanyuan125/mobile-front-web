@@ -5,6 +5,10 @@
     <WantSeeTrend :dataTrend="wantSeeTrend" />
     <BoxOffice />
     <PraiseComment :favorable="movieInfo.favorable" :publicPraise="publicPraise" />
+    <UserPortrait
+      :userGender="userAnalysis.ageRangeList"
+      :userGenderuserAges="userAnalysis.genderList"
+    />
     <EventList :eventList="eventList" />
     <RivalAnalysis :rivalList="rivalAnalysis" />
     <ActorList v-if="actorList && actorList.length" :actorList="actorList" />
@@ -20,6 +24,7 @@ import BaseInfoArea from './components/movieInfo.vue' // 影片基本信息
 import WantSeeTrend from './components/wantSeeTrend.vue' // 想看趋势
 import BoxOffice from './components/boxOffice.vue' // 影片票房
 import PraiseComment from '@/views/common/praiseComment/index.vue' // 口碑评论
+import UserPortrait from '@/views/common/user/userPortrait.vue'
 import EventList from '@/views/common/eventList/event.vue' // 事件跟踪
 import RivalAnalysis from './components/rivalAnalysis.vue' // 竞品分析
 import ActorList from '@/views/common/actorList/index.vue' // 主创人员
@@ -33,6 +38,7 @@ import ProduceList from '@/views/common/produceList/index.vue' // 出品发行
     WantSeeTrend,
     BoxOffice,
     PraiseComment,
+    UserPortrait,
     EventList,
     RivalAnalysis,
     ActorList,
@@ -272,6 +278,40 @@ export default class MoviePage extends ViewBase {
   favorable = {
     text: '好感度',
     value: 'B+'
+  }
+  userAnalysis = {
+    genderList: [
+      {
+        name: '男',
+        value: 12
+      },
+      {
+        name: '女',
+        value: 88
+      }
+    ],
+    ageRangeList: [
+      {
+        name: '小于20',
+        value: 14
+      },
+      {
+        name: '20-30',
+        value: 20
+      },
+      {
+        name: '30-40',
+        value: 34
+      },
+      {
+        name: '40-50',
+        value: 30
+      },
+      {
+        name: '大于50',
+        value: 2
+      }
+    ]
   }
   // 口碑评论 数据
   publicPraise = {

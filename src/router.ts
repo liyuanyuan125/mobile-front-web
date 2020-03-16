@@ -143,7 +143,7 @@ export default new Router({
     {
       path: '/platform/detail/:id/:type/:name/:startTime/:endTime',
       name: 'platform-detail',
-      component: () => import('./views/common/platform/details.vue'),
+      component: () => import('./views/commonPage/platform/details.vue'),
       props: paramTypes({
         id: Number,
         type: String,
@@ -225,6 +225,11 @@ export default new Router({
       path: '/demo/cakeEcharts',
       name: 'demo-chinamap',
       component: () => import('./views/demo/cakeEcharts.vue')
+    },
+    {
+      path: '/demo/options',
+      name: 'demo-options',
+      component: () => import('./views/demo/options.vue')
     }
   ]
 })

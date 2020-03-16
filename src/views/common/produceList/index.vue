@@ -1,10 +1,7 @@
 <template>
   <!-- 电影电视剧详情页 出品发行公司 -->
   <div class="producemod">
-    <h3>
-      出品发行
-      <van-icon name="arrow" size="20" color="#c8c6c4" />
-    </h3>
+    <ModuleTitle title="出品发行" :appLink="appLink" />
     <dl class="companylist">
       <dd v-for="(item,index) in produceList" :key="item + index">{{item}}</dd>
     </dl>
@@ -13,17 +10,18 @@
 
 <script lang='ts'>
 import { Component, Vue, Prop } from 'vue-property-decorator'
-import { Icon } from 'vant'
+import ModuleTitle from '@/components/sentimentTitle'
 
 @Component({
   components: {
-    [Icon.name]: Icon
+    ModuleTitle
   }
 })
 export default class ProduceList extends Vue {
   /** 发行公司 */
   @Prop({ type: Array }) produceList!: string[]
 
+  appLink: string = ''
   mounted() {
     // todo
   }
@@ -34,7 +32,7 @@ export default class ProduceList extends Vue {
 // 主创人员
 .producemod {
   background: #fff;
-  border-bottom: 20px solid rgba(216, 216, 216, 0.2);
+  border-top: 20px solid rgba(216, 216, 216, 0.2);
   padding: 50px 0;
 
   h3 {

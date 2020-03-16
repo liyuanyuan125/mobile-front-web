@@ -6,6 +6,7 @@
     <BoxOffice />
     <PraiseComment :favorable="movieInfo.favorable" :publicPraise="publicPraise" />
     <EventList :eventList="eventList" />
+    <RivalAnalysis :rivalList="rivalAnalysis" />
     <ActorList v-if="actorList && actorList.length" :actorList="actorList" />
     <ProduceList v-if="produceList && produceList.length" :produceList="produceList" />
   </div>
@@ -20,6 +21,7 @@ import WantSeeTrend from './components/wantSeeTrend.vue' // 想看趋势
 import BoxOffice from './components/boxOffice.vue' // 影片票房
 import PraiseComment from '@/views/common/praiseComment/index.vue' // 口碑评论
 import EventList from '@/views/common/eventList/event.vue' // 事件跟踪
+import RivalAnalysis from './components/rivalAnalysis.vue' // 竞品分析
 import ActorList from '@/views/common/actorList/index.vue' // 主创人员
 import ProduceList from '@/views/common/produceList/index.vue' // 出品发行
 // import hotLine from '@/components/hotLine'
@@ -32,6 +34,7 @@ import ProduceList from '@/views/common/produceList/index.vue' // 出品发行
     BoxOffice,
     PraiseComment,
     EventList,
+    RivalAnalysis,
     ActorList,
     ProduceList
   }
@@ -400,6 +403,53 @@ export default class MoviePage extends ViewBase {
           interactiveValue: '100万+'
         }
       ]
+    }
+  ]
+  rivalAnalysis = [
+    {
+      rivalName: '疯狂外星人',
+      heatTrend: 1300,
+      heatCount: '1.2万',
+      rivalCover: {
+        source: 'piaoshen',
+        url:
+          'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/05/06/190506000002357372.jpg'
+      },
+      rivalId: '231331',
+      materialsAdd: '1,232',
+      materialsTrend: 1200,
+      eventName: '世贸组织暂停会议',
+      ' eventCreatTime': 1583979088061
+    },
+    {
+      rivalName: '疯狂外星人',
+      heatTrend: -1300,
+      heatCount: '1.2万',
+      rivalCover: {
+        source: 'piaoshen',
+        url:
+          'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/05/06/190506000002357372.jpg'
+      },
+      rivalId: '231331',
+      materialsAdd: '1,232',
+      materialsTrend: 231,
+      eventName: '世贸组织暂停会议',
+      ' eventCreatTime': 1583979088061
+    },
+    {
+      rivalName: '疯狂外星人',
+      heatTrend: -1300,
+      heatCount: '1.2万',
+      rivalCover: {
+        source: 'piaoshen',
+        url:
+          'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/05/06/190506000002357372.jpg'
+      },
+      rivalId: '231331',
+      materialsAdd: '1,232',
+      materialsTrend: 3211,
+      eventName: '世贸组织暂停会议',
+      ' eventCreatTime': 1583979088061
     }
   ]
   actorList = [

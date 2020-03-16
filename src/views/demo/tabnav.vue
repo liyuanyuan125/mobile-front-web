@@ -14,11 +14,17 @@
 
     <TabNav
       :list ="list"
+      class="tab-nav"
     />
 
     <!-- <TabNav
       :list ="list"
       normal
+    /> -->
+
+    <!-- <TabNav
+      :list ="list"
+      hideHeader
     /> -->
 
     <section class="pane" id="hot">
@@ -140,6 +146,10 @@ export default class extends Vue {
   font-weight: 300;
   line-height: 1.7;
 }
+
+// .tab-nav {
+//   top: 88px;
+// }
 
 .pane {
   padding: 30px;

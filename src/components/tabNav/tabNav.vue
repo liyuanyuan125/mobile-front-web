@@ -1,7 +1,10 @@
 <template>
   <nav
     class="tab-nav"
-    :class="{ 'tab-nav-normal': normal }"
+    :class="{
+      'tab-nav-normal': normal,
+      'tab-nav-hide-header': hideHeader,
+    }"
     ref="box"
   >
     <Tabs v-model="model" @click="handleClick">
@@ -36,6 +39,9 @@ export default class TabNav extends Vue {
 
   /** normal 状态，默认情况下，展示 S 形的头部，设置为 normal 后，则使用普通的圆角矩形 */
   @Prop({ type: Boolean, default: false }) normal!: boolean
+
+  /** 去掉头部的装饰 */
+  @Prop({ type: Boolean, default: false }) hideHeader!: boolean
 
   model = 0
 
@@ -129,6 +135,18 @@ export default class TabNav extends Vue {
     top: -55px;
     background: #fff;
     border-radius: 130px;
+  }
+}
+
+.tab-nav-hide-header {
+  margin-top: 0;
+  padding-top: 5px;
+
+  &::before {
+    content: '';
+    top: -5px;
+    height: 5px;
+    background: #fff;
   }
 }
 </style>

@@ -10,15 +10,12 @@
 import { Component, Vue } from 'vue-property-decorator'
 // 口碑评论对比
 import MarketContrast from '@/views/common/marketContrast/index.vue'
-// 口碑评论
-import MarketComment from '@/views/common/marketComment/index.vue'
 // 年龄分布
 import AgeDistribution from '@/views/common/ageDistribution/index.vue'
 
 @Component({
   components: {
     MarketContrast,
-    MarketComment,
     AgeDistribution
   }
 })

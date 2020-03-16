@@ -1,10 +1,7 @@
 <template>
   <nav
     class="tab-nav"
-    :class="{
-      'tab-nav-normal': normal,
-      'tab-nav-s': !normal
-    }"
+    :class="{ 'tab-nav-normal': normal }"
     ref="box"
   >
     <Tabs v-model="model" @click="handleClick">

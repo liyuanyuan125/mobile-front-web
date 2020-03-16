@@ -2,6 +2,10 @@
   <div class="content-wrap">
     <div class="chart-default" v-if="!dataOption"></div>
     <div ref="refChart" v-if="dataOption" class="chart-wrap"></div>
+    <div class='color'>
+      <span class='lf'>男</span>
+      <span class='rf'>女</span>
+    </div>
   </div>
 </template>
 
@@ -53,13 +57,15 @@ export default class BarGraph extends ViewBase {
           interval: 0,
           // X轴上字的样式
           textStyle: {
-            normal: {
+            // normal: {
+            // color: '#88AAF6',
+            // opacity: 0,
               color(params: any) {
                 const colorList: any = ['#88AAF6', '#F18F8F']
                 return colorList[params.dataIndex]
               },
-            },
-            fontSize: 14
+            // },
+            // fontSize: 14
           },
         },
         axisLine: {
@@ -174,5 +180,29 @@ export default class BarGraph extends ViewBase {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 9;
+}
+.color {
+  width: 100%;
+  height: 20%;
+  position: absolute;
+  left: 0;
+  bottom: 10%;
+  // background: red;
+  // opacity: 0.3;
+  font-size: 28px;
+  font-weight: 500;
+  span {
+    display: inline-block;
+    width: 50%;
+    padding-top: 5%;
+  }
+  .lf {
+    padding-left: 22%;
+    color: rgba(124, 164, 255, 1);
+  }
+  .rf {
+    padding-left: 13%;
+    color: rgba(255, 98, 98, 1);
+  }
 }
 </style>

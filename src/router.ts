@@ -1,8 +1,35 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/home.vue'
-
+import { Route } from 'vue-router'
+import { MapType } from '@/util/types'
+import { stringToBoolean } from '@/fn/typeCast'
 Vue.use(Router)
+
+/**
+ * 处理 route 中的参数类型
+ * @param config 配置
+ */
+const paramTypes = (
+  config: MapType<NumberConstructor | BooleanConstructor | StringConstructor>
+) => {
+  return ({ params }: Route) => {
+    const props = Object.entries(config).reduce((map, [key, type]) => {
+      const strVal = params[key]
+      const value = type === Number
+        ? (+strVal || 0)
+        : type === Boolean
+          ? stringToBoolean(strVal)
+          : strVal
+      map[key] = value
+      return map
+    }, {} as MapType<any>)
+    return props
+  }
+}
+
+const idProps = paramTypes({ id: Number })
+
 
 export default new Router({
   mode: 'history',
@@ -103,46 +130,64 @@ export default new Router({
       name: 'videodetail',
       component: () => import('./views/video/index.vue')
     },
+
+    // ---------------舆情---------------
     // 品牌舆情
     {
-      path: '/sentiment/brand',
+      path: '/sentiment/brand/:id',
       name: 'sentimentbrand',
-      component: () => import('./views/sentiment/brand/index.vue')
+      component: () => import('./views/sentiment/brand/index.vue'),
+      props: idProps
     },
+    // 平台热度 - 查看更多（通用页）
+    {
+      path: '/platform/detail/:id/:type/:name/:startTime/:endTime',
+      name: 'platform-detail',
+      component: () => import('./views/commonPage/platform/details.vue'),
+      props: paramTypes({
+        id: Number,
+        type: String,
+        name: String,
+        startTime: String,
+        endTime: String
+      })
+    },
+
     // kol舆情
     {
-      path: '/sentiment/kol',
-      name: 'sentimentkol',
-      component: () => import('./views/sentiment/kol/index.vue')
+      path: '/sentiment/actor/detail/:id',
+      name: 'sentimentactor',
+      component: () => import('./views/sentiment/actor/detail/index.vue')
     },
-    //  // kol舆情艺人index
-    //  {
-    //   path: '/sentiment/kol/artist',
-    //   name: 'sentimentkolindex',
-    //   component: () => import('./views/sentiment/kol/artist/index.vue')
-    // },
     {
-      path: '/sentiment/kol/artist/demo',
+      path: '/sentiment/actor/rivalAnalysis/demo',
       name: 'sentimentkoluser',
-      component: () => import('./views/sentiment/kol/artist/demo.vue')
+      component: () => import('./views/sentiment/actor/rivalAnalysis/demo.vue')
     },
     // kol舆情用户分析
     {
-      path: '/sentiment/kol/artist/user/:kolId',
-      name: 'sentimentkoluser',
-      component: () => import('./views/sentiment/kol/artist/user.vue')
+      path: '/sentiment/actor/userAnalysis/:userId',
+      name: 'sentimentactoruser',
+      component: () => import('./views/sentiment/actor/userAnalysis/user.vue')
     },
     // kol舆情竞品分析
     {
-      path: '/sentiment/kol/artist/products',
+      path: '/sentiment/actor/rivalAnalysis/products',
       name: 'sentimentkolproducts',
-      component: () => import('./views/sentiment/kol/artist/products/products.vue')
+      component: () => import('./views/sentiment/actor/rivalAnalysis/products.vue')
     },
+
     // 影片舆情
     {
-      path: '/sentiment/movie',
+      path: '/sentiment/movie/:movieId',
       name: 'sentimentmovie',
-      component: () => import('./views/sentiment/movie/index.vue')
+      component: () => import('./views/sentiment/movie/detail/index.vue')
+    },
+    // 电视剧舆情
+    {
+      path: '/sentiment/tv/:tvId',
+      name: 'sentimenttv',
+      component: () => import('./views/sentiment/tv/index.vue')
     },
     // 音乐舆情
     {
@@ -150,13 +195,6 @@ export default new Router({
       name: 'sentimentmusic',
       component: () => import('./views/sentiment/music/index.vue')
     },
-    // 剧情舆情
-    {
-      path: '/sentiment/plot',
-      name: 'sentimentplot',
-      component: () => import('./views/sentiment/plot/index.vue')
-    },
-
     // demo
     {
       path: '/demo/twobar',
@@ -178,6 +216,7 @@ export default new Router({
       name: 'demo-vslist',
       component: () => import('./views/demo/vsList.vue')
     },
+
     {
       path: '/demo/tabnav',
       name: 'demo-tabnav',
@@ -186,14 +225,19 @@ export default new Router({
 
     // test canvas
     {
-      path: '/canvas/bubble',
-      name: 'canvas-bubble',
-      component: () => import('./views/canvas/bubble.vue')
+      path: '/demo/bubble',
+      name: 'demo-bubble',
+      component: () => import('./views/demo/bubble.vue')
     },
     {
       path: '/demo/cakeEcharts',
       name: 'demo-chinamap',
       component: () => import('./views/demo/cakeEcharts.vue')
+    },
+    {
+      path: '/demo/options',
+      name: 'demo-options',
+      component: () => import('./views/demo/options.vue')
     }
   ]
 })

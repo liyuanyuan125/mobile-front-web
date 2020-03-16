@@ -3,7 +3,7 @@
     <div class="title">
       {{eventName}}
       <router-link class="to-more" to>
-        <van-icon name="arrow" size="20" />
+        <van-icon name="arrow" size="15" />
       </router-link>
     </div>
     <ul>

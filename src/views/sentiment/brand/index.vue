@@ -1,11 +1,12 @@
 <template>
   <div class="content">
-    <SentimentBar :attribute="topbar" />
+    <!-- <SentimentBar :attribute="topbar" /> -->
     <brandInfoArea :brandInfo="brandInfo" :bubbleData="bubbleData"/>
     <Hots :id="id" />
+    <!-- <comment :publicPraise='publicPraise' :hotQuery="hotQuery" /> -->
     <User />
-        <!-- <Event />
-        <Competing />  -->
+    <!-- <eventList :eventList="list" :params="params"/> -->
+    <Competing /> 
   </div>
 </template>
 
@@ -16,10 +17,10 @@ import { toast } from '@/util/toast'
 import { getList } from './data'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import brandInfoArea from './components/brandInfo.vue'
-
+import comment from '@/components/opinions/comment/index.vue'
+import eventList from '@/views/common/eventList/event.vue'
 import Hots from './components/hots.vue'
 import User from './components/users.vue'
-import Event from './components/event.vue'
 import Competing from './components/competing.vue'
 
 
@@ -29,8 +30,9 @@ import Competing from './components/competing.vue'
     SentimentBar,
     brandInfoArea,
     Hots,
+    comment,
     User,
-    Event,
+    eventList,
     Competing
   }
 })
@@ -46,16 +48,56 @@ export default class BrandPage extends ViewBase {
   bubbleData: any = {}
   brandInfo: any = {}
 
-  // brandInfo = {
-  //   brandName: '梅赛德斯-奔驰',
-  //   brandId: 1,
-  //   brandLogo: {
-  //     url: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/05/06/190506000002357372.jpg',
-  //     source: 'piaoshen'
-  //   },
-  //   rankingId: '', // 有值则加热搜事件链接
-  //   rankingName: '#奔驰大G开进故宫', // 有值则显示模块，无则不显示模块
-  // }
+  get hotQuery() {
+    return {
+      text: '好感度',
+      value: 'B+'
+    }
+  }
+  publicPraise: any = {}
+
+  // 事件
+  params = {}
+  get list() {
+    return [
+      {
+        eventId: 1,
+        eventName: '四川一辅警开奔驰强行闯关被辞',
+        creatTime: 1582897820984,
+        target: [
+          {
+            targetCode: 'hot',
+            targetName: '热点'
+          },
+          {
+            targetCode: 'negative',
+            targetName: '负面'
+          }
+        ], // 格式为string[]或者object[]待定 最多2个标签
+        interactiveList: [
+          {
+            url: 'x',
+            text: '10万+'
+          },
+          {
+            url: 'x',
+            text: '200万+'
+          },
+        ]
+      }
+   ]
+  }
+
+  /* brandInfo = {
+    brandName: '梅赛德斯-奔驰',
+    brandId: 1,
+    brandLogo: {
+      url: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/05/06/190506000002357372.jpg',
+      source: 'piaoshen'
+    },
+    rankingId: '', // 有值则加热搜事件链接
+    rankingName: '#奔驰大G开进故宫', // 有值则显示模块，无则不显示模块
+  }*/
 
   mounted() {
     this.brandDetail()
@@ -67,13 +109,24 @@ export default class BrandPage extends ViewBase {
       const { data: {
         brandInfo,
         brandOverView,
-        publicPraise, // 口碑
+        publicPraise: {appraiseList, hotWordList, badWordList},
         userAnalysis // 用户分析
       } } = await getList({brandId})
 
       this.brandInfo = brandInfo // 头部基础信息
       this.bubbleData = brandOverView // 气泡数据
-
+      // 口碑
+      const appraiseListData = (appraiseList || []).map((it: any) => {
+        return {
+          ...it,
+          raisePercent: it.raisePercent / 100
+        }
+      })
+      this.publicPraise = {
+        appraiseList: appraiseListData,
+        hotWordList,
+        badWordList
+      }
     } catch (ex) {
       toast(ex)
     }
@@ -90,40 +143,5 @@ export default class BrandPage extends ViewBase {
 }
 .content {
   background: #f2f3f6;
-  /deep/ .van-tabs__wrap {
-    height: 55px;
-    border-bottom: solid 1px fade(@c-divider, 0.5);
-    .van-tab {
-      font-size: 30px;
-      padding: 0;
-      color: @c-text;
-      flex: 1;
-    }
-    .van-tab--active {
-      color: #7ca4ff;
-    }
-    .van-tabs__line {
-      background-color: #88aaf6;
-    }
-  }
-}
-.dubble {
-  margin-top: -40px;
-  background: url('./images/bg2.png') no-repeat left bottom;
-  background-size: 100% 220px;
-}
-/deep/ .bubble-warper-bottom {
-  .mask {
-    opacity: 0;
-  }
-}
-.bg-header {
-  width: 100%;
-  height: 120px;
-}
-.line-height {
-  height: 50px;
-  width: 100%;
-  background: #fff;
 }
 </style>

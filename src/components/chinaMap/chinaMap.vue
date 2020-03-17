@@ -45,7 +45,7 @@ export default class ChinaMap extends Vue {
   /** 颜色列表，从浅色到深色变化，最小包含 2 种颜色 */
   @Prop({
     type: Array,
-    default: [ '#f1f5ff', '#d7e2ff', '#a3bdfd', '#598cfe', '#4763c6' ]
+    default: () => [ '#f1f5ff', '#d7e2ff', '#a3bdfd', '#598cfe', '#4763c6' ]
   }) colorRange!: string[]
 
   @Prop({ type: String, default: '#2e2f5a' }) tooltipValueColor!: string

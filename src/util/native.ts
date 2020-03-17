@@ -2,6 +2,8 @@
 import { registerHandler, callNative } from './bridge'
 import md5 from 'md5'
 import { devLog, devInfo } from './dev'
+import qs from 'querystring'
+import { objectClean } from '@jydata/fe-util'
 
 // 参数加密秘钥，仅用于 dev 环境
 const apiSecretKey = '123456789'
@@ -98,6 +100,56 @@ export async function setNavBarStatus(obj: any) {
 export async function openAppLinkClient(obj: any) {
   const data = await callNative('openAppLinkClient', obj)
   devInfo(`[sayHi] native return data:`, data)
+  return data
+}
+
+/**
+ * AppLink 对象，必须含有 page
+ */
+export interface AppLink {
+  /** 页面地址 */
+  page: string
+  /** 其他查询参数 */
+  [key: string]: any
+}
+
+/**
+ * 格式化 appLink
+ * @param link AppLink 对象
+ */
+export function formatAppLink(link: AppLink): string
+/**
+ * 格式化 appLink
+ * @param page 页面地址
+ * @param query 页面参数
+ */
+export function formatAppLink(page: string, query?: object): string
+export function formatAppLink(p: string | AppLink, query: object = {}) {
+  const param = typeof p === 'string'
+    ? { p, ...query }
+    : objectClean({ p: p.page, ...p, page: undefined }, [ undefined ])
+  const link = qs.stringify(param)
+  return link
+}
+
+/**
+ * 打开 APP 指定页面
+ * @param link AppLink 对象
+ */
+export async function openAppLink(link: AppLink): Promise<any>
+/**
+ * 打开 APP 指定页面
+ * @param page 页面地址
+ * @param query 页面参数
+ */
+export async function openAppLink(page: string, query?: object): Promise<any>
+export async function openAppLink(p: string | AppLink, query: object = {}) {
+  const link = formatAppLink(p as any, query)
+  const params = {
+    applinkData: 'jydataadvertiser://scheme?' + link,
+    originUrl: location.href
+  }
+  const data = await openAppLinkClient({ params })
   return data
 }
 

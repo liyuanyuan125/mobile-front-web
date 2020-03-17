@@ -38,11 +38,13 @@
             <ul>
               <li>
                 <p class='hot1'>热度</p>
-                <p class='hot2'>80345&nbsp;<span class='blue'>低19</span></p>
+                <p class='hot2'>80345</p>
+                <p class='blue'>低19</p>
               </li>
               <li>
                 <p class='hot1'>全网粉丝数</p>
-                <p class='hot2'>224&nbsp;<span class='blue'>高504</span></p>
+                <p class='hot2'>224</p>
+                <p class='blue'>高504</p>
               </li>
             </ul>
           </div>

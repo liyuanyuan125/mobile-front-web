@@ -12,7 +12,13 @@
         <div class='sex'>
           <sexChart :width='305' :data='sexdata'></sexChart>
         </div>
-        <div class='age'>年龄占比所在位置</div>
+        <div class='age'>
+          <div class='item-title'>粉丝年龄分布</div>
+          <VerticalBar
+            :data="agedata"
+            class="chart"
+          />
+        </div>
       </div>
       <div class='userlist'>
         <annularChart :width='305' :height='300' :data='annulardata'></annularChart>
@@ -52,13 +58,15 @@ import ChinaMap, { ChinaMapItem } from '@/components/chinaMap'
 import { toast } from '@/util/toast'
 import sexChart from '@/components/cakeChart/sexChart.vue'
 import annularChart from '@/components/cakeChart/annularChart.vue'
+import VerticalBar, { VerticalBarItem } from '@/components/verticalBar'
 
 
 @Component({
   components: {
     ChinaMap,
     sexChart,
-    annularChart
+    annularChart,
+    VerticalBar
   }
 })
 export default class KolPage extends ViewBase {
@@ -82,6 +90,15 @@ export default class KolPage extends ViewBase {
     title: '粉丝平台分布',
     sesnsitivity: '敏感度高'
   }
+
+  agedata: VerticalBarItem[] = [
+    { name: '小于19岁', value: 8.8 },
+    { name: '20-24', value: 17.6 },
+    { name: '25-29', value: 32.8 },
+    { name: '30-34', value: 28.0 },
+    { name: '35-39', value: 9.2 },
+    { name: '大于40岁', value: 3.1 },
+  ]
 
   data: ChinaMapItem[] = [
     { name: '新疆', value: 1000 },
@@ -240,8 +257,16 @@ export default class KolPage extends ViewBase {
     border-bottom: solid 1px #d8d8d8;
   }
   .age {
-    height: 300px;
-    margin-top: 60px;
+    // height: 300px;
+    // margin-top: 60px;
+    .item-title {
+      margin-top: 60px;
+      margin-bottom: 50px;
+      font-size: 34px;
+      font-weight: 500;
+      color: rgba(48, 48, 48, 1);
+      line-height: 34px;
+    }
   }
 }
 .userlist {

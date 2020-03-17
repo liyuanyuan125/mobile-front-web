@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
+        "@jydata/fe-util": "^1.23.0",
         "@types/echarts": "^4.1.14",
         "axios": "^0.19.0",
         "core-js": "^2.6.5",

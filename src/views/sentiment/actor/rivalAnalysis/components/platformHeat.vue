@@ -60,6 +60,7 @@ export default class KolPage extends ViewBase {
   // 切换平台热度对比
   chgpublicPk(num: any) {
     this.publicPk = num
+    this.$emit('chgpublicPk', num)
   }
 
 }
@@ -93,7 +94,7 @@ export default class KolPage extends ViewBase {
   flex: 1 0 auto;
   margin-top: 30px;
   width: 600px;
-  height: 522px;
+  // height: 522px;
   background: rgba(242, 243, 246, 1);
   border-radius: 20px;
   opacity: 0.5;

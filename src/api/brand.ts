@@ -8,3 +8,12 @@ export async function getList(query: any) {
   const res = await get('/yuqing/brand/heatAnalysis', query)
   return res
 }
+
+/**
+ * 竞品分析报告详情-获取热度分析
+ * @param query  object
+ */
+export async function ivalHeatAnalysis(query: any) {
+  const res = await get('/yuqing/brand/rivalHeatAnalysis', query)
+  return res
+}

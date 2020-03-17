@@ -14,8 +14,8 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { getList } from '@/api/brand'
 import { toast } from '@/util/toast'
-import { hotLine } from '@/components/hotLine'
 // import hotLine from '@/views/common/hotLine'
+import { hotLine } from '@/components/hotLine'
 
 
 @Component({

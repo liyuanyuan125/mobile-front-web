@@ -164,35 +164,31 @@ export default new Router({
         endTime: String
       })
     },
+
     // kol舆情
     {
-      path: '/sentiment/kol',
-      name: 'sentimentkol',
-      component: () => import('./views/sentiment/kol/index.vue')
+      path: '/sentiment/actor/detail/:id',
+      name: 'sentimentactor',
+      component: () => import('./views/sentiment/actor/detail/index.vue')
     },
-    //  // kol舆情艺人index
-    //  {
-    //   path: '/sentiment/kol/artist',
-    //   name: 'sentimentkolindex',
-    //   component: () => import('./views/sentiment/kol/artist/index.vue')
-    // },
     {
-      path: '/sentiment/kol/artist/demo',
+      path: '/sentiment/actor/rivalAnalysis/demo',
       name: 'sentimentkoluser',
-      component: () => import('./views/sentiment/kol/artist/demo.vue')
+      component: () => import('./views/sentiment/actor/rivalAnalysis/demo.vue')
     },
     // kol舆情用户分析
     {
-      path: '/sentiment/kol/artist/user/:kolId',
-      name: 'sentimentkoluser',
-      component: () => import('./views/sentiment/kol/artist/user.vue')
+      path: '/sentiment/actor/userAnalysis/:userId',
+      name: 'sentimentactoruser',
+      component: () => import('./views/sentiment/actor/userAnalysis/user.vue')
     },
     // kol舆情竞品分析
     {
-      path: '/sentiment/kol/artist/products',
+      path: '/sentiment/actor/rivalAnalysis/products',
       name: 'sentimentkolproducts',
-      component: () => import('./views/sentiment/kol/artist/products/products.vue')
+      component: () => import('./views/sentiment/actor/rivalAnalysis/products.vue')
     },
+
     // 影片舆情
     {
       path: '/sentiment/movie/:movieId',
@@ -232,6 +228,14 @@ export default new Router({
       name: 'demo-vslist',
       component: () => import('./views/demo/vsList.vue')
     },
+
+    {
+      path: '/demo/tabnav',
+      name: 'demo-tabnav',
+      component: () => import('./views/demo/tabnav.vue')
+    },
+
+    // test canvas
     {
       path: '/demo/bubble',
       name: 'demo-bubble',

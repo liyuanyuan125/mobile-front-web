@@ -1,6 +1,7 @@
 <template>
   <div class="userportrait">
-    <h4>性别年龄占比</h4>
+    <!-- <h4>性别年龄占比</h4> -->
+    <ModuleTitle title="用户分析" />
     <div style="margin-top:15px;width: 40%;float: left;">
       <BarGraph :dataOption="userAgesData" :colorList="colorList" />
     </div>
@@ -15,11 +16,13 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import BarGraph from '@/components/kol/barGraph.vue'
 import barGraphRow from '@/components/kol/barGraphRow.vue'
+import ModuleTitle from '@/components/sentimentTitle'
 
 @Component({
   components: {
     BarGraph,
-    barGraphRow
+    barGraphRow,
+    ModuleTitle
   }
 })
 export default class UserPortrait extends ViewBase {
@@ -82,7 +85,6 @@ export default class UserPortrait extends ViewBase {
 </script>
 
 <style lang="less" scoped>
-@import '../less/main.less';
 h4 {
   font-size: 40px;
   font-weight: 500;
@@ -90,5 +92,9 @@ h4 {
   line-height: 40px;
   margin-left: 5%;
 }
-
+.userportrait {
+  height: 450px;
+  padding-top: 52px;
+  background: #fff;
+}
 </style>

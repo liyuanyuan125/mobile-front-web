@@ -16,6 +16,7 @@ const format = 'YYYY-MM-DD'
 export default class Main extends Vue {
   /** 处理x，y数据 */
   @Prop({ type: Object }) lineData!: any
+  @Prop({ type: Object}) overAllHeat!: any
   /** line color展示 */
   @Prop({ type: Array, default: () => []}) colors!: any
   /** tooltip hot */
@@ -23,8 +24,9 @@ export default class Main extends Vue {
   /** tooltip 文本色 */
   @Prop({ type: String, default: '#8f8f8f'}) textColor!: string
 
+  // 处理 xDate 数据展示
   get xAxisDate() {
-    return (this.lineData.xDate || []).map((it: any) => moment(it).format('MM-DD'))
+    return this.overAllHeat.dateList.map((it: any) => moment(it.date).format('MM-DD'))
   }
 
   mounted() {
@@ -34,23 +36,8 @@ export default class Main extends Vue {
     const chartEl = (this.$refs.refChart as any)
     const myChart = echarts.init(chartEl)
 
-    const linearGradient = {
-      normal: {
-        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-          {
-            offset: 0,
-            color: '#8BB2FF'
-          },
-          {
-            offset: 1,
-            color: 'rgba(255,255,255, 0)'
-          }
-        ])
-      }
-    }
 
     const seriesItems = (this.lineData.yDate || []).map((it: any) => {
-
       return {
         type: 'line',
         symbolSize: 7,
@@ -59,11 +46,6 @@ export default class Main extends Vue {
         data: it.data
       }
     })
-
-    // 如果是单条数据加上渐变效果
-    if (seriesItems.length == 1) {
-      seriesItems[0].areaStyle = linearGradient
-    }
 
     const options: any = {
       title: {
@@ -74,16 +56,16 @@ export default class Main extends Vue {
           color: '#303030',
         },
       },
-      legend: {
-        bottom: 0,
-        icon: 'circle', // 设置图例标记
-        itemHeight: 8,
-        itemWidth: 10,
-        textStyle: {
-          color: '#000',
-          fontWeight: 100,
-        }
-      },
+      // legend: {
+      //   bottom: 0,
+      //   icon: 'circle', // 设置图例标记
+      //   itemHeight: 8,
+      //   itemWidth: 10,
+      //   textStyle: {
+      //     color: '#000',
+      //     fontWeight: 100,
+      //   }
+      // },
       tooltip: {
         trigger: 'axis',
         // backgroundColor: '#fff',
@@ -144,7 +126,6 @@ export default class Main extends Vue {
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        interval: 5,
         data: this.xAxisDate,
         axisLabel: {
           color: '#47403B',

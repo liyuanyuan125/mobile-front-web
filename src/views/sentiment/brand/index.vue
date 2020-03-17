@@ -1,11 +1,11 @@
 <template>
   <div class="content">
-    <!-- <SentimentBar :attribute="topbar" /> -->
+    <SentimentBar :attribute="topbar" />
     <brandInfoArea :brandInfo="brandInfo" :bubbleData="bubbleData"/>
     <Hots :id="id" />
     <!-- <comment :publicPraise='publicPraise' :hotQuery="hotQuery" /> -->
     <User />
-    <!-- <eventList :eventList="list" :params="params"/> -->
+    <eventList :eventList="list" :params="params"/>
     <Competing /> 
   </div>
 </template>
@@ -60,31 +60,35 @@ export default class BrandPage extends ViewBase {
   params = {}
   get list() {
     return [
-      {
-        eventId: 1,
-        eventName: '四川一辅警开奔驰强行闯关被辞',
-        creatTime: 1582897820984,
-        target: [
-          {
-            targetCode: 'hot',
-            targetName: '热点'
+    {
+      eventName: '乔乔的异想世界获最佳喜剧片剪辑',
+      eventId: '12332',
+      creatTime: 1584146173812,
+      target: [
+        {
+          targetCode: '1',
+          targetName: '正面'
+        }
+      ],
+      interactiveList: [
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
           },
-          {
-            targetCode: 'negative',
-            targetName: '负面'
-          }
-        ], // 格式为string[]或者object[]待定 最多2个标签
-        interactiveList: [
-          {
-            url: 'x',
-            text: '10万+'
+          interactiveValue: '100万+'
+        },
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
           },
-          {
-            url: 'x',
-            text: '200万+'
-          },
-        ]
-      }
+          interactiveValue: '1,212'
+        }
+      ]
+    },
    ]
   }
 
@@ -140,8 +144,5 @@ export default class BrandPage extends ViewBase {
 
 /deep/ .van-tab__pane {
   display: block;
-}
-.content {
-  background: #f2f3f6;
 }
 </style>

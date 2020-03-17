@@ -317,15 +317,15 @@ export default class MoviePage extends ViewBase {
   publicPraise = {
     appraiseList: [
       {
-        raisePercent: 12,
+        raisePercent: 1200,
         raiseName: '正面评价'
       },
       {
-        raisePercent: 32,
+        raisePercent: 3200,
         raiseName: '负面评价'
       },
       {
-        raisePercent: 23,
+        raisePercent: 2300,
         raiseName: '中性评价'
       }
     ],

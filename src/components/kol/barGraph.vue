@@ -2,7 +2,7 @@
   <div class="content-wrap">
     <div class="chart-default" v-if="!dataOption"></div>
     <div ref="refChart" v-if="dataOption" class="chart-wrap"></div>
-    <div class='color'>
+    <div class='color' v-if='this.dataOption != null'>
       <span class='lf'>男</span>
       <span class='rf'>女</span>
     </div>
@@ -194,7 +194,7 @@ export default class BarGraph extends ViewBase {
   span {
     display: inline-block;
     width: 50%;
-    padding-top: 5%;
+    padding-top: 8%;
   }
   .lf {
     padding-left: 22%;

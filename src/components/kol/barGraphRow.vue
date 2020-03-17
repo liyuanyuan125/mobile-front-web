@@ -153,9 +153,10 @@ export default class BarGraphRow extends ViewBase {
 
 <style lang="less" scoped>
 .content-wrap {
+  height: 350px;
   position: relative;
   width: 100%;
-  height: 100%;
+  // height: 100%;
 }
 .chart-default {
   background: url('../../assets/data-null.png') no-repeat center;

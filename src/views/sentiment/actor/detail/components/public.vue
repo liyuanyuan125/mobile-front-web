@@ -50,7 +50,7 @@ export default class Main extends Vue {
 @import '../less/com.less';
 
 .wow-content {
-  margin: 20px 0;
+  margin: 20px 0 0;
   background-color: #fff;
   padding: 60px 30px 10px;
 }

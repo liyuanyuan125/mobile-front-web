@@ -35,7 +35,7 @@
     <!-- 待更换 -->
     <Public />
     <!-- 用户分析 -->
-    <UserPortrait :userAges="userDetail.userAges" :userGender="userDetail.userGender" />
+    <UserPortrait :genderList="userAnalysis.genderList" :ageRangeList="userAnalysis.ageRangeList" />
     <!-- 营销事件 -->
     <Event />
     <!-- 相似艺人 -->
@@ -102,42 +102,38 @@ export default class KolPage extends ViewBase {
     rankingName: '#1111111111111', // 有值则显示模块，无则不显示模块
   }
 
-  userDetail: any = {
-    userAges: [
+  userAnalysis: any = {
+    genderList: [
       {
-        type: '男',
-        value: 40.9,
+        'name ': '男',
+        value: 1200
       },
       {
-        type: '女',
-        value: 59.1,
+        'name ': '女',
+        value: 8800
       }
     ],
-    userGender: [
+    ageRangeList: [
       {
-        type: '≥19岁',
-        value: 40.9,
+        name: '小于20',
+        value: 1400
       },
       {
-        type: '20-24',
-        value: 59.1,
+        name: '20-30',
+        value: 2000
       },
       {
-        type: '25-29',
-        value: 40.9,
+        name: '30-40',
+        value: 3400
       },
       {
-        type: '30-34',
-        value: 40.9,
+        name: '40-50',
+        value: 3000
       },
       {
-        type: '35-39',
-        value: 40.9,
-      },
-      {
-        type: '≥40岁',
-        value: 40.9,
-      },
+        name: '大于50',
+        value: 200
+      }
     ]
   }
 

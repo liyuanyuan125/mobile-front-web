@@ -20,6 +20,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { setNavBarStatus, handleGoBack } from '@/util/native'
 import { SentimentBarItem } from './types'
+import { isJyApp } from '@/fn/ua'
 
 @Component({})
 export default class SentimentBar extends Vue {
@@ -32,7 +33,10 @@ export default class SentimentBar extends Vue {
   hasTitle: boolean = false
 
   mounted() {
-    this.hideNavBarStatus()
+    if (isJyApp()) {
+      // 在 app 里执行隐藏native 导航
+      this.hideNavBarStatus()
+    }
     window.addEventListener('scroll', this.getScroll)
   }
 

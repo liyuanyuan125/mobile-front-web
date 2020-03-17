@@ -2,16 +2,14 @@
   <div class="page">
     <SentimentBar :attribute="topbar" />
     <BaseInfoArea :baseInfo="movieInfo" :overView="movieOverView" />
+    <TabNav :list="tabList" class="formattab" />
     <WantSeeTrend :dataTrend="wantSeeTrend" />
     <BoxOffice />
     <PraiseComment :favorable="movieInfo.favorable" :publicPraise="publicPraise" />
-    <UserPortrait
-      :userGender="userAnalysis.ageRangeList"
-      :userGenderuserAges="userAnalysis.genderList"
-    />
+    <UserPortrait :ageRangeList="userAnalysis.ageRangeList" :genderList="userAnalysis.genderList" />
     <EventList :eventList="eventList" />
     <RivalAnalysis :rivalList="rivalAnalysis" />
-    <ActorList v-if="actorList && actorList.length" :actorList="actorList" />
+    <ActorList v-if="actorList && actorList.length" :actorList="actorList" id="actor" />
     <ProduceList v-if="produceList && produceList.length" :produceList="produceList" />
   </div>
 </template>
@@ -21,6 +19,7 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import BaseInfoArea from './components/movieInfo.vue' // 影片基本信息
+import TabNav, { TabNavItem } from '@/components/tabNav'
 import WantSeeTrend from './components/wantSeeTrend.vue' // 想看趋势
 import BoxOffice from './components/boxOffice.vue' // 影片票房
 import PraiseComment from '@/views/common/praiseComment/index.vue' // 口碑评论
@@ -35,6 +34,7 @@ import ProduceList from '@/views/common/produceList/index.vue' // 出品发行
   components: {
     SentimentBar,
     BaseInfoArea,
+    TabNav,
     WantSeeTrend,
     BoxOffice,
     PraiseComment,
@@ -55,8 +55,7 @@ export default class MoviePage extends ViewBase {
     movieNameCn: '流浪地球',
     movieNameEn: 'The Wandering Earth',
     coverUrl: {
-      url:
-        'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/05/06/190506000002357372.jpg',
+      url: '',
       source: 'piaoshen'
     },
     duration: '115分钟',
@@ -65,6 +64,14 @@ export default class MoviePage extends ViewBase {
     movieId: '100038',
     favorable: 'B+'
   }
+  tabList: TabNavItem[] = [
+    { name: 'hot', label: '热度' },
+    { name: 'praise', label: '口碑' },
+    { name: 'user', label: '用户' },
+    { name: 'event', label: '事件' },
+    { name: 'rival', label: '竞品' },
+    { name: 'actor', label: '资料' }
+  ]
   movieOverView = {
     heatRanking: 'NO.125',
     commnetTrend: 121344,
@@ -283,33 +290,33 @@ export default class MoviePage extends ViewBase {
     genderList: [
       {
         name: '男',
-        value: 12
+        value: 1200
       },
       {
         name: '女',
-        value: 88
+        value: 8800
       }
     ],
     ageRangeList: [
       {
         name: '小于20',
-        value: 14
+        value: 1400
       },
       {
         name: '20-30',
-        value: 20
+        value: 2000
       },
       {
         name: '30-40',
-        value: 34
+        value: 3400
       },
       {
         name: '40-50',
-        value: 30
+        value: 3000
       },
       {
         name: '大于50',
-        value: 2
+        value: 200
       }
     ]
   }
@@ -640,5 +647,10 @@ export default class MoviePage extends ViewBase {
 <style lang="less" scoped>
 .page {
   color: #303030;
+}
+.formattab {
+  margin-top: 0;
+  top: 88px;
+  z-index: 11;
 }
 </style>

@@ -3,8 +3,8 @@
   <div class="viewpage">
     <div class="movieinfo">
       <div class="moviebox">
-        <!-- <img :src="coverImg" :alt="baseInfo.movieNameCn" class="img" /> -->
-        <img src="@/assets/person-default.png" :alt="baseInfo.movieNameCn" class="img" />
+        <img :src="movieCover" :alt="baseInfo.movieNameCn" class="img" v-if="movieCover" />
+        <img src="@/assets/person-default.png" :alt="baseInfo.movieNameCn" class="img" v-else />
         <h3>{{baseInfo.movieNameCn}}</h3>
         <h5>{{baseInfo.movieNameEn}}</h5>
         <p>{{baseInfo.duration}}{{!baseInfo.duration || !baseInfo.genreName ? '' : ' - '}}{{baseInfo.genreName}}</p>
@@ -25,6 +25,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import { BubbleBottom } from '@/components/bubble'
+import { imgFixed } from '@/fn/imgProxy'
 
 @Component({
   components: {
@@ -36,7 +37,14 @@ export default class BaseInfoArea extends ViewBase {
   @Prop({ type: Object }) overView!: any
 
   bubbleData: any = []
+  movieCover: string = ''
+
   mounted() {
+    // 处理封面图
+    if (this.baseInfo.coverUrl && this.baseInfo.coverUrl.url) {
+      const imgUrl: any = imgFixed(this.baseInfo.coverUrl, 180, 240)
+      this.movieCover = imgUrl
+    }
     // 处理概览数据
     this.bubbleData = [
       {

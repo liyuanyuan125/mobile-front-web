@@ -154,7 +154,7 @@ export function getTodayDate() {
 
 /**
  * 数字规则
- * 千用逗号表示，万用万字表示保留一位小数，亿保留2位小数
+ * 千用逗号表示，万用万字表示保留一位小数，亿保留1位小数
  */
 export function roleNumber(num: string | number) {
   num = '' + num
@@ -166,7 +166,7 @@ export function roleNumber(num: string | number) {
     const tenThousand = (Number(num) / 10000).toFixed(1)
     return `${tenThousand}万`
   } else if (num.length >= 9) {
-    const calculate = (Number(num) / 100000000).toFixed(2)
+    const calculate = (Number(num) / 100000000).toFixed(1)
     return `${calculate}亿`
   } else {
     return 0

@@ -177,11 +177,17 @@ export default new Router({
       component: () => import('./views/sentiment/actor/rivalAnalysis/products.vue')
     },
 
-    // 影片舆情
+    // 影片详情
     {
-      path: '/sentiment/movie/:movieId',
+      path: '/sentiment/movie/:movieId(\\d+)',
       name: 'sentimentmovie',
       component: () => import('./views/sentiment/movie/detail/index.vue')
+    },
+    // 影片竞品分析
+    {
+      path: '/sentiment/movie/rivalAnalysis',
+      name: 'sentimentmovieanalysis',
+      component: () => import('./views/sentiment/movie/rivalAnalysis/index.vue')
     },
     // 电视剧舆情
     {

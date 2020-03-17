@@ -1,14 +1,9 @@
 <template>
     <div class='scroll'>
-        <div class='title'>电影(5)</div>
+        <div class='title'>音乐(5)</div>
         <ul>
             <li>
-                <p class='p1'>8.36亿</p>
-                <p class='p2'>累计票房</p>
-            </li>
-            <li class='chgli'></li>
-            <li>
-                <p class='p1'>6.9</p>
+                <p class='p1'>7.2</p>
                 <p class='p2'>作品均分
                   <Icon name="question-o" size="13" class="icon-arrow"/>
                 </p>
@@ -111,7 +106,7 @@ export default class Main extends Vue {
     border-radius: 10px;
     li {
       padding-top: 25px;
-      width: 33.3%;
+      width: 49.99%;
       text-align: center;
     }
     .chgli {
@@ -143,7 +138,7 @@ export default class Main extends Vue {
         display: inline-block;
         position: absolute;
         top: 21%;
-        right: 15%;
+        right: 25%;
       }
     }
     .p1-3 {

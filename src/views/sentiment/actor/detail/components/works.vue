@@ -3,6 +3,8 @@
     <div class="title">作品分析</div>
     <Movie />
     <Series />
+    <Music />
+    <Brand />
   </div>
 </template>
 
@@ -12,12 +14,16 @@ import { Icon } from 'vant'
 import moment from 'moment'
 import Movie from './movie.vue'
 import Series from './series.vue'
+import Music from './music.vue'
+import Brand from './brand.vue'
 
 @Component({
   components: {
     Icon,
     Movie,
     Series,
+    Music,
+    Brand,
   }
 })
 export default class Main extends Vue {

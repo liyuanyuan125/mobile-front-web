@@ -155,7 +155,7 @@ export default new Router({
 
     // kol舆情
     {
-      path: '/sentiment/actor/detail/:id',
+      path: '/sentiment/actor/:id',
       name: 'sentimentactor',
       component: () => import('./views/sentiment/actor/detail/index.vue')
     },
@@ -172,7 +172,7 @@ export default new Router({
     },
     // kol舆情竞品分析
     {
-      path: '/sentiment/actor/rivalAnalysis/products',
+      path: '/sentiment/actor/rivalAnalysis/products/:actorIdList',
       name: 'sentimentkolproducts',
       component: () => import('./views/sentiment/actor/rivalAnalysis/products.vue')
     },

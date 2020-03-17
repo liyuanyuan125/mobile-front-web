@@ -1,17 +1,21 @@
 <template>
     <div class='scroll'>
-        <div class='title'>电影(5)</div>
+        <div class='title'>剧集(5)</div>
         <ul>
             <li>
                 <p class='p1'>8.36亿</p>
-                <p class='p2'>累计票房</p>
+                <p class='p2'>累计播放量
+                  <Icon style='right: 10%' name="question-o" size="13" class="icon-arrow"/>
+                </p>
             </li>
+            <li class='chgli'></li>
             <li>
                 <p class='p1'>6.9</p>
                 <p class='p2'>作品均分
                   <Icon name="question-o" size="13" class="icon-arrow"/>
                 </p>
             </li>
+            <li class='chgli'></li>
             <li>
                 <p class='p1-3'>都市 爱情</p>
                 <p class='p2'>类型偏好</p>
@@ -111,6 +115,13 @@ export default class Main extends Vue {
       padding-top: 25px;
       width: 33.3%;
       text-align: center;
+    }
+    .chgli {
+      width: 1px;
+      height: 50px;
+      background: rgba(216, 216, 216, 1);
+      opacity: 0.5;
+      margin-top: 6%;
     }
     .p1 {
       width: 100%;

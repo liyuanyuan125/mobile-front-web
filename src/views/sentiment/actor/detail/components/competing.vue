@@ -56,7 +56,7 @@
       </li>
     </ul>
     <div class="submit-button">
-      <router-link to="" class="to-link" >查看详细报告</router-link>
+      <router-link :to="{ name:'sentimentkolproducts', params: { actorIdList: '1 , 2, 3' } }" class="to-link" >查看详细报告</router-link>
     </div>
   </div>
 </template>

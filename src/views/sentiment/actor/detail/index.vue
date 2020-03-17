@@ -29,19 +29,41 @@
     <div class="dubble"> 
       <BubbleBottom :data="bubbleData" />
     </div>
-    <!-- 热度分析 -->
-    <Hots :id='0'/>
-    <!-- 口碑评论 -->
-    <!-- 待更换 -->
-    <Public />
-    <!-- 用户分析 -->
-    <UserPortrait :genderList="userAnalysis.genderList" :ageRangeList="userAnalysis.ageRangeList" />
-    <!-- 营销事件 -->
-    <Event />
-    <!-- 相似艺人 -->
-    <Competing />
-    <!-- 作品分析 -->
-    <Works />
+    <TabNav
+      :list ="list"
+      class="tab-nav"
+    />
+    <section class="pane" id="hot">
+      <!-- 热度分析 -->
+      <Hots :id='0'/>
+    </section>
+
+    <section class="pane" id="praise">
+      <!-- 口碑评论 -->
+      <!-- 待更换 -->
+      <Public />
+    </section>
+
+    <section class="pane" id="user">
+      <!-- 用户分析 -->
+      <UserPortrait :genderList="userAnalysis.genderList" :ageRangeList="userAnalysis.ageRangeList" />
+    </section>
+
+    <section class="pane" id="event">
+      <!-- 营销事件 -->
+      <Event />
+    </section>
+
+    <section class="pane" id="part">
+       <!-- 相似艺人 -->
+        <Competing />
+    </section>
+
+    <section class="pane" id="work">
+      <!-- 作品分析 -->
+      <Works />
+    </section>
+    
   </div>
 </template>
 
@@ -49,6 +71,7 @@
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import { Tab, Tabs, Icon } from 'vant'
+import TabNav, { TabNavItem } from '@/components/tabNav'
 import Hots from './components/hots.vue'
 import Public from './components/public.vue'
 import UserPortrait from '@/views/common/user/userPortrait.vue'
@@ -70,7 +93,8 @@ import {BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
     UserPortrait,
     Event,
     Competing,
-    Works
+    Works,
+    TabNav
   }
 })
 export default class KolPage extends ViewBase {
@@ -101,6 +125,15 @@ export default class KolPage extends ViewBase {
     rankingNum: '热搜No.8',
     rankingName: '#1111111111111', // 有值则显示模块，无则不显示模块
   }
+
+  list: TabNavItem[] = [
+    { name: 'hot', label: '热度' },
+    { name: 'praise', label: '口碑' },
+    { name: 'user', label: '用户' },
+    { name: 'event', label: '事件' },
+    { name: 'part', label: '竞品' },
+    { name: 'work', label: '作品' },
+  ]
 
   userAnalysis: any = {
     genderList: [
@@ -219,9 +252,9 @@ export default class KolPage extends ViewBase {
   }
 }
 .dubble {
-  margin-top: -40px;
-  background: url('./images/bg2.png') no-repeat left bottom;
-  background-size: 100% 120px;
+  margin-top: -30px;
+  // background: url('./images/bg2.png') no-repeat left bottom;
+  // background-size: 100% 120px;
 }
 /deep/ .bubble-warper-bottom {
   .mask {
@@ -236,5 +269,38 @@ export default class KolPage extends ViewBase {
   height: 50px;
   width: 100%;
   background: #fff;
+}
+/deep/ .tab-nav {
+  margin-top: 0;
+  top: 50px;
+}
+.pane {
+  padding: 15px;
+  min-height: 200px;
+  background-color: #fff;
+  margin-bottom: 20px;
+}
+
+.pane-head {
+  font-size: 40px;
+  font-weight: 500;
+}
+
+.sub-pane {
+  min-height: 88px;
+  border-top: 1px solid #d8d8d8;
+  padding-top: 30px;
+  &:first-child {
+    border-top: 0;
+  }
+}
+
+.sub-pane-head {
+  font-size: 34px;
+  font-weight: 500;
+}
+
+.sub-pane-body {
+  min-height: 188px;
 }
 </style>

@@ -63,13 +63,13 @@ export default class UserPortrait extends ViewBase {
   }
 
   // 处理年龄数据
-  formatsexData() {
+  formatAgesData() {
     const xData = []
     const yData = []
     const rait = this.ageRangeList
     if (rait && rait.length) {
       for (const item of this.ageRangeList) {
-        xData.push(item.value / 100)
+        xData.push((item.value / 100).toFixed(1))
         yData.push(item.name)
       }
       this.ageRangeListData = {
@@ -79,14 +79,14 @@ export default class UserPortrait extends ViewBase {
     }
   }
 
-  formatAgesData() {
+  formatsexData() {
     const xData = []
     const yData = []
     const rait = this.genderList
     if (rait && rait.length) {
       for (const item of this.genderList) {
         xData.push(item.name)
-        yData.push(item.value / 100)
+        yData.push((item.value / 100).toFixed(1))
       }
       this.genderListData = {
         xData,
@@ -109,6 +109,6 @@ h4 {
   height: 500px;
   padding-top: 52px;
   background: #fff;
-  border-top: 20px solid #f7f6f9;
+  // border-top: 20px solid #f7f6f9;
 }
 </style>

@@ -317,15 +317,15 @@ export default class MoviePage extends ViewBase {
   publicPraise = {
     appraiseList: [
       {
-        raisePercent: 12,
+        raisePercent: 1200,
         raiseName: '正面评价'
       },
       {
-        raisePercent: 32,
+        raisePercent: 3200,
         raiseName: '负面评价'
       },
       {
-        raisePercent: 23,
+        raisePercent: 2300,
         raiseName: '中性评价'
       }
     ],
@@ -448,7 +448,7 @@ export default class MoviePage extends ViewBase {
   rivalAnalysis = [
     {
       rivalName: '疯狂外星人',
-      heatTrend: 1300,
+      heatTrend: 0,
       heatCount: '1.2万',
       rivalCover: {
         source: 'piaoshen',
@@ -457,9 +457,9 @@ export default class MoviePage extends ViewBase {
       },
       rivalId: '231331',
       materialsAdd: '1,232',
-      materialsTrend: 1200,
-      eventName: '世贸组织暂停会议',
-      ' eventCreatTime': 1583979088061
+      materialsTrend: 0,
+      eventName: '',
+      eventCreatTime: null
     },
     {
       rivalName: '疯狂外星人',
@@ -474,7 +474,7 @@ export default class MoviePage extends ViewBase {
       materialsAdd: '1,232',
       materialsTrend: 231,
       eventName: '世贸组织暂停会议',
-      ' eventCreatTime': 1583979088061
+      eventCreatTime: 1583979088061
     },
     {
       rivalName: '疯狂外星人',
@@ -489,7 +489,7 @@ export default class MoviePage extends ViewBase {
       materialsAdd: '1,232',
       materialsTrend: 3211,
       eventName: '世贸组织暂停会议',
-      ' eventCreatTime': 1583979088061
+      eventCreatTime: 1583979088061
     }
   ]
   actorList = [

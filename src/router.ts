@@ -229,6 +229,12 @@ export default new Router({
       component: () => import('./views/demo/tabnav.vue')
     },
 
+    {
+      path: '/demo/userAreaPortrait',
+      name: 'demo-userAreaPortrait',
+      component: () => import('./views/demo/userAreaPortrait.vue')
+    },
+
     // test canvas
     {
       path: '/demo/bubble',

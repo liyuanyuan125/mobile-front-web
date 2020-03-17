@@ -1,5 +1,5 @@
 <template>
-  <!--想看趋势 -->
+  <!--影片票房 -->
   <div class="boxoffice mod">
     <ModuleTitle title="影片票房" :appLink="appLink" />
     <div class="bfstatis">

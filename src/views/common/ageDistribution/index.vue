@@ -62,5 +62,5 @@ export default class Options extends Vue {
 </script>
 
 <style lang="less" scoped>
-// @import url(../contrast/index.less);
+@import url(../contrast/index.less);
 </style>

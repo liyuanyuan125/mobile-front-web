@@ -3,7 +3,7 @@
   <div class="rival mod">
     <ModuleTitle title="同档期影片分析" :appLink="appLink" />
     <dl>
-      <dd v-for="(item,index) in rivalList" :key="item.rivalId + index">
+      <dd v-for="(item,index) in list" :key="item.rivalId + index">
         <div class="rivalbox">
           <img :src="item.rivalCover.url" :alt="item.rivalName" class="img" />
           <h4>{{item.rivalName}}</h4>
@@ -27,13 +27,16 @@
               >{{item.materialsTrend > 0 ? '高'+item.materialsTrend : '低' + item.materialsTrend}}</p>
             </div>
           </div>
-          <div class="eventbox">
-            <span class="tit">232</span>
-            <span class="date">2020-01-02</span>
+          <div class="eventbox" v-if="item.eventName">
+            <span class="tit">{{item.eventName}}</span>
+            <span class="date" v-if="item.eventCreatTime">{{item.eventCreatTime}}</span>
           </div>
         </div>
       </dd>
     </dl>
+    <div class="golink">
+      <router-link :to="{path:'/sentiment/movie/rivalAnalysis',query:{ids:rivalIds}}">查看详细报告</router-link>
+    </div>
   </div>
 </template>
 
@@ -41,6 +44,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import ModuleTitle from '@/components/sentimentTitle'
+import moment from 'moment'
 
 @Component({
   components: {
@@ -49,6 +53,23 @@ import ModuleTitle from '@/components/sentimentTitle'
 })
 export default class RivalAnalysis extends ViewBase {
   @Prop({ type: Array }) rivalList!: any[]
+
+  get list() {
+    let list = []
+    for (const item of this.rivalList) {
+      item.eventCreatTime = moment(item.eventCreatTime).format('YYYY-MM-DD')
+    }
+    list = this.rivalList
+    return list
+  }
+
+  get rivalIds() {
+    const rivalIds: string[] = []
+    for (const item of this.rivalList) {
+      rivalIds.push(item.rivalId)
+    }
+    return rivalIds.join(',')
+  }
 
   appLink: string = ''
 }

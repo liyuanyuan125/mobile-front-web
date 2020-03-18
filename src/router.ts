@@ -213,6 +213,11 @@ export default new Router({
       name: 'sentimentmusic',
       component: () => import('./views/sentiment/music/index.vue')
     },
+    {
+      path: '/sentiment/common/userRegion',
+      name: 'sentimentuserregion',
+      component: () => import('./views/commonPage/userRegion/index.vue')
+    },
     // demo
     {
       path: '/demo/twobar',

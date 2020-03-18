@@ -10,7 +10,7 @@
           <div class="params">
             <div class="flex">
               <p class="tit">热度</p>
-              <strong>{{item.heatCount}}</strong>
+              <strong style="font-family: DIN Alternate;">{{item.heatCount}}</strong>
               <p
                 class="trend"
                 v-if="item.heatTrend"
@@ -19,7 +19,7 @@
             </div>
             <div class="flex">
               <p class="tit">新增物料</p>
-              <strong>{{item.materialsAdd}}</strong>
+              <strong style="font-family: DIN Alternate;">{{item.materialsAdd}}</strong>
               <p
                 class="trend"
                 v-if="item.materialsTrend"
@@ -138,7 +138,6 @@ export default class RivalAnalysis extends ViewBase {
       display: block;
       font-size: 46px;
       margin-top: 10px;
-      font-family: 'DIN Alternate';
     }
     .trend {
       font-size: 26px;

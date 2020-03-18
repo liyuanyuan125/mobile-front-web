@@ -1,6 +1,6 @@
 <template>
   <!--想看趋势 -->
-  <div class="wantsee mod">
+  <div class="wantsee">
     <div class="titbox">
       <h4>想看趋势</h4>
       <div>
@@ -94,10 +94,85 @@ export default class WantSeeTrend extends ViewBase {
 </script>
 
 <style lang="less" scoped>
-@import '../less/main.less';
-.viewpage {
-  background-color: #f2f3f6;
-  padding-top: 113px;
+.wantsee {
   position: relative;
+  padding: 50px 30px;
+  border-top: 20px solid rgba(216, 216, 216, 0.2);
+  .titbox {
+    display: flex;
+    h4 {
+      white-space: nowrap;
+      font-size: 40px;
+      line-height: 60px;
+      flex: 1;
+    }
+    > div {
+      text-align: right;
+    }
+  }
+  .citysel {
+    width: 160px;
+    height: 60px;
+    background-color: #fff;
+    border-radius: 30px;
+    border: 2px solid #ebebeb;
+    text-align: center;
+    color: #303030;
+    font-size: 14px;
+    padding: 0 54px 0 20px;
+    position: relative;
+    margin-right: 30px;
+    &::after {
+      content: '';
+      width: 0;
+      height: 0;
+      border-top: 10px solid #404d66;
+      border-left: 8px solid #fff;
+      border-right: 8px solid #fff;
+      background-color: #404d66;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 20px;
+    }
+    span {
+      width: 100%;
+      display: block;
+      font-size: 26px;
+      line-height: 56px;
+      color: rgba(48, 48, 48, 0.6);
+      font-weight: normal;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+  .tabbox {
+    text-align: center;
+    margin-top: 40px;
+    ul {
+      display: inline-block;
+    }
+    li {
+      display: inline-block;
+      padding: 0 40px;
+      font-size: 26px;
+      line-height: 58px;
+      color: rgba(48, 48, 48, 0.6);
+      border: 2px solid #ebebeb;
+      position: relative;
+      margin-left: -2px;
+      &:first-child {
+        border-radius: 30px 0 0 30px;
+      }
+      &:last-child {
+        border-radius: 0 30px 30px 0;
+      }
+      &.cur {
+        background-color: #88aaf6;
+        color: #fff;
+        border-color: #88aaf6;
+      }
+    }
+  }
 }
 </style>

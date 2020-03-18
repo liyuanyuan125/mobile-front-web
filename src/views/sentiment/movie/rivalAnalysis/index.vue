@@ -1,7 +1,7 @@
 <template>
   <div class="page">
-    <SentimentBar :attribute="topbar" />
-    <div>竞品分析报告</div>
+    <SentimentBar title="竞品分析详细报告" :titleShow="true" />
+    <div class="rivallist">竞品分析报告</div>
   </div>
 </template>
 
@@ -11,13 +11,11 @@ import ViewBase from '@/util/ViewBase'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 
 @Component({
-  components: {}
-})
-export default class MovieRivalAnalysisPage extends ViewBase {
-  topbar = {
-    title: '竞品分析详细报告'
+  components: {
+    SentimentBar
   }
-}
+})
+export default class MovieRivalAnalysisPage extends ViewBase {}
 </script>
 
 <style lang="less" scoped>

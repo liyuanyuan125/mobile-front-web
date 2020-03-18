@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <SentimentBar :attribute="topbar" />
+    <SentimentBar :title="movieInfo.movieNameCn" :sidebar="sidebar" />
     <BaseInfoArea :baseInfo="movieInfo" :overView="movieOverView" />
     <TabNav :list="tabList" class="formattab" />
     <WantSeeTrend :dataTrend="wantSeeTrend" />
@@ -46,10 +46,10 @@ import ProduceList from '@/views/common/produceList/index.vue' // 出品发行
   }
 })
 export default class MoviePage extends ViewBase {
-  topbar = {
-    title: '流浪地球',
-    diggShow: true,
-    pkShow: true
+  sidebar = {
+    diggType: 'movie',
+    diggId: '100038',
+    rivalIds: '1,2,4'
   }
   movieInfo = {
     movieNameCn: '流浪地球',
@@ -645,6 +645,7 @@ export default class MoviePage extends ViewBase {
 </script>
 
 <style lang="less" scoped>
+@import './less/main.less';
 .page {
   color: #303030;
 }

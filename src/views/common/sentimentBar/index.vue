@@ -1,10 +1,10 @@
 <template>
-  <div class="topbar" :style="attribute.cusStyle">
+  <div class="topbar">
     <span class="reBack" @click="goBack"></span>
-    <h1 :class="['title']" v-show="titleShow || hasTitle">{{attribute.title}}</h1>
-    <div class="tool">
-      <i class="ico-pk"></i>
-      <i class="ico-digg"></i>
+    <h1 class="title" v-show="titleShow || hasTitle">{{title}}</h1>
+    <div class="tool" v-if="sidebar">
+      <i class="ico-pk" v-if="sidebar.rivalIds" title="竞品分析"></i>
+      <i class="ico-digg" v-if="sidebar.diggType && sidebar.diggId" title="关注"></i>
     </div>
     <svg width="30px" height="30px" version="1.1" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -20,19 +20,25 @@
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { setNavBarStatus, handleGoBack } from '@/util/native'
 import { SentimentBarItem } from './types'
+import { isJyApp } from '@/fn/ua'
 
 @Component({})
 export default class SentimentBar extends Vue {
   /**
    * 属性示例
    */
-  @Prop({ type: Object, default: {} }) attribute!: SentimentBarItem // 基本属性
-  @Prop({ type: Boolean, default: false }) titleShow?: boolean // 是否显示标题
+  @Prop({ type: String }) title!: string // 基本属性
+  @Prop({ type: String, default: '#F2F3F6' }) bgColor?: string // 主要是通过颜色来设置 app 项部时间区的背景色
+  @Prop({ type: Object }) sidebar?: SentimentBarItem // 基本属性
+  @Prop({ type: Boolean, default: false }) titleShow?: boolean // 初始时是否显示标题 例如详情页默认不显示标题
 
   hasTitle: boolean = false
 
   mounted() {
-    this.hideNavBarStatus()
+    if (isJyApp()) {
+      // 在 app 里执行隐藏native 导航
+      this.hideNavBarStatus()
+    }
     window.addEventListener('scroll', this.getScroll)
   }
 
@@ -62,7 +68,7 @@ export default class SentimentBar extends Vue {
   async hideNavBarStatus() {
     const objectData = {
       isShowNavBar: false,
-      statusBarColor: this.attribute.bgColor || '#F2F3F6'
+      statusBarColor: this.bgColor || '#F2F3F6'
     }
     const obj = { params: objectData }
     await setNavBarStatus(obj)

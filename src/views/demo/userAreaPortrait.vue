@@ -12,17 +12,25 @@
       </div>
     </section>
 
-    <UserArea :data="data"/>
+    <UserArea :data="data" class="pane"/>
+
+    <UserPortrait
+      :sexData="sexData"
+      :ageData="ageData"
+      class="pane"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import UserArea, { ChinaMapItem } from '../common/userArea'
+import UserPortrait, { VerticalBarItem, NameValue } from '../common/userPortrait'
 
 @Component({
   components: {
-    UserArea
+    UserArea,
+    UserPortrait
   }
 })
 export default class extends Vue {
@@ -57,6 +65,20 @@ export default class extends Vue {
     { name: '台湾', value: 92 },
     { name: '云南', value: 92 },
     { name: '贵州', value: 62 },
+  ]
+
+  sexData: NameValue[] = [
+    { name: '男性', value: 1335 },
+    { name: '女性', value: 310 },
+  ]
+
+  ageData: VerticalBarItem[] = [
+    { name: '小于19岁', value: 8.8 },
+    { name: '20-24', value: 17.6 },
+    { name: '25-29', value: 32.8 },
+    { name: '30-34', value: 28.0 },
+    { name: '35-39', value: 9.2 },
+    { name: '大于40岁', value: 3.1 },
   ]
 }
 </script>
@@ -106,5 +128,9 @@ body {
   font-size: 26px;
   font-weight: 300;
   line-height: 1.7;
+}
+
+.pane {
+  margin-top: 20px;
 }
 </style>

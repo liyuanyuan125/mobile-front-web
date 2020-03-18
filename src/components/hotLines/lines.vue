@@ -16,7 +16,6 @@ const format = 'YYYY-MM-DD'
 export default class Main extends Vue {
   /** 处理x，y数据 */
   @Prop({ type: Object }) lineData!: any
-  @Prop({ type: Object}) overAllHeat!: any
   /** line color展示 */
   @Prop({ type: Array, default: () => []}) colors!: any
   /** tooltip hot */
@@ -24,26 +23,23 @@ export default class Main extends Vue {
   /** tooltip 文本色 */
   @Prop({ type: String, default: '#8f8f8f'}) textColor!: string
 
-  // 处理 xDate 数据展示
-  get xAxisDate() {
-    return this.overAllHeat.dateList.map((it: any) => moment(it.date).format('MM-DD'))
-  }
 
   mounted() {
     this.initChart()
   }
   initChart() {
-    const chartEl = (this.$refs.refChart as any)
+    const chartEl = this.$refs.refChart as HTMLDivElement
+    echarts.dispose(chartEl)
+    // chartEl.innerHTML = ''
     const myChart = echarts.init(chartEl)
-
 
     const seriesItems = (this.lineData.yDate || []).map((it: any) => {
       return {
         type: 'line',
-        symbolSize: 7,
+        symbolSize: 6,
         smooth: true, // 平滑
         name: it.name,
-        data: it.data
+        data: it.list
       }
     })
 
@@ -56,20 +52,9 @@ export default class Main extends Vue {
           color: '#303030',
         },
       },
-      // legend: {
-      //   bottom: 0,
-      //   icon: 'circle', // 设置图例标记
-      //   itemHeight: 8,
-      //   itemWidth: 10,
-      //   textStyle: {
-      //     color: '#000',
-      //     fontWeight: 100,
-      //   }
-      // },
       tooltip: {
         trigger: 'axis',
-        // backgroundColor: '#fff',
-        // enterable: true, // 如需详情内交互，添加链接，按钮，则设置为true
+        backgroundColor: '#fff',
         confine: true, // 限制在图表的区域内
         axisPointer: { // 指示线
           lineStyle: {
@@ -78,43 +63,12 @@ export default class Main extends Vue {
             color: '#303030'
           }
         },
-        // 暂定处理
-        // formatter: (params: any) => {
-        //   const {name, value, dataIndex, seriesName} = params[0]
-        //   const eventList = this.lineData.eventList[dataIndex]
-        //   const boxStyle = cssifyObject({
-        //     position: 'relative',
-        //     lineHeight: '16px',
-        //     paddingLeft: '12px'
-        //   })
-        //   const dotStyle = cssifyObject({
-        //     position: 'absolute',
-        //     left: '2px',
-        //     top: '5px',
-        //     width: '6px',
-        //     height: '6px',
-        //     borderRadius: '100%',
-        //     backgroundColor: this.dotColor,
-        //   })
-        //   const nameStyle = cssifyObject({
-        //     color: this.textColor,
-        //     fontSize: '11px',
-        //   })
-
-        //   const a = eventList.map((it: any) => {
-        //     return `<p style="${boxStyle}"><i style="${dotStyle}"></i> ${it.eventName}</p>`
-        //   })
-
-        //   const html = `
-        //    <div style="${nameStyle}" >
-        //      <p>${moment(name).format(format)} ${seriesName} ${value}</p>
-        //      <div>
-        //        ${a.join('')}
-        //      </div>
-        //    </div>
-        //   `
-        //   return html.trim()
-        // }
+        textStyle: {
+          color: '#303030',
+          fontSize: 12,
+          width: 2
+        },
+        extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);',
       },
       grid: {
         left: 0,
@@ -126,9 +80,9 @@ export default class Main extends Vue {
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: this.xAxisDate,
+        data: this.lineData.xDate,
         axisLabel: {
-          color: '#47403B',
+          color: '#8f8f8f',
           fontSize: 11
         },
         axisTick: { // 隐藏刻度尺
@@ -142,7 +96,7 @@ export default class Main extends Vue {
       },
       yAxis: {
         axisLabel: {
-          color: '#47403B',
+          color: '#8f8f8f',
         },
         axisLine: {
           lineStyle: {
@@ -175,8 +129,6 @@ export default class Main extends Vue {
 .content-wrap {
   position: relative;
   width: 100%;
-  padding-bottom: 65px;
-  border-bottom: solid 1px #d8d8d8;
 }
 .line-echart {
   width: 100%;

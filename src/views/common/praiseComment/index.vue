@@ -3,14 +3,14 @@
     <ModuleTitle title="口碑评论" :appLink="appLink" />
     <div class="options-top">
       <div class="options-left">
-        <span class="hot">
+        <span class="hot" @click="showNote">
           好感度
-          <span>?</span>
+          <span class="ico-question">?</span>
         </span>
         <div class="hot-degrees">{{favorable}}</div>
       </div>
       <div class="options-right">
-        <div class="options-progress" v-for="(it, inedx) in publicPraise.appraiseList" :key="inedx">
+        <div class="options-progress" v-for="(it, index) in praiseList" :key="it.raiseName + index">
           <span>{{it.raiseName}}</span>
           <div class="progress">
             <Progress :percentage="it.raisePercent" color="#88aaf6" stroke-width="5" />
@@ -44,6 +44,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Progress, Icon } from 'vant'
 import ModuleTitle from '@/components/sentimentTitle'
+import { alert } from '@/util/toast'
 
 const publicPraise = {
   appraiseList: [],
@@ -62,9 +63,34 @@ export default class PraiseComment extends Vue {
   @Prop({ type: String }) favorable?: any
 
   appLink: string = ''
+  praiseList: any[] = []
+
+  mounted() {
+    const list = this.publicPraise.appraiseList
+    if (list.length) {
+      for (const item of list) {
+        item.raisePercent = (item.raisePercent / 100).toFixed(1)
+      }
+    }
+    this.praiseList = list
+  }
+
+  // 显示说明
+  showNote() {
+    alert({
+      title: '提示',
+      message:
+        '根据口碑评论的正负面及热词的热度计算出来的口碑评论好感度。好感度最高为A+，其次为A、A-、B+、B、B-、C+、C、C-',
+      showConfirmButton: true,
+      className: 'alertwid'
+    })
+  }
 }
 </script>
 
 <style lang="less" scoped>
 @import url(./index.less);
+.alertwid {
+  width: 90%;
+}
 </style>

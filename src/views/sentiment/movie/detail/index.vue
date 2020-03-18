@@ -5,7 +5,12 @@
     <WantSeeTrend :dataTrend="wantSeeTrend" />
     <BoxOffice />
     <PraiseComment :favorable="movieInfo.favorable" :publicPraise="publicPraise" />
+    <UserPortrait
+      :userGender="userAnalysis.ageRangeList"
+      :userGenderuserAges="userAnalysis.genderList"
+    />
     <EventList :eventList="eventList" />
+    <RivalAnalysis :rivalList="rivalAnalysis" />
     <ActorList v-if="actorList && actorList.length" :actorList="actorList" />
     <ProduceList v-if="produceList && produceList.length" :produceList="produceList" />
   </div>
@@ -19,7 +24,9 @@ import BaseInfoArea from './components/movieInfo.vue' // 影片基本信息
 import WantSeeTrend from './components/wantSeeTrend.vue' // 想看趋势
 import BoxOffice from './components/boxOffice.vue' // 影片票房
 import PraiseComment from '@/views/common/praiseComment/index.vue' // 口碑评论
+import UserPortrait from '@/views/common/user/userPortrait.vue'
 import EventList from '@/views/common/eventList/event.vue' // 事件跟踪
+import RivalAnalysis from './components/rivalAnalysis.vue' // 竞品分析
 import ActorList from '@/views/common/actorList/index.vue' // 主创人员
 import ProduceList from '@/views/common/produceList/index.vue' // 出品发行
 // import hotLine from '@/components/hotLine'
@@ -31,7 +38,9 @@ import ProduceList from '@/views/common/produceList/index.vue' // 出品发行
     WantSeeTrend,
     BoxOffice,
     PraiseComment,
+    UserPortrait,
     EventList,
+    RivalAnalysis,
     ActorList,
     ProduceList
   }
@@ -270,19 +279,53 @@ export default class MoviePage extends ViewBase {
     text: '好感度',
     value: 'B+'
   }
+  userAnalysis = {
+    genderList: [
+      {
+        name: '男',
+        value: 12
+      },
+      {
+        name: '女',
+        value: 88
+      }
+    ],
+    ageRangeList: [
+      {
+        name: '小于20',
+        value: 14
+      },
+      {
+        name: '20-30',
+        value: 20
+      },
+      {
+        name: '30-40',
+        value: 34
+      },
+      {
+        name: '40-50',
+        value: 30
+      },
+      {
+        name: '大于50',
+        value: 2
+      }
+    ]
+  }
   // 口碑评论 数据
   publicPraise = {
     appraiseList: [
       {
-        raisePercent: 12,
+        raisePercent: 1200,
         raiseName: '正面评价'
       },
       {
-        raisePercent: 32,
+        raisePercent: 3200,
         raiseName: '负面评价'
       },
       {
-        raisePercent: 23,
+        raisePercent: 2300,
         raiseName: '中性评价'
       }
     ],
@@ -400,6 +443,53 @@ export default class MoviePage extends ViewBase {
           interactiveValue: '100万+'
         }
       ]
+    }
+  ]
+  rivalAnalysis = [
+    {
+      rivalName: '疯狂外星人',
+      heatTrend: 0,
+      heatCount: '1.2万',
+      rivalCover: {
+        source: 'piaoshen',
+        url:
+          'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/05/06/190506000002357372.jpg'
+      },
+      rivalId: '231331',
+      materialsAdd: '1,232',
+      materialsTrend: 0,
+      eventName: '',
+      eventCreatTime: null
+    },
+    {
+      rivalName: '疯狂外星人',
+      heatTrend: -1300,
+      heatCount: '1.2万',
+      rivalCover: {
+        source: 'piaoshen',
+        url:
+          'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/05/06/190506000002357372.jpg'
+      },
+      rivalId: '231331',
+      materialsAdd: '1,232',
+      materialsTrend: 231,
+      eventName: '世贸组织暂停会议',
+      eventCreatTime: 1583979088061
+    },
+    {
+      rivalName: '疯狂外星人',
+      heatTrend: -1300,
+      heatCount: '1.2万',
+      rivalCover: {
+        source: 'piaoshen',
+        url:
+          'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/05/06/190506000002357372.jpg'
+      },
+      rivalId: '231331',
+      materialsAdd: '1,232',
+      materialsTrend: 3211,
+      eventName: '世贸组织暂停会议',
+      eventCreatTime: 1583979088061
     }
   ]
   actorList = [

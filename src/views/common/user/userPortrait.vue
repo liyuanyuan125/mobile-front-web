@@ -3,10 +3,10 @@
     <!-- <h4>性别年龄占比</h4> -->
     <ModuleTitle title="用户分析" />
     <div style="margin-top:15px;width: 40%;float: left;">
-      <BarGraph :dataOption="userAgesData" :colorList="colorList" />
+      <BarGraph :dataOption="genderListData" :colorList="colorList" />
     </div>
     <div style="margin-top:15px;width: 60%;float: left;height: 162px;">
-      <barGraphRow :dataOption="userGenderData" :itemlist="itemlist" />
+      <barGraphRow :dataOption="ageRangeListData" :itemlist="itemlist" />
     </div>
   </div>
 </template>
@@ -26,40 +26,53 @@ import ModuleTitle from '@/components/sentimentTitle'
   }
 })
 export default class UserPortrait extends ViewBase {
-  @Prop({ type: Array }) userAges!: any
-  @Prop({ type: Array }) userGender!: any
+  @Prop({ type: Array }) ageRangeList!: any
+  @Prop({ type: Array }) genderList!: any
 
-  userAgesData: any = null
-  userGenderData: any = null
+  ageRangeListData: any = null
+  genderListData: any = null
 
   colorList: any = ['#88AAF6', '#F18F8F'] // 男女比例颜色信息
+
+  arr: any = []
 
   itemlist: any = {
     colorMain: '#303030',
     borderRadius: [5, 5, 5, 5],
     colorColumn: '#7F7D7E',
     widthColumn: 5,
-    normalColor: [100 , 100 , 100 , 100 , 100 , 100 ],
+    normalColor: [],
     bgColor: '#F0F0F0'
   }
 
 
   created() {
+    this.add()
     this.formatsexData()
     this.formatAgesData()
+  }
+
+  add() {
+    if (this.arr.length != this.ageRangeList.length) {
+      this.arr.push(100)
+      this.add()
+    }
+    if (this.arr.length == this.ageRangeList.length) {
+      this.itemlist.normalColor = this.arr
+    }
   }
 
   // 处理年龄数据
   formatsexData() {
     const xData = []
     const yData = []
-    const rait = this.userAges
+    const rait = this.ageRangeList
     if (rait && rait.length) {
-      for (const item of this.userAges) {
-        xData.push(item.type)
-        yData.push(item.value)
+      for (const item of this.ageRangeList) {
+        xData.push(item.value / 100)
+        yData.push(item.name)
       }
-      this.userAgesData = {
+      this.ageRangeListData = {
         xData,
         yData
       }
@@ -69,13 +82,13 @@ export default class UserPortrait extends ViewBase {
   formatAgesData() {
     const xData = []
     const yData = []
-    const rait = this.userGender
+    const rait = this.genderList
     if (rait && rait.length) {
-      for (const item of this.userGender) {
-        xData.push(item.value)
-        yData.push(item.type)
+      for (const item of this.genderList) {
+        xData.push(item.name)
+        yData.push(item.value / 100)
       }
-      this.userGenderData = {
+      this.genderListData = {
         xData,
         yData
       }
@@ -93,8 +106,9 @@ h4 {
   margin-left: 5%;
 }
 .userportrait {
-  height: 450px;
+  height: 500px;
   padding-top: 52px;
   background: #fff;
+  border-top: 20px solid #f7f6f9;
 }
 </style>

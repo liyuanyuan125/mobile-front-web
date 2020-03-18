@@ -127,7 +127,7 @@ export function formatAppLink(page: string, query?: object): string
 export function formatAppLink(p: string | AppLink, query: object = {}) {
   const param = typeof p === 'string'
     ? { p, ...query }
-    : objectClean({ p: p.page, ...p, page: undefined }, [ undefined ])
+    : objectClean({ p: p.page, ...p, page: undefined }, [undefined])
   const link = qs.stringify(param)
   return link
 }
@@ -219,6 +219,16 @@ export async function userHasLoginInH5(obj: any) {
  */
 export async function startCaptureImage(obj: any) {
   const data = await callNative('startCaptureImage', obj)
+  devInfo(`[sayHi] native return data:`, data)
+  return data
+}
+
+/**
+ * 选择城市
+ * @param  obj app需要的内部参数
+ */
+export async function handleCitySelect(obj: any) {
+  const data = await callNative('handleCitySelect', obj)
   devInfo(`[sayHi] native return data:`, data)
   return data
 }

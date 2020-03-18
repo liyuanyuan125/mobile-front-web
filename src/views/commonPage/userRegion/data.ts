@@ -22,7 +22,7 @@ export const regionList = async (src: number, query: any) => {
         switch (src) {
             case 1:
                 // 品牌
-                query.brandId = query.id
+                query.brandId = query.id ? query.id : query.brandId
                 delete query.id
                 res = await getBrandRegion(query)
                 break

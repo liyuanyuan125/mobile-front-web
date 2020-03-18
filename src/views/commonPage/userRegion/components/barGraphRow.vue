@@ -23,16 +23,27 @@ export default class BarGraphRow extends ViewBase {
 
   mounted() {
     if (this.dataOption) {
-      this.updateCharts()
+      this.updateCharts(this.dataOption)
+    }
+  }
+
+  // 重新渲染页面
+  @Watch('dataOption', { deep: true })
+  WatchHandler(newVal: any, oldVal: any) {
+    if (newVal) {
+      this.updateCharts(newVal)
+    } else {
+      this.updateCharts(oldVal)
     }
   }
 
   // 画图
-  updateCharts() {
+  updateCharts(dataOption: any) {
     const chartEl = this.$refs.refChart as HTMLDivElement
-    echarts.dispose(chartEl)
     chartEl.innerHTML = ''
+    echarts.dispose(chartEl)
     const myChart = echarts.init(chartEl)
+    myChart.clear()
     const option: any = {
       xAxis: {
         type: 'value',
@@ -41,7 +52,7 @@ export default class BarGraphRow extends ViewBase {
 
       yAxis: {
         type: 'category',
-        data: this.dataOption.yData,
+        data: dataOption.yData,
         inverse: true, // 是否反向 有点搞不明白,false就是从小到大排序
         silent: true,
         axisLabel: {
@@ -74,7 +85,7 @@ export default class BarGraphRow extends ViewBase {
 
       series: [
         {
-          data: this.dataOption.xData,
+          data: dataOption.xData,
           type: 'bar',
           barGap: '50%',
           barCategoryGap: '50%',
@@ -84,7 +95,7 @@ export default class BarGraphRow extends ViewBase {
             show: true,
             position: 'right',
             distance: 10,
-            formatter: this.dataOption.labelFormatter,
+            formatter: dataOption.labelFormatter,
             color: '#2E2F5A',
             fontWeight: 'bold',
             fontSize: 14,
@@ -107,7 +118,8 @@ export default class BarGraphRow extends ViewBase {
         }
       ]
     }
-    myChart.setOption(option)
+
+    myChart.setOption(option, true)
   }
 }
 </script>

@@ -8,3 +8,13 @@ export async function getList(query: any) {
   const res = await get('/yuqing/actor/people/heatAnalysis', query)
   return res
 }
+
+
+
+// 用户分析二级页面
+
+export async function getPeople(query: any) {
+  const res = await get('http://yapi.aiads-dev.com/mock/406/yuqing/actor/people/userAnalysis', query)
+  return res
+}
+

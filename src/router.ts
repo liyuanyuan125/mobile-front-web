@@ -166,7 +166,7 @@ export default new Router({
     },
     // kol舆情用户分析
     {
-      path: '/sentiment/actor/userAnalysis/:userId',
+      path: '/sentiment/actor/userAnalysis/:actorId',
       name: 'sentimentactoruser',
       component: () => import('./views/sentiment/actor/userAnalysis/user.vue')
     },

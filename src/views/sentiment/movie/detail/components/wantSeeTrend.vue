@@ -34,6 +34,7 @@ import ViewBase from '@/util/ViewBase'
 import hotLine from '@/components/hotLine/line.vue'
 import SelectDate from '@/components/selectDate'
 import { handleCitySelect } from '@/util/native'
+import { devLog, devInfo } from '@/util/dev'
 
 @Component({
   components: {
@@ -93,7 +94,7 @@ export default class WantSeeTrend extends ViewBase {
       callBackName: 'handleCitySelectCallBack'
     }
     const result: any = await handleCitySelect(obj)
-    console.log('选择城市', result)
+    devLog('选择城市', result)
   }
 
   // 获取日期选择组件选中的时间

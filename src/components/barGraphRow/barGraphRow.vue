@@ -19,7 +19,6 @@ export default class BarGraphRow extends ViewBase {
   @Prop({ type: Object }) dataOption!: any
   @Prop({ type: String }) canvasHei!: string
   @Prop({ type: Array, default: () => defaultColor }) bgcolor: any
-  // @Prop({ type: Boolean }) isChangeImg!: boolean
 
   mounted() {
     if (this.dataOption) {
@@ -114,7 +113,7 @@ export default class BarGraphRow extends ViewBase {
               show: false
             }
           },
-          barWidth: 11
+          barWidth: dataOption.size
         }
       ]
     }
@@ -130,7 +129,7 @@ export default class BarGraphRow extends ViewBase {
   width: 100%;
 }
 .chart-default {
-  background: url('../../../../assets/data-null.png') no-repeat center;
+  background: url('../../assets/data-null.png') no-repeat center;
   background-size: 201px auto;
   width: 100%;
   height: 100%;

@@ -4,8 +4,8 @@
     <div class="titbox">
       <h4>想看趋势</h4>
       <div>
-        <div class="citysel">
-          <span>全国</span>
+        <div class="citysel" @click="selectCity">
+          <span class="van-ellipsis">{{city.areaName}}</span>
         </div>
       </div>
       <div>
@@ -33,6 +33,8 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import hotLine from '@/components/hotLine/line.vue'
 import SelectDate from '@/components/selectDate'
+import { handleCitySelect } from '@/util/native'
+import { devLog, devInfo } from '@/util/dev'
 
 @Component({
   components: {
@@ -59,6 +61,11 @@ export default class WantSeeTrend extends ViewBase {
   xDate: any = []
   yDate: any = []
   eventList: any = []
+  city: any = {
+    areaId: 'quanguo',
+    areaName: '全国',
+    selectType: 1
+  }
 
   mounted() {
     const date: any = this.$refs.selDate
@@ -86,6 +93,19 @@ export default class WantSeeTrend extends ViewBase {
     }
   }
 
+  // 选择城市
+  async selectCity() {
+    const obj = {
+      callBackName: 'handleCitySelectCallBack'
+    }
+    const result: any = await handleCitySelect(obj)
+    const codeJson = JSON.parse(result)
+    if (codeJson) {
+      this.city = codeJson.data
+    }
+    devLog('选择城市', codeJson)
+  }
+
   // 获取日期选择组件选中的时间
   getSelectDate(data: any) {
     // console.log(data)
@@ -111,7 +131,7 @@ export default class WantSeeTrend extends ViewBase {
     }
   }
   .citysel {
-    width: 160px;
+    max-width: 210px;
     height: 60px;
     background-color: #fff;
     border-radius: 30px;
@@ -141,9 +161,6 @@ export default class WantSeeTrend extends ViewBase {
       font-size: 26px;
       line-height: 56px;
       color: rgba(48, 48, 48, 0.6);
-      font-weight: normal;
-      white-space: nowrap;
-      text-overflow: ellipsis;
     }
   }
   .tabbox {

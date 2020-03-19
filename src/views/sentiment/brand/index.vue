@@ -1,10 +1,17 @@
 <template>
   <div class="content">
-    <SentimentBar :attribute="topbar" />
+    <SentimentBar title="流浪地球" :sidebar="sidebar" />
     <brandInfoArea :brandInfo="brandInfo" :bubbleData="bubbleData"/>
-    <Hots :id="id" />
+    <section class="brand-hot">
+      <selectTime ref="refsTime"/>
+      <heatLineCom 
+        :overAllList="overAllHeatList" 
+        :platformList="platformHeatList"
+        :params="params"
+       />
+    </section>
     <User />
-    <eventList :eventList="list" :params="params"/>
+    <eventList :eventList="list" :params="params2"/>
     <Competing /> 
   </div>
 </template>
@@ -13,11 +20,12 @@
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import { toast } from '@/util/toast'
-import { getList } from './data'
+import { getList, brandList } from '@/api/brand'
+import { selectTime } from '@/components/hotLine'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import brandInfoArea from './components/brandInfo.vue'
 import eventList from '@/views/common/eventList/event.vue'
-import Hots from './components/hots.vue'
+import heatLineCom from '@/views/common/heatLineCom/index.vue'
 import User from './components/users.vue'
 import Competing from './components/competing.vue'
 
@@ -27,7 +35,8 @@ import Competing from './components/competing.vue'
   components: {
     SentimentBar,
     brandInfoArea,
-    Hots,
+    selectTime,
+    heatLineCom,
     User,
     eventList,
     Competing
@@ -35,26 +44,31 @@ import Competing from './components/competing.vue'
 })
 export default class BrandPage extends ViewBase {
   @Prop({ type: Number, default: 0}) id!: number
-
-  topbar = {
-    title: '流浪地球',
-    diggShow: true,
-    pkShow: true
+  // 头部
+  sidebar = {
+    diggType: 'movie',
+    diggId: '100038',
+    rivalIds: '1,2,4'
   }
-
+  // 气泡
   bubbleData: any = {}
   brandInfo: any = {}
-
-  get hotQuery() {
+  // 热度分析+平台信息
+  overAllHeatList: any = []
+  platformHeatList: any = []
+  get params() {
     return {
-      text: '好感度',
-      value: 'B+'
+      type: 1, // 1 品牌 2 艺人 3 电影 4 音乐-单曲 5 音乐-专辑  6 剧集
+      id: 1, // 详情页id
+      name: '奔驰',
+      startTime: 20200304, // this.startTime,
+      endTime: 20200310 // this.endTime
     }
   }
+  // 口碑
   publicPraise: any = {}
-
   // 事件
-  params = {}
+  params2 = {}
   get list() {
     return [
     {
@@ -89,19 +103,13 @@ export default class BrandPage extends ViewBase {
    ]
   }
 
-  /* brandInfo = {
-    brandName: '梅赛德斯-奔驰',
-    brandId: 1,
-    brandLogo: {
-      url: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/05/06/190506000002357372.jpg',
-      source: 'piaoshen'
-    },
-    rankingId: '', // 有值则加热搜事件链接
-    rankingName: '#奔驰大G开进故宫', // 有值则显示模块，无则不显示模块
-  }*/
+  get refsTime() {
+    return (this.$refs.refsTime as any)
+  }
 
   mounted() {
     this.brandDetail()
+    this.getHotList()
   }
 
   async brandDetail() {
@@ -112,7 +120,7 @@ export default class BrandPage extends ViewBase {
         brandOverView,
         publicPraise: {appraiseList, hotWordList, badWordList},
         userAnalysis // 用户分析
-      } } = await getList({brandId})
+      } } = await brandList({brandId})
 
       this.brandInfo = brandInfo // 头部基础信息
       this.bubbleData = brandOverView // 气泡数据
@@ -128,6 +136,27 @@ export default class BrandPage extends ViewBase {
         hotWordList,
         badWordList
       }
+    } catch (ex) {
+      toast(ex)
+    }
+  }
+
+  async getHotList() {
+    try {
+      const { data: {
+        overAllHeatList,
+        platformHeatList
+      } } = await getList({
+        brandId: this.id,
+        startTime: 20200304, // this.refsTime.beginDate
+        endTime: 20200310 // this.refsTime.endDate
+      })
+      this.overAllHeatList = overAllHeatList
+      this.platformHeatList = platformHeatList
+      // this.xDate = (overAllHeatList || []).map((it: any) => it.date)
+      // this.yDate = (overAllHeatList || []).map((it: any) => it.value)
+      // this.eventList = (overAllHeatList || []).map((it: any) => it.eventList)
+      // this.platformHeat = platformHeatList || []
     } catch (ex) {
       toast(ex)
     }

@@ -17,7 +17,7 @@ export default class Main extends Vue {
   /** 处理x，y数据 */
   @Prop({ type: Object }) lineData!: any
   /** line color展示 */
-  @Prop({ type: Array, default: () => []}) colors!: any
+  @Prop({ type: Array, default: () => ['#7ca4ff']}) colors!: any
   /** tooltip hot */
   @Prop({ type: String, default: '#f7a345'}) dotColor!: string
   /** tooltip 文本色 */

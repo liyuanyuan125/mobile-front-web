@@ -645,7 +645,6 @@ export default class MoviePage extends ViewBase {
 </script>
 
 <style lang="less" scoped>
-// @import './less/main.less';
 .page {
   color: #303030;
 }

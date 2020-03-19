@@ -10,8 +10,20 @@
             startTime: params.startTime,
             endTime: params.endTime
           }
-        }" >查看更多<van-icon name="arrow" size="20" /></router-link>
+        }" >查看更多<van-icon name="arrow" class="arrow" size="15" /></router-link>
       </div>
+      <!-- <ModuleHeader 
+       title="平台热度"
+       tag="h5" 
+       moreText="查看更多"
+       :link="{ page: 'platform-detail',
+       params: {
+            id: params.id,
+            name: params.name,
+            type: params.type,
+            startTime: params.startTime,
+            endTime: params.endTime
+        }}"/> -->
       <ul class="platform-item">
         <li class="flex-box flex-between" v-for="item in platformList" :key="item.platformId">
           <div class="flex-box">
@@ -21,10 +33,6 @@
               <p class="texts">{{item.platformNotice}}</p>
             </div>
           </div>
-          <!-- 跳转到  去除-->
-          <!-- <router-link to="" class="arrow">
-            <van-icon name="arrow" size="14" />
-          </router-link> -->
         </li>
       </ul>
     </div>
@@ -33,9 +41,12 @@
 <script lang='ts'>
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Icon } from 'vant'
+import ModuleHeader from '@/components/moduleHeader'
+
 @Component({
   components: {
-    [Icon.name]: Icon
+    [Icon.name]: Icon,
+    ModuleHeader
   }
 })
 export default class Main extends Vue {

@@ -40,9 +40,6 @@ import ModuleTitle from '@/components/sentimentTitle'
   }
 })
 export default class EventList extends Vue {
-  /** 事件title */
-  // @Prop({ type: String, default: '事件跟踪' }) eventName!: string
-  /** 更多事件分析 跳转参数 */
   @Prop({ type: Object }) params!: any
   /** 事件list */
   @Prop({ type: Array, default: () => [] }) eventList!: any

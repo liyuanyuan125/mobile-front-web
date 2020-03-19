@@ -3,7 +3,6 @@
     <SentimentBar :attribute="topbar" />
     <brandInfoArea :brandInfo="brandInfo" :bubbleData="bubbleData"/>
     <Hots :id="id" />
-    <!-- <comment :publicPraise='publicPraise' :hotQuery="hotQuery" /> -->
     <User />
     <eventList :eventList="list" :params="params"/>
     <Competing /> 
@@ -17,7 +16,6 @@ import { toast } from '@/util/toast'
 import { getList } from './data'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import brandInfoArea from './components/brandInfo.vue'
-// import comment from '@/components/opinions/comment/index.vue'
 import eventList from '@/views/common/eventList/event.vue'
 import Hots from './components/hots.vue'
 import User from './components/users.vue'

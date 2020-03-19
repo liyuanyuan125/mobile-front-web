@@ -138,7 +138,7 @@ export default class RivalAnalysis extends ViewBase {
       display: block;
       font-size: 46px;
       margin-top: 10px;
-      font-family: 'DIN Alternate';
+      // font-family: 'DIN Alternate';
     }
     .trend {
       font-size: 26px;

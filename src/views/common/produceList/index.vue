@@ -1,7 +1,7 @@
 <template>
   <!-- 电影电视剧详情页 出品发行公司 -->
   <div class="producemod">
-    <ModuleTitle title="出品发行" :appLink="appLink" />
+    <ModuleHeader title="出品发行" :link="appLink" />
     <dl class="companylist">
       <dd v-for="(item,index) in produceList" :key="item + index">{{item}}</dd>
     </dl>
@@ -10,18 +10,26 @@
 
 <script lang='ts'>
 import { Component, Vue, Prop } from 'vue-property-decorator'
-import ModuleTitle from '@/components/sentimentTitle'
+import { DetailItem } from './types'
+import ModuleHeader from '@/components/moduleHeader'
+import { AppLink } from '@/util/native'
 
 @Component({
   components: {
-    ModuleTitle
+    ModuleHeader
   }
 })
 export default class ProduceList extends Vue {
   /** 发行公司 */
   @Prop({ type: Array }) produceList!: string[]
+  @Prop({ type: Object }) detail!: DetailItem
 
-  appLink: string = ''
+  appLink: AppLink = {
+    page: 'produceDistribute',
+    businessType: this.detail.type === 'movie' ? 3 : 4,
+    businessObjectId: this.detail.id
+  }
+
   mounted() {
     // todo
   }

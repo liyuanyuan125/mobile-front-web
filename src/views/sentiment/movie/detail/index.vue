@@ -5,12 +5,30 @@
     <TabNav :list="tabList" class="formattab" />
     <WantSeeTrend :dataTrend="wantSeeTrend" />
     <BoxOffice />
-    <PraiseComment :favorable="movieInfo.favorable" :publicPraise="publicPraise" />
-    <UserPortrait :ageRangeList="userAnalysis.ageRangeList" :genderList="userAnalysis.genderList" />
-    <EventList :eventList="eventList" />
-    <RivalAnalysis :rivalList="rivalAnalysis" />
-    <ActorList v-if="actorList && actorList.length" :actorList="actorList" id="actor" />
-    <ProduceList v-if="produceList && produceList.length" :produceList="produceList" />
+    <PraiseComment
+      :favorable="movieInfo.favorable"
+      :publicPraise="publicPraise"
+      :detail="detail"
+      id="praise"
+    />
+    <UserPortrait
+      :ageRangeList="userAnalysis.ageRangeList"
+      :genderList="userAnalysis.genderList"
+      id="user"
+    />
+    <EventList :eventList="eventList" id="event" />
+    <RivalAnalysis :rivalList="rivalAnalysis" id="rival" />
+    <ActorList
+      v-if="actorList && actorList.length"
+      :actorList="actorList"
+      id="actor"
+      :detail="detail"
+    />
+    <ProduceList
+      v-if="produceList && produceList.length"
+      :produceList="produceList"
+      :detail="detail"
+    />
   </div>
 </template>
 
@@ -50,6 +68,10 @@ export default class MoviePage extends ViewBase {
     diggType: 'movie',
     diggId: '100038',
     rivalIds: '1,2,4'
+  }
+  detail: any = {
+    type: 'movie',
+    id: '100038'
   }
   movieInfo = {
     movieNameCn: '流浪地球',

@@ -11,16 +11,18 @@ import { cssifyObject } from 'css-in-js-utils'
 import moment from 'moment'
 const format = 'YYYY-MM-DD'
 
+
 @Component
 export default class Main extends Vue {
   /** 处理x，y数据 */
   @Prop({ type: Object }) lineData!: any
   /** line color展示 */
-  @Prop({ type: Array, default: () => [] }) colors!: any
+  @Prop({ type: Array, default: () => []}) colors!: any
   /** tooltip hot */
-  @Prop({ type: String, default: '#f7a345' }) dotColor!: string
+  @Prop({ type: String, default: '#f7a345'}) dotColor!: string
   /** tooltip 文本色 */
-  @Prop({ type: String, default: '#8f8f8f' }) textColor!: string
+  @Prop({ type: String, default: '#8f8f8f'}) textColor!: string
+
 
   mounted() {
     this.initChart()
@@ -47,15 +49,14 @@ export default class Main extends Vue {
         left: -5,
         textStyle: {
           fontSize: 14,
-          color: '#303030'
-        }
+          color: '#303030',
+        },
       },
       tooltip: {
         trigger: 'axis',
         backgroundColor: '#fff',
         confine: true, // 限制在图表的区域内
-        axisPointer: {
-          // 指示线
+        axisPointer: { // 指示线
           lineStyle: {
             width: 2,
             opacity: 0.2,
@@ -67,7 +68,7 @@ export default class Main extends Vue {
           fontSize: 12,
           width: 2
         },
-        extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);'
+        extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);',
       },
       grid: {
         left: 0,
@@ -84,23 +85,22 @@ export default class Main extends Vue {
           color: '#8f8f8f',
           fontSize: 11
         },
-        axisTick: {
-          // 隐藏刻度尺
+        axisTick: { // 隐藏刻度尺
           show: false
         },
         axisLine: {
           lineStyle: {
-            color: '#e8e8e8'
+            color: '#e8e8e8',
           }
         }
       },
       yAxis: {
         axisLabel: {
-          color: '#8f8f8f'
+          color: '#8f8f8f',
         },
         axisLine: {
           lineStyle: {
-            color: '#e8e8e8'
+            color: '#e8e8e8',
           }
         },
         axisTick: {
@@ -122,6 +122,7 @@ export default class Main extends Vue {
     myChart.setOption(options)
   }
 }
+
 </script>
 
 <style lang='less' scoped>

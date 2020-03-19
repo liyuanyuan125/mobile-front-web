@@ -5,22 +5,23 @@
 </template>
 
 <script lang='tsx'>
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 import echarts from 'echarts'
 import { cssifyObject } from 'css-in-js-utils'
 import moment from 'moment'
 const format = 'YYYY-MM-DD'
+
 
 @Component
 export default class Main extends Vue {
   /** 处理x，y数据 */
   @Prop({ type: Object }) lineData!: any
   /** line color展示 */
-  @Prop({ type: Array, default: () => ['#7ca4ff'] }) colors!: any
+  @Prop({ type: Array, default: () => ['#7ca4ff']}) colors!: any
   /** tooltip hot */
-  @Prop({ type: String, default: '#f7a345' }) dotColor!: string
+  @Prop({ type: String, default: '#f7a345'}) dotColor!: string
   /** tooltip 文本色 */
-  @Prop({ type: String, default: '#8f8f8f' }) textColor!: string
+  @Prop({ type: String, default: '#8f8f8f'}) textColor!: string
 
   get xAxisDate() {
     return (this.lineData.xDate || []).map((it: any) => moment(it).format('MM-DD'))
@@ -29,14 +30,8 @@ export default class Main extends Vue {
   mounted() {
     this.initChart()
   }
-
-  @Watch('lineData', { deep: true })
-  watchLineData() {
-    this.initChart()
-  }
-
   initChart() {
-    const chartEl = this.$refs.refChart as any
+    const chartEl = (this.$refs.refChart as any)
     const myChart = echarts.init(chartEl)
 
     const linearGradient = {
@@ -55,6 +50,7 @@ export default class Main extends Vue {
     }
 
     const seriesItems = (this.lineData.yDate || []).map((it: any) => {
+
       return {
         type: 'line',
         symbolSize: 7,
@@ -75,8 +71,8 @@ export default class Main extends Vue {
         left: -5,
         textStyle: {
           fontSize: 14,
-          color: '#303030'
-        }
+          color: '#303030',
+        },
       },
       legend: {
         bottom: 0,
@@ -85,7 +81,7 @@ export default class Main extends Vue {
         itemWidth: 10,
         textStyle: {
           color: '#000',
-          fontWeight: 100
+          fontWeight: 100,
         }
       },
       tooltip: {
@@ -93,14 +89,13 @@ export default class Main extends Vue {
         // backgroundColor: '#fff',
         // enterable: true, // 如需详情内交互，添加链接，按钮，则设置为true
         confine: true, // 限制在图表的区域内
-        axisPointer: {
-          // 指示线
+        axisPointer: { // 指示线
           lineStyle: {
             width: 2,
             opacity: 0.2,
             color: '#303030'
           }
-        }
+        },
         // 暂定处理
         // formatter: (params: any) => {
         //   const {name, value, dataIndex, seriesName} = params[0]
@@ -155,23 +150,22 @@ export default class Main extends Vue {
           color: '#47403B',
           fontSize: 11
         },
-        axisTick: {
-          // 隐藏刻度尺
+        axisTick: { // 隐藏刻度尺
           show: false
         },
         axisLine: {
           lineStyle: {
-            color: '#e8e8e8'
+            color: '#e8e8e8',
           }
         }
       },
       yAxis: {
         axisLabel: {
-          color: '#47403B'
+          color: '#47403B',
         },
         axisLine: {
           lineStyle: {
-            color: '#e8e8e8'
+            color: '#e8e8e8',
           }
         },
         axisTick: {
@@ -193,6 +187,7 @@ export default class Main extends Vue {
     myChart.setOption(options)
   }
 }
+
 </script>
 
 <style lang='less' scoped>

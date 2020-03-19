@@ -83,6 +83,7 @@ export default class PraiseComment extends Vue {
 
   mounted() {
     this.formatDetailType()
+    console.log('appLink', this.appLink)
     // 处理数据
     const list = this.publicPraise.appraiseList
     if (list.length) {

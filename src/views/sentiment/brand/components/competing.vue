@@ -1,7 +1,7 @@
 <template>
   <div class="compet-content">
     <div class="title">竞品分析
-      <router-link class="to-more" to="" ><van-icon name="arrow" size="14" /></router-link>
+      <router-link class="to-more" to="" ><van-icon name="arrow" size="15" /></router-link>
     </div>
     <ul>
       <li class="flex-box">
@@ -45,7 +45,7 @@
       </li>
     </ul>
     <div class="submit-button">
-      <router-link to="" class="to-link" >查看详细报告</router-link>
+      <router-link :to="{name: 'sentimentbrand-analyze'}" class="to-link" >查看详细报告</router-link>
     </div>
   </div>
 </template>
@@ -65,7 +65,7 @@ export default class Main extends Vue {
     {
       rivaCover: {
         url: '//aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/MISC/blrhmtpe2o7g008ukpig.jpg',
-        source: 'cccc'
+        source: 'jydata'
       },
       rivalId: null,
       rivalName: '当前品牌',

@@ -1,0 +1,48 @@
+<template>
+   <div class="heat">
+     <dubline :lineData="lineDatas" v-if="lineDatas.xDate.length" :key="lineDatas.title"/>
+     <platForm :platformList="platformList" :params="params"/>
+   </div>
+</template>
+
+<script lang='ts'>
+import { Component, Vue, Prop } from 'vue-property-decorator'
+import { platForm, dubline } from '@/components/hotLine'
+
+@Component({
+  components: {
+    platForm,
+    dubline
+  }
+})
+export default class Main extends Vue {
+  /** 热度分析+平台信息 list */
+  @Prop({ type: Array, default: () => []}) overAllList!: any
+  @Prop({ type: Array, default: () => []}) platformList!: any
+  @Prop({ type: Object}) params!: any
+
+  get lineDatas() {
+    const xDate = (this.overAllList || []).map((it: any) => it.date)
+    const yDate = (this.overAllList || []).map((it: any) => it.value)
+    const eventList = (this.overAllList || []).map((it: any) => it.eventList)
+    return {
+      title: '综合分析',
+      xDate,
+      eventList,
+      yDate: [
+        {
+          data: yDate,
+          name: '热点'
+        }
+      ]
+    }
+  }
+}
+
+</script>
+
+<style lang='less' scoped>
+.heat {
+  padding: 0 30px;
+}
+</style>

@@ -139,6 +139,18 @@ export default new Router({
       component: () => import('./views/sentiment/brand/index.vue'),
       props: idProps
     },
+    // 品牌舆情 - 用户分析二级详情页
+    {
+      path: '/sentiment/branduser',
+      name: 'sentimentbrand-user',
+      component: () => import('./views/sentiment/brand/user.vue')
+    },
+    // 品牌舆情 - 竞品分析二级详情页
+    {
+      path: '/sentiment/brandanalyze',
+      name: 'sentimentbrand-analyze',
+      component: () => import('./views/sentiment/brand/analyze.vue')
+    },
     // 平台热度 - 查看更多（通用页）
     {
       path: '/platform/detail/:id/:type/:name/:startTime/:endTime',

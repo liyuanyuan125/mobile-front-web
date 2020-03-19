@@ -20,7 +20,7 @@
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
-import BarGraphRow from './components/barGraphRow.vue'
+import { BarGraphRow } from '@/components/barGraphRow'
 import { regionList } from './data'
 import { toast } from '@/util/toast'
 
@@ -83,11 +83,11 @@ export default class UserRegion extends ViewBase {
     }
     this.canvasHei = dataList.length * 35 + 'px'
     this.regionData = {
-      xData,
-      yData,
-      labelFormatter: '{c}%'
+      xData, // X轴数据
+      yData, // Y轴name
+      labelFormatter: '{c}%', // 最右侧的数值
+      size: 11 // 条形的高度
     }
-    // console.log('this.regionData', this.isRender, this.regionData)
   }
 
   // 切换省市

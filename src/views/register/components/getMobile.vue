@@ -1,6 +1,6 @@
 <template>
   <div class="wrap">
-    <p class="tit">广告主申请入驻</p>
+    <p class="tit">入驻申请</p>
     <div class="gologin" v-if="!guestShow">
       已有帐号？
       <i @click.stop="goLogin">立即登录</i>
@@ -85,7 +85,7 @@
       <dt>
         <i @click.stop="changeAgreeStatus" :class="{checked:isAgree}"></i>
         <span @click.stop="changeAgreeStatus">已阅读并同意</span>
-        <a @click.stop="changeAgreeStatus">《广告主合作协议》</a>
+        <a @click.stop="changeAgreeStatus">《入驻协议》</a>
       </dt>
     </dl>
     <div class="agreement" v-show="isShowAgree">

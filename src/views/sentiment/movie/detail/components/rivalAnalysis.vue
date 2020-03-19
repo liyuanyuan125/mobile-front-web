@@ -78,6 +78,7 @@ export default class RivalAnalysis extends ViewBase {
 <style lang="less" scoped>
 .rival {
   padding: 50px 0;
+  border-top: 20px solid rgba(216, 216, 216, 0.2);
   dl {
     padding: 0 30px;
   }

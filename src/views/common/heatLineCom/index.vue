@@ -1,8 +1,8 @@
 <template>
-   <div class="heat">
-     <dubline :lineData="lineDatas" v-if="lineDatas.xDate.length" :key="lineDatas.title"/>
-     <platForm :platformList="platformList" :params="params"/>
-   </div>
+  <div class="heat">
+    <dubline :lineData="lineDatas" v-if="lineDatas.xDate.length" :key="lineDatas.title" />
+    <platForm :platformList="platformList" :params="params" />
+  </div>
 </template>
 
 <script lang='ts'>
@@ -17,9 +17,9 @@ import { platForm, dubline } from '@/components/hotLine'
 })
 export default class Main extends Vue {
   /** 热度分析+平台信息 list */
-  @Prop({ type: Array, default: () => []}) overAllList!: any
-  @Prop({ type: Array, default: () => []}) platformList!: any
-  @Prop({ type: Object}) params!: any
+  @Prop({ type: Array, default: () => [] }) overAllList!: any
+  @Prop({ type: Array, default: () => [] }) platformList!: any
+  @Prop({ type: Object }) params!: any
 
   get lineDatas() {
     const xDate = (this.overAllList || []).map((it: any) => it.date)
@@ -38,7 +38,6 @@ export default class Main extends Vue {
     }
   }
 }
-
 </script>
 
 <style lang='less' scoped>

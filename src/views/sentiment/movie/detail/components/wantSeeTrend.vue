@@ -23,23 +23,30 @@
       </ul>
     </div>
     <div>
-      <!-- <hotLine /> -->
+      <dubline
+        :lineData="lineDatas"
+        v-if="lineDatas.xDate.length"
+        :key="lineDatas.title"
+        class="wantchart"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import hotLine from '@/components/hotLine/line.vue'
 import SelectDate from '@/components/selectDate'
 import { handleCitySelect } from '@/util/native'
 import { devLog, devInfo } from '@/util/dev'
+import { dubline } from '@/components/hotLine'
 
 @Component({
   components: {
     hotLine,
-    SelectDate
+    SelectDate,
+    dubline
   }
 })
 export default class WantSeeTrend extends ViewBase {
@@ -58,29 +65,39 @@ export default class WantSeeTrend extends ViewBase {
     }
   ]
   tabIndex: number = 1
-  xDate: any = []
-  yDate: any = []
-  eventList: any = []
+  lineDatas: any = {}
   city: any = {
     areaId: 'quanguo',
     areaName: '全国',
     selectType: 1
   }
 
-  mounted() {
+  created() {
     const date: any = this.$refs.selDate
-    // console.log('date', date)
+    this.formatDatas(this.dataTrend.totalGainList)
   }
 
-  // 处理 trend 数据
-  formatChartData() {
-    return {
-      xDate: this.xDate, // 格式 ['20201212', '20121122', '20121122','20121122','20121122','20121122','20121122']
-      eventList: this.eventList,
+  @Watch('tabIndex', { deep: true })
+  watchTabIndex(val: number) {
+    if (val === 1) {
+      this.formatDatas(this.dataTrend.totalGainList)
+    } else if (val === 2) {
+      this.formatDatas(this.dataTrend.dailyGainList)
+    }
+  }
+
+  // 处理数据
+  formatDatas(data: any[]) {
+    const xDate = (data || []).map((it: any) => it.date)
+    const yDate = (data || []).map((it: any) => it.value)
+    const eventList = (data || []).map((it: any) => it.eventList)
+    this.lineDatas = {
+      xDate,
+      eventList,
       yDate: [
         {
-          data: this.yDate, // 格式 [333,33333,303333333,33333,333,33333,303333333]
-          name: '热点'
+          data: yDate,
+          name: '营销事件'
         }
       ]
     }
@@ -103,7 +120,7 @@ export default class WantSeeTrend extends ViewBase {
     if (codeJson) {
       this.city = codeJson.data
     }
-    devLog('选择城市', codeJson)
+    // devLog('选择城市', codeJson)
   }
 
   // 获取日期选择组件选中的时间
@@ -191,5 +208,9 @@ export default class WantSeeTrend extends ViewBase {
       }
     }
   }
+}
+.wantchart {
+  padding-bottom: 0;
+  border-bottom: none;
 }
 </style>

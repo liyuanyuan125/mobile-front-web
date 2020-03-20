@@ -53,16 +53,18 @@ export default class EventList extends Vue {
       const creatDay = time1 < 11 ? `${time1}天前` : ''
       it.creatTime = moment(it.creatTime).format('YYYY-MM-DD')
       // 处理标签颜色
-      for (const item of it.target) {
-        switch (item.targetCode) {
-          case '1':
-            item.color = '#FF6262'
-            break
-          case '2':
-            item.color = '#9374DB'
-            break
-          default:
-            item.color = '#666'
+      if (it.targetList && it.targetList.length) {
+        for (const item of it.targetList) {
+          switch (item.targetCode) {
+            case '1':
+              item.color = '#FF6262'
+              break
+            case '2':
+              item.color = '#9374DB'
+              break
+            default:
+              item.color = '#666'
+          }
         }
       }
       return {

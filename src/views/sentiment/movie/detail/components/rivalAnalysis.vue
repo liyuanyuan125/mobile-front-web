@@ -1,7 +1,7 @@
 <template>
   <!--竞品分析 -->
   <div class="rival mod">
-    <ModuleTitle title="同档期影片分析" :appLink="appLink" />
+    <ModuleHeader title="同档期影片分析" />
     <dl>
       <dd v-for="(item,index) in list" :key="item.rivalId + index">
         <div class="rivalbox">
@@ -10,7 +10,7 @@
           <div class="params">
             <div class="flex">
               <p class="tit">热度</p>
-              <strong>{{item.heatCount}}</strong>
+              <strong style="font-family: DIN Alternate;">{{item.heatCount}}</strong>
               <p
                 class="trend"
                 v-if="item.heatTrend"
@@ -19,7 +19,7 @@
             </div>
             <div class="flex">
               <p class="tit">新增物料</p>
-              <strong>{{item.materialsAdd}}</strong>
+              <strong style="font-family: DIN Alternate;">{{item.materialsAdd}}</strong>
               <p
                 class="trend"
                 v-if="item.materialsTrend"
@@ -43,12 +43,12 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
-import ModuleTitle from '@/components/sentimentTitle'
+import ModuleHeader from '@/components/moduleHeader'
 import moment from 'moment'
 
 @Component({
   components: {
-    ModuleTitle
+    ModuleHeader
   }
 })
 export default class RivalAnalysis extends ViewBase {
@@ -78,8 +78,9 @@ export default class RivalAnalysis extends ViewBase {
 <style lang="less" scoped>
 .rival {
   padding: 50px 0;
+  border-top: 20px solid rgba(216, 216, 216, 0.2);
   dl {
-    padding: 0 30px;
+    padding: 30px 30px 0;
   }
   dd {
     margin-top: 40px;
@@ -100,6 +101,9 @@ export default class RivalAnalysis extends ViewBase {
       border-radius: 45px;
     }
   }
+}
+.module-header {
+  padding: 0 30px;
 }
 .rivalbox {
   position: relative;
@@ -138,7 +142,6 @@ export default class RivalAnalysis extends ViewBase {
       display: block;
       font-size: 46px;
       margin-top: 10px;
-      font-family: 'DIN Alternate', serif;
     }
     .trend {
       font-size: 26px;

@@ -114,6 +114,18 @@ export default new Router({
       component: () => import('./views/sentiment/brand/index.vue'),
       props: idProps
     },
+    // 品牌舆情 - 用户分析二级详情页
+    {
+      path: '/sentiment/branduser',
+      name: 'sentimentbrand-user',
+      component: () => import('./views/sentiment/brand/user.vue')
+    },
+    // 品牌舆情 - 竞品分析二级详情页
+    {
+      path: '/sentiment/brandanalyze',
+      name: 'sentimentbrand-analyze',
+      component: () => import('./views/sentiment/brand/analyze.vue')
+    },
     // 平台热度 - 查看更多（通用页）
     {
       path: '/platform/detail/:id/:type/:name/:startTime/:endTime',
@@ -161,8 +173,14 @@ export default new Router({
     // 影片竞品分析
     {
       path: '/sentiment/movie/rivalAnalysis',
-      name: 'sentimentmovieanalysis',
+      name: 'sentimentmovierivalanalysis',
       component: () => import('./views/sentiment/movie/rivalAnalysis/index.vue')
+    },
+    // 影片用户分析
+    {
+      path: '/sentiment/movie/userAnalysis/:movieId(\\d+)',
+      name: 'sentimentmovieuseranalysis',
+      component: () => import('./views/sentiment/movie/userAnalysis/index.vue')
     },
     // 电视剧舆情
     {
@@ -170,7 +188,6 @@ export default new Router({
       name: 'sentimenttv',
       component: () => import('./views/sentiment/tv/index.vue')
     },
-
     {
       path: '/sentiment/common/userRegion',
       name: 'sentimentuserregion',

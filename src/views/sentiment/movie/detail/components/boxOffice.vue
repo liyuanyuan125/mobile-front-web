@@ -1,22 +1,22 @@
 <template>
   <!--影片票房 -->
   <div class="boxoffice mod">
-    <ModuleTitle title="影片票房" :appLink="appLink" />
+    <ModuleHeader title="影片票房" :link="appLink" />
     <div class="bfstatis">
       <div>
-        <strong>6.42亿</strong>
+        <strong>{{boxoffice.totalBoxOffice}}</strong>
         <p>累计票房</p>
       </div>
       <div>
-        <strong>1,232.3亿</strong>
+        <strong>{{boxoffice.totalPerson}}</strong>
         <p>总人次</p>
       </div>
       <div>
-        <strong>6.42亿</strong>
+        <strong>{{boxoffice.firstDayBoxOffice}}</strong>
         <p>首日票房</p>
       </div>
       <div>
-        <strong>6.42亿</strong>
+        <strong>{{boxoffice.firstWeekBoxOffice}}</strong>
         <p>首周票房</p>
       </div>
     </div>
@@ -26,26 +26,33 @@
           v-for="item in tabList"
           :class="tabIndex===item.id ? 'cur' : ''"
           :key="item.key"
-          @click="changeTab(item.id)"
+          @click="() => tabIndex = item.id"
         >{{item.name}}</li>
       </ul>
     </div>
-
+    <div class="chartbox">
+      <dubline
+        :lineData="lineDatas"
+        v-if="lineDatas.xDate.length"
+        :key="lineDatas.title"
+        class="wantchart"
+      />
+    </div>
     <div class="others">
       <div class="inner">
-        <div class="bfbox">
+        <div class="bfbox" @click="goLink(2)">
           <div class="tit">
             <strong>城市票房</strong>
-            <span>3155.3万</span>
+            <span>{{boxoffice.cityBoxOffice}}</span>
           </div>
-          <p>TOP 1 北京</p>
+          <p>TOP 1 {{boxoffice.cityBoxOfficeTop}}</p>
         </div>
-        <div class="bfbox">
+        <div class="bfbox" @click="goLink(3)">
           <div class="tit">
             <strong>影投票房</strong>
-            <span>3155.3万</span>
+            <span>{{boxoffice.companyBoxOffice}}</span>
           </div>
-          <p>TOP 1 万达电影院线</p>
+          <p>TOP 1 {{boxoffice.companyBoxOfficeTop}}</p>
         </div>
       </div>
     </div>
@@ -53,28 +60,33 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
-import ModuleTitle from '@/components/sentimentTitle'
+import { dubline } from '@/components/hotLine'
+import ModuleHeader from '@/components/moduleHeader'
+import { openAppLink, AppLink } from '@/util/native'
 
 @Component({
   components: {
-    ModuleTitle
+    ModuleHeader,
+    dubline
   }
 })
 export default class BoxOffice extends ViewBase {
-  @Prop({ type: Object }) dataTrend!: any
+  @Prop({ type: Object }) boxoffice!: any
+  @Prop({ type: Object }) link!: any
 
-  appLink: string = ''
+  appLink: any = this.link
+  lineDatas: any = {}
   tabList: any = [
     {
       id: 1,
-      key: 'totalGainList',
+      key: 'boxOfficeList',
       name: '日票房'
     },
     {
       id: 2,
-      key: 'dailyGainList',
+      key: 'scheduleList',
       name: '日排片'
     }
   ]
@@ -83,33 +95,55 @@ export default class BoxOffice extends ViewBase {
   yDate: any = []
   eventList: any = []
 
-  // 处理 trend 数据
-  formatChartData() {
-    return {
-      xDate: this.xDate, // 格式 ['20201212', '20121122', '20121122','20121122','20121122','20121122','20121122']
-      eventList: this.eventList,
+  created() {
+    this.formatDatas(this.boxoffice.boxOfficeList)
+  }
+
+  @Watch('tabIndex', { deep: true })
+  watchTabIndex(val: number) {
+    if (val === 1) {
+      this.formatDatas(this.boxoffice.boxOfficeList)
+    } else if (val === 2) {
+      this.formatDatas(this.boxoffice.scheduleList)
+    }
+  }
+
+  // 处理数据
+  formatDatas(data: any[]) {
+    const xDate = (data || []).map((it: any) => it.name)
+    const yDate = (data || []).map((it: any) => it.value)
+    const eventList = (data || []).map((it: any) => it.eventList)
+    this.lineDatas = {
+      xDate,
+      eventList,
       yDate: [
         {
-          data: this.yDate, // 格式 [333,33333,303333333,33333,333,33333,303333333]
-          name: '热点'
+          data: yDate
         }
       ]
     }
   }
 
-  // tab 切换
-  changeTab(id: number) {
-    if (this.tabIndex !== id) {
-      this.tabIndex = id
-    }
+  // 去往原生页
+  goLink(type: number) {
+    this.appLink.boxOfficeType = type ? type : 1
+    openAppLink(this.appLink)
   }
 }
 </script>
 
 <style lang="less" scoped>
+.chartbox {
+  padding: 0 30px;
+}
+.wantchart {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
 .tabbox {
   text-align: center;
   margin-top: 40px;
+
   ul {
     display: inline-block;
   }
@@ -137,6 +171,10 @@ export default class BoxOffice extends ViewBase {
 }
 .boxoffice {
   padding: 50px 0;
+  border-top: 20px solid rgba(216, 216, 216, 0.2);
+  .module-header {
+    padding: 0 30px;
+  }
   .others {
     padding-right: 30px;
     .inner {
@@ -175,6 +213,7 @@ export default class BoxOffice extends ViewBase {
   position: relative;
   padding: 40px 0;
   display: flex;
+  margin-top: 30px;
   > div {
     flex: 1;
     text-align: center;

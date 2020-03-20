@@ -1,7 +1,7 @@
 <template>
   <!-- 电影电视剧详情页 主创人员 -->
   <div class="actormod">
-    <ModuleTitle title="主创人员" :appLink="appLink" />
+    <ModuleHeader title="主创人员" :link="link" />
     <div class="actorlist">
       <dl ref="chief">
         <dd v-for="(item,index) in actorList" :key="item.actorName + index">
@@ -19,19 +19,20 @@
 
 <script lang='ts'>
 import { Component, Vue, Prop } from 'vue-property-decorator'
-import { ActorItem } from './types'
-import ModuleTitle from '@/components/sentimentTitle'
+import { ActorItem, DetailItem } from './types'
+import ModuleHeader from '@/components/moduleHeader'
+import { AppLink } from '@/util/native'
 
 @Component({
   components: {
-    ModuleTitle
+    ModuleHeader
   }
 })
 export default class ActorList extends Vue {
   /** 演员列表 */
   @Prop({ type: Array }) actorList!: ActorItem[]
+  @Prop({ type: Object }) link!: AppLink
 
-  appLink: string = 'p=indexPage&movieId=100038'
   mounted() {
     const chief = this.$refs.chief as HTMLDListElement
     if (this.actorList.length && this.actorList.length < 10) {
@@ -49,9 +50,13 @@ export default class ActorList extends Vue {
   border-top: 20px solid rgba(216, 216, 216, 0.2);
   padding: 50px 0;
 
+  .module-header {
+    padding: 0 30px;
+  }
   .actorlist {
     width: 100%;
     overflow-x: auto;
+    margin-top: 30px;
   }
 
   dl {

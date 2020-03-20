@@ -1,90 +1,165 @@
 <template>
   <div class="content">
-
-    <div class="header">
-      <img :src="brandInfo.brandLogo.url" class="img" />
-      <div>
-        <p class="brand-name">{{brandInfo.brandName}}</p>
-        <p v-if="brandInfo.rankingName && !brandInfo.rankingId " class="event-name">{{brandInfo.rankingName}}</p>
-        <p v-if="brandInfo.rankingName && brandInfo.rankingId">
-          <router-link to="" class="event-name flex-box">
-            <i>{{brandInfo.rankingName}}</i>
-            <van-icon name="arrow" size="13" class="icon-arrow" />
-          </router-link> 
-        </p>
-      </div>
-    </div>
-
-    <div class="dubble"> 
-      <BubbleBottom :data="bubbleData" />
-    </div>
-        <Hots :id="brandId" />
-        <Wow />
-        <User />
-        <Event />
-        <Competing /> 
+    <SentimentBar title="流浪地球" :sidebar="sidebar" />
+    <brandInfoArea :brandInfo="brandInfo" :bubbleData="bubbleData"/>
+    <section class="brand-hot">
+      <selectTime ref="refsTime"/>
+      <heatLineCom 
+        :overAllList="overAllHeatList" 
+        :platformList="platformHeatList"
+        :params="params"
+       />
+    </section>
+    <User />
+    <eventList :eventList="list" :params="params2"/>
+    <Competing /> 
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
-import { Tab, Tabs, Icon } from 'vant'
-import Hots from './components/hots.vue'
-import Wow from './components/wow.vue'
-import User from './components/users.vue'
-import Event from './components/event.vue'
-import Competing from './components/competing.vue'
 import { toast } from '@/util/toast'
-import {BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
+import { getList, brandList } from '@/api/brand'
+import { selectTime } from '@/components/hotLine'
+import SentimentBar from '@/views/common/sentimentBar/index.vue'
+import brandInfoArea from './components/brandInfo.vue'
+import eventList from '@/views/common/eventList/event.vue'
+import heatLineCom from '@/views/common/heatLineCom/index.vue'
+import User from './components/users.vue'
+import Competing from './components/competing.vue'
+
+
 
 @Component({
   components: {
-    [Tab.name]: Tab,
-    [Tabs.name]: Tabs,
-    [Icon.name]: Icon,
-    BubbleBottom,
-    Hots,
-    Wow,
+    SentimentBar,
+    brandInfoArea,
+    selectTime,
+    heatLineCom,
     User,
-    Event,
+    eventList,
     Competing
   }
 })
 export default class BrandPage extends ViewBase {
   @Prop({ type: Number, default: 0}) id!: number
-
-  get brandId() {
-    return this.id
+  // 头部
+  sidebar = {
+    diggType: 'movie',
+    diggId: '100038',
+    rivalIds: '1,2,4'
   }
-  bubbleData: any = [
-    {type: '1', value: '235,454', trend: '123', renderTitle: (h: any) => {
-      return h(Title, {
-        props: {
-          title: '90天累计互动'
+  // 气泡
+  bubbleData: any = {}
+  brandInfo: any = {}
+  // 热度分析+平台信息
+  overAllHeatList: any = []
+  platformHeatList: any = []
+  get params() {
+    return {
+      type: 1, // 1 品牌 2 艺人 3 电影 4 音乐-单曲 5 音乐-专辑  6 剧集
+      id: 1, // 详情页id
+      name: '奔驰',
+      startTime: 20200304, // this.startTime,
+      endTime: 20200310 // this.endTime
+    }
+  }
+  // 口碑
+  publicPraise: any = {}
+  // 事件
+  params2 = {}
+  get list() {
+    return [
+    {
+      eventName: '乔乔的异想世界获最佳喜剧片剪辑',
+      eventId: '12332',
+      creatTime: 1584146173812,
+      target: [
+        {
+          targetCode: '1',
+          targetName: '正面'
+        }
+      ],
+      interactiveList: [
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '100万+'
         },
-        on: {
-          click: this.demo
-      }})
-    }},
-    {type: '2', title: '90天累计互动', value: '1,423', trend: '356', big: true},
-    {type: '3', title: '昨日销量排名', value: '234,234', trend: '-356', showdown: true},
-    {type: '4', title: '好感度', value: 'B+'}
-  ]
-
-  brandInfo = {
-    brandName: '梅赛德斯-奔驰',
-    brandId: 1,
-    brandLogo: {
-      source: '',
-      url: '//aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/MISC/blrhmtpe2o7g008ukpig.jpg'
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '1,212'
+        }
+      ]
     },
-    rankingId: '', // 有值则加热搜事件链接
-    rankingName: '#奔驰大G开进故宫', // 有值则显示模块，无则不显示模块
+   ]
   }
 
-  demo() {
-    toast('近90天内，物料新增的点赞、评论、转发、阅读或播放的累计之和')
+  get refsTime() {
+    return (this.$refs.refsTime as any)
+  }
+
+  mounted() {
+    this.brandDetail()
+    this.getHotList()
+  }
+
+  async brandDetail() {
+    const brandId = this.id
+    try {
+      const { data: {
+        brandInfo,
+        brandOverView,
+        publicPraise: {appraiseList, hotWordList, badWordList},
+        userAnalysis // 用户分析
+      } } = await brandList({brandId})
+
+      this.brandInfo = brandInfo // 头部基础信息
+      this.bubbleData = brandOverView // 气泡数据
+      // 口碑
+      const appraiseListData = (appraiseList || []).map((it: any) => {
+        return {
+          ...it,
+          raisePercent: it.raisePercent / 100
+        }
+      })
+      this.publicPraise = {
+        appraiseList: appraiseListData,
+        hotWordList,
+        badWordList
+      }
+    } catch (ex) {
+      toast(ex)
+    }
+  }
+
+  async getHotList() {
+    try {
+      const { data: {
+        overAllHeatList,
+        platformHeatList
+      } } = await getList({
+        brandId: this.id,
+        startTime: 20200304, // this.refsTime.beginDate
+        endTime: 20200310 // this.refsTime.endDate
+      })
+      this.overAllHeatList = overAllHeatList
+      this.platformHeatList = platformHeatList
+      // this.xDate = (overAllHeatList || []).map((it: any) => it.date)
+      // this.yDate = (overAllHeatList || []).map((it: any) => it.value)
+      // this.eventList = (overAllHeatList || []).map((it: any) => it.eventList)
+      // this.platformHeat = platformHeatList || []
+    } catch (ex) {
+      toast(ex)
+    }
   }
 }
 </script>
@@ -95,68 +170,5 @@ export default class BrandPage extends ViewBase {
 
 /deep/ .van-tab__pane {
   display: block;
-}
-.content {
-  background: #f2f3f6;
-  /deep/ .van-tabs__wrap {
-    height: 55px;
-    border-bottom: solid 1px fade(@c-divider, 0.5);
-    .van-tab {
-      font-size: 30px;
-      padding: 0;
-      color: @c-text;
-      flex: 1;
-    }
-    .van-tab--active {
-      color: #7ca4ff;
-    }
-    .van-tabs__line {
-      background-color: #88aaf6;
-    }
-  }
-}
-.header {
-  display: flex;
-  padding: 20px 40px 0;
-  .img {
-    border-radius: 10px;
-    width: 210px;
-    height: 210px;
-    margin-right: 30px;
-  }
-  .brand-name {
-    font-size: 40px;
-    color: #303030;
-    min-height: 116px;
-  }
-  .event-name {
-    border-radius: 26px;
-    background: #fff;
-    padding: 6px 20px;
-    font-size: 26px;
-    color: #7ca4ff;
-    .icon-arrow {
-      padding-left: 10px;
-    }
-  }
-}
-.dubble {
-  margin-top: -40px;
-  background: url('./images/bg2.png') no-repeat left bottom;
-  background-size: 100% 220px;
-}
-/deep/ .bubble-warper-bottom {
-  .mask {
-    opacity: 0;
-  }
-}
-.bg-header {
-  width: 100%;
-  height: 120px;
-}
-.line-height {
-  height: 50px;
-  width: 100%;
-  background: #fff;
 }
 </style>

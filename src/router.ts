@@ -201,7 +201,7 @@ export default new Router({
       name: 'sentimentmovierivalanalysis',
       component: () => import('./views/sentiment/movie/rivalAnalysis/index.vue')
     },
-    // 影片竞品分析
+    // 影片用户分析
     {
       path: '/sentiment/movie/userAnalysis/:movieId(\\d+)',
       name: 'sentimentmovieuseranalysis',

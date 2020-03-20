@@ -6,6 +6,7 @@
       <span
         v-for="item in tabButton"
         :key="item.type"
+        @click="changeTab(item.type)"
         :class="item.type === tabIndex ? 'on' : ''"
       >{{item.name}}</span>
     </div>
@@ -19,7 +20,7 @@
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
-import BarGraphRow from './components/barGraphRow.vue'
+import { BarGraphRow } from '@/components/barGraphRow'
 import { regionList } from './data'
 import { toast } from '@/util/toast'
 
@@ -30,6 +31,13 @@ import { toast } from '@/util/toast'
   }
 })
 export default class UserRegion extends ViewBase {
+  source: number = 0 // 数据来源
+  query: any = {
+    id: 0,
+    pageIndex: 1,
+    type: 1, // 1=省 2=城市
+    objType: 1 // 1=用户地域分布  2=高消费偏好地区
+  }
   title: string = '用户地域分布' // 页面 titlt
   regionData: any = null
   canvasHei: string = '600px'
@@ -46,19 +54,19 @@ export default class UserRegion extends ViewBase {
   ]
 
   created() {
-    const query: any = {
+    this.source = Number(this.$route.query.src)
+    this.query = {
       id: this.$route.query.id,
       pageIndex: 1,
-      type: this.$route.query.type || 1, // 1=省 2=城市
-      objType: this.$route.query.objType // 1=用户地域分布  2=高消费偏好地区
+      type: this.$route.query.type || 1,
+      objType: this.$route.query.objType
     }
-    this.getData(query)
+    this.getData()
   }
 
   // 获取数据
-  async getData(query: any) {
-    const source = Number(this.$route.query.src)
-    const result: any = await regionList(source, query)
+  async getData() {
+    const result: any = await regionList(this.source, this.query)
     // 处理页面 title
     this.title = result.brandName + '用户地域分布'
     // 处理数据
@@ -75,9 +83,19 @@ export default class UserRegion extends ViewBase {
     }
     this.canvasHei = dataList.length * 35 + 'px'
     this.regionData = {
-      xData,
-      yData,
-      labelFormatter: '{c}%'
+      xData, // X轴数据
+      yData, // Y轴name
+      labelFormatter: '{c}%', // 最右侧的数值
+      size: 11 // 条形的高度
+    }
+  }
+
+  // 切换省市
+  changeTab(type: number) {
+    if (this.tabIndex !== type) {
+      this.tabIndex = type
+      this.query = Object.assign({}, this.query, { type })
+      this.getData()
     }
   }
 }
@@ -89,11 +107,11 @@ export default class UserRegion extends ViewBase {
 }
 .tabs {
   text-align: center;
+  padding-bottom: 40px;
   span {
     height: 60px;
     border-radius: 30px;
-    opacity: 0.4;
-    border: 2px solid rgba(180, 193, 211, 1);
+    border: 2px solid rgba(180, 193, 211, 0.4);
     font-size: 26px;
     color: rgba(46, 47, 90, 1);
     line-height: 60px;
@@ -102,7 +120,9 @@ export default class UserRegion extends ViewBase {
     margin: 0 5px;
   }
   .on {
-    background: rgba(124, 164, 255, 1);
+    background: #7ca4ff;
+    border-color: #7ca4ff;
+    color: #fff;
   }
 }
 </style>

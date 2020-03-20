@@ -3,14 +3,37 @@
     <SentimentBar :title="movieInfo.movieNameCn" :sidebar="sidebar" />
     <BaseInfoArea :baseInfo="movieInfo" :overView="movieOverView" />
     <TabNav :list="tabList" class="formattab" />
+    <div class="hotanalysis">
+      <selectTime ref="refsTime" />
+      <heatLineCom :overAllList="overAllHeat" :platformList="platformHeat" :params="params" />
+    </div>
     <WantSeeTrend :dataTrend="wantSeeTrend" />
-    <BoxOffice />
-    <PraiseComment :favorable="movieInfo.favorable" :publicPraise="publicPraise" />
-    <UserPortrait :ageRangeList="userAnalysis.ageRangeList" :genderList="userAnalysis.genderList" />
-    <EventList :eventList="eventList" />
-    <RivalAnalysis :rivalList="rivalAnalysis" />
-    <ActorList v-if="actorList && actorList.length" :actorList="actorList" id="actor" />
-    <ProduceList v-if="produceList && produceList.length" :produceList="produceList" />
+    <BoxOffice :boxoffice="boxOffice" :link="getApplink('movieBoxOffice')" id="boxoffice" />
+    <PraiseComment
+      :favorable="movieInfo.favorable"
+      :publicPraise="publicPraise"
+      :link="getApplink('praiseHotWordsList')"
+      id="praise"
+    />
+    <UserPortrait
+      :ageRangeList="userAnalysis.ageRangeList"
+      :genderList="userAnalysis.genderList"
+      id="user"
+      :link="getApplink('userAnalysis')"
+    />
+    <EventList :eventList="eventList" id="event" :link="getApplink('eventMarketingList')" />
+    <RivalAnalysis :rivalList="rivalAnalysis" id="rival" />
+    <ActorList
+      v-if="actorList && actorList.length"
+      :actorList="actorList"
+      id="actor"
+      :link="getApplink('actorList')"
+    />
+    <ProduceList
+      v-if="produceList && produceList.length"
+      :produceList="produceList"
+      :link="getApplink('produceDistribute')"
+    />
   </div>
 </template>
 
@@ -20,6 +43,8 @@ import ViewBase from '@/util/ViewBase'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import BaseInfoArea from './components/movieInfo.vue' // 影片基本信息
 import TabNav, { TabNavItem } from '@/components/tabNav'
+import { selectTime } from '@/components/hotLine'
+import heatLineCom from '@/views/common/heatLineCom/index.vue'
 import WantSeeTrend from './components/wantSeeTrend.vue' // 想看趋势
 import BoxOffice from './components/boxOffice.vue' // 影片票房
 import PraiseComment from '@/views/common/praiseComment/index.vue' // 口碑评论
@@ -35,6 +60,8 @@ import ProduceList from '@/views/common/produceList/index.vue' // 出品发行
     SentimentBar,
     BaseInfoArea,
     TabNav,
+    selectTime,
+    heatLineCom,
     WantSeeTrend,
     BoxOffice,
     PraiseComment,
@@ -51,6 +78,55 @@ export default class MoviePage extends ViewBase {
     diggId: '100038',
     rivalIds: '1,2,4'
   }
+  // 所有的 applink
+  // 业务类型 businessType 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
+  // 业务 Id businessObjectId
+  appLinks = {
+    // 票房
+    boxOffice: {
+      page: 'movieBoxOffice',
+      boxOfficeType: 1,
+      movieId: '100038'
+    },
+    praise: {
+      page: 'praiseHotWordsList',
+      businessType: 3,
+      businessObjectId: '100038'
+    },
+    user: {
+      page: 'praiseHotWordsList',
+      businessType: 3,
+      businessObjectId: '100038'
+    }
+  }
+  /**
+   * 获取 applink
+   * 业务类型 businessType 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
+   * 业务Id businessObjectId
+   * @page 页面标识
+   */
+  getApplink(page: string) {
+    switch (page) {
+      case 'userAnalysis':
+        return {
+          name: 'sentimentmovieuseranalysis',
+          params: {
+            movieId: 100038
+          }
+        }
+      default:
+        return {
+          page,
+          businessType: 3,
+          businessObjectId: 100038
+        }
+    }
+  }
+
+  detail: any = {
+    type: 'movie',
+    id: '100038'
+  }
   movieInfo = {
     movieNameCn: '流浪地球',
     movieNameEn: 'The Wandering Earth',
@@ -66,12 +142,150 @@ export default class MoviePage extends ViewBase {
   }
   tabList: TabNavItem[] = [
     { name: 'hot', label: '热度' },
+    { name: 'boxoffice', label: '票房' },
     { name: 'praise', label: '口碑' },
     { name: 'user', label: '用户' },
     { name: 'event', label: '事件' },
     { name: 'rival', label: '竞品' },
     { name: 'actor', label: '资料' }
   ]
+  overAllHeat = [
+    {
+      date: 1583978358078,
+      value: 123,
+      eventList: [
+        {
+          eventName: '意大利紧急求助中国',
+          eventId: '123232'
+        },
+        {
+          eventName: '意大利紧急求助中国',
+          eventId: '123232'
+        },
+        {
+          eventName: '意大利紧急求助中国',
+          eventId: '123232'
+        },
+        {
+          eventName: '意大利紧急求助中国',
+          eventId: '123232'
+        },
+        {
+          eventName: '意大利紧急求助中国',
+          eventId: '123232'
+        }
+      ]
+    },
+    {
+      date: 1583978358078,
+      value: 323,
+      eventList: [
+        {
+          eventName: '意大利紧急求助中国',
+          eventId: '123232'
+        },
+        {
+          eventName: '意大利紧急求助中国',
+          eventId: '123232'
+        },
+        {
+          eventName: '意大利紧急求助中国',
+          eventId: '123232'
+        }
+      ]
+    }
+  ]
+  platformHeat = [
+    {
+      platformName: '新浪',
+      platformValueList: [
+        {
+          name: '微博数',
+          value: '9,876'
+        },
+        {
+          name: '互动量',
+          value: '9,876.5万'
+        }
+      ],
+      platformLogo: {
+        source: 'jydata',
+        url:
+          'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+      },
+      platformId: '1',
+      platformNotice: '媒体一 媒体二 媒体三'
+    },
+    {
+      platformName: '新浪',
+      platformValueList: [
+        {
+          name: '微博数',
+          value: '9,876'
+        },
+        {
+          name: '互动量',
+          value: '9,876.5万'
+        }
+      ],
+      platformLogo: {
+        source: 'jydata',
+        url:
+          'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+      },
+      platformId: '2',
+      platformNotice: '媒体一 媒体二 媒体三'
+    },
+    {
+      platformName: '新浪',
+      platformValueList: [
+        {
+          name: '微博数',
+          value: '9,876'
+        },
+        {
+          name: '互动量',
+          value: '9,876.5万'
+        }
+      ],
+      platformLogo: {
+        source: 'jydata',
+        url:
+          'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+      },
+      platformId: '3',
+      platformNotice: '媒体一 媒体二 媒体三'
+    },
+    {
+      platformName: '新浪',
+      platformValueList: [
+        {
+          name: '微博数',
+          value: '9,876'
+        },
+        {
+          name: '互动量',
+          value: '9,876.5万'
+        }
+      ],
+      platformLogo: {
+        source: 'jydata',
+        url:
+          'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+      },
+      platformId: '4',
+      platformNotice: '媒体一 媒体二 媒体三'
+    }
+  ]
+  get params() {
+    return {
+      type: 1, // 1 品牌 2 艺人 3 电影 4 音乐-单曲 5 音乐-专辑  6 剧集
+      id: 1, // 详情页id
+      name: '奔驰',
+      startTime: 20200304, // this.startTime,
+      endTime: 20200310 // this.endTime
+    }
+  }
   movieOverView = {
     heatRanking: 'NO.125',
     commnetTrend: 121344,
@@ -83,7 +297,7 @@ export default class MoviePage extends ViewBase {
   wantSeeTrend = {
     dailyGainList: [
       {
-        date: 1583719155000,
+        date: 1584622361149,
         eventList: [
           {
             eventName: '花木兰首映获好评',
@@ -101,7 +315,7 @@ export default class MoviePage extends ViewBase {
         value: 1300
       },
       {
-        date: 1583805555000,
+        date: 1584622361149,
         eventList: [
           {
             eventName: '花木兰首映获好评',
@@ -123,7 +337,7 @@ export default class MoviePage extends ViewBase {
         value: 32132
       },
       {
-        date: 1583891955000,
+        date: 1584622361149,
         eventList: [
           {
             eventName: '花木兰首映获好评',
@@ -149,7 +363,7 @@ export default class MoviePage extends ViewBase {
         value: 323132
       },
       {
-        date: 1583978355000,
+        date: 1584622361149,
         eventList: [
           {
             eventName: '花木兰首映获好评',
@@ -175,7 +389,7 @@ export default class MoviePage extends ViewBase {
         value: 12313
       },
       {
-        date: 1584064755000,
+        date: 1584622361149,
         eventList: [
           {
             eventName: '花木兰首映获好评',
@@ -641,6 +855,44 @@ export default class MoviePage extends ViewBase {
     '北京影拓星瀚网络科技有限公司',
     '北京国影纵横电影发行有限公司'
   ]
+  boxOffice = {
+    totalBoxOffice: '1.2万',
+    totalPerson: '1,323',
+    firstDayBoxOffice: '321.2万',
+    firstWeekBoxOffice: '1,312.0万',
+    boxOfficeList: [
+      {
+        name: 1583978358078,
+        value: 23132332
+      },
+      {
+        name: 1583978358078,
+        value: 23132332
+      }
+    ],
+    scheduleList: [
+      {
+        name: 1583978358078,
+        value: 323132
+      },
+      {
+        name: 1583978358078,
+        value: 323132
+      },
+      {
+        name: 1583978358078,
+        value: 323132
+      },
+      {
+        name: 1583978358078,
+        value: 323132
+      }
+    ],
+    cityBoxOffice: '1,323',
+    cityBoxOfficeTop: ' 北京',
+    companyBoxOfficeTop: '北京万达院线',
+    companyBoxOffice: '142.8万'
+  }
 }
 </script>
 
@@ -648,9 +900,12 @@ export default class MoviePage extends ViewBase {
 .page {
   color: #303030;
 }
-.formattab {
+nav.formattab {
   margin-top: 0;
   top: 88px;
   z-index: 11;
+}
+.hotanalysis {
+  margin-top: 40px;
 }
 </style>

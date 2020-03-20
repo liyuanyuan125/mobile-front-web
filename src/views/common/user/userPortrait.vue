@@ -1,33 +1,39 @@
 <template>
   <div class="userportrait">
     <!-- <h4>性别年龄占比</h4> -->
-    <ModuleTitle title="用户分析" />
-    <div style="margin-top:15px;width: 40%;float: left;">
-      <BarGraph :dataOption="genderListData" :colorList="colorList" />
-    </div>
-    <div style="margin-top:15px;width: 60%;float: left;height: 162px;">
-      <barGraphRow :dataOption="ageRangeListData" :itemlist="itemlist" />
-    </div>
+    <ModuleHeader title="用户分析" :link="link" />
+    <van-row type="flex" class="raitwrap" gutter="20">
+      <van-col span="10">
+        <BarGraph :dataOption="genderListData" :colorList="colorList" />
+      </van-col>
+      <van-col span="14">
+        <barGraphRow :dataOption="ageRangeListData" :itemlist="itemlist" />
+      </van-col>
+    </van-row>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
+import { Col, Row } from 'vant'
 import BarGraph from '@/components/kol/barGraph.vue'
 import barGraphRow from '@/components/kol/barGraphRow.vue'
-import ModuleTitle from '@/components/sentimentTitle'
+import ModuleHeader from '@/components/moduleHeader'
 
 @Component({
   components: {
+    [Row.name]: Row,
+    [Col.name]: Col,
     BarGraph,
     barGraphRow,
-    ModuleTitle
+    ModuleHeader
   }
 })
 export default class UserPortrait extends ViewBase {
   @Prop({ type: Array }) ageRangeList!: any
   @Prop({ type: Array }) genderList!: any
+  @Prop({ type: Object }) link!: any
 
   ageRangeListData: any = null
   genderListData: any = null
@@ -44,7 +50,6 @@ export default class UserPortrait extends ViewBase {
     normalColor: [],
     bgColor: '#F0F0F0'
   }
-
 
   created() {
     this.add()
@@ -107,8 +112,14 @@ h4 {
 }
 .userportrait {
   height: 500px;
-  padding-top: 52px;
+  padding: 50px 0;
   background: #fff;
   // border-top: 20px solid #f7f6f9;
+}
+.module-header {
+  padding: 0 30px;
+}
+.raitwrap {
+  margin-top: 30px;
 }
 </style>

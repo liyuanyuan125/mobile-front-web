@@ -1,6 +1,6 @@
 <template>
   <div class="options-page">
-    <ModuleTitle title="口碑评论" :appLink="appLink" />
+    <ModuleHeader title="口碑评论" :link="link" />
     <div class="options-top">
       <div class="options-left">
         <span class="hot" @click="showNote">
@@ -25,7 +25,11 @@
           <i class="ico-hot"></i>全网热词
         </div>
         <div class="hot-box-right">
-          <span v-for="(it,index) in publicPraise.hotWordList" :key="index">{{it}}</span>
+          <span
+            v-for="(it,index) in publicPraise.hotWordList"
+            :key="it+index"
+            @click="wordLink(it,0)"
+          >{{it}}</span>
         </div>
       </div>
       <div class="hot-box">
@@ -33,7 +37,11 @@
           <i class="ico-bad"></i>负面热词
         </div>
         <div class="hot-box-right">
-          <span v-for="(it,index) in publicPraise.badWordList" :key="index">{{it}}</span>
+          <span
+            v-for="(it,index) in publicPraise.badWordList"
+            :key="it + index"
+            @click="wordLink(it,3)"
+          >{{it}}</span>
         </div>
       </div>
     </div>
@@ -43,8 +51,10 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Progress, Icon } from 'vant'
-import ModuleTitle from '@/components/sentimentTitle'
+import ModuleHeader from '@/components/moduleHeader'
 import { alert } from '@/util/toast'
+import { openAppLink, AppLink } from '@/util/native'
+import { DetailItem } from './types'
 
 const publicPraise = {
   appraiseList: [],
@@ -55,17 +65,19 @@ const publicPraise = {
   components: {
     Progress,
     Icon,
-    ModuleTitle
+    ModuleHeader
   }
 })
 export default class PraiseComment extends Vue {
   @Prop({ required: true, default: () => publicPraise }) publicPraise?: any
   @Prop({ type: String }) favorable?: any
+  @Prop({ type: Object }) link!: AppLink
 
-  appLink: string = ''
+  appLink: AppLink = this.link
   praiseList: any[] = []
 
   mounted() {
+    // 处理数据
     const list = this.publicPraise.appraiseList
     if (list.length) {
       for (const item of list) {
@@ -73,6 +85,18 @@ export default class PraiseComment extends Vue {
       }
     }
     this.praiseList = list
+  }
+
+  // 热词 applink 跳转
+  wordLink(word: string, markType: number) {
+    const link: AppLink = {
+      page: 'praiseHotWordsDetail',
+      businessType: this.link.businessType, // 业务类型
+      businessObjectId: this.link.businessObjectId, // 业务 id
+      keyword: encodeURIComponent(word),
+      markType
+    }
+    openAppLink(link)
   }
 
   // 显示说明

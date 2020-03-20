@@ -1,40 +1,40 @@
 <template>
     <div class='scroll'>
-        <div class='title'>电影(5)</div>
+        <div class='title'>电影({{data.movieCount}})</div>
         <ul>
             <li>
-                <p class='p1'>8.36亿</p>
+                <p class='p1'>{{data.boxOfficeCount == '' ? '-' : data.boxOfficeCount}}</p>
                 <p class='p2'>累计票房</p>
             </li>
             <li class='chgli'></li>
             <li>
-                <p class='p1'>6.9</p>
+                <p class='p1'>{{data.averagScore == '' ? '-' : data.averagScore}}</p>
                 <p class='p2'>作品均分
                   <Icon name="question-o" size="13" class="icon-arrow"/>
                 </p>
             </li>
             <li class='chgli'></li>
             <li>
-                <p class='p1-3'>都市 爱情</p>
+                <p class='p1-3'>{{data.mainGenre == '' ? '-' : data.mainGenre}}</p>
                 <p class='p2'>类型偏好</p>
             </li>
         </ul>
         <div class='movielist'>
-            <div class='rowmovie' v-for='item in movieList' :key='item.key'>
+            <div class='rowmovie' v-for='item in data.movieList' :key='item.movieId'>
                 <div class="img">
-                  <img :src=item.img alt="">
+                  <img :src=item.coverUrl.url alt="">
                 </div>
                 <div class='name'>
-                  {{item.name}}
+                  {{item.movieName}}
                 </div>
-                <div class='type'>{{item.type}}</div>
+                <div class='type'>{{item.genres}}</div>
             </div>
        </div>
     </div>
 </template>
 
 <script lang='ts'>
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue , Prop } from 'vue-property-decorator'
 import { Icon } from 'vant'
 import moment from 'moment'
 
@@ -44,48 +44,42 @@ import moment from 'moment'
   }
 })
 export default class Main extends Vue {
+  @Prop({ type: Object, default: []}) data!: any
 
-  movieList: any = null
 
-  mounted() {
-    this.getMovieList()
-  }
+    // movieList: any = [
+    //   {
+    //     img: 'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg',
+    //     name: '晚秋',
+    //     type: '剧集',
+    //     key: 1,
+    //   },
+    //   {
+    //     img: 'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg',
+    //     name: '晚秋',
+    //     type: '剧集',
+    //     key: 2,
+    //   },
+    //   {
+    //     img: 'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg',
+    //     name: '晚秋',
+    //     type: '剧集',
+    //     key: 3,
+    //   },
+    //   {
+    //     img: 'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg',
+    //     name: '晚秋',
+    //     type: '剧集',
+    //     key: 4,
+    //   },
+    //   {
+    //     img: 'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg',
+    //     name: '晚秋',
+    //     type: '剧集',
+    //     xkey: 5,
+    //   }
 
-  async getMovieList() {
-    this.movieList = [
-      {
-        img: 'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg',
-        name: '晚秋',
-        type: '剧集',
-        key: 1,
-      },
-      {
-        img: 'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg',
-        name: '晚秋',
-        type: '剧集',
-        key: 2,
-      },
-      {
-        img: 'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg',
-        name: '晚秋',
-        type: '剧集',
-        key: 3,
-      },
-      {
-        img: 'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg',
-        name: '晚秋',
-        type: '剧集',
-        key: 4,
-      },
-      {
-        img: 'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg',
-        name: '晚秋',
-        type: '剧集',
-        xkey: 5,
-      }
-
-    ]
-  }
+    // ]
 
 }
 
@@ -167,8 +161,8 @@ export default class Main extends Vue {
   justify-content: space-between;
 }
 .rowmovie {
-  -webkit-flex: 1 0 auto;
-  flex: 1 0 auto;
+  // -webkit-flex: 1 0 auto;
+  // flex: 1 0 auto;
   margin-top: 30px;
   width: 190px;
   // height: 260px;

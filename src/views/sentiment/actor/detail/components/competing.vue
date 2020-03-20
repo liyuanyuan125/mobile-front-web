@@ -1,7 +1,7 @@
 <template>
   <div class="compet-content">
     <div class="title">相似艺人
-      <router-link class="to-more" to="" ><van-icon name="arrow" size="14" /></router-link>
+      <router-link class="to-more" to="" ><Icon name="arrow" size="14" /></router-link>
     </div>
     <ul>
       <li class='li-item'>
@@ -26,30 +26,30 @@
           </div>
         </div>
       </li>
-      <li class='li-item-pk'>
+      <li class='li-item-pk' v-for='item in pkUserListData' :key='item.rivalName' >
         <div class='li-left'>
           <div>
-            <img src="https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg" alt="">
+            <img :src=item.rivalCover.url alt="">
           </div>
         </div>
         <div class='li-right'>
-          <div class='name'>玄彬</div>
+          <div class='name'>{{item.rivalName}}</div>
           <div class='hot'>
             <ul>
               <li>
                 <p class='hot1'>热度</p>
-                <p class='hot2'>80345</p>
-                <p class='blue'>低19</p>
+                <p class='hot2'>{{item.yesterHeatCount}}</p>
+                <p class='blue'>{{item.yesterHeatTrend}}</p>
               </li>
               <li>
                 <p class='hot1'>全网粉丝数</p>
-                <p class='hot2'>224</p>
-                <p class='blue'>高504</p>
+                <p class='hot2'>{{item.interFansCount}}</p>
+                <p class='blue'>{{item.interFansTrend}}</p>
               </li>
             </ul>
           </div>
           <div class='content'>
-            <div class='left'>Swisse品牌代言人</div>
+            <div class='left'>{{item.eventName}}</div>
             <div class='right'>2020-02-14</div>
           </div>
         </div>
@@ -62,21 +62,31 @@
 </template>
 
 <script lang='ts'>
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue , Prop } from 'vue-property-decorator'
 import { Icon } from 'vant'
 import moment from 'moment'
 
+const format = 'YYYY-MM-DD'
+
 @Component({
   components: {
-    [Icon.name]: Icon,
+    Icon,
   }
 })
 export default class Main extends Vue {
+  @Prop({ type: Array, default: []}) pkUserList!: any
 
-  mounted() {
-    // console.log(moment(1583743918613).format('YYYY-MM-DD'))
-    // console.log(moment().valueOf()) // 1583743918613
+  pkUserListData: any = null
+
+  created() {
+    this.pkUserListData = (this.pkUserList || []).map((it: any) => {
+      return {
+        ...it,
+        eventCreatTimeDate: moment(it.eventCreatTime).format(format)
+      }
+    })
   }
+
 }
 
 </script>

@@ -136,10 +136,10 @@ export default class KolPage extends ViewBase {
         ageRangeList,
         platformFansList,
       } } = await getPeople({actorId: this.$route.params.actorId})
-      this.genderList.data = genderList
-      this.userRegionList = userRegionList
-      this.ageRangeList = ageRangeList
-      this.platformFansList.data = platformFansList
+      // this.genderList.data = genderList
+      // this.userRegionList = userRegionList
+      // this.ageRangeList = ageRangeList
+      // this.platformFansList.data = platformFansList
     } catch (ex) {
       toast(ex)
     } finally {

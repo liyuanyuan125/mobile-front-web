@@ -1,9 +1,9 @@
 <template>
   <div class='pages'>
+    <!-- <SentimentBar title="竞品分析详细报告" :sidebar="sidebar" /> -->
     <div class='maintop'>
       <div class="reBack"></div>
       <div class='title'>竞品分析详细报告</div>
-      <div class='search'></div>
     </div>
     <div class='user'>
       <div class='userlist' v-for="(item , index) in userItemList" :key='index'>
@@ -61,6 +61,7 @@
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
+import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import combinedHeat from './components/combinedHeat.vue'
 import platformHeat from './components/platformHeat.vue'
 import publicPraise from './components/publicPraise.vue'
@@ -83,10 +84,17 @@ import { Tab, Tabs } from 'vant'
     Age,
     Sex,
     Table,
-    TabNav
+    TabNav,
+    SentimentBar
   }
 })
 export default class KolPage extends ViewBase {
+
+  sidebar = {
+    diggType: 'actor',
+    diggId: '100038',
+    rivalIds: '1,2,4'
+  }
 
   item: any = null
 

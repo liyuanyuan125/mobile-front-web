@@ -1,22 +1,22 @@
 <template>
     <div class='scroll'>
-        <div class='title'>品牌(5)</div>
+        <div class='title'>品牌({{data.brandCount}})</div>
         <div class='movielist'>
-            <div class='rowmovie' v-for='item in movieList' :key='item.key'>
+            <div class='rowmovie' v-for='item in data.brandList' :key='item.brandId'>
                 <div class="img">
-                  <img :src=item.img alt="">
+                  <img :src=item.coverUrl.url alt="">
                 </div>
                 <div class='name'>
-                  {{item.name}}
+                  {{item.brandName}}
                 </div>
-                <div class='type'>{{item.type}}</div>
+                <div class='type'>{{item.genres}}</div>
             </div>
        </div>
     </div>
 </template>
 
 <script lang='ts'>
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Icon } from 'vant'
 import moment from 'moment'
 
@@ -26,48 +26,7 @@ import moment from 'moment'
   }
 })
 export default class Main extends Vue {
-
-  movieList: any = null
-
-  mounted() {
-    this.getMovieList()
-  }
-
-  async getMovieList() {
-    this.movieList = [
-      {
-        img: 'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg',
-        name: '晚秋',
-        type: '剧集',
-        key: 1,
-      },
-      {
-        img: 'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg',
-        name: '晚秋',
-        type: '剧集',
-        key: 2,
-      },
-      {
-        img: 'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg',
-        name: '晚秋',
-        type: '剧集',
-        key: 3,
-      },
-      {
-        img: 'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg',
-        name: '晚秋',
-        type: '剧集',
-        key: 4,
-      },
-      {
-        img: 'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg',
-        name: '晚秋',
-        type: '剧集',
-        xkey: 5,
-      }
-
-    ]
-  }
+  @Prop({ type: Object, default: []}) data!: any
 
 }
 
@@ -142,8 +101,8 @@ export default class Main extends Vue {
   justify-content: space-between;
 }
 .rowmovie {
-  -webkit-flex: 1 0 auto;
-  flex: 1 0 auto;
+  // -webkit-flex: 1 0 auto;
+  // flex: 1 0 auto;
   margin-top: 30px;
   width: 190px;
   // height: 260px;

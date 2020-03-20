@@ -154,8 +154,9 @@ export default new Router({
     },
 
     // kol舆情
+    // 艺人详情
     {
-      path: '/sentiment/actor/:id',
+      path: '/sentiment/actor/:actorId',
       name: 'sentimentactor',
       component: () => import('./views/sentiment/actor/detail/index.vue')
     },

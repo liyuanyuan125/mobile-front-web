@@ -1,26 +1,27 @@
 <template>
-  <div class="content">
+  <div class="content" >
+    <SentimentBar :title="actorInfo.actorName" :sidebar="sidebar" />
     <div class="header">
       <div class='left'>
         <div>
-          <img :src="kolInfo.kolLogo.url" class="img" />
+          <img :src="actorInfo.coverUrl" class="img" />
         </div>
       </div>
       <div class='right'>
-        <p class="kol-name">{{kolInfo.actorName}}</p>
-        <p v-if="kolInfo.rankingName && !kolInfo.rankingId " class="event-name">
+        <p class="kol-name">{{actorInfo.actorName}}</p>
+        <p v-if="actorInfo.rankingName && !actorInfo.rankingId " class="event-name">
             <span>
-              <i class='hid'>{{kolInfo.rankingNum}}&nbsp;</i>
-              <i class='bor'>{{kolInfo.rankingName}}</i>
+              <i class='hid'>{{actorInfo.rankingNum}}&nbsp;</i>
+              <i class='bor'>{{actorInfo.rankingName}}</i>
             </span>
         </p>
-        <p v-if="kolInfo.rankingName && kolInfo.rankingId">
+        <p v-if="actorInfo.rankingName && actorInfo.rankingId">
           <router-link to="" class="event-name flex-box">
             <span>
-              <i class='hid'>{{kolInfo.rankingNum}}&nbsp;</i>
-              <i class='bor'>{{kolInfo.rankingName}}</i>
+              <i class='hid'>{{actorInfo.rankingNum}}&nbsp;</i>
+              <i class='bor'>{{actorInfo.rankingName}}</i>
             </span>
-            <Icon name="arrow" size="13" class="icon-arrow" />
+            <!-- <Icon name="arrow" size="13" class="icon-arrow" /> -->
           </router-link> 
         </p>
       </div>
@@ -33,35 +34,35 @@
       :list ="list"
       class="tab-nav"
     />
-    <section class="pane" id="hot">
+    <section v-if='show' class="pane" id="hot">
       <!-- 热度分析 -->
       <Hots :id='0'/>
     </section>
 
-    <section class="pane" id="praise">
+    <section v-if='show' class="pane" id="praise">
       <!-- 口碑评论 -->
       <!-- 待更换 -->
-      <Public />
+      <PraiseComment :favorable="actorInfo.favorable" :publicPraise="publicPraise" />
     </section>
 
-    <section class="pane" id="user">
+    <section v-if='show' class="pane" id="user">
       <!-- 用户分析 -->
       <UserPortrait :genderList="userAnalysis.genderList" :ageRangeList="userAnalysis.ageRangeList" />
     </section>
 
-    <section class="pane" id="event">
+    <section v-if='show' class="pane" id="event">
       <!-- 营销事件 -->
-      <Event />
+      <Event :eventList='eventList' />
     </section>
 
-    <section class="pane" id="part">
+    <section v-if='show' class="pane" id="part">
        <!-- 相似艺人 -->
-        <Competing />
+        <Competing :pkUserList='pkUserList' />
     </section>
 
-    <section class="pane" id="work">
+    <section v-if='show' class="pane" id="work">
       <!-- 作品分析 -->
-      <Works />
+      <Works :worksAnalysis='worksAnalysis' />
     </section>
     
   </div>
@@ -72,15 +73,16 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import { Tab, Tabs, Icon } from 'vant'
 import TabNav, { TabNavItem } from '@/components/tabNav'
+import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import Hots from './components/hots.vue'
-import Public from './components/public.vue'
+import PraiseComment from '@/views/common/praiseComment/index.vue' // 口碑评论
 import UserPortrait from '@/views/common/user/userPortrait.vue'
-// import User from './components/users.vue'
-import Event from './components/event.vue'
+import Event from '@/views/common/eventList/event.vue' // 事件跟踪
 import Competing from './components/competing.vue'
 import Works from './components/works.vue'
 import { toast } from '@/util/toast'
 import {BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
+import { getActorDetail , getPkUser } from '@/api/kol'
 
 @Component({
   components: {
@@ -88,8 +90,9 @@ import {BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
     Tabs,
     Icon,
     BubbleBottom,
+    SentimentBar,
     Hots,
-    Public,
+    PraiseComment,
     UserPortrait,
     Event,
     Competing,
@@ -99,6 +102,28 @@ import {BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
 })
 export default class KolPage extends ViewBase {
 
+  show: any = false
+
+  sidebar = {
+    diggType: 'actor',
+    diggId: '100038',
+    rivalIds: '1,2,4'
+  }
+  // 艺人基本信息
+  actorInfo = {
+    actorName: '玄彬',
+    actorId: 1,
+    coverUrl: 'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg', // 封面图
+    kolLogo: {
+      source: '',
+      url: ''
+    },
+    rankingId: '', // 有值则加热搜事件链接
+    rankingNum: '热搜No.8',
+    rankingName: '#1111111111111', // 有值则显示模块，无则不显示模块,
+    favorable: 'B+'
+  }
+  // 气泡数据概览
   bubbleData: any = [
     {type: '1', value: '235,454', trend: '123',  renderTitle: (h: any) => {
       return h(Title, {
@@ -113,19 +138,7 @@ export default class KolPage extends ViewBase {
     {type: '3', title: '实时热度', value: '234,234', trend: '-256', showdown: true},
     {type: '4', title: '好感度', value: 'B+'}
   ]
-
-  kolInfo = {
-    actorName: '玄彬',
-    actorId: 1,
-    kolLogo: {
-      source: '',
-      url: 'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg'
-    },
-    rankingId: '', // 有值则加热搜事件链接
-    rankingNum: '热搜No.8',
-    rankingName: '#1111111111111', // 有值则显示模块，无则不显示模块
-  }
-
+  // tab导航
   list: TabNavItem[] = [
     { name: 'hot', label: '热度' },
     { name: 'praise', label: '口碑' },
@@ -134,7 +147,7 @@ export default class KolPage extends ViewBase {
     { name: 'part', label: '竞品' },
     { name: 'work', label: '作品' },
   ]
-
+  // 用户分析
   userAnalysis: any = {
     genderList: [
       {
@@ -169,9 +182,197 @@ export default class KolPage extends ViewBase {
       }
     ]
   }
+  // 口碑评论 数据
+  publicPraise = {
+    appraiseList: [
+      {
+        raisePercent: 1200,
+        raiseName: '正面评价'
+      },
+      {
+        raisePercent: 3200,
+        raiseName: '负面评价'
+      },
+      {
+        raisePercent: 2300,
+        raiseName: '中性评价'
+      }
+    ],
+    hotWordList: ['劲暴', '太帅了', '要严肃', '四个字的'],
+    badWordList: ['劲暴', '太帅', '严肃', '四个字的']
+  }
+  // 事件跟踪
+  eventList = [
+    {
+      eventName: '乔乔的异想世界获最佳喜剧片剪辑',
+      eventId: '12332',
+      creatTime: 1584146173812,
+      target: [
+        {
+          targetCode: '1',
+          targetName: '正面'
+        }
+      ],
+      interactiveList: [
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '100万+'
+        },
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '1,212'
+        }
+      ]
+    },
+    {
+      eventName: '冲奥片"乔乔的异想世界"曝豪华卡司幕后',
+      eventId: '12332',
+      creatTime: 1584146173812,
+      target: [
+        {
+          targetCode: '1',
+          targetName: '热点'
+        },
+        {
+          targetCode: '2',
+          targetName: '负面'
+        }
+      ],
+      interactiveList: [
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '100万+'
+        },
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '1,212'
+        },
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '100万+'
+        }
+      ]
+    },
+    {
+      eventName: '乔乔的异想世界获最佳喜剧片剪辑',
+      eventId: '12332',
+      creatTime: 1584146173812,
+      target: [
+        {
+          targetCode: '1',
+          targetName: '热点'
+        },
+        {
+          targetCode: '2',
+          targetName: '负面'
+        }
+      ],
+      interactiveList: [
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '100万+'
+        },
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '1,212'
+        },
+        {
+          interactiveUrl: {
+            source: 'jydata',
+            url:
+              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
+          },
+          interactiveValue: '100万+'
+        }
+      ]
+    }
+  ]
+  // 作品分析
+  worksAnalysis: any = []
+
+  pkUserList: any = []
+
+  created() {
+    const mid = this.$route.params.kolId
+    this.getActorDetail()
+    this.getPkUser()
+    document.body.style.background = '#FBFBFB'
+  }
 
   demo() {
     toast('近90天内，物料新增的点赞、评论、转发、阅读或播放的累计之和')
+  }
+
+  async getActorDetail() {
+    try {
+      const { data: {
+        actorInfo, // 艺人基本信息
+        actorOverView, // 气泡数字概览
+        publicPraise, // 口碑
+        userAnalysis, // 用户分析
+        worksAnalysis, // 作品分析
+      } } = await getActorDetail({actorId: this.$route.params.actorId})
+      // this.actorInfo = actorInfo
+      // this.bubbleData = [
+      //   {type: '1', value: actorOverView.interactCount, trend: actorOverView.interactTrend,
+      //    renderTitle: (h: any) => {
+      //     return h(Title, {
+      //       props: {
+      //         title: `近90日新增互动`
+      //       },
+      //       on: {
+      //         click: this.demo
+      //     }})
+      //   }},
+      //   {type: '2', title: '全网粉丝数', value: actorOverView.fansCount, trend: actorOverView.fansTrend, showdown: true},
+      //   {type: '3', title: '实时热度', value: actorOverView.heatCount, trend: actorOverView.heatTrend	, showdown: true},
+      //   {type: '4', title: '好感度', value: actorInfo.favorable}
+      // ]
+      // this.publicPraise = publicPraise
+      // this.userAnalysis = userAnalysis
+      this.worksAnalysis.data = worksAnalysis
+    } catch (ex) {
+      toast(ex)
+    } finally {
+      this.show = true
+    }
+  }
+
+  async getPkUser() {
+    try {
+      const pkUser = await getPkUser({actorId: this.$route.params.actorId})
+      this.pkUserList = pkUser.data
+    } catch (ex) {
+      toast(ex)
+    }
   }
 }
 </script>
@@ -204,7 +405,7 @@ export default class KolPage extends ViewBase {
 }
 .header {
   display: flex;
-  padding: 20px 40px 0;
+  padding: 88px 40px 0;
   .left {
     width: 33%;
     div {
@@ -252,9 +453,12 @@ export default class KolPage extends ViewBase {
   }
 }
 .dubble {
-  margin-top: -30px;
-  // background: url('./images/bg2.png') no-repeat left bottom;
-  // background-size: 100% 120px;
+  padding: 0 4vw;
+  margin-top: -5.73333vw;
+  position: relative;
+  z-index: 12;
+  height: 49.33333vw;
+  overflow: hidden;
 }
 /deep/ .bubble-warper-bottom {
   .mask {
@@ -272,10 +476,11 @@ export default class KolPage extends ViewBase {
 }
 /deep/ .tab-nav {
   margin-top: 0;
-  top: 50px;
+  top: 88px;
+  z-index: 11;
 }
 .pane {
-  padding: 15px;
+  // padding: 15px;
   min-height: 200px;
   background-color: #fff;
   margin-bottom: 20px;
@@ -302,5 +507,11 @@ export default class KolPage extends ViewBase {
 
 .sub-pane-body {
   min-height: 188px;
+}
+/deep/ .event-content {
+  border-top: 0;
+}
+/deep/ .options-page {
+  border-top: 0;
 }
 </style>

@@ -8,30 +8,31 @@
       <heatLineCom :overAllList="overAllHeat" :platformList="platformHeat" :params="params" />
     </div>
     <WantSeeTrend :dataTrend="wantSeeTrend" />
-    <BoxOffice :boxoffice="boxOffice" id="boxoffice" />
+    <BoxOffice :boxoffice="boxOffice" :link="getApplink('movieBoxOffice')" id="boxoffice" />
     <PraiseComment
       :favorable="movieInfo.favorable"
       :publicPraise="publicPraise"
-      :detail="detail"
+      :link="getApplink('praiseHotWordsList')"
       id="praise"
     />
     <UserPortrait
       :ageRangeList="userAnalysis.ageRangeList"
       :genderList="userAnalysis.genderList"
       id="user"
+      :link="getApplink('userAnalysis')"
     />
-    <EventList :eventList="eventList" id="event" />
+    <EventList :eventList="eventList" id="event" :link="getApplink('eventMarketingList')" />
     <RivalAnalysis :rivalList="rivalAnalysis" id="rival" />
     <ActorList
       v-if="actorList && actorList.length"
       :actorList="actorList"
       id="actor"
-      :detail="detail"
+      :link="getApplink('actorList')"
     />
     <ProduceList
       v-if="produceList && produceList.length"
       :produceList="produceList"
-      :detail="detail"
+      :link="getApplink('produceDistribute')"
     />
   </div>
 </template>
@@ -77,6 +78,51 @@ export default class MoviePage extends ViewBase {
     diggId: '100038',
     rivalIds: '1,2,4'
   }
+  // 所有的 applink
+  // 业务类型 businessType 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
+  // 业务 Id businessObjectId
+  appLinks = {
+    // 票房
+    boxOffice: {
+      page: 'movieBoxOffice',
+      boxOfficeType: 1,
+      movieId: '100038'
+    },
+    praise: {
+      page: 'praiseHotWordsList',
+      businessType: 3,
+      businessObjectId: '100038'
+    },
+    user: {
+      page: 'praiseHotWordsList',
+      businessType: 3,
+      businessObjectId: '100038'
+    }
+  }
+  /**
+   * 获取 applink
+   * 业务类型 businessType 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
+   * 业务Id businessObjectId
+   * @page 页面标识
+   */
+  getApplink(page: string) {
+    switch (page) {
+      case 'userAnalysis':
+        return {
+          name: 'sentimentmovieuseranalysis',
+          params: {
+            movieId: 100038
+          }
+        }
+      default:
+        return {
+          page,
+          businessType: 3,
+          businessObjectId: 100038
+        }
+    }
+  }
+
   detail: any = {
     type: 'movie',
     id: '100038'
@@ -854,7 +900,7 @@ export default class MoviePage extends ViewBase {
 .page {
   color: #303030;
 }
-.formattab {
+nav.formattab {
   margin-top: 0;
   top: 88px;
   z-index: 11;

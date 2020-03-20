@@ -1,6 +1,6 @@
 <template>
   <div class="event-content">
-    <ModuleTitle title="事件跟踪" />
+    <ModuleHeader title="营销事件" :link="link" />
     <ul class="eventlist">
       <li v-for="(item,index) in List" :key="item.eventId + index">
         <p class="datebox">
@@ -32,17 +32,19 @@
 <script lang='ts'>
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import moment from 'moment'
-import ModuleTitle from '@/components/sentimentTitle'
+import ModuleHeader from '@/components/moduleHeader'
+import { openAppLink, AppLink } from '@/util/native'
 
 @Component({
   components: {
-    ModuleTitle
+    ModuleHeader
   }
 })
 export default class EventList extends Vue {
   @Prop({ type: Object }) params!: any
   /** 事件list */
   @Prop({ type: Array, default: () => [] }) eventList!: any
+  @Prop({ type: Object }) link!: AppLink
 
   get List() {
     const list = this.eventList.map((it: any) => {
@@ -78,8 +80,12 @@ export default class EventList extends Vue {
   border-top: 20px solid rgba(216, 216, 216, 0.2);
   padding: 50px 0;
 }
-.eventlist {
+
+.module-header {
   padding: 0 30px;
+}
+.eventlist {
+  padding: 30px 30px 0;
   li {
     padding: 30px;
     background-color: #f8f9fa;

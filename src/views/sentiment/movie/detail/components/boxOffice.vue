@@ -1,7 +1,7 @@
 <template>
   <!--影片票房 -->
   <div class="boxoffice mod">
-    <ModuleTitle title="影片票房" :appLink="appLink" />
+    <ModuleHeader title="影片票房" :link="appLink" />
     <div class="bfstatis">
       <div>
         <strong>{{boxoffice.totalBoxOffice}}</strong>
@@ -26,7 +26,7 @@
           v-for="item in tabList"
           :class="tabIndex===item.id ? 'cur' : ''"
           :key="item.key"
-          @click="changeTab(item.id)"
+          @click="() => tabIndex = item.id"
         >{{item.name}}</li>
       </ul>
     </div>
@@ -40,14 +40,14 @@
     </div>
     <div class="others">
       <div class="inner">
-        <div class="bfbox">
+        <div class="bfbox" @click="goLink(2)">
           <div class="tit">
             <strong>城市票房</strong>
             <span>{{boxoffice.cityBoxOffice}}</span>
           </div>
           <p>TOP 1 {{boxoffice.cityBoxOfficeTop}}</p>
         </div>
-        <div class="bfbox">
+        <div class="bfbox" @click="goLink(3)">
           <div class="tit">
             <strong>影投票房</strong>
             <span>{{boxoffice.companyBoxOffice}}</span>
@@ -63,18 +63,20 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import { dubline } from '@/components/hotLine'
-import ModuleTitle from '@/components/sentimentTitle'
+import ModuleHeader from '@/components/moduleHeader'
+import { openAppLink, AppLink } from '@/util/native'
 
 @Component({
   components: {
-    ModuleTitle,
+    ModuleHeader,
     dubline
   }
 })
 export default class BoxOffice extends ViewBase {
   @Prop({ type: Object }) boxoffice!: any
+  @Prop({ type: Object }) link!: any
 
-  appLink: string = ''
+  appLink: any = this.link
   lineDatas: any = {}
   tabList: any = [
     {
@@ -122,11 +124,10 @@ export default class BoxOffice extends ViewBase {
     }
   }
 
-  // tab 切换
-  changeTab(id: number) {
-    if (this.tabIndex !== id) {
-      this.tabIndex = id
-    }
+  // 去往原生页
+  goLink(type: number) {
+    this.appLink.boxOfficeType = type ? type : 1
+    openAppLink(this.appLink)
   }
 }
 </script>
@@ -171,6 +172,9 @@ export default class BoxOffice extends ViewBase {
 .boxoffice {
   padding: 50px 0;
   border-top: 20px solid rgba(216, 216, 216, 0.2);
+  .module-header {
+    padding: 0 30px;
+  }
   .others {
     padding-right: 30px;
     .inner {
@@ -209,6 +213,7 @@ export default class BoxOffice extends ViewBase {
   position: relative;
   padding: 40px 0;
   display: flex;
+  margin-top: 30px;
   > div {
     flex: 1;
     text-align: center;

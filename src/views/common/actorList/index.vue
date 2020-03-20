@@ -1,7 +1,7 @@
 <template>
   <!-- 电影电视剧详情页 主创人员 -->
   <div class="actormod">
-    <ModuleHeader title="主创人员" :link="appLink" />
+    <ModuleHeader title="主创人员" :link="link" />
     <div class="actorlist">
       <dl ref="chief">
         <dd v-for="(item,index) in actorList" :key="item.actorName + index">
@@ -31,13 +31,7 @@ import { AppLink } from '@/util/native'
 export default class ActorList extends Vue {
   /** 演员列表 */
   @Prop({ type: Array }) actorList!: ActorItem[]
-  @Prop({ type: Object }) detail!: DetailItem
-
-  appLink: AppLink = {
-    page: 'actorList',
-    businessType: this.detail.type === 'movie' ? 3 : 4,
-    businessObjectId: this.detail.id
-  }
+  @Prop({ type: Object }) link!: AppLink
 
   mounted() {
     const chief = this.$refs.chief as HTMLDListElement

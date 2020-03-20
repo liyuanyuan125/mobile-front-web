@@ -5,9 +5,10 @@ import Vue from 'vue'
 import App from './app.vue'
 import router from './router'
 import store from './store'
-import './registerServiceWorker'
 import VueCookies from 'vue-cookies'
 import vconsole from 'vconsole'
+
+import './mock'
 
 if (process.env.NODE_ENV !== 'production') {
   const vConsole = new vconsole()

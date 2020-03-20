@@ -1,35 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/home.vue'
-import { Route } from 'vue-router'
-import { MapType } from '@/util/types'
-import { stringToBoolean } from '@/fn/typeCast'
+import { paramTypes } from '@/util/router'
+
 Vue.use(Router)
 
-/**
- * 处理 route 中的参数类型
- * @param config 配置
- */
-const paramTypes = (
-  config: MapType<NumberConstructor | BooleanConstructor | StringConstructor>
-) => {
-  return ({ params }: Route) => {
-    const props = Object.entries(config).reduce((map, [key, type]) => {
-      const strVal = params[key]
-      const value = type === Number
-        ? (+strVal || 0)
-        : type === Boolean
-          ? stringToBoolean(strVal)
-          : strVal
-      map[key] = value
-      return map
-    }, {} as MapType<any>)
-    return props
-  }
-}
-
 const idProps = paramTypes({ id: Number })
-
 
 export default new Router({
   mode: 'history',
@@ -213,18 +188,20 @@ export default new Router({
       name: 'sentimenttv',
       component: () => import('./views/sentiment/tv/index.vue')
     },
-    // 音乐舆情
-    {
-      path: '/sentiment/music',
-      name: 'sentimentmusic',
-      component: () => import('./views/sentiment/music/index.vue')
-    },
-    // 用户域分布三级页
     {
       path: '/sentiment/common/userRegion',
       name: 'sentimentuserregion',
       component: () => import('./views/commonPage/userRegion/index.vue')
     },
+
+    // ===*** 单曲
+    {
+      path: '/sentiment/song/:id',
+      name: 'sentiment-song',
+      component: () => import('./views/sentiment/song/index.vue'),
+      props: idProps
+    },
+
     // demo
     {
       path: '/demo/twobar',

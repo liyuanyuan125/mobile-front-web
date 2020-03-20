@@ -8,7 +8,7 @@
       <heatLineCom :overAllList="overAllHeat" :platformList="platformHeat" :params="params" />
     </div>
     <WantSeeTrend :dataTrend="wantSeeTrend" />
-    <BoxOffice :boxoffice="boxOffice" />
+    <BoxOffice :boxoffice="boxOffice" id="boxoffice" />
     <PraiseComment
       :favorable="movieInfo.favorable"
       :publicPraise="publicPraise"
@@ -96,6 +96,7 @@ export default class MoviePage extends ViewBase {
   }
   tabList: TabNavItem[] = [
     { name: 'hot', label: '热度' },
+    { name: 'boxoffice', label: '票房' },
     { name: 'praise', label: '口碑' },
     { name: 'user', label: '用户' },
     { name: 'event', label: '事件' },

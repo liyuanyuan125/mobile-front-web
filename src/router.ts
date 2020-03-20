@@ -198,8 +198,14 @@ export default new Router({
     // 影片竞品分析
     {
       path: '/sentiment/movie/rivalAnalysis',
-      name: 'sentimentmovieanalysis',
+      name: 'sentimentmovierivalanalysis',
       component: () => import('./views/sentiment/movie/rivalAnalysis/index.vue')
+    },
+    // 影片竞品分析
+    {
+      path: '/sentiment/movie/userAnalysis/:movieId(\\d+)',
+      name: 'sentimentmovieuseranalysis',
+      component: () => import('./views/sentiment/movie/userAnalysis/index.vue')
     },
     // 电视剧舆情
     {
@@ -213,6 +219,7 @@ export default new Router({
       name: 'sentimentmusic',
       component: () => import('./views/sentiment/music/index.vue')
     },
+    // 用户域分布三级页
     {
       path: '/sentiment/common/userRegion',
       name: 'sentimentuserregion',

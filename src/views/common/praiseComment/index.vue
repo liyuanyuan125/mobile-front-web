@@ -79,7 +79,7 @@ export default class PraiseComment extends Vue {
   mounted() {
     // 处理数据
     const list = this.publicPraise.appraiseList
-    if (list.length) {
+    if (list && list.length) {
       for (const item of list) {
         item.raisePercent = (item.raisePercent / 100).toFixed(1)
       }

@@ -1,10 +1,15 @@
 import { get, post, put, del } from '@/fn/ajax'
+
+export interface EventItem {
+    type: string,
+    objectId: string
+}
 /**
  * 获取电影详情页
  * @param query  object
  */
 export async function getMovieDetailById(movieId: string) {
-    const res = await get('/yuqing/movie/detail', { movieId })
+    const res = await get('/mock/400/yuqing/movie/detail', { movieId })
     return res
 }
 
@@ -15,3 +20,20 @@ export async function getMovieRivalList(movieIdList: string) {
     const res = await get('/yuqing/movie/rivalreport', { movieIdList })
     return res
 }
+
+/**
+ * 获取营销事件
+ */
+export async function getEventListByIdAndType(query: EventItem) {
+    const res = await get('/yuqing/common/eventAnalysis', query)
+    return res
+}
+
+/**
+ * 获取竞品分析
+ */
+export async function getRivalListById(movieId: string) {
+    const res = await get('/mock/400/yuqing/movie/rivalAnalysis', { movieId })
+    return res
+}
+

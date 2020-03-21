@@ -1,11 +1,11 @@
 <template>
   <div class="event-content">
-    <ModuleHeader title="营销事件" :link="link" />
-    <ul class="eventlist">
+    <ModuleHeader title="营销事件" :link="hasMore ? link : null" />
+    <ul v-if="eventList.length" class="eventlist">
       <li v-for="(item,index) in List" :key="item.eventId + index">
         <p class="datebox">
-          <span class="days">{{item.creatDay}}</span>
-          <!-- <span class="date">{{item.creatTime}}</span> -->
+          <span class="days" v-if="item.creatDay">{{item.creatDay}}</span>
+          <span class="date" v-else>{{item.creatDate}}</span>
           <i
             v-for="el in item.target"
             :key="el.targetCode"
@@ -26,6 +26,7 @@
         </p>
       </li>
     </ul>
+    <DataEmpty v-else />
   </div>
 </template>
 
@@ -34,45 +35,54 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import moment from 'moment'
 import ModuleHeader from '@/components/moduleHeader'
 import { openAppLink, AppLink } from '@/util/native'
+import { datetimeParse } from '@/fn/dateUtil'
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
 
 @Component({
   components: {
-    ModuleHeader
+    ModuleHeader,
+    DataEmpty
   }
 })
 export default class EventList extends Vue {
   @Prop({ type: Object }) params!: any
   /** 事件list */
-  @Prop({ type: Array, default: () => [] }) eventList!: any
+  @Prop({ type: Object, default: {} }) eventList!: any
   @Prop({ type: Object }) link!: AppLink
 
-  get List() {
-    const list = this.eventList.map((it: any) => {
-      const time1 = Math.abs(moment(it.creatTime).diff(moment(), 'day'))
-      // 前10天显示 N 天前
-      const days = time1 == 0 ? '今天' : `${time1}天前`
-      const creatDay = time1 < 11 ? `${days}` : moment(it.creatTime).format('YYYY-MM-DD')
-      // 处理标签颜色
-      if (it.targetList && it.targetList.length) {
-        for (const item of it.targetList) {
-          switch (item.targetCode) {
-            case '1':
-              item.color = '#FF6262'
-              break
-            case '2':
-              item.color = '#9374DB'
-              break
-            default:
-              item.color = '#666'
+  list: any = this.eventList.eventList ? this.eventList.eventList : []
+  hasMore: boolean = this.eventList.hasMore ? this.eventList.hasMore : false
+
+  created() {
+    this.formatList()
+  }
+
+  formatList() {
+    this.list.length &&
+      this.list.map((it: any) => {
+        const time1 = Math.abs(moment(it.createTime).diff(moment(), 'day'))
+        // 前10天显示 N 天前
+        it.creatDay = datetimeParse(it.createTime)
+        it.creatDate = moment(it.createTime).format('YYYY-MM-DD')
+        // 处理标签颜色
+        if (it.targetList && it.targetList.length) {
+          for (const item of it.targetList) {
+            switch (item.targetCode) {
+              case '1':
+                item.color = '#FF6262'
+                break
+              case '2':
+                item.color = '#9374DB'
+                break
+              default:
+                item.color = '#666'
+            }
           }
         }
-      }
-      return {
-        ...it,
-        creatDay
-      }
-    })
-    return list
+        return {
+          ...it
+        }
+      })
   }
 }
 </script>

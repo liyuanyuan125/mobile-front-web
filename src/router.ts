@@ -141,8 +141,9 @@ export default new Router({
     },
 
     // kol舆情
+    // 艺人详情
     {
-      path: '/sentiment/actor/detail/:id',
+      path: '/sentiment/actor/:actorId',
       name: 'sentimentactor',
       component: () => import('./views/sentiment/actor/detail/index.vue')
     },
@@ -153,13 +154,13 @@ export default new Router({
     },
     // kol舆情用户分析
     {
-      path: '/sentiment/actor/userAnalysis/:userId',
+      path: '/sentiment/actor/userAnalysis/:actorId',
       name: 'sentimentactoruser',
       component: () => import('./views/sentiment/actor/userAnalysis/user.vue')
     },
     // kol舆情竞品分析
     {
-      path: '/sentiment/actor/rivalAnalysis/products',
+      path: '/sentiment/actor/rivalAnalysis/products/:actorIdList',
       name: 'sentimentkolproducts',
       component: () => import('./views/sentiment/actor/rivalAnalysis/products.vue')
     },

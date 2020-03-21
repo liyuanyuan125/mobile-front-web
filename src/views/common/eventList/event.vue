@@ -1,8 +1,8 @@
 <template>
   <div class="event-content">
     <ModuleHeader title="营销事件" :link="hasMore ? link : null" />
-    <ul v-if="eventList.length" class="eventlist">
-      <li v-for="(item,index) in List" :key="item.eventId + index">
+    <ul v-if="list.length" class="eventlist">
+      <li v-for="(item,index) in list" :key="item.eventId + index" @click="goEventDetail(item)">
         <p class="datebox">
           <span class="days" v-if="item.creatDay">{{item.creatDay}}</span>
           <span class="date" v-else>{{item.creatDate}}</span>
@@ -50,16 +50,11 @@ export default class EventList extends Vue {
   @Prop({ type: Object, default: {} }) eventList!: any
   @Prop({ type: Object }) link!: AppLink
 
-  list: any = this.eventList.eventList ? this.eventList.eventList : []
-  hasMore: boolean = this.eventList.hasMore ? this.eventList.hasMore : false
-
-  created() {
-    this.formatList()
-  }
-
-  formatList() {
-    this.list.length &&
-      this.list.map((it: any) => {
+  get list() {
+    const list =
+      this.eventList && this.eventList.eventList ? this.eventList.eventList : []
+    list.length &&
+      list.map((it: any) => {
         const time1 = Math.abs(moment(it.createTime).diff(moment(), 'day'))
         // 前10天显示 N 天前
         it.creatDay = datetimeParse(it.createTime)
@@ -83,6 +78,24 @@ export default class EventList extends Vue {
           ...it
         }
       })
+    return list
+  }
+
+  // 原需求是，本业务事件大于3个才显示更多箭头
+  get hasMore() {
+    const isCount =
+      this.eventList && this.eventList.hasMore ? this.eventList.hasMore : false
+    return isCount
+  }
+
+  // 去营销事件详情面
+  goEventDetail(item: any) {
+    this.$router.push({
+      name: 'sentimenteventmarketing',
+      params: {
+        eventId: item.eventId
+      }
+    })
   }
 }
 </script>

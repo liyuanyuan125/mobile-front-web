@@ -1,7 +1,7 @@
 <template>
   <div class="topbar">
     <span class="reBack" @click="goBack"></span>
-    <h1 class="title" v-show="titleShow || hasTitle">{{title}}</h1>
+    <h1 class="title van-ellipsis" v-show="titleShow || hasTitle">{{title}}</h1>
     <div class="tool" v-if="sidebar">
       <i class="ico-pk" v-if="sidebar.rivalIds" title="竞品分析"></i>
       <i class="ico-digg" v-if="sidebar.diggType && sidebar.diggId" title="关注"></i>
@@ -129,7 +129,7 @@ export default class SentimentBar extends Vue {
   font-weight: normal;
   white-space: nowrap;
   text-overflow: ellipsis;
-  padding: 0 88px;
+  padding: 0 180px;
   overflow: hidden;
 }
 .reBack {

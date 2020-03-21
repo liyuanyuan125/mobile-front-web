@@ -2,9 +2,9 @@
   <div class="content-wrap">
     <div class="chart-default" v-if="!dataOption"></div>
     <div ref="refChart" v-if="dataOption" class="chart-wrap"></div>
-    <div class='color' v-if='this.dataOption != null'>
-      <span class='lf'>男</span>
-      <span class='rf'>女</span>
+    <div class="color" v-if="this.dataOption != null">
+      <span class="lf">男</span>
+      <span class="rf">女</span>
     </div>
   </div>
 </template>
@@ -14,8 +14,6 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import echarts from 'echarts'
 
-
-
 @Component({
   components: {}
 })
@@ -24,11 +22,15 @@ export default class BarGraph extends ViewBase {
   @Prop({ type: Object }) dataOption!: any
   @Prop({ type: Array }) colorList: any
 
-
   mounted() {
     if (this.dataOption) {
       this.updateCharts()
     }
+  }
+
+  @Watch('dataOption', { deep: true })
+  watchData() {
+    this.updateCharts()
   }
 
   // 将canvas 转成图
@@ -60,13 +62,13 @@ export default class BarGraph extends ViewBase {
             // normal: {
             // color: '#88AAF6',
             // opacity: 0,
-              color(params: any) {
-                const colorList: any = ['#88AAF6', '#F18F8F']
-                return colorList[params.dataIndex]
-              },
+            color(params: any) {
+              const colorList: any = ['#88AAF6', '#F18F8F']
+              return colorList[params.dataIndex]
+            }
             // },
             // fontSize: 14
-          },
+          }
         },
         axisLine: {
           show: false,
@@ -128,7 +130,8 @@ export default class BarGraph extends ViewBase {
                 show: true, // 开启显示
                 position: 'top', // 在上方显示
                 formatter: '{c}' + '%',
-                textStyle: { // 数值样式
+                textStyle: {
+                  // 数值样式
                   fontSize: 14
                 }
               },

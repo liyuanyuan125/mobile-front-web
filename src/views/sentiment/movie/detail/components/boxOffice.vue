@@ -2,7 +2,7 @@
   <!--影片票房 -->
   <div class="boxoffice mod">
     <ModuleHeader title="影片票房" :link="appLink" />
-    <div v-if="!boxoffice">
+    <div v-if="boxoffice">
       <div class="bfstatis">
         <div>
           <strong>{{boxoffice.totalBoxOffice}}</strong>
@@ -33,9 +33,9 @@
       </div>
       <div class="chartbox">
         <dubline
-          :lineData="lineDatas"
-          v-if="lineDatas.xDate.length"
-          :key="lineDatas.title"
+          :lineData="lineDataList"
+          v-if="lineDataList.xDate.length"
+          :key="lineDataList.title"
           class="wantchart"
         />
       </div>
@@ -82,7 +82,6 @@ export default class BoxOffice extends ViewBase {
   @Prop({ type: Object }) link!: any
 
   appLink: any = this.link
-  lineDatas: any = {}
   tabList: any = [
     {
       id: 1,
@@ -100,8 +99,8 @@ export default class BoxOffice extends ViewBase {
   yDate: any = []
   eventList: any = []
 
-  created() {
-    this.formatDatas(this.boxoffice.boxOfficeList)
+  get lineDataList() {
+    return this.formatDatas(this.boxoffice.boxOfficeList)
   }
 
   @Watch('tabIndex', { deep: true })
@@ -118,7 +117,7 @@ export default class BoxOffice extends ViewBase {
     const xDate = (data || []).map((it: any) => it.name)
     const yDate = (data || []).map((it: any) => it.value)
     const eventList = (data || []).map((it: any) => it.eventList)
-    this.lineDatas = {
+    return {
       xDate,
       eventList,
       yDate: [

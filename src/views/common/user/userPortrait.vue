@@ -114,7 +114,7 @@ h4 {
   height: 500px;
   padding: 50px 0;
   background: #fff;
-  // border-top: 20px solid #f7f6f9;
+  border-top: 20px solid #f7f6f9;
 }
 .module-header {
   padding: 0 30px;

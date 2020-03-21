@@ -11,17 +11,17 @@
         <p class="kol-name">{{actorInfo.actorName}}</p>
         <p v-if="actorInfo.rankingName && !actorInfo.rankingId " class="event-name">
             <span>
-              <i class='hid'>{{actorInfo.rankingNum}}&nbsp;</i>
-              <i class='bor'>{{actorInfo.rankingName}}</i>
+              <i class='hid'>热搜No.{{actorInfo.rankingNum}}&nbsp;</i>
+              <i class='bor'>#{{actorInfo.rankingName}}</i>
             </span>
         </p>
         <p v-if="actorInfo.rankingName && actorInfo.rankingId">
           <router-link to="" class="event-name flex-box">
             <span>
-              <i class='hid'>{{actorInfo.rankingNum}}&nbsp;</i>
+              <i class='hid'>#{{actorInfo.rankingNum}}&nbsp;</i>
               <i class='bor'>{{actorInfo.rankingName}}</i>
             </span>
-            <!-- <Icon name="arrow" size="13" class="icon-arrow" /> -->
+            <Icon name="arrow" size="13" class="icon-arrow" />
           </router-link> 
         </p>
       </div>
@@ -42,20 +42,31 @@
     <section v-if='show' class="pane" id="praise">
       <!-- 口碑评论 -->
       <!-- 待更换 -->
-      <PraiseComment :favorable="actorInfo.favorable" :publicPraise="publicPraise" />
+      <PraiseComment 
+        :favorable="actorInfo.favorable" 
+        :publicPraise="publicPraise"
+        :link="getApplink('praiseHotWordsList')"
+      />
     </section>
 
     <section v-if='show' class="pane" id="user">
       <!-- 用户分析 -->
-      <UserPortrait :genderList="userAnalysis.genderList" :ageRangeList="userAnalysis.ageRangeList" />
+      <UserPortrait 
+          :genderList="userAnalysis.genderList" 
+          :ageRangeList="userAnalysis.ageRangeList"
+          :link="getApplink('userAnalysis')"
+       />
     </section>
 
-    <section v-if='show' class="pane" id="event">
+    <section v-if='showevent' class="pane" id="event">
       <!-- 营销事件 -->
-      <Event :eventList='eventList' />
+      <Event 
+        :eventList='eventList'
+        :link="getApplink('eventMarketingList')"
+      />
     </section>
 
-    <section v-if='show' class="pane" id="part">
+    <section v-if='showuser' class="pane" id="part">
        <!-- 相似艺人 -->
         <Competing :pkUserList='pkUserList' />
     </section>
@@ -82,7 +93,8 @@ import Competing from './components/competing.vue'
 import Works from './components/works.vue'
 import { toast } from '@/util/toast'
 import {BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
-import { getActorDetail , getPkUser } from '@/api/kol'
+import { getActorDetail , getPkUser , getEventList } from '@/api/kol'
+import { alert } from '@/util/toast'
 
 @Component({
   components: {
@@ -103,6 +115,8 @@ import { getActorDetail , getPkUser } from '@/api/kol'
 export default class KolPage extends ViewBase {
 
   show: any = false
+  showuser: any = false
+  showevent: any = false
 
   sidebar = {
     diggType: 'actor',
@@ -131,7 +145,7 @@ export default class KolPage extends ViewBase {
           title: `近90日新增互动`
         },
         on: {
-          click: this.demo
+          click: this.showNote
       }})
     }},
     {type: '2', title: '全网粉丝数', value: '1,423', trend: '-6', showdown: true},
@@ -324,11 +338,54 @@ export default class KolPage extends ViewBase {
     const mid = this.$route.params.kolId
     this.getActorDetail()
     this.getPkUser()
+    this.getEventList()
     document.body.style.background = '#FBFBFB'
   }
 
-  demo() {
-    toast('近90天内，物料新增的点赞、评论、转发、阅读或播放的累计之和')
+  // 所有的 applink
+  // 业务类型 businessType 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
+  // 业务 Id businessObjectId
+  appLinks = {
+    // 票房
+    boxOffice: {
+      page: 'movieBoxOffice',
+      boxOfficeType: 1,
+      movieId: '100038'
+    },
+    praise: {
+      page: 'praiseHotWordsList',
+      businessType: 2,
+      businessObjectId: '100038'
+    },
+    user: {
+      page: 'praiseHotWordsList',
+      businessType: 2,
+      businessObjectId: '100038'
+    }
+  }
+
+  /**
+   * 获取 applink
+   * 业务类型 businessType 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
+   * 业务Id businessObjectId
+   * @page 页面标识
+   */
+  getApplink(page: string) {
+    switch (page) {
+      case 'userAnalysis':
+        return {
+          name: 'sentimentactoruser',
+          params: {
+            movieId: 100038
+          }
+        }
+      default:
+        return {
+          page,
+          businessType: 2,
+          businessObjectId: 100038
+        }
+    }
   }
 
   async getActorDetail() {
@@ -340,7 +397,7 @@ export default class KolPage extends ViewBase {
         userAnalysis, // 用户分析
         worksAnalysis, // 作品分析
       } } = await getActorDetail({actorId: this.$route.params.actorId})
-      // this.actorInfo = actorInfo
+      this.actorInfo = actorInfo
       // this.bubbleData = [
       //   {type: '1', value: actorOverView.interactCount, trend: actorOverView.interactTrend,
       //    renderTitle: (h: any) => {
@@ -349,7 +406,7 @@ export default class KolPage extends ViewBase {
       //         title: `近90日新增互动`
       //       },
       //       on: {
-      //         click: this.demo
+      //         click: this.showNote
       //     }})
       //   }},
       //   {type: '2', title: '全网粉丝数', value: actorOverView.fansCount, trend: actorOverView.fansTrend, showdown: true},
@@ -372,7 +429,31 @@ export default class KolPage extends ViewBase {
       this.pkUserList = pkUser.data
     } catch (ex) {
       toast(ex)
+    } finally {
+      this.showuser = true
     }
+  }
+
+  async getEventList() {
+    try {
+      const event = await getEventList({objectId: this.$route.params.actorId, type: 2})
+      this.eventList = event.data
+    } catch (ex) {
+      toast(ex)
+    } finally {
+      this.showevent = true
+    }
+  }
+
+  // 显示说明
+  showNote() {
+    alert({
+      title: '提示',
+      message:
+        '互动数为物料的点赞、转发、阅读及播放数之和',
+      showConfirmButton: true,
+      className: 'alertwid'
+    })
   }
 }
 </script>
@@ -432,12 +513,18 @@ export default class KolPage extends ViewBase {
     font-weight: 500;
     color: rgba(48, 48, 48, 1);
     margin-top: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .event-name {
     margin-top: 12px;
     font-size: 26px;
     font-weight: 300;
     color: rgba(136, 170, 246, 1);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     span {
       .hid {
         color: rgba(48, 48, 48, 1);
@@ -513,5 +600,11 @@ export default class KolPage extends ViewBase {
 }
 /deep/ .options-page {
   border-top: 0;
+}
+/deep/ .userportrait {
+  border-top: 0;
+}
+.alertwid {
+  width: 90%;
 }
 </style>

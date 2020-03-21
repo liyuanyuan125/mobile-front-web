@@ -7,20 +7,20 @@
       <li class='li-item'>
         <div class='li-left'>
           <div>
-            <img src="https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg" alt="">
+            <img :src=pkDate.rivalCover.url alt="">
           </div>
         </div>
         <div class='li-right'>
-          <div class='name'>玄彬</div>
+          <div class='name'>{{pkDate.rivalName}}</div>
           <div class='hot'>
             <ul>
               <li>
                 <p class='hot1'>昨日热度</p>
-                <p class='hot2'>80345</p>
+                <p class='hot2'>{{pkDate.yesterHeatCount}}</p>
               </li>
               <li>
                 <p class='hot1'>昨日互动量</p>
-                <p class='hot2'>224</p>
+                <p class='hot2'>{{pkDate.yesterHeatTrend}}</p>
               </li>
             </ul>
           </div>
@@ -50,7 +50,7 @@
           </div>
           <div class='content'>
             <div class='left'>{{item.eventName}}</div>
-            <div class='right'>2020-02-14</div>
+            <div class='right'>{{item.eventCreatTimeDate}}</div>
           </div>
         </div>
       </li>
@@ -77,9 +77,11 @@ export default class Main extends Vue {
   @Prop({ type: Array, default: []}) pkUserList!: any
 
   pkUserListData: any = null
+  pkDate: any = null
 
   created() {
-    this.pkUserListData = (this.pkUserList || []).map((it: any) => {
+    this.pkDate = this.pkUserList[0]
+    this.pkUserListData = (this.pkUserList.slice(1) || []).map((it: any) => {
       return {
         ...it,
         eventCreatTimeDate: moment(it.eventCreatTime).format(format)

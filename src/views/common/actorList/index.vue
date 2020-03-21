@@ -4,7 +4,11 @@
     <ModuleHeader title="主创人员" :link="link" />
     <div class="actorlist">
       <dl ref="chief">
-        <dd v-for="(item,index) in actorList" :key="item.actorName + index">
+        <dd
+          v-for="(item,index) in actorList"
+          :key="item.actorName + index"
+          @click="goActorDetail(item.actorId)"
+        >
           <i class="img">
             <!-- <img :src="item.imgUrl" :alt="item.actorName" v-if="item.imgUrl" /> -->
             <img src="@/assets/person-default.png" :alt="item.actorName" />
@@ -40,6 +44,16 @@ export default class ActorList extends Vue {
       const wid = (chief.offsetWidth / 10) * this.actorList.length
       chief.style.width = wid + 'px'
     }
+  }
+
+  // 影人详情页跳转
+  goActorDetail(id: string) {
+    this.$router.push({
+      name: 'sentimentactor',
+      params: {
+        actorId: id
+      }
+    })
   }
 }
 </script>

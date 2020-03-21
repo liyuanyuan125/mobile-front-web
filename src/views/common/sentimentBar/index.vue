@@ -75,6 +75,13 @@ export default class SentimentBar extends Vue {
     const obj = { params: objectData }
     await setNavBarStatus(obj)
   }
+
+  // 去 Pk 页
+  // goRivalAnalysis() {
+  //   if (this.sidebar && this.sidebar.rivalIds) {
+  //     this.$router.push(this.sidebar.rivalIds)
+  //   }
+  // }
 }
 </script>
 

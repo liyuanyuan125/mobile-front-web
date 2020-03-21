@@ -2,59 +2,64 @@
   <!--影片票房 -->
   <div class="boxoffice mod">
     <ModuleHeader title="影片票房" :link="appLink" />
-    <div class="bfstatis">
-      <div>
-        <strong>{{boxoffice.totalBoxOffice}}</strong>
-        <p>累计票房</p>
-      </div>
-      <div>
-        <strong>{{boxoffice.totalPerson}}</strong>
-        <p>总人次</p>
-      </div>
-      <div>
-        <strong>{{boxoffice.firstDayBoxOffice}}</strong>
-        <p>首日票房</p>
-      </div>
-      <div>
-        <strong>{{boxoffice.firstWeekBoxOffice}}</strong>
-        <p>首周票房</p>
-      </div>
-    </div>
-    <div class="tabbox">
-      <ul>
-        <li
-          v-for="item in tabList"
-          :class="tabIndex===item.id ? 'cur' : ''"
-          :key="item.key"
-          @click="() => tabIndex = item.id"
-        >{{item.name}}</li>
-      </ul>
-    </div>
-    <div class="chartbox">
-      <dubline
-        :lineData="lineDatas"
-        v-if="lineDatas.xDate.length"
-        :key="lineDatas.title"
-        class="wantchart"
-      />
-    </div>
-    <div class="others">
-      <div class="inner">
-        <div class="bfbox" @click="goLink(2)">
-          <div class="tit">
-            <strong>城市票房</strong>
-            <span>{{boxoffice.cityBoxOffice}}</span>
-          </div>
-          <p>TOP 1 {{boxoffice.cityBoxOfficeTop}}</p>
+    <div v-if="!boxoffice">
+      <div class="bfstatis">
+        <div>
+          <strong>{{boxoffice.totalBoxOffice}}</strong>
+          <p>累计票房</p>
         </div>
-        <div class="bfbox" @click="goLink(3)">
-          <div class="tit">
-            <strong>影投票房</strong>
-            <span>{{boxoffice.companyBoxOffice}}</span>
-          </div>
-          <p>TOP 1 {{boxoffice.companyBoxOfficeTop}}</p>
+        <div>
+          <strong>{{boxoffice.totalPerson}}</strong>
+          <p>总人次</p>
+        </div>
+        <div>
+          <strong>{{boxoffice.firstDayBoxOffice}}</strong>
+          <p>首日票房</p>
+        </div>
+        <div>
+          <strong>{{boxoffice.firstWeekBoxOffice}}</strong>
+          <p>首周票房</p>
         </div>
       </div>
+      <div class="tabbox">
+        <ul>
+          <li
+            v-for="item in tabList"
+            :class="tabIndex===item.id ? 'cur' : ''"
+            :key="item.key"
+            @click="() => tabIndex = item.id"
+          >{{item.name}}</li>
+        </ul>
+      </div>
+      <div class="chartbox">
+        <dubline
+          :lineData="lineDatas"
+          v-if="lineDatas.xDate.length"
+          :key="lineDatas.title"
+          class="wantchart"
+        />
+      </div>
+      <div class="others">
+        <div class="inner">
+          <div class="bfbox" @click="goLink(2)">
+            <div class="tit">
+              <strong>城市票房</strong>
+              <span>{{boxoffice.cityBoxOffice}}</span>
+            </div>
+            <p>TOP 1 {{boxoffice.cityBoxOfficeTop}}</p>
+          </div>
+          <div class="bfbox" @click="goLink(3)">
+            <div class="tit">
+              <strong>影投票房</strong>
+              <span>{{boxoffice.companyBoxOffice}}</span>
+            </div>
+            <p>TOP 1 {{boxoffice.companyBoxOfficeTop}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-else class="datanull">
+      <img src="@/assets/data-null.png" />
     </div>
   </div>
 </template>
@@ -263,6 +268,13 @@ export default class BoxOffice extends ViewBase {
     line-height: 26px;
     color: rgba(48, 48, 48, 0.6);
     margin-top: 8px;
+  }
+}
+.datanull {
+  text-align: center;
+  padding: 50px;
+  img {
+    width: 180px;
   }
 }
 </style>

@@ -161,8 +161,4 @@ export default class BrandPage extends ViewBase {
 <style lang="less" scoped>
 @import '~@/views/sentiment/brand/less/lib.less';
 @import './less/com.less';
-
-/deep/ .van-tab__pane {
-  display: block;
-}
 </style>

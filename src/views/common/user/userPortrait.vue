@@ -45,18 +45,19 @@ export default class UserPortrait extends ViewBase {
   arr: any = []
 
   get itemlist() {
-    // this.add()
+    const inx = this.ageRangeList ? this.ageRangeList.length : 0
+    const anumber = inx > 0 ? new Array(inx).fill(100) : []
     return {
       colorMain: '#303030',
       borderRadius: [5, 5, 5, 5],
       colorColumn: '#7F7D7E',
       widthColumn: 5,
-      normalColor: this.add(),
+      normalColor: anumber,
       bgColor: '#F0F0F0'
     }
   }
   created() {
-    this.add()
+    // this.add()
   }
 
   add() {

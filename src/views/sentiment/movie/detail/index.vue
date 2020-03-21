@@ -20,27 +20,12 @@
       :ageRangeList="userAnalysis.ageRangeList"
       :genderList="userAnalysis.genderList"
       id="user"
-      v-if="userAnalysis.ageRangeList || userAnalysis.genderList"
       :link="getApplink('userAnalysis')"
     />
-    <!-- <EventList
-      :eventList="eventList"
-      id="event"
-      :link="getApplink('eventMarketingList')"
-      v-if="eventList.eventList"
-    />-->
+    <EventList :eventList="eventList" id="event" :link="getApplink('eventMarketingList')" />
     <RivalAnalysis :rivalList="rivalAnalysis" id="rival" />
-    <ActorList
-      v-if="actorList.length"
-      :actorList="actorList"
-      id="actor"
-      :link="getApplink('actorList')"
-    />
-    <ProduceList
-      v-if="produceList.length"
-      :produceList="produceList"
-      :link="getApplink('produceDistribute')"
-    />
+    <ActorList :actorList="actorList" id="actor" :link="getApplink('actorList')" />
+    <ProduceList :produceList="produceList" :link="getApplink('produceDistribute')" />
   </div>
 </template>
 
@@ -475,13 +460,13 @@ export default class MoviePage extends ViewBase {
     this.boxOffice = res.boxOffice
     this.publicPraise = res.publicPraise
     this.userAnalysis = res.userAnalysis
-    this.actorList = res.actorList
-    this.produceList = res.produceList
+    this.actorList = res.actorList ? res.actorList : []
+    this.produceList = res.produceList ? res.produceList : []
   }
   // api获取营销事件
   async getEventList() {
     const res: any = await getEventList({
-      type: 3,
+      type: 2,
       objectId: 9
     })
     this.eventList = res

@@ -2,7 +2,7 @@
   <div class="content-wrap">
     <div class="chart-default" v-if="!dataOption"></div>
     <div ref="refChart" v-if="dataOption" class="chart-wrap"></div>
-    <div class='hidden'></div>
+    <div class="hidden"></div>
   </div>
 </template>
 
@@ -17,7 +17,7 @@ import echarts from 'echarts'
 // 横向柱状图
 export default class BarGraphRow extends ViewBase {
   @Prop({ type: Object }) dataOption!: any
-  @Prop({ type: Object, }) itemlist: any
+  @Prop({ type: Object }) itemlist: any
 
   // itemlist: any = {
   //   colorMain: '#7CA4FF', // 右边显示数据颜色
@@ -28,13 +28,17 @@ export default class BarGraphRow extends ViewBase {
   //   bgColor: '#F0F0F0', // 柱状图条形图背景展示颜色
   // }
 
-
   mounted() {
     if (this.dataOption) {
       // console.log(this.dataOption.xData.length)
       // this.add(this.normalColor.length)
       this.updateCharts()
     }
+  }
+
+  @Watch('dataOption', { deep: true })
+  watchData() {
+    this.updateCharts()
   }
 
   // add(num: any) {
@@ -105,11 +109,11 @@ export default class BarGraphRow extends ViewBase {
             },
             color: this.itemlist.colorMain,
             fontWeight: 'bold',
-            fontSize: 12,
+            fontSize: 12
           },
           itemStyle: {
             color: this.itemlist.bgColor,
-            barBorderRadius: this.itemlist.borderRadius,
+            barBorderRadius: this.itemlist.borderRadius
           },
           emphasis: {
             label: {
@@ -133,7 +137,7 @@ export default class BarGraphRow extends ViewBase {
           },
           itemStyle: {
             color: this.itemlist.colorColumn,
-            barBorderRadius: this.itemlist.borderRadius,
+            barBorderRadius: this.itemlist.borderRadius
           },
           // 选中
           emphasis: {
@@ -142,7 +146,7 @@ export default class BarGraphRow extends ViewBase {
             }
           },
           barWidth: this.itemlist.widthColumn
-        },
+        }
       ]
     }
     // console.save(option, `${new Date()}.json`)

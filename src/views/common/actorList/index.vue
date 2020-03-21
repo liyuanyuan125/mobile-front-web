@@ -1,23 +1,24 @@
 <template>
   <!-- 电影电视剧详情页 主创人员 -->
   <div class="actormod">
-    <ModuleHeader title="主创人员" :link="link" />
-    <div class="actorlist">
+    <ModuleHeader title="主创人员" :link="personList.length ? link : null" />
+    <div class="actorlist" v-if="personList.length">
       <dl ref="chief">
         <dd
-          v-for="(item,index) in actorList"
+          v-for="(item,index) in personList"
           :key="item.actorName + index"
           @click="goActorDetail(item.actorId)"
         >
           <i class="img">
-            <!-- <img :src="item.imgUrl" :alt="item.actorName" v-if="item.imgUrl" /> -->
-            <img src="@/assets/person-default.png" :alt="item.actorName" />
+            <img :src="item.coverImg" :alt="item.actorName" v-if="item.coverImg" />
+            <img src="@/assets/actordefault.png" :alt="item.actorName" v-else />
           </i>
-          <h5>{{item.actorName}}</h5>
+          <h5 class="van-ellipsis">{{item.actorName}}</h5>
           <p>{{item.character}}</p>
         </dd>
       </dl>
     </div>
+    <dataEmpty v-else />
   </div>
 </template>
 
@@ -26,10 +27,13 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import { ActorItem, DetailItem } from './types'
 import ModuleHeader from '@/components/moduleHeader'
 import { AppLink } from '@/util/native'
+import { imgFixed } from '@/fn/imgProxy'
+import dataEmpty from '@/views/common/dataEmpty/index.vue'
 
 @Component({
   components: {
-    ModuleHeader
+    ModuleHeader,
+    dataEmpty
   }
 })
 export default class ActorList extends Vue {
@@ -44,6 +48,16 @@ export default class ActorList extends Vue {
       const wid = (chief.offsetWidth / 10) * this.actorList.length
       chief.style.width = wid + 'px'
     }
+  }
+
+  get personList() {
+    const list = this.actorList
+    if (list && list.length) {
+      for (const it of list) {
+        it.coverImg = imgFixed(it.actorCover, 150, 210)
+      }
+    }
+    return list
   }
 
   // 影人详情页跳转
@@ -97,7 +111,6 @@ export default class ActorList extends Vue {
     img {
       width: 100%;
       height: 100%;
-      border-radius: 10px;
     }
   }
 

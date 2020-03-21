@@ -197,6 +197,18 @@ export default new Router({
       name: 'sentimentuserregion',
       component: () => import('./views/commonPage/userRegion/index.vue')
     },
+    // 全网事件分析详情页 姜英英
+    {
+      path: '/sentiment/eventNetwork/:eventId(\d+)',
+      name: 'sentimenteventNetwork',
+      component: () => import('./views/commonPage/userRegion/index.vue')
+    },
+    // 营销事件详情页 纪洁琼
+    {
+      path: '/sentiment/eventMarketing/:eventId(\d+)',
+      name: 'sentimenteventmarketing',
+      component: () => import('./views/commonPage/userRegion/index.vue')
+    },
 
     // ===*** 单曲
     {

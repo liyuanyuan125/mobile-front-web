@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <SentimentBar title="流浪地球" :sidebar="sidebar" />
+    <SentimentBar :title="brandInfo.brandName" :sidebar="sidebar" />
     <brandInfoArea :brandInfo="brandInfo" :bubbleData="bubbleData"/>
     <section class="brand-hot">
       <selectTime ref="refsTime"/>
@@ -10,9 +10,18 @@
         :params="params"
        />
     </section>
-    <User />
-    <eventList :eventList="list" :params="params2"/>
-    <Competing /> 
+    <PraiseComment 
+      :favorable="brandInfo.favorable" 
+      :publicPraise="publicPraise"
+      v-if="publicPraise.appraiseList"
+    />
+    <UserPortrait 
+      :ageRangeList="userAnalysis.ageRangeList" 
+      :genderList="userAnalysis.genderList"
+      v-if="userAnalysis.genderList"
+    />
+    <eventList :eventList="brandEventList" :params="params2"/>
+    <Competing :rivalList="rivalList" v-if="rivalList.length" />
   </div>
 </template>
 
@@ -20,14 +29,15 @@
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import { toast } from '@/util/toast'
-import { getList, brandList } from '@/api/brand'
+import { getList, brandList, eventAnalysisList, brandAnalysisList } from '@/api/brand'
 import { selectTime } from '@/components/hotLine'
-import SentimentBar from '@/views/common/sentimentBar/index.vue'
-import brandInfoArea from './components/brandInfo.vue'
-import eventList from '@/views/common/eventList/event.vue'
-import heatLineCom from '@/views/common/heatLineCom/index.vue'
-import User from './components/users.vue'
-import Competing from './components/competing.vue'
+import SentimentBar from '@/views/common/sentimentBar/index.vue' // 头部bar
+import brandInfoArea from './components/brandInfo.vue' // 气泡+基础信息
+import PraiseComment from '@/views/common/praiseComment/index.vue' // 口碑评论
+import UserPortrait from '@/views/common/user/userPortrait.vue' // 用户分析
+import eventList from '@/views/common/eventList/event.vue' // 事件分析
+import heatLineCom from '@/views/common/heatLineCom/index.vue' // 热度分析
+import Competing from './components/competing.vue' // 竞品分析
 
 
 
@@ -37,7 +47,8 @@ import Competing from './components/competing.vue'
     brandInfoArea,
     selectTime,
     heatLineCom,
-    User,
+    PraiseComment,
+    UserPortrait,
     eventList,
     Competing
   }
@@ -65,51 +76,25 @@ export default class BrandPage extends ViewBase {
       endTime: 20200310 // this.endTime
     }
   }
-  // 口碑
-  publicPraise: any = {}
+  // 口碑评论 数据
+  publicPraise = {}
+  // 用户分析
+  userAnalysis = {}
   // 事件
   params2 = {}
-  get list() {
-    return [
-    {
-      eventName: '乔乔的异想世界获最佳喜剧片剪辑',
-      eventId: '12332',
-      creatTime: 1584146173812,
-      target: [
-        {
-          targetCode: '1',
-          targetName: '正面'
-        }
-      ],
-      interactiveList: [
-        {
-          interactiveUrl: {
-            source: 'jydata',
-            url:
-              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-          },
-          interactiveValue: '100万+'
-        },
-        {
-          interactiveUrl: {
-            source: 'jydata',
-            url:
-              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-          },
-          interactiveValue: '1,212'
-        }
-      ]
-    },
-   ]
-  }
+  brandEventList = []
+  // 竞品分析
+  rivalList = []
 
   get refsTime() {
     return (this.$refs.refsTime as any)
   }
 
   mounted() {
-    this.brandDetail()
-    this.getHotList()
+    this.brandDetail() // 品牌详情页
+    this.getHotList() // 热度分析数据
+    this.eventAnalysis() // 事件分析
+    this.analysisList() // 竞品分析
   }
 
   async brandDetail() {
@@ -118,24 +103,14 @@ export default class BrandPage extends ViewBase {
       const { data: {
         brandInfo,
         brandOverView,
-        publicPraise: {appraiseList, hotWordList, badWordList},
-        userAnalysis // 用户分析
+        publicPraise,
+        userAnalysis
       } } = await brandList({brandId})
 
       this.brandInfo = brandInfo // 头部基础信息
       this.bubbleData = brandOverView // 气泡数据
-      // 口碑
-      const appraiseListData = (appraiseList || []).map((it: any) => {
-        return {
-          ...it,
-          raisePercent: it.raisePercent / 100
-        }
-      })
-      this.publicPraise = {
-        appraiseList: appraiseListData,
-        hotWordList,
-        badWordList
-      }
+      this.publicPraise = publicPraise // 口碑
+      this.userAnalysis = userAnalysis // 用户分析
     } catch (ex) {
       toast(ex)
     }
@@ -153,10 +128,29 @@ export default class BrandPage extends ViewBase {
       })
       this.overAllHeatList = overAllHeatList
       this.platformHeatList = platformHeatList
-      // this.xDate = (overAllHeatList || []).map((it: any) => it.date)
-      // this.yDate = (overAllHeatList || []).map((it: any) => it.value)
-      // this.eventList = (overAllHeatList || []).map((it: any) => it.eventList)
-      // this.platformHeat = platformHeatList || []
+    } catch (ex) {
+      toast(ex)
+    }
+  }
+
+  async eventAnalysis() {
+    try {
+      const { data } = await eventAnalysisList({
+        type: 2, // 1
+        objectId: 9 // this.id
+      })
+      this.brandEventList = data.eventList || []
+    } catch (ex) {
+      toast(ex)
+    }
+  }
+
+  async analysisList() {
+    try {
+      const { data } = await brandAnalysisList({
+        brandId: this.id
+      })
+      this.rivalList = data || []
     } catch (ex) {
       toast(ex)
     }

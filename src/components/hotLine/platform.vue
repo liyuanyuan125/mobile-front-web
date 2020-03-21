@@ -1,17 +1,5 @@
 <template>
   <div>
-    <!-- <div class="title">平台热度
-        <router-link class="to-more" :to="{
-          name: 'platform-detail',
-          params: {
-            id: params.id,
-            name: params.name,
-            type: params.type,
-            startTime: params.startTime,
-            endTime: params.endTime
-          }
-        }" >查看更多<van-icon name="arrow" class="arrow" size="15" /></router-link>
-    </div>-->
     <ModuleHeader title="平台热度" tag="h4" class="formatmodule" :link="link" />
     <ul class="platform-item">
       <li

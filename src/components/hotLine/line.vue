@@ -29,10 +29,13 @@ export default class Main extends Vue {
   mounted() {
     this.initChart()
   }
+
+  // tab切换 数据重新渲染
   @Watch('lineData', { deep: true })
   watchLineData() {
     this.initChart()
   }
+
   initChart() {
     const chartEl = this.$refs.refChart as any
     const myChart = echarts.init(chartEl)
@@ -88,8 +91,8 @@ export default class Main extends Vue {
       },
       tooltip: {
         trigger: 'axis',
-        // backgroundColor: '#fff',
-        // enterable: true, // 如需详情内交互，添加链接，按钮，则设置为true
+        backgroundColor: '#fff',
+        enterable: true, // 如需详情内交互，添加链接，按钮，则设置为true
         confine: true, // 限制在图表的区域内
         axisPointer: {
           // 指示线
@@ -98,44 +101,52 @@ export default class Main extends Vue {
             opacity: 0.2,
             color: '#303030'
           }
+        },
+        extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);',
+        // 跳转链接事件详情页url暂定处理
+        formatter: (params: any) => {
+          const {name, value, dataIndex, seriesName} = params[0]
+          const eventList = this.lineData.eventList[dataIndex]
+          const boxStyle = cssifyObject({
+            position: 'relative',
+            lineHeight: '16px',
+            paddingLeft: '12px'
+          })
+          const dotStyle = cssifyObject({
+            position: 'absolute',
+            left: '2px',
+            top: '5px',
+            width: '6px',
+            height: '6px',
+            borderRadius: '100%',
+            backgroundColor: this.dotColor,
+          })
+          const nameStyle = cssifyObject({
+            color: this.textColor,
+            fontSize: '11px',
+          })
+          const eventStyle = cssifyObject({
+            color: '#4c97ff',
+            textDecoration: 'underline'
+          })
+
+          const eventHtml = eventList.map((it: any) => {
+            return `<p style="${boxStyle}">
+            <i style="${dotStyle}"></i>
+            <a href="" style="${eventStyle}">${it.eventName}</a>
+            </p>`
+          })
+
+          const html = `
+           <div style="${nameStyle}" >
+             <p>${name} ${seriesName} ${value}</p>
+             <div>
+             ${eventHtml.join('')}
+             </div>
+           </div>
+          `
+          return html.trim()
         }
-        // 暂定处理
-        // formatter: (params: any) => {
-        //   const {name, value, dataIndex, seriesName} = params[0]
-        //   const eventList = this.lineData.eventList[dataIndex]
-        //   const boxStyle = cssifyObject({
-        //     position: 'relative',
-        //     lineHeight: '16px',
-        //     paddingLeft: '12px'
-        //   })
-        //   const dotStyle = cssifyObject({
-        //     position: 'absolute',
-        //     left: '2px',
-        //     top: '5px',
-        //     width: '6px',
-        //     height: '6px',
-        //     borderRadius: '100%',
-        //     backgroundColor: this.dotColor,
-        //   })
-        //   const nameStyle = cssifyObject({
-        //     color: this.textColor,
-        //     fontSize: '11px',
-        //   })
-
-        //   const a = eventList.map((it: any) => {
-        //     return `<p style="${boxStyle}"><i style="${dotStyle}"></i> ${it.eventName}</p>`
-        //   })
-
-        //   const html = `
-        //    <div style="${nameStyle}" >
-        //      <p>${moment(name).format(format)} ${seriesName} ${value}</p>
-        //      <div>
-        //        ${a.join('')}
-        //      </div>
-        //    </div>
-        //   `
-        //   return html.trim()
-        // }
       },
       grid: {
         left: 0,
@@ -190,6 +201,7 @@ export default class Main extends Vue {
     myChart.clear() // 清空画布内容，实例可用
     myChart.setOption(options)
   }
+
 }
 </script>
 
@@ -198,7 +210,6 @@ export default class Main extends Vue {
   position: relative;
   width: 100%;
   padding-bottom: 65px;
-  border-bottom: solid 1px #d8d8d8;
 }
 .line-echart {
   width: 100%;

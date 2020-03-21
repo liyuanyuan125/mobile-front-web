@@ -1,31 +1,45 @@
 <template>
   <div>
-    <heatContrast 
-     :overAllHeat="heatLineDate"
-     :colors="colors"
-     :interactList="interactList"
-     :materialList="materialList"
-     :tabs="tabs"
-    />
-    <!-- <AgeDistribution :ageRangeList='ageRangeList' :href="href" /> -->
+    <section>
+      <heatContrast 
+        :overAllHeat="heatLineDate"
+        :colors="colors"
+        :interactList="interactList"
+        :materialList="materialList"
+        :tabs="tabs"
+        v-if="interactList.length"
+        />
+    </section>
+    <section>
+      <MarketContrast :fetch="fetch" :query="query" />
+    </section>
+    <section>
+      <ModuleHeader title="用户对比" tag="h5" class="sex-rate"/>
+      <AgeDistribution :ageRangeList='ageRangeList' />
+      <VsList :data="sexRateList" class="chart" />
+    </section>
+    <section class="items">
+      <ModuleHeader title="性别占比" tag="h5" class="sex-rate"/>
+    </section>
+    
  </div>
 </template>
 
 <script lang='ts'>
 import { Component, Vue } from 'vue-property-decorator'
-import TabNav, { TabNavItem } from '@/components/tabNav'
-// 口碑评论对比
-import MarketContrast from '@/views/common/marketContrast/index.vue'
-// 年龄分布
-import AgeDistribution from '@/views/common/ageDistribution/index.vue'
-import heatContrast from '@/views/common/heatContrast/index.vue'
+import ModuleHeader from '@/components/moduleHeader'
+import VsList, { VsItem } from '@/components/vsList' // 性别分布
+import MarketContrast from '@/views/common/marketContrast/index.vue' // 口碑评论对比
+import AgeDistribution from '@/views/common/ageDistribution/index.vue' // 年龄分布
+import heatContrast from '@/views/common/heatContrast/index.vue' // 热度分析对比
 import { toast } from '@/util/toast'
 import { rivalHeatAnalysis } from '@/api/brand'
 
 
 @Component({
   components: {
-    TabNav,
+    ModuleHeader,
+    VsList,
     heatContrast,
     MarketContrast,
     AgeDistribution
@@ -34,227 +48,71 @@ import { rivalHeatAnalysis } from '@/api/brand'
 export default class Main extends Vue {
   colors = ['#88AAF6', '#4CC8D0', '#C965DD']
   // 综合对比数据值
-  overAllHeat = []
-
+  heatLineDate: any = {
+    title: '综合热度分析',
+    dateList: []
+  }
   // 新增互动
-  interactList = [
-    {
-      platformName: '新浪',
-      dataList: [
-        {
-          rivalName: '奔驰',
-          data: [
-            { date: 1583251200000, value: 12333},
-            { date: 1583337600000, value: 2333},
-            { date: 1583424000000, value: 333},
-            { date: 1583510400000, value: 4233},
-            { date: 1583683200000, value: 533},
-            { date: 1583769600000, value: 623},
-            { date: 1583856000000, value: 723},
-          ]
-        },
-        {
-          rivalName: '宝马',
-          data: [
-            { date: 1583251200000, value: 813},
-            { date: 1583337600000, value: 7223},
-            { date: 1583424000000, value: 5323},
-            { date: 1583510400000, value: 4433},
-            { date: 1583683200000, value: 353},
-            { date: 1583769600000, value: 263},
-            { date: 1583856000000, value: 333},
-          ]
-        },
-        {
-          rivalName: '林肯',
-          data: [
-            { date: 1583251200000, value: 133},
-            { date: 1583337600000, value: 233},
-            { date: 1583424000000, value: 323},
-            { date: 1583510400000, value: 4333},
-            { date: 1583683200000, value: 5233},
-            { date: 1583769600000, value: 6233},
-            { date: 1583856000000, value: 333},
-          ]
-        }
-      ]
-    },
-    {
-      platformName: '网易新闻',
-      dataList: [
-        {
-          rivalName: '奔驰1',
-          data: [
-            { date: 1583251200000, value: 12333},
-            { date: 1583337600000, value: 2333},
-            { date: 1583424000000, value: 333},
-            { date: 1583510400000, value: 4233},
-            { date: 1583683200000, value: 533},
-            { date: 1583769600000, value: 623},
-            { date: 1583856000000, value: 723},
-          ]
-        },
-        {
-          rivalName: '宝马1',
-          data: [
-            { date: 1583251200000, value: 813},
-            { date: 1583337600000, value: 7223},
-            { date: 1583424000000, value: 5323},
-            { date: 1583510400000, value: 4433},
-            { date: 1583683200000, value: 353},
-            { date: 1583769600000, value: 263},
-            { date: 1583856000000, value: 333},
-          ]
-        },
-        {
-          rivalName: '林肯1',
-          data: [
-            { date: 1583251200000, value: 133},
-            { date: 1583337600000, value: 233},
-            { date: 1583424000000, value: 323},
-            { date: 1583510400000, value: 4333},
-            { date: 1583683200000, value: 5233},
-            { date: 1583769600000, value: 6233},
-            { date: 1583856000000, value: 333},
-          ]
-        }
-      ]
-    },
-  ]
+  interactList = []
   // 新增物料
-  materialList = [
-    {
-      platformName: '新浪新闻',
-      dataList: [
-        {
-          rivalName: '奔驰',
-          data: [
-            { date: 1583251200000, value: 12333},
-            { date: 1583337600000, value: 2333},
-            { date: 1583424000000, value: 333},
-            { date: 1583510400000, value: 4233},
-            { date: 1583683200000, value: 533},
-            { date: 1583769600000, value: 623},
-            { date: 1583856000000, value: 723},
-          ]
-        },
-        {
-          rivalName: '宝马',
-          data: [
-            { date: 1583251200000, value: 813},
-            { date: 1583337600000, value: 7223},
-            { date: 1583424000000, value: 5323},
-            { date: 1583510400000, value: 4433},
-            { date: 1583683200000, value: 353},
-            { date: 1583769600000, value: 263},
-            { date: 1583856000000, value: 333},
-          ]
-        },
-        {
-          rivalName: '林肯',
-          data: [
-            { date: 1583251200000, value: 133},
-            { date: 1583337600000, value: 233},
-            { date: 1583424000000, value: 323},
-            { date: 1583510400000, value: 4333},
-            { date: 1583683200000, value: 5233},
-            { date: 1583769600000, value: 6233},
-            { date: 1583856000000, value: 333},
-          ]
-        }
-      ]
-    },
-    {
-      platformName: '腾讯新闻',
-      dataList: [
-        {
-          rivalName: '奔驰',
-          data: [
-            { date: 1583251200000, value: 12333},
-            { date: 1583337600000, value: 2333},
-            { date: 1583424000000, value: 333},
-            { date: 1583510400000, value: 4233},
-            { date: 1583683200000, value: 533},
-            { date: 1583769600000, value: 623},
-            { date: 1583856000000, value: 723},
-          ]
-        },
-        {
-          rivalName: '宝马',
-          data: [
-            { date: 1583251200000, value: 813},
-            { date: 1583337600000, value: 7223},
-            { date: 1583424000000, value: 5323},
-            { date: 1583510400000, value: 4433},
-            { date: 1583683200000, value: 353},
-            { date: 1583769600000, value: 263},
-            { date: 1583856000000, value: 333},
-          ]
-        },
-        {
-          rivalName: '林肯',
-          data: [
-            { date: 1583251200000, value: 133},
-            { date: 1583337600000, value: 233},
-            { date: 1583424000000, value: 323},
-            { date: 1583510400000, value: 4333},
-            { date: 1583683200000, value: 5233},
-            { date: 1583769600000, value: 6233},
-            { date: 1583856000000, value: 333},
-          ]
-        }
-      ]
-    },
-  ]
-
+  materialList = []
   tabs: any = [
     {key: 0, text: '新增物料数'},
     {key: 1, text: '新增互动数'}
   ]
 
-  get heatLineDate() {
-    return {
-      title: '综合热度分析',
-      dateList: [ // this.overAllHeat
-        {
-          rivalName: '奔驰',
-          data: [
-            { date: 1583251200000, value: 12333},
-            { date: 1583337600000, value: 2333},
-            { date: 1583424000000, value: 333},
-            { date: 1583510400000, value: 4233},
-            { date: 1583683200000, value: 533},
-            { date: 1583769600000, value: 623},
-            { date: 1583856000000, value: 723},
-          ]
-        },
-        {
-          rivalName: '宝马',
-          data: [
-            { date: 1583251200000, value: 813},
-            { date: 1583337600000, value: 7223},
-            { date: 1583424000000, value: 5323},
-            { date: 1583510400000, value: 4433},
-            { date: 1583683200000, value: 353},
-            { date: 1583769600000, value: 263},
-            { date: 1583856000000, value: 333},
-          ]
-        },
-        {
-          rivalName: '林肯',
-          data: [
-            { date: 1583251200000, value: 133},
-            { date: 1583337600000, value: 233},
-            { date: 1583424000000, value: 323},
-            { date: 1583510400000, value: 4333},
-            { date: 1583683200000, value: 5233},
-            { date: 1583769600000, value: 6233},
-            { date: 1583856000000, value: 333},
-          ]
-        },
-      ]
+  // 性别分布
+  sexRateList: VsItem[] = [
+    { name: '奔驰', rate1: 63.6, rate2: 44.4 },
+    { name: '兰博基尼', rate1: 39.6, rate2: 60.4 },
+    { name: '林肯', rate1: 20.2, rate2: 79.8 },
+    { name: '雪佛兰', rate1: 2.2, rate2: 97.8 },
+    { name: '玛莎拉蒂名字很长', rate1: 98.8, rate2: 1.2 },
+  ]
+
+  // 口碑评论补充数据
+  query = {
+        movieIdList: 12345
     }
-  }
+    // 口碑评论 查询
+  fetch = async (query: any) => { // query: 查询参数
+        return {
+            code: '',
+            msg: '',
+            data: {
+                goodList: [
+                    {
+                        rivalName: query.startTime,
+                        percent: 12.35,
+                        hotWordList: [
+                            '你好'
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+  // 年龄分布数据
+  ageRangeList = [
+    {
+        ageType: '20-30',
+        brandList: [
+            {
+                brandName: '奔驰',
+                brandPercent: 32,
+            },
+            {
+                brandName: '奔驰',
+                brandPercent: 30,
+            }
+        ]
+    },
+    {
+        ageType: '20-30',
+        brandList: [
+        ]
+    }
+  ]
 
   mounted() {
     this.getLineData()
@@ -272,6 +130,9 @@ export default class Main extends Vue {
         startTime: 20200304,
         endTime: 20200311
       })
+      this.heatLineDate.dateList = overAllHeat || []
+      this.interactList = interactList || []
+      this.materialList = materialList || []
     } catch (ex) {
       toast(ex)
     }
@@ -281,5 +142,7 @@ export default class Main extends Vue {
 </script>
 
 <style lang='less' scoped>
-
+.items {
+  padding: 0 30px;
+}
 </style>

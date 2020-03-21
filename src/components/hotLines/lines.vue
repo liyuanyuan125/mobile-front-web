@@ -5,7 +5,7 @@
 </template>
 
 <script lang='tsx'>
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import echarts from 'echarts'
 import { cssifyObject } from 'css-in-js-utils'
 import moment from 'moment'
@@ -120,6 +120,10 @@ export default class Main extends Vue {
     }
     myChart.clear() // 清空画布内容，实例可用
     myChart.setOption(options)
+  }
+  @Watch('lineData', {deep: true})
+  watchLineData() {
+    this.initChart()
   }
 }
 

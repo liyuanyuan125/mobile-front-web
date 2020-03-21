@@ -12,6 +12,6 @@ export interface SentimentBarItem {
     /**
      * 是否显示 pk 有值就会显示 pk
      */
-    rivalIds?: string
+    rivalIds?: any
 
 }

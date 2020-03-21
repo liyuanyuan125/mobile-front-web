@@ -11,6 +11,9 @@ export interface ImgObj {
  * @param type 裁切类型3=缩放4=裁切
  */
 export function imgFixed(imgUrl: ImgObj, width?: number, height?: number, type?: number) {
+    if (!imgUrl.url) {
+        return ''
+    }
     if (imgUrl.source === 'jydata') {
         // 鲸鱼图片走阿里云裁切
         return aliImgClip(imgUrl.url, width, height, type = 0)
@@ -18,7 +21,6 @@ export function imgFixed(imgUrl: ImgObj, width?: number, height?: number, type?:
         // 票神图片代理裁切
         return imgProxy(imgUrl.url, width, height, type = 4)
     }
-
 }
 
 /**

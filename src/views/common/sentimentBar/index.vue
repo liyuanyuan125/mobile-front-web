@@ -3,7 +3,7 @@
     <span class="reBack" @click="goBack"></span>
     <h1 class="title" v-show="titleShow || hasTitle">{{title}}</h1>
     <div class="tool" v-if="sidebar">
-      <i class="ico-pk" v-if="sidebar.rivalIds" title="竞品分析"></i>
+      <i class="ico-pk" v-if="sidebar.rivalIds" title="竞品分析" @click="goRivalAnalysis"></i>
       <i class="ico-digg" v-if="sidebar.diggType && sidebar.diggId" title="关注"></i>
     </div>
     <svg width="30px" height="30px" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -75,6 +75,13 @@ export default class SentimentBar extends Vue {
     const obj = { params: objectData }
     await setNavBarStatus(obj)
   }
+
+  // 去 Pk 页
+  // goRivalAnalysis() {
+  //   if (this.sidebar && this.sidebar.rivalIds) {
+  //     this.$router.push(this.sidebar.rivalIds)
+  //   }
+  // }
 }
 </script>
 

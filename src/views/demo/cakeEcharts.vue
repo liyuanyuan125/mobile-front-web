@@ -52,8 +52,14 @@ export default class Apply extends Vue {
       {value: 1548, name: '不敏感'}],
     color: '', // 修改颜色
     title: '促销敏感度',
-    sesnsitivity: '敏感度高'// 显示的敏感度  这个需要自己计算了
-      }
+    sesnsitivity: '敏感度高', // 显示的敏感度  这个需要自己计算了
+    titleShow:  true, // 是否显示标题
+    titleMargin:  [20, 20, 20, 20], // 标题部分padding[20,20,20,20]||20
+    titleLeft:  'left', // 标题位置 left center right
+    titleSize:  28, // 标题字体大小
+    titleWeight:  '100', // 标题字体粗细
+    legendtoFixed :  3 // legend显示几位小数
+  }
 
   mounted() {
     //

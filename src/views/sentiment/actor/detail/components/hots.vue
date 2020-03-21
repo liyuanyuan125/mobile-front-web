@@ -12,9 +12,8 @@
 
 <script lang='ts'>
 import { Component, Vue, Prop } from 'vue-property-decorator'
-import { getList } from '@/api/brand'
+import { getList } from '@/api/kol'
 import { toast } from '@/util/toast'
-// import hotLine from '@/views/common/hotLine'
 import { hotLine } from '@/components/hotLine'
 
 
@@ -34,8 +33,8 @@ export default class Main extends Vue {
   platformHeat = []
   get params() {
     return {
-      type: 1, // 1 品牌 2 艺人 3 电影 4 音乐-单曲 5 音乐-专辑  6 剧集
-      id: 1,
+      type: 2, // 1 品牌 2 艺人 3 电影 4 音乐-单曲 5 音乐-专辑  6 剧集
+      id: this.$route.params.actorId,
       name: '奔驰', // 天数
       startTime: 20200304, // this.startTime,
       endTime: 20200310 // this.endTime

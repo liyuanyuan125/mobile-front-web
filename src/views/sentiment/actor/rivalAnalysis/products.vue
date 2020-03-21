@@ -1,69 +1,74 @@
 <template>
   <div class='pages'>
-      <div class='maintop'>
-        <div class="reBack"></div>
-        <div class='title'>竞品分析详细报告</div>
-        <div class='search'></div>
-      </div>
-      <div class='user'>
-        <div class='userlist' v-for="(item , index) in userItemList" :key='index'>
-          <div class='img'>
-            <img :src="item.url" alt="">
-            <i>x</i>
-          </div>
-          <span>{{item.name}}</span>
+    <!-- <SentimentBar title="竞品分析详细报告" :sidebar="sidebar" /> -->
+    <div class='maintop'>
+      <div class="reBack"></div>
+      <div class='title'>竞品分析详细报告</div>
+    </div>
+    <div class='user'>
+      <div class='userlist' v-for="(item , index) in userItemList" :key='index'>
+        <div class='img'>
+          <img :src="item.url" alt="">
+          <i>x</i>
         </div>
-        <div class='userlist posimg'>
-          <div class='img'>
-            <img src="" alt="">
-          </div>
-          <span>&nbsp;</span>
-          <p class='p' @click='addPerson'>+</p>
+        <span>{{item.name}}</span>
+      </div>
+      <div class='userlist posimg'>
+        <div class='img'>
+          <img src="" alt="">
         </div>
+        <span>&nbsp;</span>
+        <p class='p' @click='addPerson'>+</p>
       </div>
-      <div>
-        <Tabs v-model="active" scrollspy sticky>
-        <Tab title="热度">
-          <!-- 综合热度对比 -->
-          <combinedHeat />
-          <!-- 平台热度对比 -->
-          <platformHeat @chgpublicPk='chgpublicPk' /></Tab>
-        <Tab title="口碑">
-          <!-- 口碑评论对比 -->
-          <div class='public'>
-            <publicPraise />
-          </div>
-        </Tab>
-        <Tab title="用户">
-          <div class='userpk'>
-            <div class='usertitle'>用户对比</div>
-            <!-- 平台分布 -->
-            <Table :title='publicObj.title' :tabList='publicObj.tabList' :tableTitle='publicObj.tableTitle' :tableItem='publicObj.tableItem'/>
-            <!-- </div> -->
-            <!-- 年龄分布 -->
-            <Age />
-            <!-- 性别分布 -->
-            <Sex />
-            <!-- 用户地域分布对比 -->
-            <Table :title='regionObj.title' :tabList='regionObj.tabList' :tableTitle='regionObj.tableTitle' :tableItem='regionObj.tableItem' @chgregionPk='chgregionPk'/>
-          </div>
-        </Tab>
-      </Tabs>
+    </div>
+    <TabNav
+      :list ="list"
+      class="tab-nav"
+      normal
+    />
+    <section class="pane" id="hot">
+      <!-- 综合热度对比 -->
+      <combinedHeat />
+      <!-- 平台热度对比 -->
+      <platformHeat @chgpublicPk='chgpublicPk' /></Tab>
+    </section>
+
+    <section class="pane" id="praise">
+      <!-- 口碑评论 -->
+      <div class='public'>
+        <publicPraise />
       </div>
-     
-      
+    </section>
+
+    <section class="pane" id="user">
+      <!-- 用户分析 -->
+      <div class='userpk'>
+        <div class='usertitle'>用户对比</div>
+        <!-- 平台分布 -->
+        <Table :title='publicObj.title' :tabList='publicObj.tabList' :tableTitle='publicObj.tableTitle' :tableItem='publicObj.tableItem'/>
+        <!-- </div> -->
+        <!-- 年龄分布 -->
+        <Age />
+        <!-- 性别分布 -->
+        <Sex />
+        <!-- 用户地域分布对比 -->
+        <Table :title='regionObj.title' :tabList='regionObj.tabList' :tableTitle='regionObj.tableTitle' :tableItem='regionObj.tableItem' @chgregionPk='chgregionPk'/>
+      </div>
+    </section>     
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
+import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import combinedHeat from './components/combinedHeat.vue'
 import platformHeat from './components/platformHeat.vue'
 import publicPraise from './components/publicPraise.vue'
 import Age from './components/age.vue'
 import Sex from './components/sex.vue'
 import Table from '@/views/common/table/table.vue'
+import TabNav, { TabNavItem } from '@/components/tabNav'
 
 
 import { toast } from '@/util/toast'
@@ -78,10 +83,18 @@ import { Tab, Tabs } from 'vant'
     publicPraise,
     Age,
     Sex,
-    Table
+    Table,
+    TabNav,
+    SentimentBar
   }
 })
 export default class KolPage extends ViewBase {
+
+  sidebar = {
+    diggType: 'actor',
+    diggId: '100038',
+    rivalIds: '1,2,4'
+  }
 
   item: any = null
 
@@ -315,20 +328,10 @@ export default class KolPage extends ViewBase {
       },
     ]
   }
-  // tan导航
-  tabTitle: any = [
-    {
-      title: '热度',
-      key: 'hot'
-    },
-    {
-      title: '口碑',
-      key: 'public'
-    },
-    {
-      title: '用户',
-      key: 'user'
-    }
+  list: TabNavItem[] = [
+    { name: 'hot', label: '热度' },
+    { name: 'praise', label: '口碑' },
+    { name: 'user', label: '用户' },
   ]
 
   created() {
@@ -781,5 +784,8 @@ export default class KolPage extends ViewBase {
 /deep/ .van-tabs__line {
   background-color: #88aaf6;
 }
+// /deep/ .tab-nav {
+//   border-radius:60px 60px 0px 0px;
+// }
 
 </style>

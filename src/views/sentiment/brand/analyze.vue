@@ -20,7 +20,7 @@ import MarketContrast from '@/views/common/marketContrast/index.vue'
 import AgeDistribution from '@/views/common/ageDistribution/index.vue'
 import heatContrast from '@/views/common/heatContrast/index.vue'
 import { toast } from '@/util/toast'
-import { ivalHeatAnalysis } from '@/api/brand'
+import { rivalHeatAnalysis } from '@/api/brand'
 
 
 @Component({
@@ -267,7 +267,7 @@ export default class Main extends Vue {
           interactList,
           materialList
         }
-      }} = await ivalHeatAnalysis({
+      }} = await rivalHeatAnalysis({
         brandIdList: '1,2',
         startTime: 20200304,
         endTime: 20200311

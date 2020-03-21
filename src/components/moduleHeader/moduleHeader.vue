@@ -52,7 +52,7 @@ export default class ModuleHeader extends Vue {
 
 .module-title {
   font-size: 40px;
-  font-weight: 500;
+  font-weight: 400;
   flex: 1;
 
   h4.module-header & {

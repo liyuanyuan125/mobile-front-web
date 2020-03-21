@@ -147,9 +147,12 @@ export default new Router({
     },
     // 品牌舆情 - 竞品分析二级详情页
     {
-      path: '/sentiment/brandanalyze',
+      path: '/sentiment/brandanalyze/:ids',
       name: 'sentimentbrand-analyze',
-      component: () => import('./views/sentiment/brand/analyze.vue')
+      component: () => import('./views/sentiment/brand/analyze.vue'),
+      props: paramTypes({
+        ids: String
+      })
     },
     // 平台热度 - 查看更多（通用页）
     {

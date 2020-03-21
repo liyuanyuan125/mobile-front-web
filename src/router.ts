@@ -1,35 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/home.vue'
-import { Route } from 'vue-router'
-import { MapType } from '@/util/types'
-import { stringToBoolean } from '@/fn/typeCast'
+import { paramTypes } from '@/util/router'
+
 Vue.use(Router)
 
-/**
- * 处理 route 中的参数类型
- * @param config 配置
- */
-const paramTypes = (
-  config: MapType<NumberConstructor | BooleanConstructor | StringConstructor>
-) => {
-  return ({ params }: Route) => {
-    const props = Object.entries(config).reduce((map, [key, type]) => {
-      const strVal = params[key]
-      const value = type === Number
-        ? (+strVal || 0)
-        : type === Boolean
-          ? stringToBoolean(strVal)
-          : strVal
-      map[key] = value
-      return map
-    }, {} as MapType<any>)
-    return props
-  }
-}
-
 const idProps = paramTypes({ id: Number })
-
 
 export default new Router({
   mode: 'history',
@@ -169,8 +144,9 @@ export default new Router({
     },
 
     // kol舆情
+    // 艺人详情
     {
-      path: '/sentiment/actor/detail/:id',
+      path: '/sentiment/actor/:actorId',
       name: 'sentimentactor',
       component: () => import('./views/sentiment/actor/detail/index.vue')
     },
@@ -181,13 +157,13 @@ export default new Router({
     },
     // kol舆情用户分析
     {
-      path: '/sentiment/actor/userAnalysis/:userId',
+      path: '/sentiment/actor/userAnalysis/:actorId',
       name: 'sentimentactoruser',
       component: () => import('./views/sentiment/actor/userAnalysis/user.vue')
     },
     // kol舆情竞品分析
     {
-      path: '/sentiment/actor/rivalAnalysis/products',
+      path: '/sentiment/actor/rivalAnalysis/products/:actorIdList',
       name: 'sentimentkolproducts',
       component: () => import('./views/sentiment/actor/rivalAnalysis/products.vue')
     },
@@ -201,8 +177,14 @@ export default new Router({
     // 影片竞品分析
     {
       path: '/sentiment/movie/rivalAnalysis',
-      name: 'sentimentmovieanalysis',
+      name: 'sentimentmovierivalanalysis',
       component: () => import('./views/sentiment/movie/rivalAnalysis/index.vue')
+    },
+    // 影片用户分析
+    {
+      path: '/sentiment/movie/userAnalysis/:movieId(\\d+)',
+      name: 'sentimentmovieuseranalysis',
+      component: () => import('./views/sentiment/movie/userAnalysis/index.vue')
     },
     // 电视剧舆情
     {
@@ -210,17 +192,20 @@ export default new Router({
       name: 'sentimenttv',
       component: () => import('./views/sentiment/tv/index.vue')
     },
-    // 音乐舆情
-    {
-      path: '/sentiment/music',
-      name: 'sentimentmusic',
-      component: () => import('./views/sentiment/music/index.vue')
-    },
     {
       path: '/sentiment/common/userRegion',
       name: 'sentimentuserregion',
       component: () => import('./views/commonPage/userRegion/index.vue')
     },
+
+    // ===*** 单曲
+    {
+      path: '/sentiment/song/:id',
+      name: 'sentiment-song',
+      component: () => import('./views/sentiment/song/index.vue'),
+      props: idProps
+    },
+
     // demo
     {
       path: '/demo/twobar',

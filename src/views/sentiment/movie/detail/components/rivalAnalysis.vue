@@ -1,7 +1,7 @@
 <template>
   <!--竞品分析 -->
   <div class="rival mod">
-    <ModuleTitle title="同档期影片分析" :appLink="appLink" />
+    <ModuleHeader title="同档期影片分析" />
     <dl>
       <dd v-for="(item,index) in list" :key="item.rivalId + index">
         <div class="rivalbox">
@@ -43,12 +43,12 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
-import ModuleTitle from '@/components/sentimentTitle'
+import ModuleHeader from '@/components/moduleHeader'
 import moment from 'moment'
 
 @Component({
   components: {
-    ModuleTitle
+    ModuleHeader
   }
 })
 export default class RivalAnalysis extends ViewBase {
@@ -80,7 +80,7 @@ export default class RivalAnalysis extends ViewBase {
   padding: 50px 0;
   border-top: 20px solid rgba(216, 216, 216, 0.2);
   dl {
-    padding: 0 30px;
+    padding: 30px 30px 0;
   }
   dd {
     margin-top: 40px;
@@ -101,6 +101,9 @@ export default class RivalAnalysis extends ViewBase {
       border-radius: 45px;
     }
   }
+}
+.module-header {
+  padding: 0 30px;
 }
 .rivalbox {
   position: relative;

@@ -32,12 +32,7 @@
         </ul>
       </div>
       <div class="chartbox">
-        <dubline
-          :lineData="lineDataList"
-          v-if="lineDataList.xDate.length"
-          :key="lineDataList.title"
-          class="wantchart"
-        />
+        <dubline :lineData="linedata" v-if="linedata" :key="linedata.title" class="wantchart" />
       </div>
       <div class="others">
         <div class="inner">
@@ -98,9 +93,24 @@ export default class BoxOffice extends ViewBase {
   xDate: any = []
   yDate: any = []
   eventList: any = []
+  linedata: any = {}
 
-  get lineDataList() {
-    return this.formatDatas(this.boxoffice.boxOfficeList)
+  // get boxOfficeList() {
+  //   return this.formatDatas(this.boxoffice.boxOfficeList)
+  // }
+  // get scheduleList() {
+  //   return this.formatDatas(this.boxoffice.scheduleList)
+  // }
+  created() {
+    // this.linedata = this.boxOfficeList
+    // this.formatDatas(this.boxoffice.boxOfficeList)
+  }
+
+  @Watch('boxoffice', { deep: true })
+  watchBoxOffice() {
+    if (this.boxoffice) {
+      this.formatDatas(this.boxoffice.boxOfficeList)
+    }
   }
 
   @Watch('tabIndex', { deep: true })
@@ -114,17 +124,19 @@ export default class BoxOffice extends ViewBase {
 
   // 处理数据
   formatDatas(data: any[]) {
-    const xDate = (data || []).map((it: any) => it.name)
-    const yDate = (data || []).map((it: any) => it.value)
-    const eventList = (data || []).map((it: any) => it.eventList)
-    return {
-      xDate,
-      eventList,
-      yDate: [
-        {
-          data: yDate
-        }
-      ]
+    if (data && data.length) {
+      const xDate = (data || []).map((it: any) => it.name)
+      const yDate = (data || []).map((it: any) => it.value)
+      const eventList = (data || []).map((it: any) => it.eventList)
+      this.linedata = {
+        xDate,
+        eventList,
+        yDate: [
+          {
+            data: yDate
+          }
+        ]
+      }
     }
   }
 

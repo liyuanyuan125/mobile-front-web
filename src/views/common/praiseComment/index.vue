@@ -26,26 +26,36 @@
     <div class="options-bottom">
       <div class="hot-box">
         <div class="hot-box-left">
-          <i class="ico-hot"></i>全网热词
+          <p>
+            <i class="ico-hot"></i>全网热词
+          </p>
         </div>
         <div class="hot-box-right">
-          <span
-            v-for="(it,index) in publicPraise.hotWordList"
-            :key="it+index"
-            @click="wordLink(it,0)"
-          >{{it}}</span>
+          <div>
+            <span
+              v-for="(it,index) in publicPraise.hotWordList"
+              :key="it+index"
+              class="van-ellipsis"
+              @click="wordLink(it,0)"
+            >{{it}}</span>
+          </div>
         </div>
       </div>
       <div class="hot-box">
         <div class="hot-box-left">
-          <i class="ico-bad"></i>负面热词
+          <p>
+            <i class="ico-bad"></i>负面热词
+          </p>
         </div>
         <div class="hot-box-right">
-          <span
-            v-for="(it,index) in publicPraise.badWordList"
-            :key="it + index"
-            @click="wordLink(it,3)"
-          >{{it}}</span>
+          <div>
+            <span
+              v-for="(it,index) in publicPraise.badWordList"
+              :key="it + index"
+              class="van-ellipsis"
+              @click="wordLink(it,3)"
+            >{{it}}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -112,7 +122,4 @@ export default class PraiseComment extends Vue {
 
 <style lang="less" scoped>
 @import url(./index.less);
-.alertwid {
-  width: 90%;
-}
 </style>

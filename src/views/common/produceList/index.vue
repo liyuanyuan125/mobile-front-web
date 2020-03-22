@@ -3,7 +3,7 @@
   <div class="producemod">
     <ModuleHeader title="出品发行" :link="produceList.length ? link : null" />
     <dl class="companylist" v-if="produceList.length">
-      <dd v-for="(item,index) in produceList" :key="item + index">{{item}}</dd>
+      <dd v-for="(item,index) in produceList" :key="item + index" class="van-ellipsis">{{item}}</dd>
     </dl>
     <dataEmpty v-else />
   </div>

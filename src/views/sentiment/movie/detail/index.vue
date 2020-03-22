@@ -467,7 +467,7 @@ export default class MoviePage extends ViewBase {
   // api获取营销事件
   async getEventList() {
     const res: any = await getEventList({
-      type: 2,
+      type: 3,
       objectId: 9
     })
     this.eventList = res
@@ -502,14 +502,14 @@ export default class MoviePage extends ViewBase {
         return {
           name: 'sentimentmovieuseranalysis',
           params: {
-            movieId: 100038
+            movieId: this.movieId
           }
         }
       default:
         return {
           page,
           businessType: 3,
-          businessObjectId: 100038
+          businessObjectId: this.movieId
         }
     }
   }

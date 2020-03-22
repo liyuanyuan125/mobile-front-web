@@ -233,3 +233,13 @@ export async function handleCitySelect(obj: any) {
   return data
 }
 
+/**
+ * 设置竞品
+ * @param  obj app需要的内部参数
+ */
+export async function handleSetRival(obj: any) {
+  const data = await callNative('handleSetRival', obj)
+  devInfo(`[sayHi] native return data:`, data)
+  return data
+}
+

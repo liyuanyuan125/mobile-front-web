@@ -66,7 +66,6 @@ export default class Main extends Vue {
   justify-content: space-between;
   justify-items: center;
   font-size: 38px;
-  padding: 0 30px;
 }
 .items {
   width: 200px;

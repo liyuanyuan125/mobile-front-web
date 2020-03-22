@@ -1,9 +1,9 @@
 <template>
   <div class="options-page">
-    <div class="contrast-h3">
+    <!-- <div class="contrast-h3">
         <div>{{title}}</div>
         <router-link class="more" :to="href" >查看更多<Icon name="arrow" size="18" /></router-link>
-    </div>
+    </div> -->
     <div class="contrast-top">
         <span @click="changeAge(ins)" v-for="(it, ins) in ageRangeList" :key="ins" :class="[ indexs == ins ? 'contrast-title active' : 'contrast-title']">
             {{it.ageType}}
@@ -49,9 +49,9 @@ export default class Options extends Vue {
     /* 年龄分布数据 */
     @Prop({ required: true, default:  []}) ageRangeList?: AgeRangeList[]
     /* 跳转页面 */
-    @Prop({ required: true, default:  ({})}) href?: any
+    // @Prop({ required: true, default:  ({})}) href?: any
     /* 年龄分布标题 */
-    @Prop({ type: String, default: '年龄分布'}) title!: string
+    // @Prop({ type: String, default: '年龄分布'}) title!: string
 
     indexs: any = 0
     changeAge(ins: number) {

@@ -462,6 +462,7 @@ export default class MoviePage extends ViewBase {
     this.userAnalysis = res.userAnalysis
     this.actorList = res.actorList ? res.actorList : []
     this.produceList = res.produceList ? res.produceList : []
+    document.title = res.movieInfo.movieNameCn
   }
   // api获取营销事件
   async getEventList() {

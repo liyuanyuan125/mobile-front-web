@@ -53,6 +53,14 @@ export async function getRivalPraise(query: PraiseItem) {
 }
 
 /**
+ * 竞品报告详情页 - 获取想看趋势
+ */
+export async function getRivalWantSeeTrend(query: PraiseItem) {
+    const res = await get('/mock/400/yuqing/movie/getRivalWantSee', query)
+    return res
+}
+
+/**
  * 获取用户分析
  */
 export async function getUserAnalysisById(movieId: string) {

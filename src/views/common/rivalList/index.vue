@@ -2,14 +2,15 @@
   <div class="viewpage">
     <div class="rivalpage">
       <dl :class="typeClass">
-        <dd v-for="item in rivalList" :key="item.rivalId">
+        <dd v-for="item in rivals" :key="item.rivalId">
           <img :src="item.coverImg" class="img" :alt="item.rivalName" />
           <h4 class="van-multi-ellipsis--l2">{{item.rivalName}}</h4>
-          <span class="close" v-if="rivalList.length > 2">
+          <p class="van-ellipsis">{{item.rivalDesc}}张三/李四李四李四李四李四</p>
+          <span class="close" v-if="rivals.length > 2">
             <Icon name="cross" size="12" color="#fff" class="cross" />
           </span>
         </dd>
-        <dd v-if="rivalList.length < 6" @click="setRival">
+        <dd v-if="rivals.length < 6" @click="setRival">
           <div class="addrival">
             <Icon name="cross" size="30" color="#4A4A4A" />
           </div>
@@ -37,8 +38,28 @@ export default class RivalList extends Vue {
   /**
    * 属性示例
    */
-  @Prop({ type: Array }) rivalList!: any // 竞品列表
+  @Prop({ type: Array }) rivalList!: any[] // 竞品列表
   @Prop({ type: String }) type!: string // 竞品列表
+
+  // 处理图片
+  get rivals() {
+    const list: any = this.rivalList
+    if (list && list.length) {
+      for (const it of list) {
+        switch (this.type) {
+          case '3':
+            it.coverImg = imgFixed(it.coverUrl, 150, 195)
+            break
+          case '4':
+            it.coverImg = imgFixed(it.coverUrl, 150, 195)
+            break
+          default:
+            it.coverImg = imgFixed(it.coverUrl, 150, 150)
+        }
+      }
+    }
+    return list
+  }
 
   // 设置竞品
   async setRival() {
@@ -110,6 +131,12 @@ export default class RivalList extends Vue {
       line-height: 1.3;
       text-align: center;
     }
+    p {
+      margin-top: 6px;
+      color: rgba(48, 48, 48, 0.7);
+      font-size: 22px;
+      line-height: 1;
+    }
     .img {
       width: 150px;
       height: 195px;
@@ -140,7 +167,7 @@ export default class RivalList extends Vue {
     }
   }
   .addrival {
-    width: 100%;
+    width: 150px;
     height: 195px;
     background: #fff;
     border: 1px solid #d4d4d4;
@@ -152,6 +179,57 @@ export default class RivalList extends Vue {
       left: 50%;
       transform: translate(-50%, -50%) rotate(45deg);
     }
+  }
+}
+dl.actor {
+  dd {
+    .img {
+      height: 150px;
+      border-radius: 50%;
+      background: url('../../../assets/actordefault.png') no-repeat center center;
+      background-size: cover;
+    }
+    .close {
+      right: 0;
+      top: 0;
+    }
+  }
+  .addrival {
+    height: 150px;
+    border-radius: 50%;
+  }
+}
+dl.brand {
+  dd {
+    .img {
+      height: 150px;
+      border-radius: 10px;
+      background: url('../../../assets/branddefault.png') no-repeat center center;
+      background-size: cover;
+    }
+  }
+  .addrival {
+    height: 150px;
+    border-radius: 10px;
+  }
+}
+dl.music {
+  dd {
+    .img {
+      height: 150px;
+      border-radius: 50%;
+      background: url('../../../assets/musicdefault.png') no-repeat center center;
+      background-size: cover;
+      border: 11px solid #303030;
+    }
+    .close {
+      right: 0;
+      top: 0;
+    }
+  }
+  .addrival {
+    height: 150px;
+    border-radius: 50%;
   }
 }
 </style>

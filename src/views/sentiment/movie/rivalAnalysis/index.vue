@@ -2,7 +2,7 @@
   <div class="page">
     <SentimentBar title="竞品分析详细报告" :titleShow="true" />
     <RivalList
-      type="3"
+      type="6"
       :rivalList="rivalList"
       v-if="rivalList.length"
       class="movierival"

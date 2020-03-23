@@ -95,17 +95,6 @@ export default class BoxOffice extends ViewBase {
   eventList: any = []
   linedata: any = {}
 
-  // get boxOfficeList() {
-  //   return this.formatDatas(this.boxoffice.boxOfficeList)
-  // }
-  // get scheduleList() {
-  //   return this.formatDatas(this.boxoffice.scheduleList)
-  // }
-  created() {
-    // this.linedata = this.boxOfficeList
-    // this.formatDatas(this.boxoffice.boxOfficeList)
-  }
-
   @Watch('boxoffice', { deep: true })
   watchBoxOffice() {
     if (this.boxoffice) {

@@ -25,6 +25,7 @@ import { RivalItem } from './types'
 import { isJyApp } from '@/fn/ua'
 import { Icon } from 'vant'
 import { handleSetRival } from '@/util/native'
+import { devLog, devInfo } from '@/util/dev'
 
 @Component({
   components: {
@@ -36,6 +37,7 @@ export default class RivalList extends Vue {
    * 属性示例
    */
   @Prop({ type: Array }) rivalList!: any // 竞品列表
+  @Prop({ type: String }) type!: string // 竞品列表
 
   // 设置竞品
   async setRival() {
@@ -45,15 +47,16 @@ export default class RivalList extends Vue {
     }
     const obj = {
       callBackName: 'handleSetRivalCallBack',
-      data: {
+      params: {
         businessType: 3,
         businessObjectIdList: encodeURIComponent(ids.join(','))
       }
     }
+    devLog('设置竞品obj', obj.params)
     const result: any = await handleSetRival(obj)
     const codeJson = JSON.parse(result)
 
-    // devLog('选择城市', codeJson)
+    devLog('设置竞品', result)
   }
 }
 </script>

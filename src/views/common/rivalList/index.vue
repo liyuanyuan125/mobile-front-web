@@ -1,33 +1,6 @@
 <template>
   <div class="viewpage">
-    <div v-if="rivalList.length >= 4" class="rivalpage">
-      <!-- 大于4个时 -->
-      <dl>
-        <dd v-for="item in rivalList.slice(0,4)" :key="item.rivalId">
-          <img :src="item.coverUrl.url" class="img" :alt="item.rivalName" />
-          <h4 class="van-multi-ellipsis--l2">{{item.rivalName}}</h4>
-          <span class="close">
-            <Icon name="cross" size="12" color="#fff" class="cross" />
-          </span>
-        </dd>
-      </dl>
-      <dl>
-        <dd v-for="item in rivalList.slice(4)" :key="item.rivalId">
-          <img :src="item.coverUrl.url" class="img" :alt="item.rivalName" />
-          <h4 class="van-multi-ellipsis--l2">{{item.rivalName}}</h4>
-          <span class="close">
-            <Icon name="cross" size="12" color="#fff" class="cross" />
-          </span>
-        </dd>
-        <dd v-if="rivalList.length < 6" @click="setRival">
-          <div class="addrival">
-            <Icon name="cross" size="30" color="#4A4A4A" />
-          </div>
-        </dd>
-      </dl>
-    </div>
-
-    <div v-else class="rivalpage">
+    <div class="rivalpage">
       <dl>
         <dd v-for="item in rivalList" :key="item.rivalId">
           <img :src="item.coverUrl.url" class="img" :alt="item.rivalName" />
@@ -91,13 +64,14 @@ export default class RivalList extends Vue {
   background: #f2f3f6;
   dl {
     display: flex;
-    padding-bottom: 50px;
+    flex-wrap: wrap;
   }
   dd {
     width: 180px;
     box-sizing: border-box;
     padding-left: 30px;
     position: relative;
+    padding-bottom: 40px;
     h4 {
       font-weight: normal;
       margin-top: 15px;

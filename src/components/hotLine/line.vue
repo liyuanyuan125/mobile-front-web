@@ -1,6 +1,7 @@
 <template>
   <div class="content-wrap">
-    <div class="line-echart" ref="refChart"></div>
+    <div class="line-echart" ref="refChart" v-if="lineData.xDate.length" />
+    
   </div>
 </template>
 

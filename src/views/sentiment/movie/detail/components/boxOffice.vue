@@ -32,7 +32,7 @@
         </ul>
       </div>
       <div class="chartbox">
-        <dubline :lineData="linedata" v-if="linedata" :key="linedata.title" class="wantchart" />
+        <dubline :lineData="linedata" v-if="linedata.xDate" class="wantchart" />
       </div>
       <div class="others">
         <div class="inner">
@@ -94,6 +94,12 @@ export default class BoxOffice extends ViewBase {
   yDate: any = []
   eventList: any = []
   linedata: any = {}
+
+  created() {
+    if (this.boxoffice) {
+      this.formatDatas(this.boxoffice.boxOfficeList)
+    }
+  }
 
   @Watch('boxoffice', { deep: true })
   watchBoxOffice() {

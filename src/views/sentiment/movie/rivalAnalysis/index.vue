@@ -1,9 +1,22 @@
 <template>
   <div class="page">
     <SentimentBar title="竞品分析详细报告" :titleShow="true" />
-    <RivalList type="3" :rivalList="rivalList" v-if="rivalList.length" class="movierival" />
+    <RivalList
+      type="3"
+      :rivalList="rivalList"
+      v-if="rivalList.length"
+      class="movierival"
+      @setRival="changeIds"
+    />
+
     <BasisList :basisList="basisList" v-if="basisList.length" />
-    <marketContrast :fetch="fetch" :query="{movieIdList}" v-if="movieIdList" class="praisebox" />
+    <WantSeeTrend :fetch="wantSeeFetch" :movieIds="movieIdList" />
+    <marketContrast
+      :fetch="praiseFetch"
+      :query="{movieIdList}"
+      v-if="movieIdList"
+      class="praisebox"
+    />
     <div class="portrait">
       <moduleHeader title="受众画像" />
       <SexVs :data="vsData" class="genderbox" />
@@ -15,10 +28,11 @@
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
-import { movieRivalList, movieRivalPraise } from './data'
+import { movieRivalList, movieRivalPraise, movieRivalWantSee } from './data'
 import SentimentBar from '@/views/common/sentimentBar/index.vue' // topbar
 import RivalList from '@/views/common/rivalList/index.vue' // 竞品列表
 import BasisList from './components/baseList.vue' // 基础信息
+import WantSeeTrend from './components/wantSeeTrend.vue'
 import marketContrast from '@/views/common/marketContrast/index.vue' // 口碑对比
 import SexVs, { VsItem } from '@/views/common/sexVs' // 性别分布
 import AgeDistribution from '@/views/common/ageDistribution/index.vue' // 年龄分布
@@ -29,6 +43,7 @@ import moduleHeader from '@/components/moduleHeader'
     SentimentBar,
     RivalList,
     BasisList,
+    WantSeeTrend,
     marketContrast,
     moduleHeader,
     SexVs,
@@ -44,8 +59,10 @@ export default class MovieRivalAnalysisPage extends ViewBase {
 
   created() {
     this.movieIdList = this.$route.query.ids
+    this.init()
+  }
+  init() {
     this.getRivalData()
-    this.getRivalPraise()
   }
 
   // 获取数据
@@ -67,15 +84,23 @@ export default class MovieRivalAnalysisPage extends ViewBase {
     this.ageRangeList = res.ageRangeList
   }
 
-  // 获取口碑数据
-  async getRivalPraise() {
-    // const res: any = console.log('getRivalPraise', res)
-  }
-
   // 调取口碑对比的接口
-  fetch = async (query: any) => {
+  praiseFetch = async (query: any) => {
     const res: any = await movieRivalPraise(query)
     return res
+  }
+
+  // 调取想看趋势
+  wantSeeFetch = async (query: any) => {
+    const res: any = await movieRivalWantSee(query)
+    return res
+  }
+
+  // 设置竞品对手
+  changeIds(ids: string) {
+    this.movieIdList = ids
+    this.init()
+    this.praiseFetch
   }
 }
 </script>

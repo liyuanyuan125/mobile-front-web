@@ -4,11 +4,6 @@
     <div class="titbox">
       <h4>想看趋势</h4>
       <div>
-        <div class="citysel" @click="selectCity">
-          <span class="van-ellipsis">{{city.areaName}}</span>
-        </div>
-      </div>
-      <div>
         <SelectDate v-model="dates" />
       </div>
     </div>
@@ -23,12 +18,7 @@
       </ul>
     </div>
     <div>
-      <dubline
-        :lineData="lineDatas"
-        v-if="lineDatas.xDate.length"
-        :key="lineDatas.title"
-        class="wantchart"
-      />
+      <echartLines :lineData="lineData" :colors="colors" />
     </div>
   </div>
 </template>
@@ -37,42 +27,39 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import SelectDate from '@/components/selectDate'
-import { handleCitySelect } from '@/util/native'
 import { devLog, devInfo } from '@/util/dev'
-import { dubline } from '@/components/hotLine'
+import echartLines from '@/components/hotLines'
 
 @Component({
   components: {
-    SelectDate,
-    dubline
+    echartLines,
+    SelectDate
   }
 })
 export default class WantSeeTrend extends ViewBase {
-  @Prop({ type: Object }) dataTrend!: any
+  /* 查询请求 */
+  @Prop({ type: Function, required: true })
+  fetch!: (query?: any) => Promise<any>
+  /* 查询条件 */
+  @Prop({ type: String }) query!: string
 
   tabList: any = [
     {
       id: 1,
-      key: 'totalGainList',
+      key: 'totalDataList',
       name: '累计'
     },
     {
       id: 2,
-      key: 'dailyGainList',
-      name: '日增'
+      key: 'newDataList',
+      name: '新增'
     }
   ]
   tabIndex: number = 1
   lineDatas: any = {}
-  city: any = {
-    areaId: 'quanguo',
-    areaName: '全国',
-    selectType: 1
-  }
   dates: any = {}
 
   created() {
-    const date: any = this.$refs.selDate
     this.formatDatas(this.dataTrend.totalGainList)
   }
 
@@ -102,6 +89,25 @@ export default class WantSeeTrend extends ViewBase {
     }
   }
 
+  // 综合热度数据处理 title，xdata，ydata
+  //   get lineData() {
+  //     const xDate = (this.overAllHeat.dateList[0].data || []).map((it: any) =>
+  //       moment(it.date).format('MM-DD')
+  //     )
+  //     const yDate = (this.overAllHeat.dateList || []).map((it: any) => {
+  //       const { rivalName, data } = it
+  //       return {
+  //         name: rivalName,
+  //         list: (data || []).map((ite: any) => ite.value)
+  //       }
+  //     })
+  //     return {
+  //       title: this.overAllHeat.title,
+  //       xDate: this.xDate,
+  //       yDate
+  //     }
+  //   }
+
   // tab 切换
   changeTab(id: number) {
     if (this.tabIndex !== id) {
@@ -109,22 +115,22 @@ export default class WantSeeTrend extends ViewBase {
     }
   }
 
-  // 选择城市
-  async selectCity() {
-    const obj = {
-      callBackName: 'handleCitySelectCallBack'
-    }
-    const result: any = await handleCitySelect(obj)
-    const codeJson = JSON.parse(result)
-    if (codeJson) {
-      this.city = codeJson.data
+  async uplist() {
+    try {
+      const { data } = await this.fetch({
+        movieIdList: this.query,
+        ...this.dates
+      })
+      console.log('data', data)
+      //   this.optionsList = data
+    } catch (ex) {
+      //   toast(ex)
     }
   }
 
   @Watch('dates', { deep: true })
   watchDays(val: any) {
-    // console.log('获取日期选择组件选中的时间', val, this.dates)
-    // this.dates = val
+    this.uplist()
   }
 }
 </script>

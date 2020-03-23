@@ -49,13 +49,11 @@ export default class RivalList extends Vue {
       callBackName: 'handleSetRivalCallBack',
       params: {
         businessType: 3,
-        businessObjectIdList: encodeURIComponent(ids.join(','))
+        businessObjectIdList: ids.join(',')
       }
     }
-    devLog('设置竞品obj', obj.params)
     const result: any = await handleSetRival(obj)
     const codeJson = JSON.parse(result)
-
     devLog('设置竞品', result)
   }
 }

@@ -49,7 +49,6 @@ export default class MovieRivalAnalysisPage extends ViewBase {
     // const res: any = console.log('getRivalPraise', res)
   }
   fetch = async (query: any) => {
-    console.log('this.movieIdList', this.movieIdList)
     // query: 查询参数
     return await movieRivalPraise({
       movieIdList: this.movieIdList

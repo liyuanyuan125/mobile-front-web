@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ModuleHeader title="平台热度" tag="h4" class="formatmodule" :link="link" />
+    <ModuleHeader title="平台热度" class="formatmodule" :link="link" />
     <ul class="platform-item">
       <li
         class="flex-box flex-between"
@@ -45,7 +45,7 @@ export default class Main extends Vue {
     params: this.params
   }
 
-  // 去评台详情页
+  // 去原生app评台详情页
   goPlatformDetail(item: any) {
     const url: AppLink = {
       page: 'platformHotDetail',

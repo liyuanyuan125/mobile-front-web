@@ -111,13 +111,13 @@
       />
     </section>
 
-    <section class="pane event-pane" id="event">
+    <!-- <section class="pane event-pane" id="event">
       <EventList
         eventName='营销事件'
         :eventList="eventList"
         :params="{}"
       />
-    </section>
+    </section> -->
 
     <section class="pane">
       <ModuleHeader title="音乐人分析"/>

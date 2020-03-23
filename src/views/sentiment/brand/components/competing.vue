@@ -1,6 +1,6 @@
 <template>
   <div class="compet-content">
-    <ModuleHeader title="竞品分析"  tag="h6"/>
+    <ModuleHeader title="竞品分析" />
     <ul>
       <li class="flex-box" v-for="item in getRivalList" :key="item.rivalId">
         <div class="parse-left">
@@ -37,7 +37,7 @@
       </li>
     </ul>
     <div class="submit-button">
-      <router-link :to="{name: 'sentimentbrand-analyze', params: {ids: ids.join('')}}" class="to-link" >查看详细报告</router-link>
+      <router-link :to="{name: 'sentimentbrand-analyze', query: {ids: idsString}}" class="to-link" >查看详细报告</router-link>
     </div>
   </div>
 </template>
@@ -58,9 +58,12 @@ export default class Main extends Vue {
   @Prop({ type: Array, default: () => []}) rivalList: any
   // 查看详情报告ids参数
   ids: any = []
+  get idsString() {
+    return this.ids.join(',')
+  }
   get getRivalList() {
     const list = (this.rivalList || []).map((it: any) => {
-      this.ids.push(it.brandId)
+      this.ids.push(it.rivalId)
       const yesterHeatTrend = it.yesterHeatTrend < 0 ? `低${Math.abs(it.yesterHeatTrend)}` : `高${it.yesterHeatTrend}`
       const yesterInteractTrend = it.yesterInteractTrend < 0 ?
       `低${Math.abs(it.yesterInteractTrend)}` : `高${it.yesterInteractTrend}`

@@ -1,8 +1,15 @@
 import { get, post, put, del } from '@/fn/ajax'
 
+// 营销事件
 export interface EventItem {
     type: string,
     objectId: string
+}
+// 竞品对比-口碑对比
+export interface PraiseItem {
+    movieIdList: string,
+    stratTime: string,
+    endTime: string
 }
 /**
  * 获取电影详情页
@@ -30,10 +37,18 @@ export async function getEventListByIdAndType(query: EventItem) {
 }
 
 /**
- * 获取竞品报告
+ * 获取竞品报告详情页
  */
 export async function getMovieRivalList(movieIdList: string) {
     const res = await get('/mock/400/yuqing/movie/rivalreport', { movieIdList })
+    return res
+}
+
+/**
+ * 竞品报告详情页 - 口碑评论对比
+ */
+export async function getRivalPraise(query: PraiseItem) {
+    const res = await get('/mock/400/yuqing/movie/getRivalPraise', query)
     return res
 }
 

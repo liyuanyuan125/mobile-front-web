@@ -37,6 +37,7 @@ export default class RivalList extends Vue {
    * 属性示例
    */
   @Prop({ type: Array }) rivalList!: any // 竞品列表
+  @Prop({ type: String }) type!: string // 竞品列表
 
   // 设置竞品
   async setRival() {

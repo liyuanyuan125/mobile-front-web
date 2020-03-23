@@ -1,15 +1,15 @@
 <template>
   <div class="userportrait">
-    <!-- <h4>性别年龄占比</h4> -->
     <ModuleHeader title="用户分析" :link="link" />
-    <van-row type="flex" class="raitwrap" gutter="20">
+    <van-row type="flex" class="raitwrap">
       <van-col span="10">
         <BarGraph :dataOption="genderListData" :colorList="colorList" />
       </van-col>
-      <van-col span="14">
+      <van-col span="13">
         <barGraphRow :dataOption="ageRangeListData" :itemlist="itemlist" />
       </van-col>
     </van-row>
+    <!-- <dataEmpty /> -->
   </div>
 </template>
 
@@ -20,6 +20,7 @@ import { Col, Row } from 'vant'
 import BarGraph from '@/components/kol/barGraph.vue'
 import barGraphRow from '@/components/kol/barGraphRow.vue'
 import ModuleHeader from '@/components/moduleHeader'
+import dataEmpty from '@/views/common/dataEmpty/index.vue'
 
 @Component({
   components: {
@@ -27,7 +28,8 @@ import ModuleHeader from '@/components/moduleHeader'
     [Col.name]: Col,
     BarGraph,
     barGraphRow,
-    ModuleHeader
+    ModuleHeader,
+    dataEmpty
   }
 })
 export default class UserPortrait extends ViewBase {
@@ -37,24 +39,25 @@ export default class UserPortrait extends ViewBase {
   // 男女比例颜色信息
   @Prop({ type: Array, default: () => ['#88AAF6', '#F18F8F'] }) colorList!: string[]
 
-  ageRangeListData: any = null
-  genderListData: any = null
+  // ageRangeListData: any = null
+  // genderListData: any = null
 
   arr: any = []
 
-  itemlist: any = {
-    colorMain: '#303030',
-    borderRadius: [5, 5, 5, 5],
-    colorColumn: '#7F7D7E',
-    widthColumn: 5,
-    normalColor: [],
-    bgColor: '#F0F0F0'
+  get itemlist() {
+    const inx = this.ageRangeList ? this.ageRangeList.length : 0
+    const anumber = inx > 0 ? new Array(inx).fill(100) : []
+    return {
+      colorMain: '#303030',
+      borderRadius: [5, 5, 5, 5],
+      colorColumn: '#7F7D7E',
+      widthColumn: 5,
+      normalColor: anumber,
+      bgColor: '#F0F0F0'
+    }
   }
-
   created() {
-    this.add()
-    this.formatsexData()
-    this.formatAgesData()
+    // this.add()
   }
 
   add() {
@@ -63,41 +66,45 @@ export default class UserPortrait extends ViewBase {
       this.add()
     }
     if (this.arr.length == this.ageRangeList.length) {
-      this.itemlist.normalColor = this.arr
+      return this.arr
     }
   }
 
   // 处理年龄数据
-  formatsexData() {
-    const xData = []
-    const yData = []
+  get ageRangeListData() {
+    const xData: any[] = []
+    const yData: any[] = []
+    let ageList: any = {}
     const rait = this.ageRangeList
     if (rait && rait.length) {
       for (const item of this.ageRangeList) {
-        xData.push(item.value / 100)
+        xData.push((item.value / 100).toFixed(1))
         yData.push(item.name)
       }
-      this.ageRangeListData = {
+      ageList = {
         xData,
         yData
       }
     }
+    return ageList
   }
 
-  formatAgesData() {
-    const xData = []
-    const yData = []
+  get genderListData() {
+    const xData: any[] = []
+    const yData: any[] = []
+    let genderList: any = {}
     const rait = this.genderList
     if (rait && rait.length) {
       for (const item of this.genderList) {
         xData.push(item.name)
-        yData.push(item.value / 100)
+        yData.push((item.value / 100).toFixed(1))
       }
-      this.genderListData = {
+      genderList = {
         xData,
         yData
       }
     }
+    return genderList
   }
 }
 </script>

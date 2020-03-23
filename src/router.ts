@@ -122,9 +122,12 @@ export default new Router({
     },
     // 品牌舆情 - 竞品分析二级详情页
     {
-      path: '/sentiment/brandanalyze',
+      path: '/sentiment/brandanalyze/:ids',
       name: 'sentimentbrand-analyze',
-      component: () => import('./views/sentiment/brand/analyze.vue')
+      component: () => import('./views/sentiment/brand/analyze.vue'),
+      props: paramTypes({
+        ids: String
+      })
     },
     // 平台热度 - 查看更多（通用页）
     {
@@ -141,8 +144,9 @@ export default new Router({
     },
 
     // kol舆情
+    // 艺人详情
     {
-      path: '/sentiment/actor/detail/:id',
+      path: '/sentiment/actor/:actorId',
       name: 'sentimentactor',
       component: () => import('./views/sentiment/actor/detail/index.vue')
     },
@@ -153,13 +157,13 @@ export default new Router({
     },
     // kol舆情用户分析
     {
-      path: '/sentiment/actor/userAnalysis/:userId',
+      path: '/sentiment/actor/userAnalysis/:actorId',
       name: 'sentimentactoruser',
       component: () => import('./views/sentiment/actor/userAnalysis/user.vue')
     },
     // kol舆情竞品分析
     {
-      path: '/sentiment/actor/rivalAnalysis/products',
+      path: '/sentiment/actor/rivalAnalysis/products/:actorIdList',
       name: 'sentimentkolproducts',
       component: () => import('./views/sentiment/actor/rivalAnalysis/products.vue')
     },
@@ -191,6 +195,18 @@ export default new Router({
     {
       path: '/sentiment/common/userRegion',
       name: 'sentimentuserregion',
+      component: () => import('./views/commonPage/userRegion/index.vue')
+    },
+    // 全网事件分析详情页 姜英英
+    {
+      path: '/sentiment/eventNetwork/:eventId(\d+)',
+      name: 'sentimenteventNetwork',
+      component: () => import('./views/commonPage/userRegion/index.vue')
+    },
+    // 营销事件详情页 纪洁琼
+    {
+      path: '/sentiment/eventMarketing/:eventId(\d+)',
+      name: 'sentimenteventmarketing',
       component: () => import('./views/commonPage/userRegion/index.vue')
     },
 

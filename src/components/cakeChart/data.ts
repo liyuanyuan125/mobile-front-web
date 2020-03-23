@@ -3,8 +3,13 @@ export function getSexOption(data: any) {
     // title样式
     title: {
         text: data.title,
-        left: 'left',
-        padding: 20,
+        left: data.titleLeft,
+        padding: data.titleMargin,
+        show: data.titleShow,
+        textStyle: {
+          fontSize: data.titleSize,
+          fontWeight: data.titleWeight
+      }
     },
     // tooltip 提示
     tooltip: {
@@ -24,7 +29,7 @@ export function getSexOption(data: any) {
           let target: string = ''
           data.optionData.forEach((it: any) => {
             if (name == it.name) {
-                target = '' + (it.value).toFixed(1) + ''
+                target = '' + (it.value).toFixed(data.legendtoFixed) + ''
               }
           })
           const arr = [
@@ -85,19 +90,24 @@ export function getSexOption(data: any) {
 
 }
 
-
+// 敏感度
 export function getPointOption(data: any) {
   const option: object =  {
     // title样式
     title: {
-        text: data.title,
-        left: 'left',
-        padding: 20,
-        formatter(name: any) {
-          const arr = [
-            '{b|' + data.title + '}{a|?%}']
-            return arr.join()
-          }
+      text: data.title,
+      left: data.titleLeft,
+      padding: data.titleMargin,
+      show: data.titleShow,
+      textStyle: {
+        fontSize: data.titleSize,
+        fontWeight: data.titleWeight
+    },
+      formatter(name: any) {
+        const arr = [
+          '{b|' + data.title + '}']
+          return arr.join()
+        }
     },
     // tooltip 提示
     tooltip: {
@@ -117,7 +127,7 @@ export function getPointOption(data: any) {
           let target: string = ''
           data.optionData.forEach((it: any) => {
             if (name == it.name) {
-                target = '' + (it.value).toFixed(1) + ''
+                target = '' + (it.value).toFixed(data.legendtoFixed) + ''
               }
           })
           const arr = [
@@ -175,17 +185,19 @@ export function getPointOption(data: any) {
     return option
 
 }
-
+//  粉丝指数
 export function getRingOption(data: any) {
   const option: object =  {
     title: {
-        text: data.title,
-        left: 'left',
-        padding: 20,
-        textStyle: {
-          fontSize: '20',
-      }
-    },
+      text: data.title,
+      left: data.titleLeft,
+      padding: data.titleMargin,
+      show: data.titleShow,
+      textStyle: {
+        fontSize: data.titleSize,
+        fontWeight: data.titleWeight
+    }
+  },
     tooltip: {
         trigger: 'item',
         formatter: '{a} <br/>{b} : {c} ({d}%)',
@@ -206,7 +218,12 @@ export function getRingOption(data: any) {
             label: {
               // 此处修改指示线的样式
               normal: {
-                    formatter: '{a|{d}%}{b|{b}}\n\n',
+                    // formatter: '{a|{d}%}{b|{b}}\n\n',
+                    formatter(a: any) {
+                      const arr = [
+                        '{a|' + parseFloat(a.percent).toFixed(1) + '%}{b|' + a.name + '}\n\n']
+                        return arr.join()
+                    },
                     borderWidth: 20,
                     borderRadius: 4,
                     padding: [0, -60 ,  0 , -60],

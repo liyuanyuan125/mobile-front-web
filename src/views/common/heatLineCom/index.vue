@@ -1,7 +1,7 @@
 <template>
    <div class="heat">
      <dubline :lineData="lineDatas" v-if="lineDatas.xDate.length" :key="lineDatas.title"/>
-     <platForm :platformList="platformList" :params="params"/>
+     <platForm :platformList="platformList" :params="params" class="platfrom"/>
    </div>
 </template>
 
@@ -24,7 +24,7 @@ export default class Main extends Vue {
   get lineDatas() {
     const xDate = (this.overAllList || []).map((it: any) => it.date)
     const yDate = (this.overAllList || []).map((it: any) => it.value)
-    const eventList = (this.overAllList || []).map((it: any) => it.eventList)
+    const eventList = (this.overAllList || []).map((it: any) => it.eventList || [])
     return {
       title: '综合分析',
       xDate,
@@ -44,5 +44,8 @@ export default class Main extends Vue {
 <style lang='less' scoped>
 .heat {
   padding: 0 30px;
+}
+.platfrom {
+  border-top: solid 1px #d8d8d8;
 }
 </style>

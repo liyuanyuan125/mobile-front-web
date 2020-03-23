@@ -2,7 +2,7 @@
    <div>
      <section class="items">
        <selectTime ref="reftimes"/>
-        <echartLines :lineData="lineData" :colors="colors" key="c9"/>
+        <echartLines :lineData="lineData" :colors="colors"/>
         <h2 class="platform-title">平台热度对比</h2>
         <div class="tabbar">
           <span 
@@ -13,7 +13,7 @@
            >{{item.text}}</span>
         </div>
         <van-swipe class="my-swipe"  :show-indicators="false" :loop="false" :width="300">
-          <van-swipe-item v-for="(item, index) in interactData" :key="'a'+item.title+index">
+          <van-swipe-item v-for="(item, index) in interactData" >
             <echartLines :lineData="item" :colors="colors" />
           </van-swipe-item>
         </van-swipe>

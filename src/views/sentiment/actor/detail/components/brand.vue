@@ -1,31 +1,13 @@
 <template>
     <div class='scroll'>
-        <div class='title'>电影({{data.movieCount}})</div>
-        <ul>
-            <li>
-                <p class='p1'>{{data.boxOfficeCount == '' ? '-' : data.boxOfficeCount}}</p>
-                <p class='p2'>累计票房</p>
-            </li>
-            <li class='chgli'></li>
-            <li>
-                <p class='p1'>{{data.averagScore == '' ? '-' : data.averagScore}}</p>
-                <p class='p2'>作品均分
-                  <Icon name="question-o" size="13" class="icon-arrow"/>
-                </p>
-            </li>
-            <li class='chgli'></li>
-            <li>
-                <p class='p1-3'>{{data.mainGenre == '' ? '-' : data.mainGenre}}</p>
-                <p class='p2'>类型偏好</p>
-            </li>
-        </ul>
+        <div class='title'>品牌({{data.brandCount}})</div>
         <div class='movielist'>
-            <div class='rowmovie' v-for='item in data.movieList' :key='item.movieId'>
+            <div class='rowmovie' v-for='item in data.brandList' :key='item.brandId'>
                 <div class="img">
                   <img :src=item.coverUrl.url alt="">
                 </div>
                 <div class='name'>
-                  {{item.movieName}}
+                  {{item.brandName}}
                 </div>
                 <div class='type'>{{item.genres}}</div>
             </div>
@@ -34,7 +16,7 @@
 </template>
 
 <script lang='ts'>
-import { Component, Vue , Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Icon } from 'vant'
 import moment from 'moment'
 
@@ -45,41 +27,6 @@ import moment from 'moment'
 })
 export default class Main extends Vue {
   @Prop({ type: Object, default: []}) data!: any
-
-
-    // movieList: any = [
-    //   {
-    //     img: 'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg',
-    //     name: '晚秋',
-    //     type: '剧集',
-    //     key: 1,
-    //   },
-    //   {
-    //     img: 'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg',
-    //     name: '晚秋',
-    //     type: '剧集',
-    //     key: 2,
-    //   },
-    //   {
-    //     img: 'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg',
-    //     name: '晚秋',
-    //     type: '剧集',
-    //     key: 3,
-    //   },
-    //   {
-    //     img: 'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg',
-    //     name: '晚秋',
-    //     type: '剧集',
-    //     key: 4,
-    //   },
-    //   {
-    //     img: 'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg',
-    //     name: '晚秋',
-    //     type: '剧集',
-    //     xkey: 5,
-    //   }
-
-    // ]
 
 }
 
@@ -107,13 +54,6 @@ export default class Main extends Vue {
       padding-top: 25px;
       width: 33.3%;
       text-align: center;
-    }
-    .chgli {
-      width: 1px;
-      height: 50px;
-      background: rgba(216, 216, 216, 1);
-      opacity: 0.5;
-      margin-top: 6%;
     }
     .p1 {
       width: 100%;

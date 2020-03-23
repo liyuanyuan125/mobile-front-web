@@ -1,11 +1,11 @@
 <template>
   <div class="event-content">
-    <ModuleHeader title="营销事件" :link="link" />
-    <ul class="eventlist">
-      <li v-for="(item,index) in List" :key="item.eventId + index">
+    <ModuleHeader title="营销事件" :link="hasMore ? link : null" />
+    <ul v-if="list.length" class="eventlist">
+      <li v-for="(item,index) in list" :key="item.eventId + index" @click="goEventDetail(item)">
         <p class="datebox">
-          <span class="days">{{item.creatDay}}</span>
-          <span class="date">{{item.creatTime}}</span>
+          <span class="days" v-if="item.creatDay">{{item.creatDay}}</span>
+          <span class="date" v-else>{{item.creatDate}}</span>
           <i
             v-for="el in item.target"
             :key="el.targetCode"
@@ -26,6 +26,7 @@
         </p>
       </li>
     </ul>
+    <DataEmpty v-else />
   </div>
 </template>
 
@@ -34,43 +35,67 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import moment from 'moment'
 import ModuleHeader from '@/components/moduleHeader'
 import { openAppLink, AppLink } from '@/util/native'
+import { datetimeParse } from '@/fn/dateUtil'
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
 
 @Component({
   components: {
-    ModuleHeader
+    ModuleHeader,
+    DataEmpty
   }
 })
 export default class EventList extends Vue {
   @Prop({ type: Object }) params!: any
   /** 事件list */
-  @Prop({ type: Array, default: () => [] }) eventList!: any
+  @Prop({ type: Object, default: {} }) eventList!: any
   @Prop({ type: Object }) link!: AppLink
 
-  get List() {
-    const list = this.eventList.map((it: any) => {
-      const time1 = Math.abs(moment(it.creatTime).diff(moment(), 'day'))
-      // 前10天显示 N 天前
-      const creatDay = time1 < 11 ? `${time1}天前` : ''
-      it.creatTime = moment(it.creatTime).format('YYYY-MM-DD')
-      // 处理标签颜色
-      for (const item of it.target) {
-        switch (item.targetCode) {
-          case '1':
-            item.color = '#FF6262'
-            break
-          case '2':
-            item.color = '#9374DB'
-            break
-          default:
-            item.color = '#666'
+  get list() {
+    const list =
+      this.eventList && this.eventList.eventList ? this.eventList.eventList : []
+    list.length &&
+      list.map((it: any) => {
+        const time1 = Math.abs(moment(it.createTime).diff(moment(), 'day'))
+        // 前10天显示 N 天前
+        it.creatDay = datetimeParse(it.createTime)
+        it.creatDate = moment(it.createTime).format('YYYY-MM-DD')
+        // 处理标签颜色
+        if (it.targetList && it.targetList.length) {
+          for (const item of it.targetList) {
+            switch (item.targetCode) {
+              case '1':
+                item.color = '#FF6262'
+                break
+              case '2':
+                item.color = '#9374DB'
+                break
+              default:
+                item.color = '#666'
+            }
+          }
         }
-      }
-      return {
-        ...it,
-        creatDay
+        return {
+          ...it
+        }
+      })
+    return list
+  }
+
+  // 原需求是，本业务事件大于3个才显示更多箭头
+  get hasMore() {
+    const isCount =
+      this.eventList && this.eventList.hasMore ? this.eventList.hasMore : false
+    return isCount
+  }
+
+  // 去营销事件详情面
+  goEventDetail(item: any) {
+    this.$router.push({
+      name: 'sentimenteventmarketing',
+      params: {
+        eventId: item.eventId
       }
     })
-    return list
   }
 }
 </script>

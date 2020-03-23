@@ -1,100 +1,78 @@
 <template>
   <div class="compet-content">
-    <div class="title">竞品分析
-      <router-link class="to-more" to="" ><van-icon name="arrow" size="15" /></router-link>
-    </div>
+    <ModuleHeader title="竞品分析"  tag="h6"/>
     <ul>
-      <li class="flex-box">
+      <li class="flex-box" v-for="item in getRivalList" :key="item.rivalId">
         <div class="parse-left">
-          <img :src="list[0].rivaCover.url"/>
-          <p>{{list[0].rivalName}}</p>
+          <img :src="item.rivalCover.url" alt=""/>
+          <p>{{item.rivalName}}</p>
         </div>
         <div class="parse-right flex-box">
-          <div>
+          <!-- 当前品牌 -->
+          <div v-if="!item.eventName">
             <p class="col_8f flex-box">
               <span class="pad-right">昨日热度</span>
               <span>昨日互动量</span>
             </p>
             <h5 class="flex-box numbers">
-              <span class="pad-right">{{list[0].yesterHeatCount}}</span>
-              <span>{{list[0].yesterInteractCount}}</span>
+              <span class="pad-right">{{item.yesterHeatCount}}</span>
+              <span>{{item.yesterInteractCount}}</span>
             </h5>
           </div>
-        </div>
-      </li>
-      <li class="flex-box">
-        <div class="parse-left">
-          <img :src="list[1].rivaCover.url"/>
-          <p>{{list[1].rivalName}}</p>
-        </div>
-        <div class="parse-right flex-box">
-          <div>
+          <!-- 竞品显示内容 -->
+          <div v-else>
             <h5 class="flex-box numbers">
               <span class="pad-right trend-head">
-                {{list[1].yesterHeatTrend}}
-                <i>低1</i>
+                {{item.yesterHeatCount}}
+                <i>{{item.yesterHeatTrend}}</i>
               </span>
               <span class="trend-interact">
-                {{list[1].yesterInteractTrend}}
-                <i>高2</i>
+                {{item.yesterInteractCount}}
+                <i>{{item.yesterInteractTrend}}</i>
               </span>
             </h5>
-            <p class="event-name">{{list[1].eventName}}{{list[1].eventCreatTime}}</p>
+            <p class="event-name">{{item.eventName}} {{item.eventCreatTime}}</p>
           </div>
         </div>
       </li>
     </ul>
     <div class="submit-button">
-      <router-link :to="{name: 'sentimentbrand-analyze'}" class="to-link" >查看详细报告</router-link>
+      <router-link :to="{name: 'sentimentbrand-analyze', params: {ids: ids.join('')}}" class="to-link" >查看详细报告</router-link>
     </div>
   </div>
 </template>
 
 <script lang='ts'>
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Icon } from 'vant'
 import moment from 'moment'
+import ModuleHeader from '@/components/moduleHeader'
 
 @Component({
   components: {
     [Icon.name]: Icon,
+    ModuleHeader
   }
 })
 export default class Main extends Vue {
-  list = [
-    {
-      rivaCover: {
-        url: '//aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/MISC/blrhmtpe2o7g008ukpig.jpg',
-        source: 'jydata'
-      },
-      rivalId: null,
-      rivalName: '当前品牌',
-      yesterHeatCount: 2333,
-      yesterHeatTrend: 22,
-      yesterInteractCount: 2222,
-      yesterInteractTrend: 233,
-      eventName: '',
-      eventCreatTime: 12233333,
-    },
-    {
-      rivaCover: {
-        url: '//aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/MISC/blrhmtpe2o7g008ukpig.jpg',
-        source: 'cccc'
-      },
-      rivalId: 10, // 有id则有事件 跳转到二级详情页
-      rivalName: '竞品品牌',
-      yesterHeatCount: 2333,
-      yesterHeatTrend: 22,
-      yesterInteractCount: 2222,
-      yesterInteractTrend: 233,
-      eventName: '宝马发布新3系PH',
-      eventCreatTime: moment(1583743918613).format('YYYY-MM-DD'), // moment().valueOf()转为时间戳
-    },
-  ]
+  @Prop({ type: Array, default: () => []}) rivalList: any
+  // 查看详情报告ids参数
+  ids: any = []
+  get getRivalList() {
+    const list = (this.rivalList || []).map((it: any) => {
+      this.ids.push(it.brandId)
+      const yesterHeatTrend = it.yesterHeatTrend < 0 ? `低${Math.abs(it.yesterHeatTrend)}` : `高${it.yesterHeatTrend}`
+      const yesterInteractTrend = it.yesterInteractTrend < 0 ?
+      `低${Math.abs(it.yesterInteractTrend)}` : `高${it.yesterInteractTrend}`
 
-  mounted() {
-    // console.log(moment(1583743918613).format('YYYY-MM-DD'))
-    // console.log(moment().valueOf()) // 1583743918613
+      return {
+        ...it,
+        eventCreatTime: moment(it.eventCreatTime).format('YYYY-MM-DD'),
+        yesterHeatTrend,
+        yesterInteractTrend
+      }
+    })
+    return list
   }
 }
 
@@ -108,6 +86,7 @@ export default class Main extends Vue {
   margin-bottom: 20px;
   background-color: #fff;
   padding: 60px 30px 10px;
+  border-top: 20px solid #f7f6f9;
 }
 .col_8f {
   color: @c-sub-text;
@@ -139,16 +118,22 @@ li {
   }
   .numbers {
     font-size: 36px;
+    font-weight: 400;
     i {
       font-weight: 0;
       font-size: 26px;
+      display: block;
     }
   }
   .trend-head {
-    color: #7ca4ff;
+    i {
+      color: #7ca4ff;
+    }
   }
   .trend-interact {
-    color: #ff6262;
+    i {
+      color: #ff6262;
+    }
   }
   .event-name {
     background-color: #f9f9f9;

@@ -1,38 +1,12 @@
 <template>
   <div class="page">
     <SentimentBar :title="movieInfo.movieNameCn" :sidebar="sidebar" />
-    <BaseInfoArea :baseInfo="movieInfo" :overView="movieOverView" />
-    <TabNav :list="tabList" class="formattab" />
-    <div class="hotanalysis">
-      <selectTime ref="refsTime" />
-      <heatLineCom :overAllList="overAllHeat" :platformList="platformHeat" :params="params" />
-    </div>
-    <WantSeeTrend :dataTrend="wantSeeTrend" />
-    <BoxOffice :boxoffice="boxOffice" :link="getApplink('movieBoxOffice')" id="boxoffice" />
-    <PraiseComment
-      :favorable="movieInfo.favorable"
-      :publicPraise="publicPraise"
-      :link="getApplink('praiseHotWordsList')"
-      v-bind="publicPraise.appraiseList"
-      id="praise"
-    />
-    <UserPortrait
-      :ageRangeList="userAnalysis.ageRangeList"
-      :genderList="userAnalysis.genderList"
-      id="user"
-      :link="getApplink('userAnalysis')"
-    />
-    <EventList :eventList="eventList" id="event" :link="getApplink('eventMarketingList')" />
-    <RivalAnalysis :rivalList="rivalAnalysis" id="rival" />
-    <ActorList :actorList="actorList" id="actor" :link="getApplink('actorList')" />
-    <ProduceList :produceList="produceList" :link="getApplink('produceDistribute')" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
-import { getMovieDetail, getEventList, getRivalList } from './data'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import BaseInfoArea from './components/movieInfo.vue' // 影片基本信息
 import TabNav, { TabNavItem } from '@/components/tabNav'
@@ -66,33 +40,56 @@ import ProduceList from '@/views/common/produceList/index.vue' // 出品发行
   }
 })
 export default class MoviePage extends ViewBase {
-  // 顶部 topbar 传参
   sidebar = {
-    diggType: 3, // 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
-    diggId: '',
-    rivalIds: {} // 竞争对手的 url
+    diggType: 'movie',
+    diggId: '100038',
+    rivalIds: '1,2,4'
   }
-  // 电影id
+
   movieId: string = ''
-  // 电影详细信息
-  movieInfo: any = {}
-  // 电影数据概览
-  movieOverView: any = {}
-  // 电影票房
-  boxOffice: any = {}
-  // 口碑
-  publicPraise: any = {}
-  // 用户名称
-  userAnalysis: any = {}
-  // 营销事件
-  eventList: any = {}
-  // 竞品分析
-  rivalAnalysis: any = []
-  // 主创人员
-  actorList: any = []
-  // 出品发行
-  produceList: any = []
-  // 二级导航
+  eventList: any = []
+
+  /**
+   * 获取 applink
+   * 业务类型 businessType 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
+   * 业务Id businessObjectId
+   * @page 页面标识
+   */
+  getApplink(page: string) {
+    switch (page) {
+      case 'userAnalysis':
+        return {
+          name: 'sentimentmovieuseranalysis',
+          params: {
+            movieId: 100038
+          }
+        }
+      default:
+        return {
+          page,
+          businessType: 3,
+          businessObjectId: 100038
+        }
+    }
+  }
+
+  detail: any = {
+    type: 'movie',
+    id: '100038'
+  }
+  movieInfo = {
+    movieNameCn: '流浪地球',
+    movieNameEn: 'The Wandering Earth',
+    coverUrl: {
+      url: '',
+      source: 'piaoshen'
+    },
+    duration: '115分钟',
+    genreName: '剧情 / 喜剧',
+    releaseDate: '2020-02-22 中国大陆上映',
+    movieId: '100038',
+    favorable: 'B+'
+  }
   tabList: TabNavItem[] = [
     { name: 'hot', label: '热度' },
     { name: 'boxoffice', label: '票房' },
@@ -102,16 +99,6 @@ export default class MoviePage extends ViewBase {
     { name: 'rival', label: '竞品' },
     { name: 'actor', label: '资料' }
   ]
-  // 热度分析传参
-  get params() {
-    return {
-      type: 3, // 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
-      id: 1, // 详情页id
-      name: '奔驰',
-      startTime: 20200304, // this.startTime,
-      endTime: 20200310 // this.endTime
-    }
-  }
   overAllHeat = [
     {
       date: 1583978358078,
@@ -240,6 +227,23 @@ export default class MoviePage extends ViewBase {
       platformNotice: '媒体一 媒体二 媒体三'
     }
   ]
+  get params() {
+    return {
+      type: 1, // 1 品牌 2 艺人 3 电影 4 音乐-单曲 5 音乐-专辑  6 剧集
+      id: 1, // 详情页id
+      name: '奔驰',
+      startTime: 20200304, // this.startTime,
+      endTime: 20200310 // this.endTime
+    }
+  }
+  movieOverView = {
+    heatRanking: 'NO.125',
+    commnetTrend: 121344,
+    commentCount: '1,324',
+    materialsTrend: -132332,
+    materialsCount: '1,213.3万',
+    heatTrend: 0
+  }
   wantSeeTrend = {
     dailyGainList: [
       {
@@ -442,76 +446,293 @@ export default class MoviePage extends ViewBase {
       }
     ]
   }
+  favorable = {
+    text: '好感度',
+    value: 'B+'
+  }
+  userAnalysis = {
+    genderList: [
+      {
+        name: '男',
+        value: 1200
+      },
+      {
+        name: '女',
+        value: 8800
+      }
+    ],
+    ageRangeList: [
+      {
+        name: '小于20',
+        value: 1400
+      },
+      {
+        name: '20-30',
+        value: 2000
+      },
+      {
+        name: '30-40',
+        value: 3400
+      },
+      {
+        name: '40-50',
+        value: 3000
+      },
+      {
+        name: '大于50',
+        value: 200
+      }
+    ]
+  }
+  // 口碑评论 数据
+  publicPraise = {
+    appraiseList: [
+      {
+        raisePercent: 1200,
+        raiseName: '正面评价'
+      },
+      {
+        raisePercent: 3200,
+        raiseName: '负面评价'
+      },
+      {
+        raisePercent: 2300,
+        raiseName: '中性评价'
+      }
+    ],
+    hotWordList: ['劲暴', '太帅了', '要严肃', '四个字的'],
+    badWordList: ['劲暴', '太帅', '严肃', '四个字的']
+  }
+  rivalAnalysis = [
+    {
+      rivalName: '疯狂外星人',
+      heatTrend: 0,
+      heatCount: '1.2万',
+      rivalCover: {
+        source: 'piaoshen',
+        url:
+          'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/05/06/190506000002357372.jpg'
+      },
+      rivalId: '231331',
+      materialsAdd: '1,232',
+      materialsTrend: 0,
+      eventName: '',
+      eventCreatTime: null
+    },
+    {
+      rivalName: '疯狂外星人',
+      heatTrend: -1300,
+      heatCount: '1.2万',
+      rivalCover: {
+        source: 'piaoshen',
+        url:
+          'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/05/06/190506000002357372.jpg'
+      },
+      rivalId: '231331',
+      materialsAdd: '1,232',
+      materialsTrend: 231,
+      eventName: '世贸组织暂停会议',
+      eventCreatTime: 1583979088061
+    },
+    {
+      rivalName: '疯狂外星人',
+      heatTrend: -1300,
+      heatCount: '1.2万',
+      rivalCover: {
+        source: 'piaoshen',
+        url:
+          'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/05/06/190506000002357372.jpg'
+      },
+      rivalId: '231331',
+      materialsAdd: '1,232',
+      materialsTrend: 3211,
+      eventName: '世贸组织暂停会议',
+      eventCreatTime: 1583979088061
+    }
+  ]
+  actorList = [
+    {
+      actorId: 906,
+      actorName: '郭帆',
+      actorCover: {
+        source: 'piaoshen',
+        url:
+          'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/04/18/190418052016353817.jpg'
+      },
+      character: '导演'
+    },
+    {
+      actorId: 907,
+      actorName: '吴京',
+      actorCover: {
+        source: 'piaoshen',
+        url:
+          'http://piaoshen.oss-cn-beijing.aliyuncs.com/news/images/2019/07/11/B06EDD23EEED60C418B4.jpg'
+      },
+      character: '饰 刘培强'
+    },
+    {
+      actorId: 893,
+      actorName: '屈楚萧',
+      actorCover: {
+        source: 'piaoshen',
+        url:
+          'http://piaoshen.oss-cn-beijing.aliyuncs.com/movie/images/2020/02/03/62102C34026872169FAF.jpg'
+      },
+      character: '饰 刘启'
+    },
+    {
+      actorId: 885,
+      actorName: '李光洁',
+      actorCover: {
+        source: 'piaoshen',
+        url:
+          'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/04/18/190418020626211394.jpg'
+      },
+      character: '饰 王磊'
+    },
+    {
+      actorId: 890,
+      actorName: '吴孟达',
+      actorCover: {
+        source: 'piaoshen',
+        url:
+          'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/04/18/190418052014658253.jpg'
+      },
+      character: '饰 韩子昂'
+    },
+    {
+      actorId: 896,
+      actorName: '赵今麦',
+      actorCover: {
+        source: 'piaoshen',
+        url:
+          'http://piaoshen.oss-cn-beijing.aliyuncs.com/news/images/2019/10/15/63C87F8158A679D70A25.jpg'
+      },
+      character: '饰 韩朵朵'
+    },
+    {
+      actorId: 179289,
+      actorName: 'Mike隋',
+      actorCover: {
+        source: 'piaoshen',
+        url:
+          'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/04/18/190418052014803156.jpg'
+      },
+      character: '饰 Mike'
+    },
+    {
+      actorId: 884,
+      actorName: '屈菁菁',
+      actorCover: {
+        source: 'piaoshen',
+        url:
+          'http://piaoshen.oss-cn-beijing.aliyuncs.com/news/images/2019/11/21/D1A74C1E0D84CB90BE91.jpg'
+      },
+      character: '饰 周倩'
+    },
+    {
+      actorId: 901,
+      actorName: '张亦驰',
+      actorCover: {
+        source: 'piaoshen',
+        url:
+          'http://piaoshen.oss-cn-beijing.aliyuncs.com/news/images/2019/07/11/7F0CE6B3F5362EB77105.jpg'
+      },
+      character: '饰 李一一'
+    },
+    {
+      actorId: 909,
+      actorName: '杨皓宇',
+      actorCover: {
+        source: 'piaoshen',
+        url:
+          'http://piaoshen.oss-cn-beijing.aliyuncs.com/news/images/2019/09/16/FD18B0E3BE81539812C7.jpg'
+      },
+      character: '饰 何连科'
+    },
+    {
+      actorId: 480556,
+      actorName: '阿尔卡基·沙罗格拉茨基',
+      actorCover: {
+        source: 'piaoshen',
+        url:
+          'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/04/18/19041805201560601.jpg'
+      },
+      character: ''
+    },
+    {
+      actorId: 887,
+      actorCover: {
+        source: 'piaoshen',
+        url: '杨轶',
+        avatarUrl:
+          'http://piaoshen.oss-cn-beijing.aliyuncs.com/movie/images/2019/10/11/EE75829592698EC35365.jpg'
+      },
+      character: ''
+    },
+    {
+      actorId: 910,
+      actorName: '李虹辰',
+      actorCover: {
+        source: 'piaoshen',
+        url:
+          'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/04/18/190418052015165185.jpg'
+      },
+      character: ''
+    }
+  ]
+  produceList = [
+    '新疆华夏天山电影院线有限责任公司',
+    '霍尔果斯腾影影视发行有限公司',
+    '上海淘票票影视文化有限公司',
+    '北京聚合影联文化传媒有限公司',
+    '珠江影业传媒股份有限公司',
+    '中国电影股份有限公司',
+    '北京影拓星瀚网络科技有限公司',
+    '北京国影纵横电影发行有限公司'
+  ]
+  boxOffice = {
+    totalBoxOffice: '1.2万',
+    totalPerson: '1,323',
+    firstDayBoxOffice: '321.2万',
+    firstWeekBoxOffice: '1,312.0万',
+    boxOfficeList: [
+      {
+        name: 1583978358078,
+        value: 23132332
+      },
+      {
+        name: 1583978358078,
+        value: 23132332
+      }
+    ],
+    scheduleList: [
+      {
+        name: 1583978358078,
+        value: 323132
+      },
+      {
+        name: 1583978358078,
+        value: 323132
+      },
+      {
+        name: 1583978358078,
+        value: 323132
+      },
+      {
+        name: 1583978358078,
+        value: 323132
+      }
+    ],
+    cityBoxOffice: '1,323',
+    cityBoxOfficeTop: ' 北京',
+    companyBoxOfficeTop: '北京万达院线',
+    companyBoxOffice: '142.8万'
+  }
 
-  async created() {
+  created() {
     this.movieId = this.$route.params.movieId
-    this.sidebar.diggId = this.movieId
-    if (this.movieId) {
-      await this.getMovieInfo()
-      await this.getEventList()
-      await this.getRivalList()
-    }
-  }
-  // api获取电影详情页
-  async getMovieInfo() {
-    const res: any = await getMovieDetail(this.movieId)
-    this.movieInfo = res.movieInfo
-    this.movieOverView = res.movieOverView
-    this.boxOffice = res.boxOffice
-    this.publicPraise = res.publicPraise
-    this.userAnalysis = res.userAnalysis
-    this.actorList = res.actorList ? res.actorList : []
-    this.produceList = res.produceList ? res.produceList : []
-    document.title = res.movieInfo.movieNameCn
-  }
-  // api获取营销事件
-  async getEventList() {
-    const res: any = await getEventList({
-      type: 3,
-      objectId: 9
-    })
-    this.eventList = res
-  }
-  // api获取竞品对手
-  async getRivalList() {
-    const res: any = await getRivalList(this.movieId)
-    this.rivalAnalysis = res
-    const ids = []
-    if (res && res.length) {
-      for (const el of res) {
-        ids.push(el.rivalId)
-      }
-    }
-    this.sidebar.rivalIds = {
-      name: 'sentimentmovierivalanalysis',
-      query: {
-        ids: ids.join(',')
-      }
-    }
-  }
-
-  /**
-   * 获取 applink
-   * 业务类型 businessType 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
-   * 业务Id businessObjectId
-   * @page 页面标识
-   */
-  getApplink(page: string) {
-    switch (page) {
-      case 'userAnalysis':
-        return {
-          name: 'sentimentmovieuseranalysis',
-          params: {
-            movieId: this.movieId
-          }
-        }
-      default:
-        return {
-          page,
-          businessType: 3,
-          businessObjectId: this.movieId
-        }
-    }
   }
 }
 </script>

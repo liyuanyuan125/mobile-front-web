@@ -4,9 +4,9 @@
     <div class="movieinfo">
       <div class="moviebox">
         <img :src="movieCover" :alt="baseInfo.movieNameCn" class="img" v-if="movieCover" />
-        <img src="@/assets/person-default.png" :alt="baseInfo.movieNameCn" class="img" v-else />
-        <h3>{{baseInfo.movieNameCn}}</h3>
-        <h5>{{baseInfo.movieNameEn}}</h5>
+        <img src="@/assets/moviedefault.png" :alt="baseInfo.movieNameCn" class="img" v-else />
+        <h3 class="van-ellipsis">{{baseInfo.movieNameCn}}</h3>
+        <h5 class="van-ellipsis">{{baseInfo.movieNameEn}}</h5>
         <p>{{baseInfo.duration}}{{!baseInfo.duration || !baseInfo.genreName ? '' : ' - '}}{{baseInfo.genreName}}</p>
         <p>{{baseInfo.releaseDate}}</p>
       </div>
@@ -36,38 +36,41 @@ export default class BaseInfoArea extends ViewBase {
   @Prop({ type: Object }) baseInfo!: any
   @Prop({ type: Object }) overView!: any
 
-  bubbleData: any = []
-  movieCover: string = ''
-
-  mounted() {
-    // 处理封面图
-    if (this.baseInfo.coverUrl && this.baseInfo.coverUrl.url) {
-      const imgUrl: any = imgFixed(this.baseInfo.coverUrl, 180, 240)
-      this.movieCover = imgUrl
+  // 数据概览
+  get bubbleData() {
+    let bubble: any[] = []
+    if (this.overView) {
+      bubble = [
+        {
+          type: '1',
+          title: '累计媒体物料',
+          value: this.overView.materialsCount,
+          trend: this.overView.materialsCount
+        },
+        {
+          type: '2',
+          title: '累计评论数',
+          value: this.overView.commentCount,
+          trend: this.overView.commnetTrend
+        },
+        {
+          type: '3',
+          title: '行业实时热度',
+          value: this.overView.heatRanking,
+          trend: this.overView.heatTrend,
+          showdown: true
+        },
+        { type: '4', title: '好感度', value: this.baseInfo.favorable }
+      ]
     }
-    // 处理概览数据
-    this.bubbleData = [
-      {
-        type: '1',
-        title: '累计媒体物料',
-        value: this.overView.materialsCount,
-        trend: this.overView.materialsCount
-      },
-      {
-        type: '2',
-        title: '累计评论数',
-        value: this.overView.commentCount,
-        trend: this.overView.commnetTrend
-      },
-      {
-        type: '3',
-        title: '行业实时热度',
-        value: this.overView.heatRanking,
-        trend: this.overView.heatTrend,
-        showdown: true
-      },
-      { type: '4', title: '好感度', value: this.baseInfo.favorable }
-    ]
+    return bubble
+  }
+  // 封面图
+  get movieCover() {
+    const url: any = this.baseInfo.coverUrl
+      ? imgFixed(this.baseInfo.coverUrl, 180, 240)
+      : ''
+    return url
   }
 }
 </script>

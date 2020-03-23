@@ -1,7 +1,8 @@
 <template>
   <div class="page">
     <SentimentBar title="竞品分析详细报告" :titleShow="true" />
-    <RivalList :detail="detail" />
+    <RivalList type="3" :rivalList="rivalList" v-if="rivalList.length" class="movierival" />
+    <BasisList :basisList="basisList" v-if="basisList.length" />
   </div>
 </template>
 
@@ -11,19 +12,20 @@ import ViewBase from '@/util/ViewBase'
 import { movieRivalList } from './data'
 import SentimentBar from '@/views/common/sentimentBar/index.vue' // topbar
 import RivalList from '@/views/common/rivalList/index.vue'
+import BasisList from './components/baseList.vue'
 import { DetailItem } from '@/views/common/rivalList/types'
 
 @Component({
   components: {
     SentimentBar,
-    RivalList
+    RivalList,
+    BasisList
   }
 })
 export default class MovieRivalAnalysisPage extends ViewBase {
-  detail: DetailItem = {
-    type: 'movie'
-  }
   movieIdList: any = ''
+  rivalList: any = []
+  basisList: any = []
 
   created() {
     this.movieIdList = this.$route.query.ids
@@ -33,7 +35,9 @@ export default class MovieRivalAnalysisPage extends ViewBase {
 
   // 获取数据
   async getData() {
-    const result: any = await movieRivalList(this.movieIdList)
+    const res: any = await movieRivalList(this.movieIdList)
+    this.rivalList = res.rivalList
+    this.basisList = res.basisDataList
   }
 }
 </script>
@@ -41,5 +45,9 @@ export default class MovieRivalAnalysisPage extends ViewBase {
 <style lang="less" scoped>
 .page {
   color: #303030;
+}
+.movierival {
+  padding-bottom: 60px;
+  background: #f2f3f6;
 }
 </style>

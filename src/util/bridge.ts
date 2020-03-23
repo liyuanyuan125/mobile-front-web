@@ -1,4 +1,5 @@
 import { devError } from '@/util/dev'
+import { devLog, devInfo } from '@/util/dev'
 
 const win = window as any
 
@@ -75,6 +76,7 @@ export async function callNative(name: string, data: any = {}) {
       data: data.params,
       methodName: name,
     }
+    devLog('callNative', callData)
     const postJson = JSON.stringify(callData)
     const callbackName = data.callBackName
 

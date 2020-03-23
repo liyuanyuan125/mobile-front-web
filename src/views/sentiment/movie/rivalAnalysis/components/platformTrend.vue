@@ -2,7 +2,7 @@
   <!--想看趋势 -->
   <div class="wantsee">
     <div class="titbox">
-      <h4>想看趋势</h4>
+      <h4>指数趋势</h4>
       <div>
         <SelectDate v-model="dates" />
       </div>
@@ -38,7 +38,7 @@ import moment from 'moment'
     SelectDate
   }
 })
-export default class WantSeeTrend extends ViewBase {
+export default class PlatformTrend extends ViewBase {
   /* 查询请求 */
   @Prop({ type: Function, required: true })
   fetch!: (query?: any) => Promise<any>

@@ -10,7 +10,8 @@
     />
 
     <BasisList :basisList="basisList" v-if="basisList.length" />
-    <WantSeeTrend :fetch="wantSeeFetch" :movieIds="movieIdList" />
+    <WantSeeTrend :fetch="wantSeeFetch" :query="movieIdList" v-if="movieIdList" />
+    <PlatformTrend :fetch="wantSeeFetch" :query="movieIdList" v-if="movieIdList" />
     <marketContrast
       :fetch="praiseFetch"
       :query="{movieIdList}"
@@ -33,6 +34,7 @@ import SentimentBar from '@/views/common/sentimentBar/index.vue' // topbar
 import RivalList from '@/views/common/rivalList/index.vue' // 竞品列表
 import BasisList from './components/baseList.vue' // 基础信息
 import WantSeeTrend from './components/wantSeeTrend.vue'
+import PlatformTrend from './components/platformTrend.vue'
 import marketContrast from '@/views/common/marketContrast/index.vue' // 口碑对比
 import SexVs, { VsItem } from '@/views/common/sexVs' // 性别分布
 import AgeDistribution from '@/views/common/ageDistribution/index.vue' // 年龄分布
@@ -44,6 +46,7 @@ import moduleHeader from '@/components/moduleHeader'
     RivalList,
     BasisList,
     WantSeeTrend,
+    PlatformTrend,
     marketContrast,
     moduleHeader,
     SexVs,
@@ -101,6 +104,7 @@ export default class MovieRivalAnalysisPage extends ViewBase {
     this.movieIdList = ids
     this.init()
     this.praiseFetch
+    this.wantSeeFetch
   }
 }
 </script>

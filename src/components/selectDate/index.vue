@@ -63,7 +63,6 @@ export default class SelectDate extends Vue {
 
   @Watch('value')
   watchdays(val: any) {
-    console.log('getData', val)
     this.$emit('input', {
       startTime: this.beginDate(val),
       endTime: this.endDate()

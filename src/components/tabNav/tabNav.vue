@@ -90,6 +90,7 @@ export default class TabNav extends Vue {
   width: 100%;
   background-color: #fff;
   margin-top: 130px;
+  z-index: 888;
 
   &::before {
     content: '';
@@ -103,7 +104,7 @@ export default class TabNav extends Vue {
   }
 
   /deep/ .van-tabs__wrap {
-    height: 66px;
+    height: 72px;
   }
 
   /deep/ .van-tab {
@@ -119,6 +120,7 @@ export default class TabNav extends Vue {
   }
 
   /deep/ .van-tabs__line {
+    height: 4px;
     background-color: #88aaf6;
   }
 

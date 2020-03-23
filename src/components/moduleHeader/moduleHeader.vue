@@ -1,7 +1,7 @@
 <template>
-  <component :is="tag" class="module-header">
+  <component :is="tag" class="module-header" @click="handleMore">
     <em class="module-title">{{title}}</em>
-    <span class="module-more" v-if="link" @click="handleMore">
+    <span class="module-more" v-if="link">
       <i class="more-text" v-if="moreText">{{moreText}}</i>
       <Icon name="arrow" size="20" class="more-icon"/>
     </span>
@@ -34,7 +34,7 @@ export default class ModuleHeader extends Vue {
 
   handleMore() {
     const link = this.link as any
-    if (link != null) {
+    if (link) {
       // 含有 page 值的被认为是 AppLink
       const isAppLink = typeof link.page === 'string'
       isAppLink ? openAppLink(link) : this.$router.push(link)

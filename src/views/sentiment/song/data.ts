@@ -1,16 +1,26 @@
 import {
-  getDetail as apiGetDetail
+  getDetail as apiGetDetail,
+  getHotAnalysis as apiGetHotAnalysis,
+  getPlayAnalysis as apiGetPlayAnalysis,
+  getSimilarList as apiGetSimilarList
 } from '@/api/song'
 
 export async function getDetail(id: number) {
-  try {
-    const { data } = await apiGetDetail(id)
-    // 正常逻辑
-  } catch ({ code }) {
-    // 处理错误状态码
-    if (code == 100086) {
-      alert('已经注册过')
-    }
-  }
-  // return res
+  const { data } = await apiGetDetail(id)
+  return data
+}
+
+export async function getHotAnalysis(query: any) {
+  const { data } = await apiGetHotAnalysis(query)
+  return data
+}
+
+export async function getPlayAnalysis(query: any) {
+  const { data } = await apiGetPlayAnalysis(query)
+  return data
+}
+
+export async function getSimilarList(query: any) {
+  const { data } = await apiGetSimilarList(query)
+  return data as any[]
 }

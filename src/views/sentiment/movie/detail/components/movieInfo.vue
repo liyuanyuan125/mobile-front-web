@@ -36,46 +36,42 @@ export default class BaseInfoArea extends ViewBase {
   @Prop({ type: Object }) baseInfo!: any
   @Prop({ type: Object }) overView!: any
 
-  // 概览数据
-  bubbleData: any = [
-    {
-      type: '1',
-      title: '累计媒体物料',
-      value: this.overView.materialsCount,
-      trend: this.overView.materialsCount
-    },
-    {
-      type: '2',
-      title: '累计评论数',
-      value: this.overView.commentCount,
-      trend: this.overView.commnetTrend
-    },
-    {
-      type: '3',
-      title: '行业实时热度',
-      value: this.overView.heatRanking,
-      trend: this.overView.heatTrend,
-      showdown: true
-    },
-    { type: '4', title: '好感度', value: this.baseInfo.favorable }
-  ]
+  // 数据概览
+  get bubbleData() {
+    let bubble: any[] = []
+    if (this.overView) {
+      bubble = [
+        {
+          type: '1',
+          title: '累计媒体物料',
+          value: this.overView.materialsCount,
+          trend: this.overView.materialsCount
+        },
+        {
+          type: '2',
+          title: '累计评论数',
+          value: this.overView.commentCount,
+          trend: this.overView.commnetTrend
+        },
+        {
+          type: '3',
+          title: '行业实时热度',
+          value: this.overView.heatRanking,
+          trend: this.overView.heatTrend,
+          showdown: true
+        },
+        { type: '4', title: '好感度', value: this.baseInfo.favorable }
+      ]
+    }
+    return bubble
+  }
   // 封面图
-  movieCover: any = this.baseInfo.coverUrl
-    ? imgFixed(this.baseInfo.coverUrl, 160, 240)
-    : ''
-
-  // created() {
-  //   console.log('this.baseInfo', this.baseInfo)
-  // }
-  // mounted() {
-  //   // 处理封面图
-  //   if (this.baseInfo.coverUrl) {
-  //     const imgUrl: any = imgFixed(this.baseInfo.coverUrl, 160, 240)
-  //     this.movieCover = imgUrl
-  //   }
-  //   // 处理概览数据
-  //   this.bubbleData =
-  // }
+  get movieCover() {
+    const url: any = this.baseInfo.coverUrl
+      ? imgFixed(this.baseInfo.coverUrl, 180, 240)
+      : ''
+    return url
+  }
 }
 </script>
 
@@ -92,7 +88,7 @@ export default class BaseInfoArea extends ViewBase {
 
   .moviebox {
     position: relative;
-    padding: 0 30px 0 190px;
+    padding: 0 30px 0 210px;
     font-size: 26px;
     line-height: 37px;
     min-height: 240px;
@@ -102,7 +98,7 @@ export default class BaseInfoArea extends ViewBase {
       position: absolute;
       left: 0;
       top: 0;
-      width: 160px;
+      width: 180px;
       height: 240px;
       border-radius: 10px;
       border: 1px solid #d4d4d4;

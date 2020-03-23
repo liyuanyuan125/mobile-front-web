@@ -14,15 +14,15 @@ export async function getMovieDetailById(movieId: string) {
 }
 
 /**
- * 获取竞品报告
+ * 详情页获取竞品分析
  */
-export async function getMovieRivalList(movieIdList: string) {
-    const res = await get('/yuqing/movie/rivalreport', { movieIdList })
+export async function getRivalListById(movieId: string) {
+    const res = await get('/mock/400/yuqing/movie/rivalAnalysis', { movieId })
     return res
 }
 
 /**
- * 获取营销事件
+ * 详情页获取营销事件
  */
 export async function getEventListByIdAndType(query: EventItem) {
     const res = await get('/yuqing/common/eventAnalysis', query)
@@ -30,10 +30,20 @@ export async function getEventListByIdAndType(query: EventItem) {
 }
 
 /**
- * 获取竞品分析
+ * 获取竞品报告
  */
-export async function getRivalListById(movieId: string) {
-    const res = await get('/mock/400/yuqing/movie/rivalAnalysis', { movieId })
+export async function getMovieRivalList(movieIdList: string) {
+    const res = await get('/mock/400/yuqing/movie/rivalreport', { movieIdList })
     return res
 }
+
+/**
+ * 获取用户分析
+ */
+export async function getUserAnalysisById(movieId: string) {
+    const res = await get('/mock/400/yuqing/movie/useranalysis', { movieId })
+    return res
+}
+
+
 

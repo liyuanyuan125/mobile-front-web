@@ -2,7 +2,7 @@
   <!--影片票房 -->
   <div class="boxoffice mod">
     <ModuleHeader title="影片票房" :link="appLink" />
-    <div v-if="!boxoffice">
+    <div v-if="boxoffice">
       <div class="bfstatis">
         <div>
           <strong>{{boxoffice.totalBoxOffice}}</strong>
@@ -32,12 +32,7 @@
         </ul>
       </div>
       <div class="chartbox">
-        <dubline
-          :lineData="lineDatas"
-          v-if="lineDatas.xDate.length"
-          :key="lineDatas.title"
-          class="wantchart"
-        />
+        <dubline :lineData="linedata" v-if="linedata" :key="linedata.title" class="wantchart" />
       </div>
       <div class="others">
         <div class="inner">
@@ -82,7 +77,6 @@ export default class BoxOffice extends ViewBase {
   @Prop({ type: Object }) link!: any
 
   appLink: any = this.link
-  lineDatas: any = {}
   tabList: any = [
     {
       id: 1,
@@ -99,9 +93,24 @@ export default class BoxOffice extends ViewBase {
   xDate: any = []
   yDate: any = []
   eventList: any = []
+  linedata: any = {}
 
+  // get boxOfficeList() {
+  //   return this.formatDatas(this.boxoffice.boxOfficeList)
+  // }
+  // get scheduleList() {
+  //   return this.formatDatas(this.boxoffice.scheduleList)
+  // }
   created() {
-    this.formatDatas(this.boxoffice.boxOfficeList)
+    // this.linedata = this.boxOfficeList
+    // this.formatDatas(this.boxoffice.boxOfficeList)
+  }
+
+  @Watch('boxoffice', { deep: true })
+  watchBoxOffice() {
+    if (this.boxoffice) {
+      this.formatDatas(this.boxoffice.boxOfficeList)
+    }
   }
 
   @Watch('tabIndex', { deep: true })
@@ -115,17 +124,19 @@ export default class BoxOffice extends ViewBase {
 
   // 处理数据
   formatDatas(data: any[]) {
-    const xDate = (data || []).map((it: any) => it.name)
-    const yDate = (data || []).map((it: any) => it.value)
-    const eventList = (data || []).map((it: any) => it.eventList)
-    this.lineDatas = {
-      xDate,
-      eventList,
-      yDate: [
-        {
-          data: yDate
-        }
-      ]
+    if (data && data.length) {
+      const xDate = (data || []).map((it: any) => it.name)
+      const yDate = (data || []).map((it: any) => it.value)
+      const eventList = (data || []).map((it: any) => it.eventList)
+      this.linedata = {
+        xDate,
+        eventList,
+        yDate: [
+          {
+            data: yDate
+          }
+        ]
+      }
     }
   }
 

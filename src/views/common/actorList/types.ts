@@ -19,7 +19,7 @@ export interface ActorItem {
         url: string
     },
     character: string
-
+    coverImg?: string
 }
 
 /**

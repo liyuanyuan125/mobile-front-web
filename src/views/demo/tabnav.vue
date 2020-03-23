@@ -12,14 +12,10 @@
       </div>
     </section>
 
-<<<<<<< HEAD
-    <TabNav :list ="list"/>
-=======
     <TabNav
       :list ="list"
       class="tab-nav"
     />
->>>>>>> upstream/release/project/v2.0
 
     <!-- <TabNav
       :list ="list"

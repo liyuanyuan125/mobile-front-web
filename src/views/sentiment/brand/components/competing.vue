@@ -2,10 +2,10 @@
   <div class="compet-content">
     <ModuleHeader title="竞品分析"  tag="h6"/>
     <ul>
-      <li class="flex-box" v-for="item in getRivalList" :key="item.brandId">
+      <li class="flex-box" v-for="item in getRivalList" :key="item.rivalId">
         <div class="parse-left">
           <img :src="item.rivalCover.url" alt=""/>
-          <p>{{item.brandName}}</p>
+          <p>{{item.rivalName}}</p>
         </div>
         <div class="parse-right flex-box">
           <!-- 当前品牌 -->

@@ -36,11 +36,11 @@ export default class UserPortrait extends ViewBase {
   @Prop({ type: Array }) ageRangeList!: any
   @Prop({ type: Array }) genderList!: any
   @Prop({ type: Object }) link!: any
+  // 男女比例颜色信息
+  @Prop({ type: Array, default: () => ['#88AAF6', '#F18F8F'] }) colorList!: string[]
 
   // ageRangeListData: any = null
   // genderListData: any = null
-
-  colorList: any = ['#88AAF6', '#F18F8F'] // 男女比例颜色信息
 
   arr: any = []
 

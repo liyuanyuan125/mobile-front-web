@@ -82,7 +82,7 @@ export default class BrandPage extends ViewBase {
   userAnalysis = {}
   // 事件
   params2 = {}
-  brandEventList = []
+  brandEventList: any = {}
   // 竞品分析
   rivalList = []
 
@@ -139,7 +139,7 @@ export default class BrandPage extends ViewBase {
         type: 2, // 1
         objectId: 9 // this.id
       })
-      this.brandEventList = data.eventList || []
+      this.brandEventList = data
     } catch (ex) {
       toast(ex)
     }

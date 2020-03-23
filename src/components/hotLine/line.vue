@@ -21,6 +21,8 @@ export default class Main extends Vue {
   @Prop({ type: String, default: '#f7a345' }) dotColor!: string
   /** tooltip 文本色 */
   @Prop({ type: String, default: '#8f8f8f' }) textColor!: string
+  /** 自定义 tooltip框 内容 */
+  @Prop({ type: String, default: '' }) formatterHtml!: string
 
   get xAxisDate() {
     return (this.lineData.xDate || []).map((it: any) => moment(it).format('MM-DD'))
@@ -106,7 +108,7 @@ export default class Main extends Vue {
         // 跳转链接事件详情页url暂定处理
         formatter: (params: any) => {
           const {name, value, dataIndex, seriesName} = params[0]
-          const eventList = this.lineData.eventList[dataIndex]
+          const eventList = this.lineData.eventList[dataIndex] || []
           const boxStyle = cssifyObject({
             position: 'relative',
             lineHeight: '16px',
@@ -145,7 +147,7 @@ export default class Main extends Vue {
              </div>
            </div>
           `
-          return html.trim()
+          return this.formatterHtml ? this.formatterHtml : html.trim()
         }
       },
       grid: {

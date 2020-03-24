@@ -1,53 +1,117 @@
 <template>
   <div class="page">
-    <SentimentBar :title="movieInfo.movieNameCn" :sidebar="sidebar" />
+    <SentimentBar :title="title" :titleShow="true" />
+    <div class="bubble">
+      <BubbleLeft :data="bubbleData">
+        <template>
+          <!-- 示例 -->
+          <div slot="right">
+            <div class="content">
+              <h5>{{bubbleTotal.overallHot}}</h5>
+              <p>综合热度</p>
+            </div>
+            <div class="content">
+              <h5>{{bubbleTotal.materials}}</h5>
+              <p>累计媒体物料</p>
+            </div>
+            <div class="content">
+              <h5>{{bubbleTotal.interact}}</h5>
+              <p>累计互动数</p>
+            </div>
+          </div>
+        </template>
+      </BubbleLeft>
+      <div class="curve">
+        <div class="curvetop"></div>
+        <div class="curvebot"></div>
+      </div>
+    </div>
+    <TabNav :list="tabList" class="formattab" />
+    <div class="hotanalysis">
+      <ModuleHeader title="热度分析" class="heat" />
+      <heatLineCom :overAllList="overAllHeat" :platformList="platformHeat" :params="params" />
+    </div>
+    <SpreadList :dataList="spreadList" />
+    <PraiseComment
+      :favorable="publicPraise.favorable"
+      :publicPraise="publicPraise"
+      :link="getApplink('praiseHotWordsList')"
+      v-if="publicPraise.appraiseList"
+      id="praise"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
+import { eventDetail } from './data'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
-import BaseInfoArea from './components/movieInfo.vue' // 影片基本信息
+import { BubbleLeft, BubbleItem } from '@/components/bubble'
 import TabNav, { TabNavItem } from '@/components/tabNav'
-import { selectTime } from '@/components/hotLine'
 import heatLineCom from '@/views/common/heatLineCom/index.vue'
-import WantSeeTrend from './components/wantSeeTrend.vue' // 想看趋势
-import BoxOffice from './components/boxOffice.vue' // 影片票房
 import PraiseComment from '@/views/common/praiseComment/index.vue' // 口碑评论
-import UserPortrait from '@/views/common/user/userPortrait.vue'
-import EventList from '@/views/common/eventList/event.vue' // 事件跟踪
-import RivalAnalysis from './components/rivalAnalysis.vue' // 竞品分析
-import ActorList from '@/views/common/actorList/index.vue' // 主创人员
-import ProduceList from '@/views/common/produceList/index.vue' // 出品发行
-// import hotLine from '@/components/hotLine'
+import ModuleHeader from '@/components/moduleHeader'
+import SpreadList from '@/views/common/spreadList/index.vue' // 传播路径
 
 @Component({
   components: {
     SentimentBar,
-    BaseInfoArea,
+    ModuleHeader,
+    BubbleLeft,
     TabNav,
-    selectTime,
     heatLineCom,
-    WantSeeTrend,
-    BoxOffice,
-    PraiseComment,
-    UserPortrait,
-    EventList,
-    RivalAnalysis,
-    ActorList,
-    ProduceList
+    SpreadList,
+    PraiseComment
   }
 })
-export default class MoviePage extends ViewBase {
-  sidebar = {
-    diggType: 'movie',
-    diggId: '100038',
-    rivalIds: '1,2,4'
+export default class NetworkEventPage extends ViewBase {
+  eventId: string = ''
+  title: string = ''
+  bubbleData: BubbleItem[] = [] // 概览数据左
+  bubbleTotal: any = {} // 概览数据右
+  // 二级导航
+  tabList: TabNavItem[] = [
+    { name: 'hot', label: '热度' },
+    { name: 'boxoffice', label: '传播' },
+    { name: 'praise', label: '口碑' }
+  ]
+  overAllHeat: any[] = [] // 热度分析趋势
+  platformHeat: any[] = [] // 热度分析平台
+  spreadList: any[] = []
+  publicPraise: any = {} // 口碑
+  // 热度分析传参
+  get params() {
+    return {
+      type: 100, // 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑 100=全网事件 101=营销事件
+      id: this.$route.params.eventId, // 详情页id
+      name: this.$route.query.title || '全网事件分析',
+      startTime: 20200304, // this.startTime,
+      endTime: 20200310 // this.endTime
+    }
   }
 
-  movieId: string = ''
-  eventList: any = []
+  created() {
+    this.eventId = this.$route.params.eventId
+    const tit: any = this.$route.query.title || '全网事件分析'
+    this.title = decodeURIComponent(tit)
+    document.title = this.title
+    this.getEventData()
+  }
+
+  async getEventData() {
+    const res: any = await eventDetail(this.eventId)
+    this.bubbleData = res.eventOverView.paltformList
+    this.overAllHeat = res.overAllHeatList
+    this.platformHeat = res.platformHeadList
+    this.publicPraise = res.publicPraise
+    this.spreadList = res.spreadList || []
+    this.bubbleTotal = {
+      overallHot: res.eventOverView.overallHot,
+      materials: res.eventOverView.materials,
+      interact: res.eventOverView.interact
+    }
+  }
 
   /**
    * 获取 applink
@@ -72,668 +136,6 @@ export default class MoviePage extends ViewBase {
         }
     }
   }
-
-  detail: any = {
-    type: 'movie',
-    id: '100038'
-  }
-  movieInfo = {
-    movieNameCn: '流浪地球',
-    movieNameEn: 'The Wandering Earth',
-    coverUrl: {
-      url: '',
-      source: 'piaoshen'
-    },
-    duration: '115分钟',
-    genreName: '剧情 / 喜剧',
-    releaseDate: '2020-02-22 中国大陆上映',
-    movieId: '100038',
-    favorable: 'B+'
-  }
-  tabList: TabNavItem[] = [
-    { name: 'hot', label: '热度' },
-    { name: 'boxoffice', label: '票房' },
-    { name: 'praise', label: '口碑' },
-    { name: 'user', label: '用户' },
-    { name: 'event', label: '事件' },
-    { name: 'rival', label: '竞品' },
-    { name: 'actor', label: '资料' }
-  ]
-  overAllHeat = [
-    {
-      date: 1583978358078,
-      value: 123,
-      eventList: [
-        {
-          eventName: '意大利紧急求助中国',
-          eventId: '123232'
-        },
-        {
-          eventName: '意大利紧急求助中国',
-          eventId: '123232'
-        },
-        {
-          eventName: '意大利紧急求助中国',
-          eventId: '123232'
-        },
-        {
-          eventName: '意大利紧急求助中国',
-          eventId: '123232'
-        },
-        {
-          eventName: '意大利紧急求助中国',
-          eventId: '123232'
-        }
-      ]
-    },
-    {
-      date: 1583978358078,
-      value: 323,
-      eventList: [
-        {
-          eventName: '意大利紧急求助中国',
-          eventId: '123232'
-        },
-        {
-          eventName: '意大利紧急求助中国',
-          eventId: '123232'
-        },
-        {
-          eventName: '意大利紧急求助中国',
-          eventId: '123232'
-        }
-      ]
-    }
-  ]
-  platformHeat = [
-    {
-      platformName: '新浪',
-      platformValueList: [
-        {
-          name: '微博数',
-          value: '9,876'
-        },
-        {
-          name: '互动量',
-          value: '9,876.5万'
-        }
-      ],
-      platformLogo: {
-        source: 'jydata',
-        url:
-          'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-      },
-      platformId: '1',
-      platformNotice: '媒体一 媒体二 媒体三'
-    },
-    {
-      platformName: '新浪',
-      platformValueList: [
-        {
-          name: '微博数',
-          value: '9,876'
-        },
-        {
-          name: '互动量',
-          value: '9,876.5万'
-        }
-      ],
-      platformLogo: {
-        source: 'jydata',
-        url:
-          'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-      },
-      platformId: '2',
-      platformNotice: '媒体一 媒体二 媒体三'
-    },
-    {
-      platformName: '新浪',
-      platformValueList: [
-        {
-          name: '微博数',
-          value: '9,876'
-        },
-        {
-          name: '互动量',
-          value: '9,876.5万'
-        }
-      ],
-      platformLogo: {
-        source: 'jydata',
-        url:
-          'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-      },
-      platformId: '3',
-      platformNotice: '媒体一 媒体二 媒体三'
-    },
-    {
-      platformName: '新浪',
-      platformValueList: [
-        {
-          name: '微博数',
-          value: '9,876'
-        },
-        {
-          name: '互动量',
-          value: '9,876.5万'
-        }
-      ],
-      platformLogo: {
-        source: 'jydata',
-        url:
-          'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-      },
-      platformId: '4',
-      platformNotice: '媒体一 媒体二 媒体三'
-    }
-  ]
-  get params() {
-    return {
-      type: 1, // 1 品牌 2 艺人 3 电影 4 音乐-单曲 5 音乐-专辑  6 剧集
-      id: 1, // 详情页id
-      name: '奔驰',
-      startTime: 20200304, // this.startTime,
-      endTime: 20200310 // this.endTime
-    }
-  }
-  movieOverView = {
-    heatRanking: 'NO.125',
-    commnetTrend: 121344,
-    commentCount: '1,324',
-    materialsTrend: -132332,
-    materialsCount: '1,213.3万',
-    heatTrend: 0
-  }
-  wantSeeTrend = {
-    dailyGainList: [
-      {
-        date: 1584622361149,
-        eventList: [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          }
-        ],
-        value: 1300
-      },
-      {
-        date: 1584622361149,
-        eventList: [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          }
-        ],
-        value: 32132
-      },
-      {
-        date: 1584622361149,
-        eventList: [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          }
-        ],
-        value: 323132
-      },
-      {
-        date: 1584622361149,
-        eventList: [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          }
-        ],
-        value: 12313
-      },
-      {
-        date: 1584622361149,
-        eventList: [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          }
-        ],
-        value: 320
-      }
-    ],
-    totalGainList: [
-      {
-        date: 1583979088061,
-        ' eventList': [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          }
-        ],
-        value: 32311323
-      },
-      {
-        date: 1583979088061,
-        ' eventList': [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          }
-        ],
-        value: 32311323
-      },
-      {
-        date: 1583979088061,
-        ' eventList': [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          }
-        ],
-        value: 32311323
-      },
-      {
-        date: 1583979088061,
-        ' eventList': [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          }
-        ],
-        value: 32311323
-      },
-      {
-        date: 1583979088061,
-        ' eventList': [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          }
-        ],
-        value: 32311323
-      }
-    ]
-  }
-  favorable = {
-    text: '好感度',
-    value: 'B+'
-  }
-  userAnalysis = {
-    genderList: [
-      {
-        name: '男',
-        value: 1200
-      },
-      {
-        name: '女',
-        value: 8800
-      }
-    ],
-    ageRangeList: [
-      {
-        name: '小于20',
-        value: 1400
-      },
-      {
-        name: '20-30',
-        value: 2000
-      },
-      {
-        name: '30-40',
-        value: 3400
-      },
-      {
-        name: '40-50',
-        value: 3000
-      },
-      {
-        name: '大于50',
-        value: 200
-      }
-    ]
-  }
-  // 口碑评论 数据
-  publicPraise = {
-    appraiseList: [
-      {
-        raisePercent: 1200,
-        raiseName: '正面评价'
-      },
-      {
-        raisePercent: 3200,
-        raiseName: '负面评价'
-      },
-      {
-        raisePercent: 2300,
-        raiseName: '中性评价'
-      }
-    ],
-    hotWordList: ['劲暴', '太帅了', '要严肃', '四个字的'],
-    badWordList: ['劲暴', '太帅', '严肃', '四个字的']
-  }
-  rivalAnalysis = [
-    {
-      rivalName: '疯狂外星人',
-      heatTrend: 0,
-      heatCount: '1.2万',
-      rivalCover: {
-        source: 'piaoshen',
-        url:
-          'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/05/06/190506000002357372.jpg'
-      },
-      rivalId: '231331',
-      materialsAdd: '1,232',
-      materialsTrend: 0,
-      eventName: '',
-      eventCreatTime: null
-    },
-    {
-      rivalName: '疯狂外星人',
-      heatTrend: -1300,
-      heatCount: '1.2万',
-      rivalCover: {
-        source: 'piaoshen',
-        url:
-          'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/05/06/190506000002357372.jpg'
-      },
-      rivalId: '231331',
-      materialsAdd: '1,232',
-      materialsTrend: 231,
-      eventName: '世贸组织暂停会议',
-      eventCreatTime: 1583979088061
-    },
-    {
-      rivalName: '疯狂外星人',
-      heatTrend: -1300,
-      heatCount: '1.2万',
-      rivalCover: {
-        source: 'piaoshen',
-        url:
-          'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/05/06/190506000002357372.jpg'
-      },
-      rivalId: '231331',
-      materialsAdd: '1,232',
-      materialsTrend: 3211,
-      eventName: '世贸组织暂停会议',
-      eventCreatTime: 1583979088061
-    }
-  ]
-  actorList = [
-    {
-      actorId: 906,
-      actorName: '郭帆',
-      actorCover: {
-        source: 'piaoshen',
-        url:
-          'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/04/18/190418052016353817.jpg'
-      },
-      character: '导演'
-    },
-    {
-      actorId: 907,
-      actorName: '吴京',
-      actorCover: {
-        source: 'piaoshen',
-        url:
-          'http://piaoshen.oss-cn-beijing.aliyuncs.com/news/images/2019/07/11/B06EDD23EEED60C418B4.jpg'
-      },
-      character: '饰 刘培强'
-    },
-    {
-      actorId: 893,
-      actorName: '屈楚萧',
-      actorCover: {
-        source: 'piaoshen',
-        url:
-          'http://piaoshen.oss-cn-beijing.aliyuncs.com/movie/images/2020/02/03/62102C34026872169FAF.jpg'
-      },
-      character: '饰 刘启'
-    },
-    {
-      actorId: 885,
-      actorName: '李光洁',
-      actorCover: {
-        source: 'piaoshen',
-        url:
-          'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/04/18/190418020626211394.jpg'
-      },
-      character: '饰 王磊'
-    },
-    {
-      actorId: 890,
-      actorName: '吴孟达',
-      actorCover: {
-        source: 'piaoshen',
-        url:
-          'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/04/18/190418052014658253.jpg'
-      },
-      character: '饰 韩子昂'
-    },
-    {
-      actorId: 896,
-      actorName: '赵今麦',
-      actorCover: {
-        source: 'piaoshen',
-        url:
-          'http://piaoshen.oss-cn-beijing.aliyuncs.com/news/images/2019/10/15/63C87F8158A679D70A25.jpg'
-      },
-      character: '饰 韩朵朵'
-    },
-    {
-      actorId: 179289,
-      actorName: 'Mike隋',
-      actorCover: {
-        source: 'piaoshen',
-        url:
-          'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/04/18/190418052014803156.jpg'
-      },
-      character: '饰 Mike'
-    },
-    {
-      actorId: 884,
-      actorName: '屈菁菁',
-      actorCover: {
-        source: 'piaoshen',
-        url:
-          'http://piaoshen.oss-cn-beijing.aliyuncs.com/news/images/2019/11/21/D1A74C1E0D84CB90BE91.jpg'
-      },
-      character: '饰 周倩'
-    },
-    {
-      actorId: 901,
-      actorName: '张亦驰',
-      actorCover: {
-        source: 'piaoshen',
-        url:
-          'http://piaoshen.oss-cn-beijing.aliyuncs.com/news/images/2019/07/11/7F0CE6B3F5362EB77105.jpg'
-      },
-      character: '饰 李一一'
-    },
-    {
-      actorId: 909,
-      actorName: '杨皓宇',
-      actorCover: {
-        source: 'piaoshen',
-        url:
-          'http://piaoshen.oss-cn-beijing.aliyuncs.com/news/images/2019/09/16/FD18B0E3BE81539812C7.jpg'
-      },
-      character: '饰 何连科'
-    },
-    {
-      actorId: 480556,
-      actorName: '阿尔卡基·沙罗格拉茨基',
-      actorCover: {
-        source: 'piaoshen',
-        url:
-          'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/04/18/19041805201560601.jpg'
-      },
-      character: ''
-    },
-    {
-      actorId: 887,
-      actorCover: {
-        source: 'piaoshen',
-        url: '杨轶',
-        avatarUrl:
-          'http://piaoshen.oss-cn-beijing.aliyuncs.com/movie/images/2019/10/11/EE75829592698EC35365.jpg'
-      },
-      character: ''
-    },
-    {
-      actorId: 910,
-      actorName: '李虹辰',
-      actorCover: {
-        source: 'piaoshen',
-        url:
-          'http://piaoshen.oss-cn-beijing.aliyuncs.com/images/movie/2019/04/18/190418052015165185.jpg'
-      },
-      character: ''
-    }
-  ]
-  produceList = [
-    '新疆华夏天山电影院线有限责任公司',
-    '霍尔果斯腾影影视发行有限公司',
-    '上海淘票票影视文化有限公司',
-    '北京聚合影联文化传媒有限公司',
-    '珠江影业传媒股份有限公司',
-    '中国电影股份有限公司',
-    '北京影拓星瀚网络科技有限公司',
-    '北京国影纵横电影发行有限公司'
-  ]
-  boxOffice = {
-    totalBoxOffice: '1.2万',
-    totalPerson: '1,323',
-    firstDayBoxOffice: '321.2万',
-    firstWeekBoxOffice: '1,312.0万',
-    boxOfficeList: [
-      {
-        name: 1583978358078,
-        value: 23132332
-      },
-      {
-        name: 1583978358078,
-        value: 23132332
-      }
-    ],
-    scheduleList: [
-      {
-        name: 1583978358078,
-        value: 323132
-      },
-      {
-        name: 1583978358078,
-        value: 323132
-      },
-      {
-        name: 1583978358078,
-        value: 323132
-      },
-      {
-        name: 1583978358078,
-        value: 323132
-      }
-    ],
-    cityBoxOffice: '1,323',
-    cityBoxOfficeTop: ' 北京',
-    companyBoxOfficeTop: '北京万达院线',
-    companyBoxOffice: '142.8万'
-  }
-
-  created() {
-    this.movieId = this.$route.params.movieId
-  }
 }
 </script>
 
@@ -741,12 +143,61 @@ export default class MoviePage extends ViewBase {
 .page {
   color: #303030;
 }
+.bubble {
+  background: #f2f3f6;
+  position: relative;
+  padding: 100px 30px 0;
+  z-index: 12;
+}
+.curve {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+}
+.curvetop {
+  background: #fff;
+  &::before {
+    content: '';
+    display: block;
+    background-color: #f2f3f6;
+    height: 60px;
+    border-radius: 0 0 60px 0;
+  }
+}
+.curvebot {
+  background: #f2f3f6;
+  &::before {
+    content: '';
+    display: block;
+    background-color: #fff;
+    height: 60px;
+    border-radius: 60px 0 0 0;
+  }
+}
+.content {
+  padding-bottom: 40px;
+  h5 {
+    font-size: 46px;
+    line-height: 53px;
+  }
+  p {
+    font-size: 26px;
+    line-height: 37px;
+    margin-top: 8px;
+  }
+}
 nav.formattab {
   margin-top: 0;
   top: 88px;
   z-index: 11;
 }
 .hotanalysis {
-  margin-top: 40px;
+  margin-top: 55px;
+
+  .heat {
+    padding: 0 30px;
+    margin-bottom: 30px;
+  }
 }
 </style>

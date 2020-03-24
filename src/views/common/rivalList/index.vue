@@ -84,13 +84,10 @@ export default class RivalList extends Vue {
 
   // 删除竞品
   delRival(id: string) {
-    console.log('删除前', this.rivalIds)
     const index = this.rivalIds.indexOf(id)
     if (index > -1) {
       this.rivalIds.splice(index, 1)
     }
-
-    console.log('删除后', this.rivalIds)
   }
 
   // 设置业务 class

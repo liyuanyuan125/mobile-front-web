@@ -5,8 +5,8 @@
         <dd v-for="item in rivals" :key="item.rivalId">
           <img :src="item.coverImg" class="img" :alt="item.rivalName" />
           <h4 class="van-multi-ellipsis--l2">{{item.rivalName}}</h4>
-          <p class="van-ellipsis">{{item.rivalDesc}}张三/李四李四李四李四李四</p>
-          <span class="close" v-if="rivals.length > 2">
+          <p class="van-ellipsis">{{item.rivalDesc}}</p>
+          <span class="close" v-if="rivals.length > 2" @click="delRival(item.rivalId)">
             <Icon name="cross" size="12" color="#fff" class="cross" />
           </span>
         </dd>
@@ -41,11 +41,15 @@ export default class RivalList extends Vue {
   @Prop({ type: Array }) rivalList!: any[] // 竞品列表
   @Prop({ type: String }) type!: string // 竞品列表
 
+  rivalIds: any = [] // 竞品 ids
+
   // 处理图片
   get rivals() {
     const list: any = this.rivalList
+    const ids: any = []
     if (list && list.length) {
       for (const it of list) {
+        ids.push(it.rivalId)
         switch (this.type) {
           case '3':
             it.coverImg = imgFixed(it.coverUrl, 150, 195)
@@ -58,20 +62,17 @@ export default class RivalList extends Vue {
         }
       }
     }
+    this.rivalIds = ids
     return list
   }
 
   // 设置竞品
   async setRival() {
-    const ids: any = []
-    for (const el of this.rivalList) {
-      ids.push(el.rivalId)
-    }
     const obj = {
       callBackName: 'handleSetRivalCallBack',
       params: {
         businessType: this.type,
-        businessObjectIdList: ids.join(',')
+        businessObjectIdList: this.rivalIds.join(',')
       }
     }
     const result: any = await handleSetRival(obj)
@@ -79,6 +80,14 @@ export default class RivalList extends Vue {
     this.$emit('setRival', codeJson.data.rivalIdList)
 
     devLog('设置竞品', result)
+  }
+
+  // 删除竞品
+  delRival(id: string) {
+    const index = this.rivalIds.indexOf(id)
+    if (index > -1) {
+      this.rivalIds.splice(index, 1)
+    }
   }
 
   // 设置业务 class

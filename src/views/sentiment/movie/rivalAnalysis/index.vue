@@ -93,11 +93,11 @@ export default class MovieRivalAnalysisPage extends ViewBase {
   padding: 50px 30px;
   border-top: 20px solid rgba(216, 216, 216, 0.2);
 }
-.genderbox{
+.genderbox {
   padding: 40px 0;
   border-bottom: 1px solid #d8d8d8;
 }
-.agebox{
+.agebox {
   padding: 40px 0;
 }
 </style>

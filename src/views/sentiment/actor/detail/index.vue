@@ -41,7 +41,6 @@
 
     <section v-if='show' class="pane" id="praise">
       <!-- 口碑评论 -->
-      <!-- 待更换 -->
       <PraiseComment 
         :favorable="actorInfo.favorable" 
         :publicPraise="publicPraise"
@@ -68,7 +67,7 @@
 
     <section v-if='showuser' class="pane" id="part">
        <!-- 相似艺人 -->
-        <Competing :pkUserList='pkUserList' />
+        <Competing :pkUserList='pkUserList' :pkIdList='pkIdList' />
     </section>
 
     <section v-if='show' class="pane" id="work">
@@ -113,6 +112,8 @@ import { alert } from '@/util/toast'
   }
 })
 export default class KolPage extends ViewBase {
+
+  defaultActorImg: any = '@/assets/actordefault.png'
 
   show: any = false
   showuser: any = false
@@ -330,9 +331,11 @@ export default class KolPage extends ViewBase {
     }
   ]
   // 作品分析
-  worksAnalysis: any = []
+  worksAnalysis: any = {}
 
   pkUserList: any = []
+
+  pkIdList: any = []
 
   created() {
     const mid = this.$route.params.kolId
@@ -398,24 +401,24 @@ export default class KolPage extends ViewBase {
         worksAnalysis, // 作品分析
       } } = await getActorDetail({actorId: this.$route.params.actorId})
       this.actorInfo = actorInfo
-      // this.bubbleData = [
-      //   {type: '1', value: actorOverView.interactCount, trend: actorOverView.interactTrend,
-      //    renderTitle: (h: any) => {
-      //     return h(Title, {
-      //       props: {
-      //         title: `近90日新增互动`
-      //       },
-      //       on: {
-      //         click: this.showNote
-      //     }})
-      //   }},
-      //   {type: '2', title: '全网粉丝数', value: actorOverView.fansCount, trend: actorOverView.fansTrend, showdown: true},
-      //   {type: '3', title: '实时热度', value: actorOverView.heatCount, trend: actorOverView.heatTrend	, showdown: true},
-      //   {type: '4', title: '好感度', value: actorInfo.favorable}
-      // ]
-      // this.publicPraise = publicPraise
-      // this.userAnalysis = userAnalysis
-      this.worksAnalysis.data = worksAnalysis
+      this.bubbleData = [
+        {type: '1', value: actorOverView.interactCount, trend: actorOverView.interactTrend,
+         renderTitle: (h: any) => {
+          return h(Title, {
+            props: {
+              title: `近90日新增互动`
+            },
+            on: {
+              click: this.showNote
+          }})
+        }},
+        {type: '2', title: '全网粉丝数', value: actorOverView.fansCount, trend: actorOverView.fansTrend, showdown: true},
+        {type: '3', title: '实时热度', value: actorOverView.heatCount, trend: actorOverView.heatTrend	, showdown: true},
+        {type: '4', title: '好感度', value: actorInfo.favorable}
+      ]
+      this.publicPraise = publicPraise
+      this.userAnalysis = userAnalysis
+      this.worksAnalysis = worksAnalysis
     } catch (ex) {
       toast(ex)
     } finally {
@@ -424,9 +427,13 @@ export default class KolPage extends ViewBase {
   }
 
   async getPkUser() {
+    this.pkIdList = []
     try {
       const pkUser = await getPkUser({actorId: this.$route.params.actorId})
       this.pkUserList = pkUser.data
+      this.pkIdList = (pkUser.data || []).map((it: any) => {
+        return it.rivalId
+      })
     } catch (ex) {
       toast(ex)
     } finally {
@@ -494,6 +501,7 @@ export default class KolPage extends ViewBase {
       height: 172px;
       border-radius: 50%;
       overflow: hidden;
+      background: url('~@/assets/actordefault.png');
       img {
         width: 100%;
         height: 100%;

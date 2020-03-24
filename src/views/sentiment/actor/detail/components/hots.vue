@@ -73,7 +73,7 @@ export default class Main extends Vue {
         overAllHeatList,
         platformHeatList
       } } = await getList({
-        brandId: 1, // this.id
+        actorId: this.$route.params.actorId, // this.id
         startTime: 20200304, // this.endTime
         endTime: 20200310 // this.endTime
       })

@@ -4,7 +4,7 @@
         <ul>
             <li>
                 <p class='p1'>{{data.averagScore == '' ? '-' : data.averagScore}}</p>
-                <p class='p2'>作品均分
+                <p class='p2' @click='showNote()'>作品均分
                   <Icon name="question-o" size="13" class="icon-arrow"/>
                 </p>
             </li>
@@ -32,6 +32,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Icon } from 'vant'
 import moment from 'moment'
+import { alert } from '@/util/toast'
 
 @Component({
   components: {
@@ -40,6 +41,17 @@ import moment from 'moment'
 })
 export default class Main extends Vue {
   @Prop({ type: Object, default: []}) data!: any
+
+    // 显示说明
+  showNote() {
+    alert({
+      title: '提示',
+      message:
+        '作品评分为全网综合评分',
+      showConfirmButton: true,
+      className: 'alertwid'
+    })
+  }
 
 }
 
@@ -82,6 +94,9 @@ export default class Main extends Vue {
       font-weight: bold;
       color: rgba(48, 48, 48, 1);
       line-height: 50px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .p2 {
       width: 100%;
@@ -107,6 +122,9 @@ export default class Main extends Vue {
       font-weight: 600;
       color: rgba(48, 48, 48, 1);
       line-height: 50px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 }

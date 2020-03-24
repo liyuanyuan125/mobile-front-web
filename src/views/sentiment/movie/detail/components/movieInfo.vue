@@ -45,7 +45,7 @@ export default class BaseInfoArea extends ViewBase {
           type: '1',
           title: '累计媒体物料',
           value: this.overView.materialsCount,
-          trend: this.overView.materialsCount
+          trend: this.overView.materialsTrend
         },
         {
           type: '2',
@@ -57,7 +57,7 @@ export default class BaseInfoArea extends ViewBase {
           type: '3',
           title: '行业实时热度',
           value: this.overView.heatRanking,
-          trend: this.overView.heatTrend,
+          trend: this.overView.heatTrend || 0,
           showdown: true
         },
         { type: '4', title: '好感度', value: this.baseInfo.favorable }

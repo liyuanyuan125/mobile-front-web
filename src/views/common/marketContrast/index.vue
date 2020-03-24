@@ -26,7 +26,7 @@
             </div>
         </div>
         <div v-else class="noList">
-            暂无数据
+            <dataEmpty />
         </div>
     </div>
   </div>
@@ -39,6 +39,7 @@ import moment from 'moment'
 import Time from './time.vue'
 import { FetchResult, FetchData } from './type'
 import { toast } from '@/util/toast'
+import dataEmpty from '@/views/common/dataEmpty/index.vue'
 
 const list = [
     '正面评论',
@@ -53,7 +54,8 @@ const optionsList = {
 @Component({
     components: {
         Progress,
-        Time
+        Time,
+        dataEmpty
     }
 })
 export default class Options extends Vue {

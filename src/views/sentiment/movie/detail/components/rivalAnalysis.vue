@@ -8,7 +8,7 @@
           <div class="rivalbox">
             <img :src="item.rivalCover.url" :alt="item.rivalName" class="img" v-if="item.coverImg" />
             <img src="@/assets/moviedefault.png" :alt="baseInfo.movieNameCn" class="img" v-else />
-            <h4>{{item.rivalName}}</h4>
+            <h4 class="van-ellipsis">{{item.rivalName}}</h4>
             <div class="params">
               <div class="flex">
                 <p class="tit">热度</p>

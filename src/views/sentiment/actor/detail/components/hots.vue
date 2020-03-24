@@ -24,7 +24,7 @@ import { hotLine } from '@/components/hotLine'
 })
 
 export default class Main extends Vue {
-  @Prop({ type: Number, default: 0}) id!: number
+  @Prop({ type: String, default: ''}) title!: number
 
   xDate = []
   yDate = []
@@ -35,7 +35,7 @@ export default class Main extends Vue {
     return {
       type: 2, // 1 品牌 2 艺人 3 电影 4 音乐-单曲 5 音乐-专辑  6 剧集
       id: this.$route.params.actorId,
-      name: '奔驰', // 天数
+      name: this.title, // 天数
       startTime: 20200304, // this.startTime,
       endTime: 20200310 // this.endTime
     }

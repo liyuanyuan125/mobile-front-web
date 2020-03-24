@@ -24,7 +24,8 @@
         <div class='movielist'>
             <div class='rowmovie' v-for='item in data.tvList' :key='item.tvId'>
                 <div class="img">
-                  <img :src=item.coverUrl.url alt="">
+                  <!-- <img :src=item.coverUrl.url alt=""> -->
+                  <img :src="item.coverUrl.url || defaultImg"  alt="">
                 </div>
                 <div class='name'>
                   {{item.tvName}}
@@ -48,6 +49,8 @@ import { alert } from '@/util/toast'
 })
 export default class Main extends Vue {
   @Prop({ type: Object, default: []}) data!: any
+
+  defaultImg: any = '@/assets/tvdefault.png'
 
     // 显示说明
   showplayCount() {

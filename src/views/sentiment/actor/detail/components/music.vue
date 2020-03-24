@@ -17,7 +17,8 @@
         <div class='movielist'>
             <div class='rowmovie' v-for='item in data.musicList' :key='item.musicId'>
                 <div class="img">
-                  <img :src=item.coverUrl.url alt="">
+                  <!-- <img :src=item.coverUrl.url alt=""> -->
+                  <img :src="item.coverUrl.url || defaultImg"  alt="">
                 </div>
                 <div class='name'>
                   {{item.musicName}}
@@ -41,6 +42,8 @@ import { alert } from '@/util/toast'
 })
 export default class Main extends Vue {
   @Prop({ type: Object, default: []}) data!: any
+
+  defaultImg: any = '@/assets/musicdefault.png'
 
     // 显示说明
   showNote() {

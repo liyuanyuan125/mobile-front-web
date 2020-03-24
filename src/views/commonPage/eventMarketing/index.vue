@@ -24,7 +24,7 @@
      </div>
 
     </div>
-      
+      <spread :dataList="spreadList" />
       <!-- 口碑评论 -->
       <PraiseComment 
         :favorable="publicPraise.favorable" 
@@ -41,6 +41,7 @@ import ViewBase from '@/util/ViewBase'
 import { Tab, Tabs, Icon , Button } from 'vant'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import PraiseComment from '@/views/common/praiseComment/index.vue' // 口碑评论
+import spread from '@/views/common/spreadList/index.vue' // 事件
 import { toast } from '@/util/toast'
 import { alert } from '@/util/toast'
 import { eventDetail } from './data'
@@ -58,6 +59,7 @@ import { hotLine } from '@/components/hotLine'
     PraiseComment,
     Button,
     hotLine,
+    spread
   }
 })
 export default class KolPage extends ViewBase {
@@ -115,7 +117,7 @@ export default class KolPage extends ViewBase {
       name: '阅读'
     }
   ]
-
+  spreadList: any = []
   eventInfo: any = {}
 
   get startTime() {
@@ -166,6 +168,7 @@ export default class KolPage extends ViewBase {
         }
       } = await eventDetail({eventId: this.$route.params.eventId})
       this.publicPraise = publicPraise
+      this.spreadList = spreadList
       this.eventInfo = eventInfo
       this.xDate = (eventInfo.newsList || []).map((it: any) => it.name)
       this.yDate = (eventInfo.newsList || []).map((it: any) => it.value)

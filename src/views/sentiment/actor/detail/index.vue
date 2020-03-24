@@ -4,7 +4,7 @@
     <div class="header">
       <div class='left'>
         <div>
-          <img :src="actorInfo.coverUrl" class="img" />
+          <img :src="actorInfo.coverUrl || defaultActorImg" class="img" />
         </div>
       </div>
       <div class='right'>
@@ -34,9 +34,14 @@
       :list ="list"
       class="tab-nav"
     />
-    <section v-if='show' class="pane" id="hot">
+    <section v-if='show' class="pane" id="hot" style='padding: 15px'>
       <!-- 热度分析 -->
-      <Hots :id='0'/>
+      <selectTime ref="refsTime" class="select-time"/>
+      <heatLineCom 
+        :overAllList="overAllHeatList" 
+        :platformList="platformHeatList"
+        :params="platformParams"
+       />
     </section>
 
     <section v-if='show' class="pane" id="praise">
@@ -84,7 +89,8 @@ import ViewBase from '@/util/ViewBase'
 import { Tab, Tabs, Icon } from 'vant'
 import TabNav, { TabNavItem } from '@/components/tabNav'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
-import Hots from './components/hots.vue'
+import { selectTime } from '@/components/hotLine'
+import heatLineCom from '@/views/common/heatLineCom/index.vue' // 热度分析
 import PraiseComment from '@/views/common/praiseComment/index.vue' // 口碑评论
 import UserPortrait from '@/views/common/user/userPortrait.vue'
 import Event from '@/views/common/eventList/event.vue' // 事件跟踪
@@ -92,7 +98,7 @@ import Competing from './components/competing.vue'
 import Works from './components/works.vue'
 import { toast } from '@/util/toast'
 import {BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
-import { getActorDetail , getPkUser , getEventList } from '@/api/kol'
+import { getList, getActorDetail , getPkUser , getEventList } from '@/api/kol'
 import { alert } from '@/util/toast'
 
 @Component({
@@ -101,8 +107,9 @@ import { alert } from '@/util/toast'
     Tabs,
     Icon,
     BubbleBottom,
+    selectTime,
+    heatLineCom,
     SentimentBar,
-    Hots,
     PraiseComment,
     UserPortrait,
     Event,
@@ -162,6 +169,19 @@ export default class KolPage extends ViewBase {
     { name: 'part', label: '竞品' },
     { name: 'work', label: '作品' },
   ]
+
+    // 热度分析+平台信息
+  overAllHeatList: any = []
+  platformHeatList: any = []
+  get platformParams() {
+    return {
+      type: 1, // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
+      id: this.$route.params.actorId, // 详情页id
+      name: this.actorInfo.actorName,
+      startTime: 20200304, // this.startTime,
+      endTime: 20200310 // this.endTime
+    }
+  }
   // 用户分析
   userAnalysis: any = {
     genderList: [
@@ -338,7 +358,7 @@ export default class KolPage extends ViewBase {
   pkIdList: any = []
 
   created() {
-    const mid = this.$route.params.kolId
+    this.getHotList()
     this.getActorDetail()
     this.getPkUser()
     this.getEventList()
@@ -388,6 +408,27 @@ export default class KolPage extends ViewBase {
           businessType: 2,
           businessObjectId: 100038
         }
+    }
+  }
+
+  get refsTime() {
+    return (this.$refs.refsTime as any)
+  }
+
+  async getHotList() {
+    try {
+      const { data: {
+        overAllHeatList,
+        platformHeatList
+      } } = await getList({
+        actorId: this.$route.params.actorId,
+        startTime: this.refsTime.beginDate, // this.refsTime.beginDate
+        endTime: this.refsTime.endDate // this.refsTime.endDate
+      })
+      this.overAllHeatList = overAllHeatList
+      this.platformHeatList = platformHeatList
+    } catch (ex) {
+      toast(ex)
     }
   }
 

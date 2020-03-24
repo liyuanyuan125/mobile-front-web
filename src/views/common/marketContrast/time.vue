@@ -42,43 +42,20 @@ export default class Main extends Vue {
   justify-content: space-between;
   justify-items: center;
   margin-bottom: 40px;
-  font-weight: bold;
   > div {
     font-size: 40px;
+    font-weight: 400;
   }
 }
-.selectdate {
+.items {
   width: 200px;
   height: 60px;
-  background-color: #fff;
+  background: rgba(255, 255, 255, 1);
   border-radius: 30px;
-  border: 2px solid #ebebeb;
+  border: 2px solid rgba(235, 235, 235, 1);
   text-align: center;
   color: #303030;
   font-size: 14px;
-  padding: 0 54px 0 24px;
-  position: relative;
-  &::after {
-    content: '';
-    width: 0;
-    height: 0;
-    border-top: 10px solid #404d66;
-    border-left: 8px solid #fff;
-    border-right: 8px solid #fff;
-    background-color: #404d66;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 20px;
-  }
-
-  select {
-    width: 200px;
-    height: 56px;
-    line-height: 56px;
-    background: transparent;
-    font-size: 26px;
-    color: rgba(48, 48, 48, 0.6);
-  }
+  padding-left: 40px;
 }
 </style>

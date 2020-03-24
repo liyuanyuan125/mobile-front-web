@@ -115,7 +115,7 @@ export default class Main extends Vue {
   ]
 
   mounted() {
-    this.getLineData()
+    // this.getLineData()
   }
   async getLineData() {
     try {

@@ -1,18 +1,13 @@
 <template>
   <div class="selectdate">
-    <select>
-      <option
-        v-for="(item,index) in list"
-        :key="item.key + index"
-        :value="item.key"
-        @change="returnParentDate"
-      >{{ item.text }}</option>
+    <select v-model="value">
+      <option v-for="(item,index) in list" :key="item.key + index" :value="item.key">{{ item.text }}</option>
     </select>
   </div>
 </template>
 
 <script lang='ts'>
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import moment from 'moment'
 
 @Component({})
@@ -30,18 +25,16 @@ export default class SelectDate extends Vue {
     { key: 'last_60_day', text: '最近30天' },
     { key: 'last_90_day', text: '最近90天' }
   ]
-
-  // 将数据返回给上一级
-  returnParentDate(value: any) {
-    // console.log('timeeeee', value)
-    // this.$emit('selectDate', {
-    //   startTime: this.beginDate(),
-    //   endTime: this.endDate()
-    // })
+  created() {
+    this.$emit('input', {
+      startTime: this.beginDate(this.days),
+      endTime: this.endDate()
+    })
   }
+
   // 接口传入数据
-  beginDate() {
-    switch (this.value) {
+  beginDate(val: string) {
+    switch (val) {
       case 'last_7_day':
         return moment(new Date())
           .add(-7, 'days')
@@ -66,6 +59,14 @@ export default class SelectDate extends Vue {
   }
   endDate() {
     return moment(new Date()).format(this.timeFormat)
+  }
+
+  @Watch('value')
+  watchdays(val: any) {
+    this.$emit('input', {
+      startTime: this.beginDate(val),
+      endTime: this.endDate()
+    })
   }
 }
 </script>

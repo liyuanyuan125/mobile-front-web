@@ -4,11 +4,6 @@
     <div class="titbox">
       <h4>想看趋势</h4>
       <div>
-        <div class="citysel" @click="selectCity">
-          <span class="van-ellipsis">{{city.areaName}}</span>
-        </div>
-      </div>
-      <div>
         <SelectDate v-model="dates" />
       </div>
     </div>
@@ -23,12 +18,7 @@
       </ul>
     </div>
     <div>
-      <dubline
-        :lineData="lineDatas"
-        v-if="lineDatas.xDate.length"
-        :key="lineDatas.title"
-        class="wantchart"
-      />
+      <echartLines :lineData="lineDatas" :colors="colors" v-if="lineDatas.xDate" />
     </div>
   </div>
 </template>
@@ -37,68 +27,103 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import SelectDate from '@/components/selectDate'
-import { handleCitySelect } from '@/util/native'
 import { devLog, devInfo } from '@/util/dev'
-import { dubline } from '@/components/hotLine'
+import echartLines from '@/components/hotLines'
+import { toast } from '@/util/toast'
+import moment from 'moment'
 
 @Component({
   components: {
-    SelectDate,
-    dubline
+    echartLines,
+    SelectDate
   }
 })
 export default class WantSeeTrend extends ViewBase {
-  @Prop({ type: Object }) dataTrend!: any
+  /* 查询请求 */
+  @Prop({ type: Function, required: true })
+  fetch!: (query?: any) => Promise<any>
+  /* 查询条件 */
+  @Prop({ type: String }) query!: string
 
   tabList: any = [
     {
       id: 1,
-      key: 'totalGainList',
+      key: 'totalDataList',
       name: '累计'
     },
     {
       id: 2,
-      key: 'dailyGainList',
-      name: '日增'
+      key: 'newDataList',
+      name: '新增'
     }
+  ]
+  colors: any[] = [
+    '#79DDC5',
+    '#8DC3FF',
+    '#5B72FF',
+    '#9577FF',
+    '#DD77FF',
+    '#FF777B',
+    '#FFC077'
   ]
   tabIndex: number = 1
   lineDatas: any = {}
-  city: any = {
-    areaId: 'quanguo',
-    areaName: '全国',
-    selectType: 1
-  }
   dates: any = {}
+  response: any = {
+    totalDataList: [],
+    newDataList: []
+  }
 
-  created() {
-    const date: any = this.$refs.selDate
-    this.formatDatas(this.dataTrend.totalGainList)
+  @Watch('dates', { deep: true })
+  watchDays(val: any) {
+    this.uplist()
+  }
+
+  @Watch('query', { deep: true })
+  watchQuery(val: any) {
+    this.uplist()
   }
 
   @Watch('tabIndex', { deep: true })
   watchTabIndex(val: number) {
     if (val === 1) {
-      this.formatDatas(this.dataTrend.totalGainList)
+      this.formatDatas(this.response.totalDataList)
     } else if (val === 2) {
-      this.formatDatas(this.dataTrend.dailyGainList)
+      this.formatDatas(this.response.newDataList)
     }
   }
 
   // 处理数据
-  formatDatas(data: any[]) {
-    const xDate = (data || []).map((it: any) => it.date)
-    const yDate = (data || []).map((it: any) => it.value)
-    const eventList = (data || []).map((it: any) => it.eventList)
+  //   formatDatas(data: any[]) {
+  //     const xDate = (data || []).map((it: any) => it.date)
+  //     const yDate = (data || []).map((it: any) => it.value)
+  //     const eventList = (data || []).map((it: any) => it.eventList)
+  //     this.lineDatas = {
+  //       xDate,
+  //       eventList,
+  //       yDate: [
+  //         {
+  //           data: yDate,
+  //           name: '营销事件'
+  //         }
+  //       ]
+  //     }
+  //   }
+
+  // 综合热度数据处理 title，xdata，ydata
+  formatDatas(dataObj: any[]) {
+    const xDate = (dataObj || []).map((it: any) => moment(it.date).format('MM-DD'))
+    const yDate = (dataObj || []).map((it: any) => {
+      const { rivalName, data } = it
+      return {
+        name: rivalName,
+        list: (data || []).map((ite: any) => ite.value)
+      }
+    })
     this.lineDatas = {
+      title: '',
       xDate,
-      eventList,
-      yDate: [
-        {
-          data: yDate,
-          name: '营销事件'
-        }
-      ]
+      yDate
     }
   }
 
@@ -109,22 +134,18 @@ export default class WantSeeTrend extends ViewBase {
     }
   }
 
-  // 选择城市
-  async selectCity() {
-    const obj = {
-      callBackName: 'handleCitySelectCallBack'
+  async uplist() {
+    try {
+      const { data } = await this.fetch({
+        movieIdList: this.query,
+        ...this.dates
+      })
+      //   console.log('data', data)
+      this.response = data
+      this.formatDatas(this.response.totalDataList)
+    } catch (ex) {
+      toast(ex)
     }
-    const result: any = await handleCitySelect(obj)
-    const codeJson = JSON.parse(result)
-    if (codeJson) {
-      this.city = codeJson.data
-    }
-  }
-
-  @Watch('dates', { deep: true })
-  watchDays(val: any) {
-    // console.log('获取日期选择组件选中的时间', val, this.dates)
-    // this.dates = val
   }
 }
 </script>

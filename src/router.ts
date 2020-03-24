@@ -116,18 +116,15 @@ export default new Router({
     },
     // 品牌舆情 - 用户分析二级详情页
     {
-      path: '/sentiment/branduser',
+      path: '/sentiment/branduser/:brandId',
       name: 'sentimentbrand-user',
       component: () => import('./views/sentiment/brand/user.vue')
     },
     // 品牌舆情 - 竞品分析二级详情页
     {
-      path: '/sentiment/brandanalyze/:ids',
+      path: '/sentiment/brand/rivalAnalysis',
       name: 'sentimentbrand-analyze',
       component: () => import('./views/sentiment/brand/analyze.vue'),
-      props: paramTypes({
-        ids: String
-      })
     },
     // 平台热度 - 查看更多（通用页）
     {
@@ -136,10 +133,10 @@ export default new Router({
       component: () => import('./views/commonPage/platform/details.vue'),
       props: paramTypes({
         id: Number,
-        type: String,
+        type: Number,
         name: String,
-        startTime: String,
-        endTime: String
+        startTime: Number,
+        endTime: Number
       })
     },
 
@@ -199,9 +196,9 @@ export default new Router({
     },
     // 全网事件分析详情页 姜英英
     {
-      path: '/sentiment/eventNetwork/:eventId(\d+)',
+      path: '/sentiment/eventNetwork/:eventId(\\d+)',
       name: 'sentimenteventNetwork',
-      component: () => import('./views/commonPage/userRegion/index.vue')
+      component: () => import('./views/sentiment/eventNetwork/detail/index.vue')
     },
     // 营销事件详情页 纪洁琼
     {

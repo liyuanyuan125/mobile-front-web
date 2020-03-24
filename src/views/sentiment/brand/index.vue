@@ -3,24 +3,30 @@
     <SentimentBar :title="brandInfo.brandName" :sidebar="sidebar" />
     <brandInfoArea :brandInfo="brandInfo" :bubbleData="bubbleData"/>
     <section class="brand-hot">
-      <selectTime ref="refsTime"/>
+      <selectTime ref="refsTime" class="select-time"/>
       <heatLineCom 
         :overAllList="overAllHeatList" 
         :platformList="platformHeatList"
-        :params="params"
+        :params="platformParams"
        />
     </section>
     <PraiseComment 
       :favorable="brandInfo.favorable" 
       :publicPraise="publicPraise"
+      :link="getApplink('praiseHotWordsList')"
       v-if="publicPraise.appraiseList"
     />
     <UserPortrait 
       :ageRangeList="userAnalysis.ageRangeList" 
       :genderList="userAnalysis.genderList"
       v-if="userAnalysis.genderList"
+      :link="getApplink('userAnalysis')"
     />
-    <eventList :eventList="brandEventList" :params="params2"/>
+    <eventList 
+      :eventList="brandEventList" 
+      :params="eventParams"
+      :link="getApplink('eventMarketingList')" 
+    />
     <Competing :rivalList="rivalList" v-if="rivalList.length" />
   </div>
 </template>
@@ -67,10 +73,10 @@ export default class BrandPage extends ViewBase {
   // 热度分析+平台信息
   overAllHeatList: any = []
   platformHeatList: any = []
-  get params() {
+  get platformParams() {
     return {
-      type: 1, // 1 品牌 2 艺人 3 电影 4 音乐-单曲 5 音乐-专辑  6 剧集
-      id: 1, // 详情页id
+      type: 1, // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
+      id: this.id, // 详情页id
       name: '奔驰',
       startTime: 20200304, // this.startTime,
       endTime: 20200310 // this.endTime
@@ -81,7 +87,7 @@ export default class BrandPage extends ViewBase {
   // 用户分析
   userAnalysis = {}
   // 事件
-  params2 = {}
+  eventParams = {}
   brandEventList: any = {}
   // 竞品分析
   rivalList = []
@@ -155,10 +161,37 @@ export default class BrandPage extends ViewBase {
       toast(ex)
     }
   }
+
+  /**
+   * 获取 applink
+   * 业务类型 businessType 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
+   * 业务Id businessObjectId
+   * @page 页面标识
+   */
+  getApplink(page: string) {
+    switch (page) {
+      case 'userAnalysis':
+        return {
+          name: 'sentimentbrand-user',
+          params: {
+            brandId: this.id
+          }
+        }
+      default:
+        return {
+          page,
+          businessType: 1,
+          businessObjectId: this.id
+        }
+    }
+  }
 }
 </script>
 
 <style lang="less" scoped>
 @import '~@/views/sentiment/brand/less/lib.less';
 @import './less/com.less';
+.select-time {
+  padding: 0 30px;
+}
 </style>

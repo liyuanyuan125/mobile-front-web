@@ -1,10 +1,10 @@
 <template>
   <div class="compet-content">
     <div class="title">作品分析</div>
-    <Movie :data='worksAnalysis.data.movieAnalysis' />
-    <Series :data='worksAnalysis.data.tvAnalysis' />
-    <Music :data='worksAnalysis.data.musicAnalysis' />
-    <Brand :data='worksAnalysis.data.brandAnalysis' />
+    <Movie :data='movieAnalysis' />
+    <Series :data='tvAnalysis' />
+    <Music :data='musicAnalysis' />
+    <Brand :data='brandAnalysis' />
   </div>
 </template>
 
@@ -27,7 +27,14 @@ import Brand from './brand.vue'
   }
 })
 export default class Main extends Vue {
-  @Prop({ type: Array, default: []}) worksAnalysis!: any
+  @Prop({ type: Object, default: []}) worksAnalysis!: any
+
+  movieAnalysis: any = this.worksAnalysis.movieAnalysis || {}
+  tvAnalysis: any = this.worksAnalysis.tvAnalysis || {}
+  musicAnalysis: any = this.worksAnalysis.musicAnalysis || {}
+  brandAnalysis: any = this.worksAnalysis.brandAnalysis || {}
+
+
 
 }
 

@@ -13,7 +13,7 @@
       :favorable="movieInfo.favorable"
       :publicPraise="publicPraise"
       :link="getApplink('praiseHotWordsList')"
-      v-bind="publicPraise.appraiseList"
+      v-if="publicPraise.appraiseList"
       id="praise"
     />
     <UserPortrait

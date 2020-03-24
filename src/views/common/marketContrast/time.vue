@@ -1,9 +1,11 @@
 <template>
   <div class="title">
     <div>{{title}}</div>
-    <select v-model="days" class="items" >
-      <option v-for="(item, index) in list" :key="index"  :value="item.key">{{ item.text }}</option>
-    </select>
+    <div class="selectdate">
+      <select v-model="days" class="items" >
+        <option v-for="(item, index) in list" :key="index"  :value="item.key">{{ item.text }}</option>
+      </select>
+    </div>
   </div>
 </template>
 
@@ -22,6 +24,7 @@ export default class Main extends Vue {
     {key: 'last_7_day', text: '最近7天'},
     {key: 'last_15_day', text: '最近15天'},
     {key: 'last_30_day', text: '最近30天'},
+    {key: 'last_60_day', text: '最近60天'},
     {key: 'last_90_day', text: '最近90天'},
   ]
 
@@ -44,15 +47,38 @@ export default class Main extends Vue {
     font-size: 40px;
   }
 }
-.items {
+.selectdate {
   width: 200px;
   height: 60px;
-  background: rgba(255, 255, 255, 1);
+  background-color: #fff;
   border-radius: 30px;
-  border: 2px solid rgba(235, 235, 235, 1);
+  border: 2px solid #ebebeb;
   text-align: center;
   color: #303030;
   font-size: 14px;
-  padding-left: 40px;
+  padding: 0 54px 0 24px;
+  position: relative;
+  &::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 10px solid #404d66;
+    border-left: 8px solid #fff;
+    border-right: 8px solid #fff;
+    background-color: #404d66;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 20px;
+  }
+
+  select {
+    width: 200px;
+    height: 56px;
+    line-height: 56px;
+    background: transparent;
+    font-size: 26px;
+    color: rgba(48, 48, 48, 0.6);
+  }
 }
 </style>

@@ -80,6 +80,8 @@ export default class Options extends Vue {
             return moment(new Date()).add(-15, 'days').format(this.timeFormat)
         case 'last_30_day':
             return moment(new Date()).add(-30, 'days').format(this.timeFormat)
+        case 'last_60_day':
+            return moment(new Date()).add(-60, 'days').format(this.timeFormat)
         case 'last_90_day':
             return moment(new Date()).add(-90, 'days').format(this.timeFormat)
         }

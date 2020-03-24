@@ -4,7 +4,7 @@
     <BaseInfoArea :baseInfo="movieInfo" :overView="movieOverView" />
     <TabNav :list="tabList" class="formattab" />
     <div class="hotanalysis">
-      <selectTime ref="refsTime" />
+      <selectTime ref="refsTime" class="heat" />
       <heatLineCom :overAllList="overAllHeat" :platformList="platformHeat" :params="params" />
     </div>
     <WantSeeTrend :dataTrend="wantSeeTrend" />
@@ -527,5 +527,8 @@ nav.formattab {
 }
 .hotanalysis {
   margin-top: 40px;
+  .heat {
+    padding: 0 30px 30px;
+  }
 }
 </style>

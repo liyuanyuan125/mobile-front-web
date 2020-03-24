@@ -22,7 +22,7 @@ export default class SelectDate extends Vue {
     { key: 'last_7_day', text: '最近7天' },
     { key: 'last_15_day', text: '最近15天' },
     { key: 'last_30_day', text: '最近30天' },
-    { key: 'last_60_day', text: '最近30天' },
+    { key: 'last_60_day', text: '最近60天' },
     { key: 'last_90_day', text: '最近90天' }
   ]
   created() {

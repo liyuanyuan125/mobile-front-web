@@ -1,42 +1,29 @@
 <template>
   <div class='pages'>
     <!-- <SentimentBar title="竞品分析详细报告" :sidebar="sidebar" /> -->
-    <div class='maintop'>
-      <div class="reBack"></div>
-      <div class='title'>竞品分析详细报告</div>
-    </div>
-    <div class='user'>
-      <div class='userlist' v-for="(item , index) in userItemList" :key='index'>
-        <div class='img'>
-          <img :src="item.url" alt="">
-          <i>x</i>
-        </div>
-        <span>{{item.name}}</span>
-      </div>
-      <div class='userlist posimg'>
-        <div class='img'>
-          <img src="" alt="">
-        </div>
-        <span>&nbsp;</span>
-        <p class='p' @click='addPerson'>+</p>
-      </div>
-    </div>
+    <SentimentBar title="竞品分析详细报告" :titleShow="true" />
+    <RivalList type="2" :rivalList="rivalList" v-if="rivalList.length" class="movierival" />
     <TabNav
       :list ="list"
       class="tab-nav"
       normal
     />
-    <section class="pane" id="hot">
-      <!-- 综合热度对比 -->
-      <combinedHeat />
-      <!-- 平台热度对比 -->
-      <platformHeat @chgpublicPk='chgpublicPk' /></Tab>
+    <section v-if="combinedHeat.interactList.length" class="pane" id="hot" style='padding-bottom: 30px;'>
+      <heatContrast 
+        style='padding-top: 33px; background: #FFF;'
+        :overAllHeat="combinedHeat.heatLineDate"
+        :colors="combinedHeat.colors"
+        :interactList="combinedHeat.interactList"
+        :materialList="combinedHeat.materialList"
+        :tabs="combinedHeat.tabs"
+        v-if="combinedHeat.interactList.length"
+        />
     </section>
 
-    <section class="pane" id="praise">
+    <section v-if='showpraise' class="pane" id="praise" >
       <!-- 口碑评论 -->
       <div class='public'>
-        <publicPraise />
+        <MarketContrast :fetch="publicPraise.fetch" :query="publicPraise.query" />
       </div>
     </section>
 
@@ -48,9 +35,16 @@
         <Table :title='publicObj.title' :tabList='publicObj.tabList' :tableTitle='publicObj.tableTitle' :tableItem='publicObj.tableItem'/>
         <!-- </div> -->
         <!-- 年龄分布 -->
-        <Age />
+        <Age :ageRangeList='ageRangeList' />
         <!-- 性别分布 -->
-        <Sex />
+        <div class='title'>性别分布</div>
+        <div class='main-show'>
+          <VsList
+            :data="sexdata"
+            class="chart"
+          />
+        </div>
+
         <!-- 用户地域分布对比 -->
         <Table :title='regionObj.title' :tabList='regionObj.tabList' :tableTitle='regionObj.tableTitle' :tableItem='regionObj.tableItem' @chgregionPk='chgregionPk'/>
       </div>
@@ -62,14 +56,14 @@
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
-import combinedHeat from './components/combinedHeat.vue'
-import platformHeat from './components/platformHeat.vue'
-import publicPraise from './components/publicPraise.vue'
-import Age from './components/age.vue'
-import Sex from './components/sex.vue'
+import RivalList from '@/views/common/rivalList/index.vue' // 竞品列表
+import heatContrast from '@/views/common/heatContrast/index.vue' // 热度分析对比
+import MarketContrast from '@/views/common/marketContrast/index.vue' // 口碑评论对比
+import Age from '@/views/common/ageDistribution/index.vue'
+import VsList, { VsItem } from '@/components/vsList'
 import Table from '@/views/common/table/table.vue'
 import TabNav, { TabNavItem } from '@/components/tabNav'
-
+import { rivalPraise , rivalanaly , rivalHeatAnalysis } from '@/api/kol'
 
 import { toast } from '@/util/toast'
 import { Tab, Tabs } from 'vant'
@@ -78,14 +72,14 @@ import { Tab, Tabs } from 'vant'
   components: {
     Tab,
     Tabs,
-    combinedHeat,
-    platformHeat,
-    publicPraise,
+    heatContrast,
+    MarketContrast,
     Age,
-    Sex,
+    VsList,
     Table,
     TabNav,
-    SentimentBar
+    SentimentBar,
+    RivalList
   }
 })
 export default class KolPage extends ViewBase {
@@ -96,12 +90,56 @@ export default class KolPage extends ViewBase {
     rivalIds: '1,2,4'
   }
 
+  show: any = false
+  showpraise: any = false
+
   item: any = null
 
-  userItemList: any = []
+  rivalList: any = []
 
   active: any = 0
-
+  // 热度分析数据
+  combinedHeat: any = {
+    colors: ['#88AAF6', '#4CC8D0', '#C965DD'],
+    // 综合对比数据值
+    heatLineDate: {
+      title: '综合热度分析',
+      dateList: []
+    },
+    // 新增互动
+    interactList: [],
+    // 新增物料
+    materialList: [],
+    tabs: [
+      {key: 0, text: '新增物料数'},
+      {key: 1, text: '新增互动数'}
+    ]
+  }
+  // 口碑评论
+  publicPraise: any = {
+    // 口碑评论补充数据
+    // 口碑评论 查询
+    query : {
+        movieIdList: 12345
+    },
+    fetch : async (query: any) => { // query: 查询参数
+        return {
+            code: '',
+            msg: '',
+            data: {
+                goodList: [
+                    {
+                        rivalName: query.startTime,
+                        percent: 12.35,
+                        hotWordList: [
+                            '你好'
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+  }
   // 平台分布
   publicObj: any = {
     title: '平台分布',
@@ -134,7 +172,7 @@ export default class KolPage extends ViewBase {
     ],
     tableItem: [
       {
-        actorName: '111',
+        rivalName: '111',
         dataList: [
           {
             name: '微博123',
@@ -159,7 +197,7 @@ export default class KolPage extends ViewBase {
         ]
       },
       {
-        actorName: '222',
+        rivalName: '222',
         dataList: [
           {
             name: '微博',
@@ -184,7 +222,7 @@ export default class KolPage extends ViewBase {
         ]
       },
       {
-        actorName: '333',
+        rivalName: '333',
         dataList: [
           {
             name: '微博',
@@ -210,6 +248,45 @@ export default class KolPage extends ViewBase {
       },
     ]
   }
+  // 性别分布
+  sexdata: VsItem[] = [
+    { name: '奔驰', rate1: 63.6, rate2: 44.4 },
+    { name: '兰博基尼', rate1: 39.6, rate2: 60.4 },
+    { name: '林肯', rate1: 20.2, rate2: 79.8 },
+    { name: '雪佛兰', rate1: 2.2, rate2: 97.8 },
+    { name: '玛莎拉蒂名字很长', rate1: 98.8, rate2: 1.2 },
+  ]
+  // 地域数据
+  userRegion: any = {}
+  // 年龄分布数据
+  ageRangeList = [
+      {
+          ageType: '20-30',
+          rivalList: [
+              {
+                  rivalName: '奔驰',
+                  rivalPercent: 32,
+              },
+              {
+                  rivalName: '奔驰',
+                  rivalPercent: 80,
+              }
+          ]
+      },
+      {
+          ageType: '20-30',
+          rivalList: [
+            {
+                  rivalName: '奔驰',
+                  rivalPercent: 32,
+              },
+              {
+                  rivalName: '奔驰',
+                  rivalPercent: 80,
+              }
+          ]
+      }
+  ]
 
   // 用户地域分布
   regionObj: any = {
@@ -252,7 +329,7 @@ export default class KolPage extends ViewBase {
     ],
     tableItem: [
       {
-        actorName: '111',
+        rivalName: '111',
         dataList: [
           {
             name: '微博123',
@@ -277,7 +354,7 @@ export default class KolPage extends ViewBase {
         ]
       },
       {
-        actorName: '222',
+        rivalName: '222',
         dataList: [
           {
             name: '微博',
@@ -302,7 +379,7 @@ export default class KolPage extends ViewBase {
         ]
       },
       {
-        actorName: '333',
+        rivalName: '333',
         dataList: [
           {
             name: '微博',
@@ -336,265 +413,90 @@ export default class KolPage extends ViewBase {
 
   created() {
     const mid = this.$route.params.kolId
+    this.getLineData()
     this.getDetail()
+    this.getPublicPraise()
     document.body.style.background = '#FBFBFB'
   }
 
-  async getDetail() {
+  async getLineData() {
     try {
-        this.userItemList = [
-          {
-            name: '欧阳娜娜',
-            url: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1906469856,4113625838&fm=26&gp=0.jpg'
-          },
-          {
-            name: '欧阳娜娜',
-            url: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1906469856,4113625838&fm=26&gp=0.jpg'
-          },
-          {
-            name: '欧阳娜娜',
-            url: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1906469856,4113625838&fm=26&gp=0.jpg'
-          },
-          {
-            name: '欧阳娜娜',
-            url: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1906469856,4113625838&fm=26&gp=0.jpg'
-          },
-          {
-            name: '欧阳娜娜',
-            url: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1906469856,4113625838&fm=26&gp=0.jpg'
-          },
-          {
-            name: '欧阳娜娜',
-            url: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1906469856,4113625838&fm=26&gp=0.jpg'
-          }
-        ]
-        this.item = {
-          userAges: [
-            {
-              type: '男',
-              value: 40.9,
-            },
-            {
-              type: '女',
-              value: 59.1,
-            }
-          ],
-          userGender: [
-            {
-              type: '≥19岁',
-              value: 40.9,
-            },
-            {
-              type: '20-24',
-              value: 59.1,
-            },
-            {
-              type: '25-29',
-              value: 40.9,
-            },
-            {
-              type: '30-34',
-              value: 40.9,
-            },
-            {
-              type: '35-39',
-              value: 40.9,
-            },
-            {
-              type: '≥40岁',
-              value: 40.9,
-            },
-          ],
-          cityList: [
-            {
-              type: '1. 123',
-              value: 40.9,
-            },
-            {
-              type: '1. 123',
-              value: 59.1,
-            },
-            {
-              type: '1. 123',
-              value: 40.9,
-            },
-            {
-              type: '1. 123',
-              value: 40.9,
-            },
-            {
-              type: '1. 123',
-              value: 40.9,
-            },
-            {
-              type: '1. 123',
-              value: 40.9,
-            },
-            {
-              type: '1. 123',
-              value: 40.9,
-            },
-            {
-              type: '1. 123',
-              value: 40.9,
-            },
-            {
-              type: '1. 123',
-              value: 40.9,
-            },
-            {
-              type: '1. 123',
-              value: 40.9,
-            },
-          ]
+      const { data: {
+        overAllHeat,
+        platform: {
+          interactList,
+          materialList
         }
+      }} = await rivalHeatAnalysis({
+        actorIdList: '1,2',
+        startTime: 20200304,
+        endTime: 20200311
+      })
+      this.combinedHeat.heatLineDate.dateList = overAllHeat || []
+      this.combinedHeat.interactList = interactList || []
+      this.combinedHeat.materialList = materialList || []
     } catch (ex) {
       toast(ex)
     }
   }
-  // 添加竞品操作
-  addPerson() {
-    // console.log('点击我添加一个')
+
+  async getPublicPraise() {
+    try {
+      const  data = await rivalPraise({
+        actorIdList: '1,2,3',
+        startTime: 20200304,
+        endTime: 20200311
+      })
+      this.publicPraise.query = {
+        actorIdList: '1,2,3',
+        startTime: 20200304,
+        endTime: 20200311
+      }
+      // const as = this.publicPraise.query
+      this.publicPraise.fetch = async (query: any) => { // query: 查询参数
+        return data
+      }
+    } catch (ex) {
+      toast(ex)
+    } finally {
+      this.showpraise = true
+    }
   }
-  // 平台热度对比
-  chgpublicPk(num: any) {
-    // console.log(num)
+
+  async getDetail() {
+    try {
+       const {
+         data: {
+           rivalList,
+           platformList,
+           ageRangeList,
+           genderList,
+           userRegion,
+         }
+       } = await rivalanaly({actorIdList: this.$route.params.ids})
+       this.rivalList = rivalList
+       this.publicObj.tableItem = platformList
+       this.ageRangeList = ageRangeList
+       this.sexdata = (genderList || []).map((it: any) => {
+         return {
+           name: it.rivalName,
+           rate1: 98.8,
+           rate2: 1.2
+         }
+       })
+       this.userRegion = userRegion
+       this.regionObj.tableItem = userRegion.cityList
+    } catch (ex) {
+      toast(ex)
+    }
   }
   // 用户地域分布对比
   chgregionPk(num: any) {
     if (num == 'province') {
-      this.regionObj.tableItem = [
-        {
-          actorName: '111',
-          dataList: [
-            {
-              name: '微博123',
-              value: '12%'
-            },
-            {
-              name: '微博',
-              value: '12%'
-            },
-            {
-              name: '微博',
-              value: '12%'
-            },
-            {
-              name: '微博',
-              value: '12%'
-            },
-            {
-              name: '微博',
-              value: '12%'
-            },
-          ]
-        },
-        {
-          actorName: '222',
-          dataList: [
-            {
-              name: '微博',
-              value: '12%'
-            },
-            {
-              name: '微博',
-              value: '12%'
-            },
-            {
-              name: '微博',
-              value: '12%'
-            },
-            {
-              name: '微博',
-              value: '12%'
-            },
-            {
-              name: '微博',
-              value: '12%'
-            },
-          ]
-        }
-      ]
+      this.regionObj.tableItem = this.userRegion.provinceList
     } else if (num == 'city') {
-      this.regionObj.tableItem = [
-        {
-          actorName: '111',
-          dataList: [
-            {
-              name: '微博123',
-              value: '12%'
-            },
-            {
-              name: '微博',
-              value: '12%'
-            },
-            {
-              name: '微博',
-              value: '12%'
-            },
-            {
-              name: '微博',
-              value: '12%'
-            },
-            {
-              name: '微博',
-              value: '12%'
-            },
-          ]
-        },
-        {
-          actorName: '222',
-          dataList: [
-            {
-              name: '微博',
-              value: '12%'
-            },
-            {
-              name: '微博',
-              value: '12%'
-            },
-            {
-              name: '微博',
-              value: '12%'
-            },
-            {
-              name: '微博',
-              value: '12%'
-            },
-            {
-              name: '微博',
-              value: '12%'
-            },
-          ]
-        },
-        {
-          actorName: '222',
-          dataList: [
-            {
-              name: '微博',
-              value: '12%'
-            },
-            {
-              name: '微博',
-              value: '12%'
-            },
-            {
-              name: '微博',
-              value: '12%'
-            },
-            {
-              name: '微博',
-              value: '12%'
-            },
-            {
-              name: '微博',
-              value: '12%'
-            },
-          ]
-        }
-      ]
+      this.regionObj.tableItem = this.userRegion.cityList
     }
-    // console.log(num)
   }
 
 }
@@ -603,137 +505,12 @@ export default class KolPage extends ViewBase {
 <style lang="less" scoped>
 .pages {
   width: 100%;
-  background: #f7f7f7;
-}
-.left {
-  float: left;
-}
-.right {
-  float: right;
-}
-.maintop {
-  width: 750px;
-  height: 188px;
-  padding-top: 39px;
-  background: rgba(247, 247, 249, 1);
-  div {
-    display: inline-block;
-    // float: left;
-  }
-  .title {
-    width: 300px;
-    height: 50px;
-    font-size: 36px;
-    font-weight: 500;
-    color: rgba(48, 48, 48, 1);
-    line-height: 50px;
-    margin-left: 28%;
-  }
-  .reBack {
-    width: 88px;
-    height: 88px;
-    position: absolute;
-    left: 0;
-    top: 19px;
-    &::after {
-      content: '';
-      width: 22px;
-      height: 22px;
-      border-left: 4px solid #000;
-      border-bottom: 4px solid #000;
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%) rotate(45deg);
-    }
-  }
-  .search {
-    width: 40px;
-    height: 40px;
-    border: 1px solid #ccc;
-    float: right;
-    margin-right: 5%;
-  }
+  // background: #f7f7f7;
 }
 /deep/ .van-sticky, /deep/ .van-tabs--line .van-tabs__wrap {
-  height: 100px;
-  background: rgba(255, 255, 255, 1);
-  border-radius: 60px 60px 0 0;
-}
-.age {
-  height: 450px;
-}
-.city {
-  padding: 3%;
-}
-.user {
-  width: 100%;
-  // background: #fff;
-  .userlist {
-    display: inline-block;
-    width: 25%;
-    height: 250px;
-    position: relative;
-    .img {
-      margin: 0 auto;
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      border: 1px solid rgba(212, 212, 212, 1);
-      background: #fff;
-      overflow: hidden;
-      img {
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        // max-width: 150px;
-        // min-height: 150px;
-        object-fit: contain;
-        background-color: #fff;
-      }
-      i {
-        display: block;
-        position: absolute;
-        top: 0;
-        right: 16px;
-        width: 40px;
-        height: 40px;
-        font-style: normal;
-        background: #8babef;
-        text-align: center;
-        line-height: 32px;
-        border-radius: 50%;
-        color: #fff;
-        font-size: 34px;
-        font-weight: 200;
-      }
-    }
-    span {
-      display: block;
-      width: 100%;
-      height: 50px;
-      text-align: center;
-      line-height: 50px;
-      font-size: 26px;
-      margin-top: 23px;
-    }
-  }
-  .posimg {
-    position: relative;
-    .p {
-      display: block;
-      position: absolute;
-      top: 15%;
-      left: 34%;
-      font-size: 80px;
-      font-weight: 100;
-      color: #4a4a4a;
-      width: 60px;
-      height: 60px;
-      text-align: center;
-      line-height: 60px;
-    }
-  }
+  // height: 100px;
+  // background: rgba(255, 255, 255, 1);
+  // border-radius: 60px 60px 0 0;
 }
 .userpk {
   background: #fff;
@@ -747,35 +524,25 @@ export default class KolPage extends ViewBase {
     line-height: 60px;
   }
   .title {
+    padding-left: 30px;
     height: 34px;
     font-size: 34px;
     font-weight: 500;
     color: rgba(48, 48, 48, 1);
     line-height: 34px;
     margin-top: 48px;
-    margin-bottom: 40px;
+    // margin-bottom: 40px;
   }
-}
-.Platform {
-  padding-bottom: 50px;
-  border-bottom: 1px solid rgba(216, 216, 216, 0.5);
 }
 .public {
   background: #fff;
   margin-top: 20px;
-  .usertitle {
-    height: 60px;
-    font-size: 40px;
-    font-weight: 500;
-    color: rgba(48, 48, 48, 1);
-    line-height: 60px;
-  }
 }
 
 /deep/ .van-tab {
   font-weight: 500;
   color: rgba(48, 48, 48, 1);
-  line-height: 100px;
+  // line-height: 100px;
   font-size: 30px;
 }
 /deep/ .van-tab--active, /deep/ .van-tabs__line {
@@ -784,8 +551,51 @@ export default class KolPage extends ViewBase {
 /deep/ .van-tabs__line {
   background-color: #88aaf6;
 }
-// /deep/ .tab-nav {
-//   border-radius:60px 60px 0px 0px;
-// }
+.pane {
+  // padding: 15px;
+  min-height: 200px;
+  background-color: #fff;
+  margin-bottom: 20px;
+}
 
+.pane-head {
+  font-size: 40px;
+  font-weight: 500;
+}
+
+.sub-pane {
+  min-height: 88px;
+  border-top: 1px solid #d8d8d8;
+  padding-top: 30px;
+  &:first-child {
+    border-top: 0;
+  }
+}
+
+.sub-pane-head {
+  font-size: 34px;
+  font-weight: 500;
+}
+
+.sub-pane-body {
+  min-height: 188px;
+}
+.main-show {
+  padding: 30px;
+}
+/deep/ .options-page {
+  padding-left: 30px;
+}
+/deep/ .module-title, /deep/ h3 {
+  height: 34px;
+  font-weight: 500;
+  font-size: 34px !important;
+  color: rgba(48, 48, 48, 1);
+  line-height: 34px;
+  margin-top: 48px;
+  // margin-bottom: 40px;
+}
+/deep/ h3 {
+  margin-bottom: 40px;
+}
 </style>

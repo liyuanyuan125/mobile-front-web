@@ -18,13 +18,17 @@
         </ul>
           
           <div class='table-item' v-for='(item, index ) in tableItem' :key='index' :style="{background:(String(index / 2).indexOf('.') == 1 ? 'backgroundColor':'#fff')}">
-            <div class='table-item-title'>{{item.actorName}}</div>
+            <div class='table-item-title'>{{item.rivalName}}</div>
             <ul class='table-item-ul'>
-              <li v-for='(itemlist, index ) in item.dataList' :key='index'>
+              <li v-for='(itemlist, index ) in item.dataList.slice(0, 5)' :key='index'>
                 <div v-if='itemlist.name != ""' class='top'>{{itemlist.name}}</div>
-                <div v-if='itemlist.name != ""' class='bottom'>{{itemlist.value}}</div>
-                <div v-if='itemlist.name == ""'>--</div>
+                <div v-if='itemlist.name != ""' class='bottom'>{{(itemlist.value/100).toFixed(1)}}%</div>
+                <!-- <div v-if='itemlist.name == ""'>--</div> -->
               </li>
+              <li>--</li>
+              <li>--</li>
+              <li>--</li>
+              <li>--</li>
             </ul>
           </div>
         </List>
@@ -144,6 +148,8 @@ export default class KolPage extends ViewBase {
     .table-item-ul {
       width: 83.34%;
       float: left;
+      height: 110px;
+      overflow: hidden;
       li {
         // padding-top: 2%;
         height: 100%;

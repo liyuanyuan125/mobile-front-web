@@ -4,14 +4,14 @@
         <ul>
             <li>
                 <p class='p1'>{{data.playCount == '' ? '-' : data.playCount}}</p>
-                <p class='p2'>累计播放量
+                <p class='p2' @click='showplayCount()'>累计播放量
                   <Icon style='right: 10%' name="question-o" size="13" class="icon-arrow"/>
                 </p>
             </li>
             <li class='chgli'></li>
             <li>
                 <p class='p1'>{{data.averagScore == '' ? '-' : data.averagScore}}</p>
-                <p class='p2'>作品均分
+                <p class='p2' @click='showaveragScore()'>作品均分
                   <Icon name="question-o" size="13" class="icon-arrow"/>
                 </p>
             </li>
@@ -24,7 +24,8 @@
         <div class='movielist'>
             <div class='rowmovie' v-for='item in data.tvList' :key='item.tvId'>
                 <div class="img">
-                  <img :src=item.coverUrl.url alt="">
+                  <!-- <img :src=item.coverUrl.url alt=""> -->
+                  <img :src="item.coverUrl.url || defaultImg"  alt="">
                 </div>
                 <div class='name'>
                   {{item.tvName}}
@@ -39,6 +40,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Icon } from 'vant'
 import moment from 'moment'
+import { alert } from '@/util/toast'
 
 @Component({
   components: {
@@ -47,6 +49,30 @@ import moment from 'moment'
 })
 export default class Main extends Vue {
   @Prop({ type: Object, default: []}) data!: any
+
+  defaultImg: any = '@/assets/tvdefault.png'
+
+    // 显示说明
+  showplayCount() {
+    alert({
+      title: '提示',
+      message:
+        '播放量为腾讯视频、芒果视频和搜狐视频播放量之和',
+      showConfirmButton: true,
+      className: 'alertwid'
+    })
+  }
+
+    // 显示说明
+  showaveragScore() {
+    alert({
+      title: '提示',
+      message:
+        '作品评分为全网综合评分',
+      showConfirmButton: true,
+      className: 'alertwid'
+    })
+  }
 
 }
 
@@ -89,6 +115,9 @@ export default class Main extends Vue {
       font-weight: bold;
       color: rgba(48, 48, 48, 1);
       line-height: 50px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .p2 {
       width: 100%;
@@ -114,6 +143,9 @@ export default class Main extends Vue {
       font-weight: 600;
       color: rgba(48, 48, 48, 1);
       line-height: 50px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 }

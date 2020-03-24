@@ -33,7 +33,7 @@ import { toast } from '@/util/toast'
   components: {
     UserPortrait,
     ChinaMap,
-    city
+    // city
   }
 })
 export default class KolPage extends ViewBase {

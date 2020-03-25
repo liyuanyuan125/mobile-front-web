@@ -4,12 +4,12 @@
     <ul class="platform-item">
       <li
         class="flex-box flex-between"
-        v-for="item in platformList"
+        v-for="item in dataList"
         :key="item.platformId"
         @click="goPlatformDetail(item)"
       >
         <div class="flex-box">
-          <img :src="item.platformLogo.url" />
+          <img :src="item.coverImg" />
           <div class="item-centers">
             <p class="values flex-box flex-between">
               <span v-for="it in item.platformValueList" :key="it.name">{{it.name}} {{it.value}}</span>
@@ -27,6 +27,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Icon } from 'vant'
 import ModuleHeader from '@/components/moduleHeader'
 import { openAppLink, AppLink } from '@/util/native'
+import { imgFixed } from '@/fn/imgProxy'
 
 @Component({
   components: {
@@ -39,6 +40,16 @@ export default class Main extends Vue {
   @Prop({ type: Array, default: () => [] }) platformList!: any
   /** 类型，id，天数， 开始/结束时间 五个参数 跳转更多二级页 */
   @Prop({ type: Object }) params!: any
+
+  get dataList() {
+   const list = (this.platformList || []).map((it: any) => {
+     return {
+       ...it,
+       coverImg: imgFixed(it.platformLogo, 60, 60)
+     }
+    })
+    return list
+  }
 
   link: any = {
     name: 'platform-detail',

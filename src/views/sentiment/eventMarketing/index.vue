@@ -1,44 +1,49 @@
 <template>
-  <div class="content" v-if='show'>
+  <div class="content" v-if="show">
     <SentimentBar title="营销事件详情" :titleShow="true" />
-    <div class='main'>
+    <div class="main">
       <h2>{{title}}</h2>
-      <div class='show-num'>
-        <div class='left'>
-          <span class='s1'>{{eventInfo.interactCount}}</span>
-          <span class='s2'>&nbsp;累计互动</span>
+      <div class="show-num">
+        <div class="left">
+          <span class="s1">{{eventInfo.interactCount}}</span>
+          <span class="s2">&nbsp;累计互动</span>
         </div>
-        <div class='right'>
-          今日新增：{{eventInfo.todayInteractAdd}}
+        <div class="right">今日新增：{{eventInfo.todayInteractAdd}}</div>
+      </div>
+      <div class="show-echarts">
+        <Button
+          class="chg"
+          v-for="(item) in tabList"
+          :key="item.key"
+          :class="{'chgbgc': newPk == item.key}"
+          type="primary"
+          @click="chgnewPk(item)"
+        >{{item.name}}</Button>
+        <div @click="openAnalysisPage">
+          <hotLine
+            :lineDatas="lineDatas"
+            :platformList="platformHeat"
+            :params="params"
+            v-if="this.yDate.length"
+            ref="hots"
+          />
         </div>
       </div>
-      <div class='show-echarts'>
-        <Button class='chg' v-for='(item) in tabList' :key='item.key' :class="{'chgbgc': newPk == item.key}" type="primary" @click='chgnewPk(item)'>{{item.name}}</Button>
-        <hotLine 
-          :lineDatas="lineDatas"
-          :platformList="platformHeat"
-          :params="params"
-          v-if="this.yDate.length"
-          ref="hots"
-        />
-     </div>
-
     </div>
-      <spread :dataList="spreadList" />
-      <!-- 口碑评论 -->
-      <PraiseComment 
-        :favorable="publicPraise.favorable" 
-        :publicPraise="publicPraise"
-        :link="getApplink('praiseHotWordsList')"
-      />
-    
+    <spread :dataList="spreadList" :link="getApplink('eventSpreadPathList')" />
+    <!-- 口碑评论 -->
+    <PraiseComment
+      :favorable="publicPraise.favorable"
+      :publicPraise="publicPraise"
+      :link="getApplink('eventPraiseHotWordsList')"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
-import { Tab, Tabs, Icon , Button } from 'vant'
+import { Tab, Tabs, Icon, Button } from 'vant'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import PraiseComment from '@/views/common/praiseComment/index.vue' // 口碑评论
 import spread from '@/views/common/spreadList/index.vue' // 事件
@@ -46,9 +51,7 @@ import { toast } from '@/util/toast'
 import { alert } from '@/util/toast'
 import { eventDetail } from './data'
 import { hotLine } from '@/components/hotLine'
-
-
-
+import { openAppLink, AppLink } from '@/util/native'
 
 @Component({
   components: {
@@ -64,7 +67,9 @@ import { hotLine } from '@/components/hotLine'
 })
 export default class KolPage extends ViewBase {
   /* 标题name */
-  @Prop({ type: String, default: '《封神三部曲》曝小寒海报中国首部 神话史诗将映' }) title!: string
+  @Prop({ type: String, default: '《封神三部曲》曝小寒海报中国首部 神话史诗将映' })
+  title!: string
+  eventId: string = ''
 
   xDate = []
   yDate = []
@@ -138,7 +143,6 @@ export default class KolPage extends ViewBase {
     }
   }
 
-
   get lineDatas() {
     return {
       title: '',
@@ -150,23 +154,19 @@ export default class KolPage extends ViewBase {
           name: this.newPkName
         }
       ]
-   }
+    }
   }
 
   created() {
+    this.eventId = this.$route.params.eventId
     this.geteventDetail()
   }
 
   async geteventDetail() {
     try {
       const {
-        data: {
-          eventInfo,
-          platformList,
-          spreadList,
-          publicPraise,
-        }
-      } = await eventDetail({eventId: this.$route.params.eventId})
+        data: { eventInfo, platformList, spreadList, publicPraise }
+      } = await eventDetail({ eventId: this.$route.params.eventId })
       this.publicPraise = publicPraise
       this.spreadList = spreadList
       this.eventInfo = eventInfo
@@ -220,22 +220,24 @@ export default class KolPage extends ViewBase {
    */
   getApplink(page: string) {
     switch (page) {
-      case 'userAnalysis':
-        return {
-          name: 'sentimentactoruser',
-          params: {
-            movieId: 100038
-          }
-        }
       default:
         return {
           page,
-          businessType: 2,
-          businessObjectId: 100038
+          eventId: this.eventId,
+          eventType: 101 // 100=全网事件 101=营销事件
         }
     }
   }
 
+  // 打开趋势大图
+  openAnalysisPage() {
+    const link: AppLink = {
+      page: 'eventTrendDetail',
+      eventId: this.eventId,
+      title: encodeURIComponent(this.title)
+    }
+    openAppLink(link)
+  }
 }
 </script>
 
@@ -291,9 +293,6 @@ export default class KolPage extends ViewBase {
 }
 .alertwid {
   width: 90%;
-}
-/deep/ .options-page {
-  border-top: 0;
 }
 /deep/ .line-title {
   display: none;

@@ -202,9 +202,9 @@ export default new Router({
     },
     // 营销事件详情页 纪洁琼
     {
-      path: '/sentiment/eventMarketing/:eventId',
+      path: '/sentiment/eventMarketing/:eventId(\\d+)',
       name: 'sentimenteventmarketing',
-      component: () => import('./views/commonPage/eventMarketing/index.vue')
+      component: () => import('./views/sentiment/eventMarketing/index.vue')
     },
 
     // ===*** 单曲

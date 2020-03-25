@@ -20,12 +20,11 @@
           @click="chgnewPk(item)"
         >{{item.name}}</Button>
         <div @click="openAnalysisPage">
-          <hotLine
-            :lineDatas="lineDatas"
-            :platformList="platformHeat"
-            :params="params"
-            v-if="this.yDate.length"
-            ref="hots"
+          <heatLineCom 
+            :overAllList="overAllHeatList" 
+            :platformList="platformHeatList"
+            :params="platformParams"
+            lineTitle=""
           />
         </div>
       </div>
@@ -50,7 +49,8 @@ import spread from '@/views/common/spreadList/index.vue' // 事件
 import { toast } from '@/util/toast'
 import { alert } from '@/util/toast'
 import { eventDetail } from './data'
-import { hotLine } from '@/components/hotLine'
+import heatLineCom from '@/views/common/heatLineCom/index.vue' // 热度分析
+
 import { openAppLink, AppLink } from '@/util/native'
 
 @Component({
@@ -61,44 +61,33 @@ import { openAppLink, AppLink } from '@/util/native'
     SentimentBar,
     PraiseComment,
     Button,
-    hotLine,
+    heatLineCom,
     spread
   }
 })
 export default class KolPage extends ViewBase {
-  /* 标题name */
-  @Prop({ type: String, default: '《封神三部曲》曝小寒海报中国首部 神话史诗将映' })
   title!: string
   eventId: string = ''
 
-  xDate = []
-  yDate = []
-  eventList = []
-  platformHeat = []
+      // 热度分析+平台信息
+  overAllHeatList: any = []
+  platformHeatList: any = []
+  get platformParams() {
+    return {
+      type: 101, // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
+      id: this.$route.params.actorId, // 详情页id
+      name: this.title,
+      startTime: 20200304, // this.startTime,
+      endTime: 20200310 // this.endTime
+    }
+  }
 
   show: any = false
   newPk: any = 'newsList'
   newPkName: any = '新闻'
   // 口碑评论 数据
   favorable: any = ''
-  publicPraise = {
-    appraiseList: [
-      {
-        raisePercent: 1200,
-        raiseName: '正面评价'
-      },
-      {
-        raisePercent: 3200,
-        raiseName: '负面评价'
-      },
-      {
-        raisePercent: 2300,
-        raiseName: '中性评价'
-      }
-    ],
-    hotWordList: ['劲暴', '太帅了', '要严肃', '四个字的'],
-    badWordList: ['劲暴', '太帅', '严肃', '四个字的']
-  }
+  publicPraise = {}
   // 数据表切换列表
   tabList: any = [
     {
@@ -125,40 +114,10 @@ export default class KolPage extends ViewBase {
   spreadList: any = []
   eventInfo: any = {}
 
-  get startTime() {
-    return (this.$refs.hots as any).startTime
-  }
-
-  get endTime() {
-    return (this.$refs.hots as any).endTime
-  }
-
-  get params() {
-    return {
-      type: 101, // 1 品牌 2 艺人 3 电影 4 音乐-单曲 5 音乐-专辑  6 剧集
-      id: this.$route.params.eventId,
-      name: this.title, // 天数
-      startTime: 20200304, // this.startTime,
-      endTime: 20200304 // this.endTime
-    }
-  }
-
-  get lineDatas() {
-    return {
-      title: '',
-      xDate: this.xDate, // 格式 ['20201212', '20121122', '20121122','20121122','20121122','20121122','20121122']
-      eventList: this.eventList,
-      yDate: [
-        {
-          data: this.yDate, // 格式 [333,33333,303333333,33333,333,33333,303333333]
-          name: this.newPkName
-        }
-      ]
-    }
-  }
-
   created() {
     this.eventId = this.$route.params.eventId
+    const tit: any = this.$route.query.title || '营销事件详情'
+    this.title = decodeURIComponent(tit)
     this.geteventDetail()
   }
 
@@ -170,10 +129,8 @@ export default class KolPage extends ViewBase {
       this.publicPraise = publicPraise
       this.spreadList = spreadList
       this.eventInfo = eventInfo
-      this.xDate = (eventInfo.newsList || []).map((it: any) => it.name)
-      this.yDate = (eventInfo.newsList || []).map((it: any) => it.value)
-      // this.eventList = (overAllHeatList || []).map((it: any) => it.eventList)
-      this.platformHeat = platformList || []
+      this.overAllHeatList = eventInfo.newsList
+      this.platformHeatList = platformList || []
     } catch (ex) {
       toast(ex)
     } finally {
@@ -185,9 +142,7 @@ export default class KolPage extends ViewBase {
   chgnewPk(params: any) {
     this.newPk = params.key
     this.newPkName = params.name
-    this.xDate = (this.eventInfo[params.key] || []).map((it: any) => it.name)
-    this.yDate = (this.eventInfo[params.key] || []).map((it: any) => it.value)
-    // this.$emit('chgnewPk', num)
+    this.overAllHeatList = this.eventInfo[params.key] || []
   }
 
   // 所有的 applink
@@ -202,12 +157,12 @@ export default class KolPage extends ViewBase {
     },
     praise: {
       page: 'praiseHotWordsList',
-      businessType: 2,
+      businessType: 101,
       businessObjectId: '100038'
     },
     user: {
       page: 'praiseHotWordsList',
-      businessType: 2,
+      businessType: 101,
       businessObjectId: '100038'
     }
   }

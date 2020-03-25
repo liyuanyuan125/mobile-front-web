@@ -29,13 +29,14 @@ export default class Main extends Vue {
   @Prop({ type: Array, default: () => []}) overAllList!: any
   @Prop({ type: Array, default: () => []}) platformList!: any
   @Prop({ type: Object}) params!: any
+  @Prop({ type: String, default: '综合热度'}) lineTitle!: string
 
   get lineDatas() {
     const xDate = (this.overAllList || []).map((it: any) => it.date)
     const yDate = (this.overAllList || []).map((it: any) => it.value)
     const eventList = (this.overAllList || []).map((it: any) => it.eventList || [])
     return {
-      title: '综合热度',
+      title: this.lineTitle,
       xDate,
       eventList,
       yDate: [

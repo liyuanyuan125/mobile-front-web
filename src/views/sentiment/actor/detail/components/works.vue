@@ -1,10 +1,10 @@
 <template>
   <div class="compet-content">
     <div class="title">作品分析</div>
-    <Movie :data='movieAnalysis' />
-    <Series :data='tvAnalysis' />
-    <Music :data='musicAnalysis' />
-    <Brand :data='brandAnalysis' />
+    <Movie v-if='movieAnalysis.length == 0' :data='movieAnalysis' />
+    <Series v-if='tvAnalysis.length == 0' :data='tvAnalysis' />
+    <Music v-if='musicAnalysis.length == 0' :data='musicAnalysis' />
+    <Brand v-if='brandAnalysis.length == 0' :data='brandAnalysis' />
   </div>
 </template>
 

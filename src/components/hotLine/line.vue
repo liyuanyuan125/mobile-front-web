@@ -1,7 +1,6 @@
 <template>
   <div class="content-wrap">
     <div class="line-echart" ref="refChart" v-if="lineData.xDate.length" />
-    
   </div>
 </template>
 
@@ -76,10 +75,11 @@ export default class Main extends Vue {
     const options: any = {
       title: {
         text: this.lineData.title,
-        left: -5,
+        left: 12,
         textStyle: {
-          fontSize: 14,
-          color: '#303030'
+          fontSize: 17,
+          color: '#303030',
+          fontWeight: 0
         }
       },
       legend: {
@@ -152,8 +152,8 @@ export default class Main extends Vue {
         }
       },
       grid: {
-        left: 0,
-        right: 16,
+        left: 15,
+        right: 26,
         top: 50,
         bottom: 40,
         containLabel: true
@@ -164,7 +164,7 @@ export default class Main extends Vue {
         interval: 5,
         data: this.xAxisDate,
         axisLabel: {
-          color: '#47403B',
+          color: '#8F8F8F',
           fontSize: 11
         },
         axisTick: {
@@ -179,7 +179,7 @@ export default class Main extends Vue {
       },
       yAxis: {
         axisLabel: {
-          color: '#47403B'
+          color: '#8F8F8F'
         },
         axisLine: {
           lineStyle: {
@@ -213,6 +213,7 @@ export default class Main extends Vue {
   position: relative;
   width: 100%;
   padding-bottom: 65px;
+  z-index: 2;
 }
 .line-echart {
   width: 100%;

@@ -1,44 +1,62 @@
 <template>
   <div class="page">
     <SentimentBar :title="title" :titleShow="true" />
-    <div class="bubble">
-      <BubbleLeft :data="bubbleData">
-        <template>
-          <!-- 示例 -->
-          <div slot="right">
-            <div class="content">
-              <h5>{{bubbleTotal.overallHot}}</h5>
-              <p>综合热度</p>
+    <div v-if="eventStatus === 1" class="unevent">
+      <span></span>
+      <h6>暂无数据</h6>
+      <p>
+        该事件的分析报告将于分析周期开始的第二天展示，
+        <br />分析周期内分析报告每日更新，请耐心等待！
+      </p>
+    </div>
+    <div v-if="eventStatus === 2 || eventStatus === 3">
+      <div class="bubble">
+        <BubbleLeft :data="bubbleData">
+          <template>
+            <!-- 示例 -->
+            <div slot="right">
+              <div class="content">
+                <h5>{{bubbleTotal.overallHot}}</h5>
+                <p>综合热度</p>
+              </div>
+              <div class="content">
+                <h5>{{bubbleTotal.materials}}</h5>
+                <p>累计媒体物料</p>
+              </div>
+              <div class="content">
+                <h5>{{bubbleTotal.interact}}</h5>
+                <p @click="showNote">
+                  累计互动数
+                  <Icon name="question-o" size="16" color="#303030" />
+                </p>
+              </div>
             </div>
-            <div class="content">
-              <h5>{{bubbleTotal.materials}}</h5>
-              <p>累计媒体物料</p>
-            </div>
-            <div class="content">
-              <h5>{{bubbleTotal.interact}}</h5>
-              <p>累计互动数</p>
-            </div>
-          </div>
-        </template>
-      </BubbleLeft>
-      <div class="curve">
-        <div class="curvetop"></div>
-        <div class="curvebot"></div>
+          </template>
+        </BubbleLeft>
+        <div class="curve">
+          <div class="curvetop"></div>
+          <div class="curvebot"></div>
+        </div>
       </div>
+      <TabNav :list="tabList" class="formattab" />
+      <div class="hotanalysis">
+        <ModuleHeader title="热度分析" class="heat" />
+        <heatLineCom :overAllList="overAllHeat" :platformList="platformHeat" :params="params" />
+      </div>
+      <SpreadList :dataList="spreadList" :link="getApplink('eventSpreadPathList')" />
+      <PraiseComment
+        :favorable="publicPraise.favorable"
+        :publicPraise="publicPraise"
+        :link="getApplink('eventPraiseHotWordsList')"
+        v-if="publicPraise.appraiseList"
+        id="praise"
+      />
     </div>
-    <TabNav :list="tabList" class="formattab" />
-    <div class="hotanalysis">
-      <ModuleHeader title="热度分析" class="heat" />
-      <heatLineCom :overAllList="overAllHeat" :platformList="platformHeat" :params="params" />
+    <div v-if="eventStatus === 4" class="eventclose">
+      <span></span>
+      <h6>该事件已在后台关闭</h6>
+      <p>如有问题 请联系客服 400-605-0606</p>
     </div>
-    <SpreadList :dataList="spreadList" />
-    <PraiseComment
-      :favorable="publicPraise.favorable"
-      :publicPraise="publicPraise"
-      :link="getApplink('praiseHotWordsList')"
-      v-if="publicPraise.appraiseList"
-      id="praise"
-    />
   </div>
 </template>
 
@@ -46,6 +64,7 @@
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import { eventDetail } from './data'
+import { Icon } from 'vant'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import { BubbleLeft, BubbleItem } from '@/components/bubble'
 import TabNav, { TabNavItem } from '@/components/tabNav'
@@ -53,9 +72,11 @@ import heatLineCom from '@/views/common/heatLineCom/index.vue'
 import PraiseComment from '@/views/common/praiseComment/index.vue' // 口碑评论
 import ModuleHeader from '@/components/moduleHeader'
 import SpreadList from '@/views/common/spreadList/index.vue' // 传播路径
+import { alert } from '@/util/toast'
 
 @Component({
   components: {
+    Icon,
     SentimentBar,
     ModuleHeader,
     BubbleLeft,
@@ -67,6 +88,7 @@ import SpreadList from '@/views/common/spreadList/index.vue' // 传播路径
 })
 export default class NetworkEventPage extends ViewBase {
   eventId: string = ''
+  eventStatus: number = 1
   title: string = ''
   bubbleData: BubbleItem[] = [] // 概览数据左
   bubbleTotal: any = {} // 概览数据右
@@ -78,7 +100,7 @@ export default class NetworkEventPage extends ViewBase {
   ]
   overAllHeat: any[] = [] // 热度分析趋势
   platformHeat: any[] = [] // 热度分析平台
-  spreadList: any[] = []
+  spreadList: any[] = [] // 传播路径
   publicPraise: any = {} // 口碑
   // 热度分析传参
   get params() {
@@ -101,6 +123,7 @@ export default class NetworkEventPage extends ViewBase {
 
   async getEventData() {
     const res: any = await eventDetail(this.eventId)
+    this.eventStatus = res.eventStatus
     this.bubbleData = res.eventOverView.paltformList
     this.overAllHeat = res.overAllHeatList
     this.platformHeat = res.platformHeadList
@@ -121,20 +144,23 @@ export default class NetworkEventPage extends ViewBase {
    */
   getApplink(page: string) {
     switch (page) {
-      case 'userAnalysis':
-        return {
-          name: 'sentimentmovieuseranalysis',
-          params: {
-            movieId: 100038
-          }
-        }
       default:
         return {
           page,
-          businessType: 3,
-          businessObjectId: 100038
+          eventId: this.eventId,
+          eventType: 100 // 100=全网事件 101=营销事件
         }
     }
+  }
+
+  // 显示说明
+  showNote() {
+    alert({
+      // title: '提示',
+      message: '互动数是各物料的点赞、评论、转发、阅读或播放的累计互动之和',
+      showConfirmButton: true,
+      className: 'alertwid'
+    })
   }
 }
 </script>
@@ -185,6 +211,10 @@ export default class NetworkEventPage extends ViewBase {
     font-size: 26px;
     line-height: 37px;
     margin-top: 8px;
+    .van-icon-question-o {
+      vertical-align: middle;
+      margin-top: -2px;
+    }
   }
 }
 nav.formattab {
@@ -198,6 +228,38 @@ nav.formattab {
   .heat {
     padding: 0 30px;
     margin-bottom: 30px;
+  }
+}
+// 事件未开始
+.unevent,
+.eventclose {
+  text-align: center;
+  padding: 200px 0 0;
+  span {
+    display: inline-block;
+    background: url('../../../../assets/sentiment/event-null.png') no-repeat center;
+    background-size: 100%;
+    width: 268px;
+    height: 220px;
+  }
+  h6 {
+    font-weight: normal;
+    font-size: 33px;
+    line-height: 45px;
+    margin-top: 15px;
+    color: #88aaf6;
+  }
+  p {
+    font-size: 25px;
+    line-height: 40px;
+    color: #8f8f8f;
+    margin-top: 15px;
+  }
+}
+// 事件被关闭
+.eventclose {
+  span {
+    background-image: url('../../../../assets/sentiment/event-close.png');
   }
 }
 </style>

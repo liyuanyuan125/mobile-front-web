@@ -5,19 +5,19 @@
     <div v-if="boxoffice">
       <div class="bfstatis">
         <div>
-          <strong>{{boxoffice.totalBoxOffice}}</strong>
+          <strong>{{boxoffice.totalBoxOffice ? boxoffice.totalBoxOffice : '-'}}</strong>
           <p>累计票房</p>
         </div>
         <div>
-          <strong>{{boxoffice.totalPerson}}</strong>
+          <strong>{{boxoffice.totalPerson ? boxoffice.totalPerson : '-'}}</strong>
           <p>总人次</p>
         </div>
         <div>
-          <strong>{{boxoffice.firstDayBoxOffice}}</strong>
+          <strong>{{boxoffice.firstDayBoxOffice ? boxoffice.firstDayBoxOffice : '-'}}</strong>
           <p>首日票房</p>
         </div>
         <div>
-          <strong>{{boxoffice.firstWeekBoxOffice}}</strong>
+          <strong>{{boxoffice.firstWeekBoxOffice ? boxoffice.firstWeekBoxOffice : '-'}}</strong>
           <p>首周票房</p>
         </div>
       </div>
@@ -32,23 +32,39 @@
         </ul>
       </div>
       <div class="chartbox">
-        <dubline :lineData="linedata" v-if="linedata.xDate" class="wantchart" />
+        <LineGrap
+          :lineData="linedata"
+          v-if="linedata.xDate"
+          class="wantchart"
+          :formatterHtml="formatterHtml"
+        />
       </div>
       <div class="others">
         <div class="inner">
           <div class="bfbox" @click="goLink(2)">
             <div class="tit">
               <strong>城市票房</strong>
-              <span>{{boxoffice.cityBoxOffice}}</span>
+              <span
+                style="fontFamily: 'DIN Alternate'"
+              >{{boxoffice.cityBoxOffice ? boxoffice.cityBoxOffice : '-'}}</span>
             </div>
-            <p>TOP 1 {{boxoffice.cityBoxOfficeTop}}</p>
+            <p
+              class="van-ellipsis"
+            >TOP 1 {{boxoffice.cityBoxOfficeTop ? boxoffice.cityBoxOfficeTop : '-'}}</p>
           </div>
+        </div>
+        <div class="inner">
           <div class="bfbox" @click="goLink(3)">
             <div class="tit">
               <strong>影投票房</strong>
-              <span>{{boxoffice.companyBoxOffice}}</span>
+              <span
+                style="fontFamily: 'DIN Alternate'"
+              >{{boxoffice.companyBoxOffice ? boxoffice.companyBoxOffice : '-'}}</span>
+              <!-- <span style="fontFamily: 'DIN Alternate'">3,213.4万</span> -->
             </div>
-            <p>TOP 1 {{boxoffice.companyBoxOfficeTop}}</p>
+            <p
+              class="van-ellipsis"
+            >TOP 1 {{boxoffice.companyBoxOfficeTop ? boxoffice.companyBoxOfficeTop : '-'}}</p>
           </div>
         </div>
       </div>
@@ -62,14 +78,16 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
-import { dubline } from '@/components/hotLine'
+import LineGrap from './lineGraph.vue'
 import ModuleHeader from '@/components/moduleHeader'
 import { openAppLink, AppLink } from '@/util/native'
+import { roleNumber } from '@/fn/validateRules'
+import moment from 'moment'
 
 @Component({
   components: {
     ModuleHeader,
-    dubline
+    LineGrap
   }
 })
 export default class BoxOffice extends ViewBase {
@@ -123,6 +141,7 @@ export default class BoxOffice extends ViewBase {
       const xDate = (data || []).map((it: any) => it.name)
       const yDate = (data || []).map((it: any) => it.value)
       const eventList = (data || []).map((it: any) => it.eventList)
+
       this.linedata = {
         xDate,
         eventList,
@@ -139,6 +158,21 @@ export default class BoxOffice extends ViewBase {
   goLink(type: number) {
     this.appLink.boxOfficeType = type ? type : 1
     openAppLink(this.appLink)
+  }
+
+  // 处理chart 浮层 tooltip
+  formatterHtml = (params: any, query: any) => {
+    const weekDays = ['日', '一', '二', '三', '四', '五', '六']
+    const day = weekDays[moment(query).day()]
+    const date = moment(query).format('YYYY-MM-DD')
+    return `
+           <div style="border:2px solid rgba(48,48,48,.1);border-radius:6px; padding:7px 10px;background-color:#fff">
+             <p style="color:#47403B;font-size:14px;line-height:16px">${date} 周${day}</p>
+             <div style="color:#88AAF6;font-weight:bold;font-size:14px;line-height:16px;margin-top:5px">${roleNumber(
+               Math.abs(params.data)
+             )}票房</div>
+           </div>
+          `
   }
 }
 </script>
@@ -188,8 +222,10 @@ export default class BoxOffice extends ViewBase {
   }
   .others {
     padding-right: 30px;
+    display: flex;
     .inner {
-      display: flex;
+      // display: flex;
+      width: 50%;
     }
     .bfbox {
       flex: 1;
@@ -210,6 +246,7 @@ export default class BoxOffice extends ViewBase {
       font-size: 30px;
       color: #88aaf6;
       text-align: right;
+      white-space: nowrap;
     }
     p {
       font-size: 26px;

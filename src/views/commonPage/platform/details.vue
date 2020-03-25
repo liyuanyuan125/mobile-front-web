@@ -1,34 +1,38 @@
 <template>
   <div class="plat-content">
     <SentimentBar :title="title" :titleShow="true" />
-      <ul class="platform-item">
+      <ul class="platform-item" v-if="platformList.length">
         <li class="flex-box flex-between"
           v-for="item in platformList" 
           :key="item.platformId"
           @click="goPlatformDetail(item)"
         >
           <div class="flex-box">
-            <img :src="item.platformLogo.url" >
+            <img :src="item.coverImg" alt="" >
             <div class="item-centers">
               <p class="values flex-box flex-between"><span v-for="it in item.platformValueList" :key="it.name">{{it.name}} {{it.value}}</span></p>
               <p class="texts">{{item.platformNotice}}</p>
             </div>
           </div>
-          <!-- <router-link to="" class="arrow">
+          <router-link to="" class="arrow">
             <van-icon name="arrow" size="20" />
-          </router-link> -->
+          </router-link>
         </li>
       </ul>
+      <DataEmpty v-else />
       <!-- <div class="submit-button">
         <router-link to="" class="to-link" >查看详细报告</router-link>
       </div> -->
+      
     </div>
 </template>
 
 <script lang='ts'>
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Icon } from 'vant'
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
+import { imgFixed } from '@/fn/imgProxy'
 import { toast } from '@/util/toast'
 import {
   brandPlatList,
@@ -44,7 +48,8 @@ import { openAppLink, AppLink } from '@/util/native'
 @Component({
   components: {
     [Icon.name]: Icon,
-    SentimentBar
+    SentimentBar,
+    DataEmpty
   }
 })
 export default class Main extends Vue {
@@ -87,14 +92,19 @@ export default class Main extends Vue {
   async list() {
     try {
       const res: any = await this.handleTypes()
-      this.platformList = res.data.platformList || []
+      this.platformList = (res.data.platformList || []).map((it: any) => {
+        return {
+          ...it,
+          coverImg: imgFixed(it.platformLogo, 60, 60)
+        }
+      })
     } catch (ex) {
       toast(ex)
     }
   }
   // 去原生app评台详情页
   goPlatformDetail(item: any) {
-    const url: AppLink = {
+    let url: AppLink = {
       page: 'platformHotDetail',
       businessType: this.type,
       businessObjectId: this.id,
@@ -102,6 +112,17 @@ export default class Main extends Vue {
       startTime: this.startTime,
       endTime: this.endTime
     }
+
+    // 100=全网事件 101=营销事件 app端将事件和业务的平台详情页分成了两个页
+    if (this.type === 100 || this.type === 101) {
+      url = {
+        page: 'eventPlatformHotDetail',
+        eventType: this.type,
+        eventId: this.id,
+        platformCode: item.platformId
+      }
+    }
+
     openAppLink(url)
   }
 }
@@ -113,13 +134,11 @@ export default class Main extends Vue {
 @import '~@/components/hotLine/com.less';
 @import '~@/components/hotLine/platform.less';
 .plat-content {
-  padding: 0 30px 30px;
-  padding-top: 148px;
+  padding: 100px 30px 30px;
 }
 .platform-item {
   li {
-    border-top: solid 1px @c-divider;
-    border-bottom: none;
+    border-bottom: solid 1px @c-divider;
     &:last-child {
       border-bottom: solid 1px @c-divider;
     }

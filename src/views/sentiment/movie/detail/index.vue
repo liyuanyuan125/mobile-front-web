@@ -13,7 +13,7 @@
       :favorable="movieInfo.favorable"
       :publicPraise="publicPraise"
       :link="getApplink('praiseHotWordsList')"
-      v-bind="publicPraise.appraiseList"
+      v-if="publicPraise.appraiseList"
       id="praise"
     />
     <UserPortrait
@@ -364,7 +364,7 @@ export default class MoviePage extends ViewBase {
     totalGainList: [
       {
         date: 1583979088061,
-        ' eventList': [
+        eventList: [
           {
             eventName: '花木兰首映获好评',
             eventId: '132323'
@@ -382,7 +382,7 @@ export default class MoviePage extends ViewBase {
       },
       {
         date: 1583979088061,
-        ' eventList': [
+        eventList: [
           {
             eventName: '花木兰首映获好评',
             eventId: '132323'
@@ -400,7 +400,7 @@ export default class MoviePage extends ViewBase {
       },
       {
         date: 1583979088061,
-        ' eventList': [
+        eventList: [
           {
             eventName: '花木兰首映获好评',
             eventId: '132323'
@@ -410,7 +410,7 @@ export default class MoviePage extends ViewBase {
       },
       {
         date: 1583979088061,
-        ' eventList': [
+        eventList: [
           {
             eventName: '花木兰首映获好评',
             eventId: '132323'
@@ -432,7 +432,7 @@ export default class MoviePage extends ViewBase {
       },
       {
         date: 1583979088061,
-        ' eventList': [
+        eventList: [
           {
             eventName: '花木兰首映获好评',
             eventId: '132323'

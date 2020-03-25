@@ -1,10 +1,10 @@
 <template>
-   <div class="heat">
+   <div>
      <div>
        <dubline :lineData="lineDatas" v-if="lineDatas.xDate.length" :key="lineDatas.title"/>
        <DataEmpty v-else/>
      </div>
-     <div>
+     <div class="heat">
        <platForm :platformList="platformList" v-if="platformList.length" :params="params" class="platfrom"/>
        <DataEmpty v-else/>
      </div>
@@ -35,7 +35,7 @@ export default class Main extends Vue {
     const yDate = (this.overAllList || []).map((it: any) => it.value)
     const eventList = (this.overAllList || []).map((it: any) => it.eventList || [])
     return {
-      title: '综合分析',
+      title: '综合热度',
       xDate,
       eventList,
       yDate: [

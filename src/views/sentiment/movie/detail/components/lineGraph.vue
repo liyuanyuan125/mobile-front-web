@@ -12,7 +12,7 @@ import moment from 'moment'
 const format = 'YYYY-MM-DD'
 
 @Component
-export default class Main extends Vue {
+export default class LineGrap extends Vue {
   /** 处理x，y数据 */
   @Prop({ type: Object }) lineData!: any
   /** line color展示 */
@@ -22,7 +22,7 @@ export default class Main extends Vue {
   /** tooltip 文本色 */
   @Prop({ type: String, default: '#8f8f8f' }) textColor!: string
   /** 自定义 tooltip框 内容 */
-  @Prop({ type: String, default: '' }) formatterHtml!: string
+  @Prop({ type: Function }) formatterHtml!: (params: any, query: any) => Promise<string>
 
   get xAxisDate() {
     return (this.lineData.xDate || []).map((it: any) => moment(it).format('MM-DD'))
@@ -75,11 +75,10 @@ export default class Main extends Vue {
     const options: any = {
       title: {
         text: this.lineData.title,
-        left: 12,
+        left: -5,
         textStyle: {
-          fontSize: 17,
-          color: '#303030',
-          fontWeight: 0
+          fontSize: 14,
+          color: '#303030'
         }
       },
       legend: {
@@ -94,7 +93,7 @@ export default class Main extends Vue {
       },
       tooltip: {
         trigger: 'axis',
-        backgroundColor: '#fff',
+        backgroundColor: 'transparent',
         enterable: true, // 如需详情内交互，添加链接，按钮，则设置为true
         confine: true, // 限制在图表的区域内
         axisPointer: {
@@ -105,55 +104,14 @@ export default class Main extends Vue {
             color: '#303030'
           }
         },
-        extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);',
         // 跳转链接事件详情页url暂定处理
         formatter: (params: any) => {
-          const {name, value, dataIndex, seriesName} = params[0]
-          const eventList = this.lineData.eventList[dataIndex] || []
-          const boxStyle = cssifyObject({
-            position: 'relative',
-            lineHeight: '16px',
-            paddingLeft: '12px'
-          })
-          const dotStyle = cssifyObject({
-            position: 'absolute',
-            left: '2px',
-            top: '5px',
-            width: '6px',
-            height: '6px',
-            borderRadius: '100%',
-            backgroundColor: this.dotColor,
-          })
-          const nameStyle = cssifyObject({
-            color: this.textColor,
-            fontSize: '11px',
-          })
-          const eventStyle = cssifyObject({
-            color: '#4c97ff',
-            textDecoration: 'underline'
-          })
-
-          const eventHtml = eventList.map((it: any) => {
-            return `<p style="${boxStyle}">
-            <i style="${dotStyle}"></i>
-            <a href="" style="${eventStyle}">${it.eventName}</a>
-            </p>`
-          })
-
-          const html = `
-           <div style="${nameStyle}" >
-             <p>${name} ${seriesName} ${value}</p>
-             <div>
-             ${eventHtml.join('')}
-             </div>
-           </div>
-          `
-          return this.formatterHtml ? this.formatterHtml : html.trim()
+          return this.formatterHtml(params[0], this.lineData.xDate[params[0].dataIndex])
         }
       },
       grid: {
-        left: 15,
-        right: 26,
+        left: 0,
+        right: 16,
         top: 50,
         bottom: 40,
         containLabel: true
@@ -164,7 +122,7 @@ export default class Main extends Vue {
         interval: 5,
         data: this.xAxisDate,
         axisLabel: {
-          color: '#8F8F8F',
+          color: '#47403B',
           fontSize: 11
         },
         axisTick: {
@@ -179,7 +137,7 @@ export default class Main extends Vue {
       },
       yAxis: {
         axisLabel: {
-          color: '#8F8F8F'
+          color: '#47403B'
         },
         axisLine: {
           lineStyle: {
@@ -204,7 +162,6 @@ export default class Main extends Vue {
     myChart.clear() // 清空画布内容，实例可用
     myChart.setOption(options)
   }
-
 }
 </script>
 
@@ -213,7 +170,6 @@ export default class Main extends Vue {
   position: relative;
   width: 100%;
   padding-bottom: 65px;
-  z-index: 2;
 }
 .line-echart {
   width: 100%;

@@ -118,13 +118,13 @@ export default new Router({
     {
       path: '/sentiment/branduser/:brandId',
       name: 'sentimentbrand-user',
-      component: () => import('./views/sentiment/brand/user.vue')
+      component: () => import('./views/sentiment/brand/userAnalysis/user.vue')
     },
     // 品牌舆情 - 竞品分析二级详情页
     {
       path: '/sentiment/brand/rivalAnalysis',
       name: 'sentimentbrand-analyze',
-      component: () => import('./views/sentiment/brand/analyze.vue'),
+      component: () => import('./views/sentiment/brand/rivalAnalysis/analyze.vue'),
     },
     // 平台热度 - 查看更多（通用页）
     {
@@ -202,9 +202,9 @@ export default new Router({
     },
     // 营销事件详情页 纪洁琼
     {
-      path: '/sentiment/eventMarketing/:eventId',
+      path: '/sentiment/eventMarketing/:eventId(\\d+)',
       name: 'sentimenteventmarketing',
-      component: () => import('./views/commonPage/eventMarketing/index.vue')
+      component: () => import('./views/sentiment/eventMarketing/index.vue')
     },
 
     // ===*** 单曲

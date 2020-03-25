@@ -192,6 +192,6 @@ export default class BrandPage extends ViewBase {
 @import '~@/views/sentiment/brand/less/lib.less';
 @import './less/com.less';
 .select-time {
-  padding: 0 30px;
+  padding: 20px 30px 30px;
 }
 </style>

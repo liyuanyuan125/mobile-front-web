@@ -1,80 +1,45 @@
 <template>
   <!-- 传播路径 营网事件详情页和营销事件详情页 -->
   <div class="eventspread">
-    <ModuleHeader title="传播路径" :link="dataList.length ? link : null" />
-    <dl class="spreadlist">
-      <!-- <dd v-for="(item,index) in produceList" :key="item + index" class="van-ellipsis">{{item}}</dd> -->
-      <dd>
+    <ModuleHeader title="传播路径" :link="link" />
+    <dl class="spreadlist" v-if="dataList.length">
+      <dd v-for="(item,index) in list" :key="item.spreadId + index" @click="openWithoutApp(item)">
         <img
-          src="https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png"
+          :src="item.platformInfo.imgUrl"
           class="platformlogo"
+          :alt="item.platformInfo.platformName"
         />
         <div class="spread">
-          <p class="datebox">
-            <span class="days">10天前</span>
-            <!-- <span class="date" v-else>{{item.creatDate}}</span> -->
-            <i class="target">热点</i>
-          </p>
-          <h5 class="texts">冲奥片"乔乔的异想世界"曝豪华卡司幕后</h5>
-          <p class="flex-box">
-            <span class="counts flex-box">
+          <div class="datebox">
+            <p>
+              <span class="days" v-if="item.topicInfo.publishTime">10天前</span>
+              <span class="date" v-else>{{item.topicInfo.creatDate}}</span>
+              <i
+                class="target"
+                v-for="it in item.markList"
+                :key="it.markType"
+                :style="{color:it.color,borderColor:it.color}"
+              >{{it.markValue}}</i>
+            </p>
+            <p class="user">
+              {{item.userInfo.userName}}
               <img
-                src="https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png"
-                width="15"
+                :src="item.userInfo.imgUrl"
+                :alt="item.userInfo.userName"
               />
-              <i>100万</i>
-            </span>
-          </p>
-        </div>
-      </dd>
-      <dd>
-        <img
-          src="https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png"
-          class="platformlogo"
-        />
-        <div class="spread">
-          <p class="datebox">
-            <span class="days">10天前</span>
-            <!-- <span class="date" v-else>{{item.creatDate}}</span> -->
-            <i class="target">热点</i>
-          </p>
-          <h5 class="texts">冲奥片"乔乔的异想世界"曝豪华卡司幕后</h5>
+            </p>
+          </div>
+          <h5 class="texts">{{item.topicInfo.content}}</h5>
           <p class="flex-box">
-            <span class="counts flex-box">
-              <img
-                src="https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png"
-                width="15"
-              />
-              <i>100万</i>
-            </span>
-          </p>
-        </div>
-      </dd>
-      <dd>
-        <img
-          src="https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png"
-          class="platformlogo"
-        />
-        <div class="spread">
-          <p class="datebox">
-            <span class="days">10天前</span>
-            <!-- <span class="date" v-else>{{item.creatDate}}</span> -->
-            <i class="target">热点</i>
-          </p>
-          <h5 class="texts">冲奥片"乔乔的异想世界"曝豪华卡司幕后</h5>
-          <p class="flex-box">
-            <span class="counts flex-box">
-              <img
-                src="https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png"
-                width="15"
-              />
-              <i>100万</i>
+            <span class="counts flex-box" v-for="(ele,index) in item.interactiveList" :key="index">
+              <img :src="ele.interactUrl" width="15" />
+              <i>{{ele.interactiveValue}}</i>
             </span>
           </p>
         </div>
       </dd>
     </dl>
-    <!-- <dataEmpty v-else /> -->
+    <dataEmpty v-else />
   </div>
 </template>
 
@@ -84,8 +49,9 @@ import moment from 'moment'
 import { datetimeParse } from '@/fn/dateUtil'
 import { DetailItem } from './types'
 import ModuleHeader from '@/components/moduleHeader'
-import { AppLink } from '@/util/native'
 import dataEmpty from '@/views/common/dataEmpty/index.vue'
+import { imgFixed } from '@/fn/imgProxy'
+import { openAppLink, AppLink } from '@/util/native'
 
 @Component({
   components: {
@@ -95,25 +61,28 @@ import dataEmpty from '@/views/common/dataEmpty/index.vue'
 })
 export default class SpreadList extends Vue {
   /** 传播路径 */
-  @Prop({ type: Array }) dataList!: string[]
+  @Prop({ type: Array }) dataList!: any[]
   @Prop({ type: Object }) link!: AppLink
 
   get list() {
     const list = this.dataList ? this.dataList : []
     list.length &&
       list.map((it: any) => {
-        const time1 = Math.abs(moment(it.createTime).diff(moment(), 'day'))
+        const time1 = Math.abs(moment(it.topicInfo.publishTime).diff(moment(), 'day'))
         // 前10天显示 N 天前
-        it.creatDay = datetimeParse(it.createTime)
-        it.creatDate = moment(it.createTime).format('YYYY-MM-DD')
+        it.topicInfo.creatDay = datetimeParse(it.createTime)
+        it.topicInfo.creatDate = moment(it.createTime).format('YYYY-MM-DD')
+        // 处理图片
+        it.platformInfo.imgUrl = imgFixed(it.platformInfo.avatarUrl)
+        it.userInfo.imgUrl = imgFixed(it.userInfo.avatarUrl)
         // 处理标签颜色
-        if (it.targetList && it.targetList.length) {
-          for (const item of it.targetList) {
-            switch (item.targetCode) {
-              case '1':
+        if (it.markList && it.markList.length) {
+          for (const item of it.markList) {
+            switch (item.markType) {
+              case 1:
                 item.color = '#FF6262'
                 break
-              case '2':
+              case 2:
                 item.color = '#9374DB'
                 break
               default:
@@ -126,6 +95,15 @@ export default class SpreadList extends Vue {
         }
       })
     return list
+  }
+
+  // app外打开url
+  openWithoutApp(item: any) {
+    const link: AppLink = {
+      page: 'h5Page',
+      url: encodeURIComponent(item.topicInfo.sourceLink),
+      isOpenByBrowser: true // 设置 url 是否在 app外打开
+    }
   }
 }
 </script>
@@ -196,11 +174,27 @@ export default class SpreadList extends Vue {
     .datebox {
       font-size: 26px;
       line-height: 32px;
+      display: flex;
+      p:first-child {
+        flex: 1;
+      }
+      .user {
+        font-size: 26px;
+        color: rgba(71, 64, 59, 0.5);
+        line-height: 40px;
+        img {
+          width: 40px;
+          height: 40px;
+          margin-left: 10px;
+          vertical-align: middle;
+          border-radius: 50%;
+          margin-top: -2px;
+        }
+      }
     }
     .days {
       color: #88aaf6;
       font-size: 26px;
-      margin-right: 30px;
       font-weight: bold;
     }
     .date {

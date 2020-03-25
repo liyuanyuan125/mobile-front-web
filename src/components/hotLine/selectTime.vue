@@ -27,6 +27,7 @@ export default class Main extends Vue {
     { key: 'last_7_day', text: '最近7天' },
     { key: 'last_15_day', text: '最近15天' },
     { key: 'last_30_day', text: '最近30天' },
+    { key: 'last_60_day', text: '最近60天' },
     { key: 'last_90_day', text: '最近90天' }
   ]
   // 接口传入数据
@@ -65,7 +66,7 @@ export default class Main extends Vue {
   display: flex;
   justify-content: space-between;
   justify-items: center;
-  font-size: 38px;
+  font-size: 40px;
 }
 .items {
   width: 200px;
@@ -75,7 +76,7 @@ export default class Main extends Vue {
   border: 2px solid rgba(235, 235, 235, 1);
   text-align: center;
   color: #303030;
-  font-size: 14px;
+  font-size: 26px;
   padding-left: 40px;
 }
 </style>

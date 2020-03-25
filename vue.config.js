@@ -6,8 +6,8 @@ const pxtoviewport = require('postcss-px-to-viewport')
 
 module.exports = {
   devServer: {
-    // port: 9000,
-    // host: 'h5.aiads-dev.com',
+    port: 9000,
+    host: 'h5.aiads-dev.com',
     headers: {
       'Access-Control-Allow-Origin': '*'
     },

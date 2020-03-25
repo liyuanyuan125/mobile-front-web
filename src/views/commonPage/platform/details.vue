@@ -104,7 +104,7 @@ export default class Main extends Vue {
   }
   // 去原生app评台详情页
   goPlatformDetail(item: any) {
-    const url: AppLink = {
+    let url: AppLink = {
       page: 'platformHotDetail',
       businessType: this.type,
       businessObjectId: this.id,
@@ -112,6 +112,17 @@ export default class Main extends Vue {
       startTime: this.startTime,
       endTime: this.endTime
     }
+
+    // 100=全网事件 101=营销事件 app端将事件和业务的平台详情页分成了两个页
+    if (this.type === 100 || this.type === 101) {
+      url = {
+        page: 'eventPlatformHotDetail',
+        eventType: this.type,
+        eventId: this.id,
+        platformCode: item.platformId
+      }
+    }
+
     openAppLink(url)
   }
 }

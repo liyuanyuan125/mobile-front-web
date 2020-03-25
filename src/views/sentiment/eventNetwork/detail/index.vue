@@ -88,7 +88,7 @@ import { alert } from '@/util/toast'
 })
 export default class NetworkEventPage extends ViewBase {
   eventId: string = ''
-  eventStatus: number = 2
+  eventStatus: number = 1
   title: string = ''
   bubbleData: BubbleItem[] = [] // 概览数据左
   bubbleTotal: any = {} // 概览数据右
@@ -123,6 +123,7 @@ export default class NetworkEventPage extends ViewBase {
 
   async getEventData() {
     const res: any = await eventDetail(this.eventId)
+    this.eventStatus = res.eventStatus
     this.bubbleData = res.eventOverView.paltformList
     this.overAllHeat = res.overAllHeatList
     this.platformHeat = res.platformHeadList
@@ -236,8 +237,7 @@ nav.formattab {
   padding: 200px 0 0;
   span {
     display: inline-block;
-    background: url('../../../../assets/sentiment/event-null.png') no-repeat center
-      center;
+    background: url('../../../../assets/sentiment/event-null.png') no-repeat center;
     background-size: 100%;
     width: 268px;
     height: 220px;

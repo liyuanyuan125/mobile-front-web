@@ -1,7 +1,7 @@
 <template>
   <!-- 传播路径 营网事件详情页和营销事件详情页 -->
   <div class="eventspread">
-    <ModuleHeader title="传播路径" :link="dataList.length ? link : null" />
+    <ModuleHeader title="传播路径" :link="link" />
     <dl class="spreadlist">
       <!-- <dd v-for="(item,index) in produceList" :key="item + index" class="van-ellipsis">{{item}}</dd> -->
       <dd>

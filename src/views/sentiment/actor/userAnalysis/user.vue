@@ -1,8 +1,6 @@
 <template>
   <div class='pages' v-if='show'>
-      <!-- <div  class='back'></div> -->
-      <!-- <h4 >我是kol艺人详情hah呜呜呜a→</h4> -->
-      <!-- http://a3.att.hudong.com/68/61/300000839764127060614318218_950.jpg -->
+      <SentimentBar title="用户分析" :titleShow="true" />
       <div class='agelist'>
         <div class='title'>用户画像</div>
         <div class='sex'>
@@ -29,6 +27,8 @@
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 // import ChinaMap, { ChinaMapItem } from '@/components/chinaMap'
+import SentimentBar from '@/views/common/sentimentBar/index.vue'
+
 import { toast } from '@/util/toast'
 import sexChart from '@/components/cakeChart/sexChart.vue'
 import annularChart from '@/components/cakeChart/annularChart.vue'
@@ -38,6 +38,7 @@ import { getPeople } from '@/api/kol'
 
 @Component({
   components: {
+    SentimentBar,
     UserArea,
     sexChart,
     annularChart,
@@ -136,10 +137,10 @@ export default class KolPage extends ViewBase {
         ageRangeList,
         platformFansList,
       } } = await getPeople({actorId: this.$route.params.actorId})
-      // this.genderList.data = genderList
-      // this.userRegionList = userRegionList
-      // this.ageRangeList = ageRangeList
-      // this.platformFansList.data = platformFansList
+      this.genderList.data = genderList || []
+      this.userRegionList = userRegionList || []
+      this.ageRangeList = ageRangeList || []
+      this.platformFansList.data = platformFansList || []
     } catch (ex) {
       toast(ex)
     } finally {
@@ -162,7 +163,7 @@ export default class KolPage extends ViewBase {
   float: right;
 }
 .agelist {
-  padding: 66px 0;
+  padding: 160px 0;
   background: #fff;
   // height: 450px;
   .title {

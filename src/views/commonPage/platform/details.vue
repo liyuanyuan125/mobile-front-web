@@ -113,13 +113,11 @@ export default class Main extends Vue {
 @import '~@/components/hotLine/com.less';
 @import '~@/components/hotLine/platform.less';
 .plat-content {
-  padding: 0 30px 30px;
-  padding-top: 148px;
+  padding: 100px 30px 30px;
 }
 .platform-item {
   li {
-    border-top: solid 1px @c-divider;
-    border-bottom: none;
+    border-bottom: solid 1px @c-divider;
     &:last-child {
       border-bottom: solid 1px @c-divider;
     }

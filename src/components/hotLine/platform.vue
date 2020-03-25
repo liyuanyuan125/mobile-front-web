@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ModuleHeader title="平台热度" class="formatmodule" :link="link" />
+    <ModuleHeader title="平台热度"  class="formatmodule" :link="link" />
     <ul class="platform-item">
       <li
         class="flex-box flex-between"
@@ -69,10 +69,10 @@ export default class Main extends Vue {
 }
 .formatmodule {
   margin-top: 50px;
-  .module-title {
+  /deep/ .module-title {
+    color: #303030;
     font-size: 34px !important;
     line-height: 40px;
-    font-weight: normal;
   }
 }
 </style>

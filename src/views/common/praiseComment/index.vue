@@ -7,7 +7,7 @@
           好感度
           <span class="ico-question">?</span>
         </span>
-        <div class="hot-degrees">{{favorable}}</div>
+        <div class="hot-degrees">{{favorable? favorable : '-'}}</div>
       </div>
       <div class="options-right">
         <div
@@ -23,8 +23,11 @@
         </div>
       </div>
     </div>
-    <div class="options-bottom">
-      <div class="hot-box">
+    <div
+      class="options-bottom"
+      v-if="publicPraise.hotWordList.length || publicPraise.badWordList.length"
+    >
+      <div class="hot-box" v-if="publicPraise.hotWordList.length">
         <div class="hot-box-left">
           <p>
             <i class="ico-hot"></i>全网热词
@@ -41,7 +44,7 @@
           </div>
         </div>
       </div>
-      <div class="hot-box">
+      <div class="hot-box" v-if="publicPraise.hotWordList.length">
         <div class="hot-box-left">
           <p>
             <i class="ico-bad"></i>负面热词

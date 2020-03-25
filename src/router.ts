@@ -160,7 +160,7 @@ export default new Router({
     },
     // kol舆情竞品分析
     {
-      path: '/sentiment/actor/rivalAnalysis/products/:actorIdList',
+      path: '/sentiment/actor/rivalAnalysis/:ids',
       name: 'sentimentkolproducts',
       component: () => import('./views/sentiment/actor/rivalAnalysis/products.vue')
     },
@@ -196,15 +196,15 @@ export default new Router({
     },
     // 全网事件分析详情页 姜英英
     {
-      path: '/sentiment/eventNetwork/:eventId(\d+)',
+      path: '/sentiment/eventNetwork/:eventId(\\d+)',
       name: 'sentimenteventNetwork',
-      component: () => import('./views/commonPage/userRegion/index.vue')
+      component: () => import('./views/sentiment/eventNetwork/detail/index.vue')
     },
     // 营销事件详情页 纪洁琼
     {
-      path: '/sentiment/eventMarketing/:eventId(\d+)',
+      path: '/sentiment/eventMarketing/:eventId',
       name: 'sentimenteventmarketing',
-      component: () => import('./views/commonPage/userRegion/index.vue')
+      component: () => import('./views/commonPage/eventMarketing/index.vue')
     },
 
     // ===*** 单曲

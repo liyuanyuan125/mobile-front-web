@@ -56,7 +56,7 @@
       </li>
     </ul>
     <div class="submit-button">
-      <router-link :to="{ name:'sentimentkolproducts', params: { actorIdList: '1 , 2, 3' } }" class="to-link" >查看详细报告</router-link>
+      <router-link :to="{ name:'sentimentkolproducts', params: { ids: this.pkIdList.join(',') } }" class="to-link" >查看详细报告</router-link>
     </div>
   </div>
 </template>
@@ -75,6 +75,8 @@ const format = 'YYYY-MM-DD'
 })
 export default class Main extends Vue {
   @Prop({ type: Array, default: []}) pkUserList!: any
+  @Prop({ type: Array, default: []}) pkIdList!: any
+
 
   pkUserListData: any = null
   pkDate: any = null
@@ -159,6 +161,9 @@ export default class Main extends Vue {
           color: rgba(48, 48, 48, 1);
           line-height: 46px;
           margin-top: 10px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
       }
     }

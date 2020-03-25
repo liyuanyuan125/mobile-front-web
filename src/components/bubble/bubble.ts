@@ -24,12 +24,14 @@ export function normalizeData(list: BubbleBottomItem[]) {
         it.styles = 'line-height: 10px'
       }
     } else {
-      if (it.trend && it.trend == 0) {
+      if (it.trend == 0 || it.trend == null) {
         it.trend = '-'
         it.styles = 'line-height: 10px'
-      } else {
+      } else if (it.trend < 0) {
         it.trend = Math.abs(Number(it.trend))
         it.rotate = true
+      } else {
+        it.trend = Number(it.trend)
       }
     }
 

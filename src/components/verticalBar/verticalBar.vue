@@ -28,6 +28,12 @@ export default class VerticalBar extends Vue {
   /** 默认的 bar 颜色 */
   @Prop({ type: String, default: 'rgba(122, 160, 245, .4)' }) color!: string
 
+  /** 是否隐藏 X 坐标轴 */
+  @Prop({ type: Boolean, default: false }) hideX!: boolean
+
+  /** 是否隐藏 Y 坐标轴 */
+  @Prop({ type: Boolean, default: false }) hideY!: boolean
+
   /** 高亮的（选中的）bar 颜色 */
   @Prop({ type: String, default: '#7ca4ff' }) hiColor!: string
 
@@ -89,6 +95,7 @@ export default class VerticalBar extends Vue {
       },
 
       xAxis: {
+        show: !this.hideX,
         type: 'category',
         data: [...this.data.map(it => it.name)],
         axisLabel: {
@@ -104,6 +111,7 @@ export default class VerticalBar extends Vue {
       },
 
       yAxis: {
+        show: !this.hideY,
         type: 'value',
         splitNumber: 3,
         axisTick: false,

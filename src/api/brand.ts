@@ -37,8 +37,14 @@ export async function brandAnalysisList(query: any) {
 
 
 
-
-
+/**
+ * 品牌 - 用户分析二级页
+ * @param query  object
+ */
+export async function useranalysis(query: any) {
+  const res = await get('/yuqing/brand/useranalysis', query)
+  return res
+}
 
 /**
  * 竞品分析报告详情-获取热度分析

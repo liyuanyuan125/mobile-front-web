@@ -8,15 +8,15 @@
           @click="goPlatformDetail(item)"
         >
           <div class="flex-box">
-            <img :src="item.platformLogo.url" >
+            <img :src="item.platformLogo.url" alt="" >
             <div class="item-centers">
               <p class="values flex-box flex-between"><span v-for="it in item.platformValueList" :key="it.name">{{it.name}} {{it.value}}</span></p>
               <p class="texts">{{item.platformNotice}}</p>
             </div>
           </div>
-          <!-- <router-link to="" class="arrow">
+          <router-link to="" class="arrow">
             <van-icon name="arrow" size="20" />
-          </router-link> -->
+          </router-link>
         </li>
       </ul>
       <!-- <div class="submit-button">
@@ -113,13 +113,11 @@ export default class Main extends Vue {
 @import '~@/components/hotLine/com.less';
 @import '~@/components/hotLine/platform.less';
 .plat-content {
-  padding: 0 30px 30px;
-  padding-top: 148px;
+  padding: 100px 30px 30px;
 }
 .platform-item {
   li {
-    border-top: solid 1px @c-divider;
-    border-bottom: none;
+    border-bottom: solid 1px @c-divider;
     &:last-child {
       border-bottom: solid 1px @c-divider;
     }

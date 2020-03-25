@@ -108,7 +108,7 @@ export default class PraiseComment extends Vue {
     }
     if (
       this.link.eventType &&
-      (this.link.businessType === 100 || this.link.businessType === 101)
+      (this.link.eventType === 100 || this.link.eventType === 101)
     ) {
       link = {
         page: 'eventPraiseHotWordsDetail',

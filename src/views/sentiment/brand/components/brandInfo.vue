@@ -1,7 +1,7 @@
 <template>
   <div class="header-info">
     <div class="header">
-      <img :src="brandInfo.brandLogo.url" v-if="brandInfo.brandLogo" alt="" class="img" />
+      <img :src="coverImg"  alt="" class="img" />
       <div>
         <p class="brand-name">{{brandInfo.brandName}}</p>
         <p v-if="brandInfo.rankingName && !brandInfo.rankingId " class="event-name">{{brandInfo.rankingName}}</p>
@@ -23,6 +23,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { toast } from '@/util/toast'
 import {BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
+import { imgFixed } from '@/fn/imgProxy'
 
 @Component({
   components: {
@@ -35,6 +36,13 @@ export default class Main extends Vue {
   /** 气泡数据信息 */
   @Prop({ type: Object}) bubbleData!: any
 
+  // 处理 piaoshen http格式 url
+
+  get coverImg() {
+    if (this.brandInfo.brandLogo) {
+      return imgFixed(this.brandInfo.brandLogo, 210, 210)
+    }
+  }
 
   get bubbleDataList() {
     return [

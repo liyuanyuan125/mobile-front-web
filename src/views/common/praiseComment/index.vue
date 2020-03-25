@@ -5,7 +5,7 @@
       <div class="options-left">
         <span class="hot" @click="showNote">
           好感度
-          <span class="ico-question">?</span>
+          <Icon name="question-o" size="16" color="#303030" />
         </span>
         <div class="hot-degrees">{{favorable? favorable : '-'}}</div>
       </div>
@@ -85,7 +85,6 @@ export default class PraiseComment extends Vue {
   @Prop({ type: String }) favorable?: any
   @Prop({ type: Object }) link!: AppLink
 
-  appLink: AppLink = this.link
   praiseList: any[] = []
 
   get appraiseList() {
@@ -107,10 +106,13 @@ export default class PraiseComment extends Vue {
       keyword: encodeURIComponent(word),
       markType
     }
-    if (this.link.businessType === 100 || this.link.businessType === 101) {
+    if (
+      this.link.eventType &&
+      (this.link.businessType === 100 || this.link.businessType === 101)
+    ) {
       link = {
-        page: 'praiseHotWordsDetail',
-        eventType: this.link.businessType, // 业务类型
+        page: 'eventPraiseHotWordsDetail',
+        eventType: this.link.eventType, // 业务类型
         eventId: this.link.eventId, // 业务 id
         keyword: encodeURIComponent(word),
         markType

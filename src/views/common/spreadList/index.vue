@@ -1,7 +1,7 @@
 <template>
   <!-- 传播路径 营网事件详情页和营销事件详情页 -->
   <div class="eventspread">
-    <ModuleHeader title="传播路径" :link="dataList.length < 3 ? null : link" />
+    <ModuleHeader title="传播路径" :link="link" />
     <dl class="spreadlist" v-if="dataList.length">
       <dd v-for="(item,index) in list" :key="item.spreadId + index" @click="openWithoutApp(item)">
         <img

@@ -57,8 +57,10 @@
           <div class="bfbox" @click="goLink(3)">
             <div class="tit">
               <strong>影投票房</strong>
-              <!-- <span style="fontFamily: 'DIN Alternate'">{{boxoffice.companyBoxOffice ? boxoffice.companyBoxOffice : '-'}}</span> -->
-              <span style="fontFamily: 'DIN Alternate'">3,213.4万</span>
+              <span
+                style="fontFamily: 'DIN Alternate'"
+              >{{boxoffice.companyBoxOffice ? boxoffice.companyBoxOffice : '-'}}</span>
+              <!-- <span style="fontFamily: 'DIN Alternate'">3,213.4万</span> -->
             </div>
             <p
               class="van-ellipsis"
@@ -168,7 +170,7 @@ export default class BoxOffice extends ViewBase {
              <p style="color:#47403B;font-size:14px;line-height:16px">${date} 周${day}</p>
              <div style="color:#88AAF6;font-weight:bold;font-size:14px;line-height:16px;margin-top:5px">${roleNumber(
                Math.abs(params.data)
-             )}</div>
+             )}票房</div>
            </div>
           `
   }

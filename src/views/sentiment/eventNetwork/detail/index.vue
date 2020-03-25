@@ -31,11 +31,11 @@
       <ModuleHeader title="热度分析" class="heat" />
       <heatLineCom :overAllList="overAllHeat" :platformList="platformHeat" :params="params" />
     </div>
-    <SpreadList :dataList="spreadList" />
+    <SpreadList :dataList="spreadList" :link="getApplink('eventSpreadPathList')" />
     <PraiseComment
       :favorable="publicPraise.favorable"
       :publicPraise="publicPraise"
-      :link="getApplink('praiseHotWordsList')"
+      :link="getApplink('eventPraiseHotWordsList')"
       v-if="publicPraise.appraiseList"
       id="praise"
     />
@@ -121,18 +121,11 @@ export default class NetworkEventPage extends ViewBase {
    */
   getApplink(page: string) {
     switch (page) {
-      case 'userAnalysis':
-        return {
-          name: 'sentimentmovieuseranalysis',
-          params: {
-            movieId: 100038
-          }
-        }
       default:
         return {
           page,
-          businessType: 3,
-          businessObjectId: 100038
+          eventId: this.eventId,
+          businessType: 100 // 100=全网事件 101=营销事件
         }
     }
   }

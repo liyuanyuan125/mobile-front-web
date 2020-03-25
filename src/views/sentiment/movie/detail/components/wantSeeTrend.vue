@@ -90,6 +90,7 @@ export default class WantSeeTrend extends ViewBase {
     const xDate = (data || []).map((it: any) => it.date)
     const yDate = (data || []).map((it: any) => it.value)
     const eventList = (data || []).map((it: any) => it.eventList)
+
     this.lineDatas = {
       xDate,
       eventList,

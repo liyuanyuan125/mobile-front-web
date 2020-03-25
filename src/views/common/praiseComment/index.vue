@@ -100,12 +100,21 @@ export default class PraiseComment extends Vue {
 
   // 热词 applink 跳转
   wordLink(word: string, markType: number) {
-    const link: AppLink = {
+    let link: AppLink = {
       page: 'praiseHotWordsDetail',
       businessType: this.link.businessType, // 业务类型
       businessObjectId: this.link.businessObjectId, // 业务 id
       keyword: encodeURIComponent(word),
       markType
+    }
+    if (this.link.businessType === 100 || this.link.businessType === 101) {
+      link = {
+        page: 'praiseHotWordsDetail',
+        eventType: this.link.businessType, // 业务类型
+        eventId: this.link.eventId, // 业务 id
+        keyword: encodeURIComponent(word),
+        markType
+      }
     }
     openAppLink(link)
   }

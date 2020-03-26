@@ -1,8 +1,6 @@
 <template>
   <div class="compet-content">
-    <div class="title">相似艺人
-      <router-link class="to-more" to="" ><Icon name="arrow" size="14" /></router-link>
-    </div>
+    <div class="title">相似艺人</div>
     <ul>
       <li class='li-item'>
         <div class='li-left'>
@@ -27,7 +25,7 @@
         </div>
       </li>
       <li class='li-item-pk' v-for='item in pkUserListData' :key='item.rivalName' >
-        <div class='li-left'>
+        <div class='li-left' @click='goActorDetail(item.rivalId)'>
           <div>
             <img :src=item.rivalCover.url alt="">
           </div>
@@ -65,6 +63,7 @@
 import { Component, Vue , Prop } from 'vue-property-decorator'
 import { Icon } from 'vant'
 import moment from 'moment'
+import { imgFixed } from '@/fn/imgProxy'
 
 const format = 'YYYY-MM-DD'
 
@@ -87,6 +86,16 @@ export default class Main extends Vue {
       return {
         ...it,
         eventCreatTimeDate: moment(it.eventCreatTime).format(format)
+      }
+    })
+  }
+
+  // 影人详情页跳转
+  goActorDetail(id: string) {
+    this.$router.push({
+      name: 'sentimentactor',
+      params: {
+        actorId: id
       }
     })
   }

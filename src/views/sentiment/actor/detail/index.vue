@@ -75,7 +75,7 @@
         <Competing :pkUserList='pkUserList' :pkIdList='pkIdList' />
     </section>
 
-    <section v-if='show' class="pane" id="work">
+    <section v-if='show && worksAnalysis.movieAnalysis != null && worksAnalysis.tvAnalysis != null && worksAnalysis.musicAnalysis != null && worksAnalysis.brandAnalysis != null' class="pane" id="work">
       <!-- 作品分析 -->
       <Works :worksAnalysis='worksAnalysis' />
     </section>

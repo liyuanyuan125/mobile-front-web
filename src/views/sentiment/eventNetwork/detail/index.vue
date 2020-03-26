@@ -38,7 +38,7 @@
           <div class="curvebot"></div>
         </div>
       </div>
-      <TabNav :list="tabList" class="formattab" />
+      <TabNav :list="tabList" class="tab-nav-hide-header formattab" />
       <div class="hotanalysis" id="hot">
         <ModuleHeader title="热度分析" class="heat" />
         <heatLineCom :overAllList="overAllHeat" :platformList="platformHeat" :params="params" />
@@ -175,11 +175,15 @@ export default class NetworkEventPage extends ViewBase {
   padding: 100px 30px 0;
   z-index: 12;
 }
+/deep/ .bubble-warper {
+  z-index: 3;
+}
 .curve {
   position: absolute;
   width: 100%;
   left: 0;
   bottom: 0;
+  z-index: 2;
 }
 .curvetop {
   background: #fff;
@@ -218,9 +222,13 @@ export default class NetworkEventPage extends ViewBase {
   }
 }
 /deep/ nav.formattab {
-  margin-top: 0;
+  // margin-top: 0;
+  padding-top: 0;
   top: 88px;
-  z-index: 11;
+  z-index: 11 !important;
+  &::before {
+    display: none;
+  }
 }
 /deep/ nav.formattab .van-tab {
   flex: none;

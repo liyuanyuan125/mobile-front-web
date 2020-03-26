@@ -39,11 +39,11 @@
         </div>
       </div>
       <TabNav :list="tabList" class="formattab" />
-      <div class="hotanalysis">
+      <div class="hotanalysis" id="hot">
         <ModuleHeader title="热度分析" class="heat" />
         <heatLineCom :overAllList="overAllHeat" :platformList="platformHeat" :params="params" />
       </div>
-      <SpreadList :dataList="spreadList" :link="getApplink('eventSpreadPathList')" />
+      <SpreadList :dataList="spreadList" :link="getApplink('eventSpreadPathList')" id="spread" />
       <PraiseComment
         :favorable="publicPraise.favorable"
         :publicPraise="publicPraise"
@@ -95,7 +95,7 @@ export default class NetworkEventPage extends ViewBase {
   // 二级导航
   tabList: TabNavItem[] = [
     { name: 'hot', label: '热度' },
-    { name: 'boxoffice', label: '传播' },
+    { name: 'spread', label: '传播' },
     { name: 'praise', label: '口碑' }
   ]
   overAllHeat: any[] = [] // 热度分析趋势
@@ -126,7 +126,7 @@ export default class NetworkEventPage extends ViewBase {
     this.eventStatus = res.eventStatus
     this.bubbleData = res.eventOverView.paltformList
     this.overAllHeat = res.overAllHeatList
-    this.platformHeat = res.platformHeadList
+    this.platformHeat = res.platformHeatList
     this.publicPraise = res.publicPraise
     this.spreadList = res.spreadList || []
     this.bubbleTotal = {
@@ -221,6 +221,9 @@ nav.formattab {
   margin-top: 0;
   top: 88px;
   z-index: 11;
+}
+/deep/ nav.formattab .van-tab {
+  flex: none;
 }
 .hotanalysis {
   margin-top: 55px;

@@ -217,7 +217,7 @@ export default class NetworkEventPage extends ViewBase {
     }
   }
 }
-nav.formattab {
+/deep/ nav.formattab {
   margin-top: 0;
   top: 88px;
   z-index: 11;

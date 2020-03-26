@@ -6,7 +6,7 @@
       <dl>
         <dd v-for="(item,index) in list" :key="item.rivalId + index">
           <div class="rivalbox">
-            <img :src="item.rivalCover.url" :alt="item.rivalName" class="img" v-if="item.coverImg" />
+            <img :src="item.coverImg" :alt="item.rivalName" class="img" v-if="item.coverImg" />
             <img src="@/assets/moviedefault.png" :alt="baseInfo.movieNameCn" class="img" v-else />
             <h4 class="van-ellipsis">{{item.rivalName}}</h4>
             <div class="params">

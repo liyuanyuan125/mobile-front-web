@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <SentimentBar :title="title" :titleShow="true" />
-    <div v-if="eventStatus === 1" class="unevent">
+    <div v-if="eventStatus === 1 || !eventStatus" class="unevent">
       <span></span>
       <h6>暂无数据</h6>
       <p>

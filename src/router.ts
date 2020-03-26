@@ -107,6 +107,12 @@ export default new Router({
     },
 
     // ---------------舆情---------------
+    // 个人中心-我的
+    {
+      path: '/my/service',
+      name: 'myservice',
+      component: () => import('./views/my/index.vue')
+    },
     // 品牌舆情
     {
       path: '/sentiment/brand/:id',

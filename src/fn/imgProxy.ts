@@ -16,10 +16,10 @@ export function imgFixed(imgUrl: ImgObj, width?: number, height?: number, type?:
     }
     if (imgUrl.source === 'jydata') {
         // 鲸鱼图片走阿里云裁切
-        return aliImgClip(imgUrl.url, width, height, type = 0)
+        return aliImgClip(imgUrl.url, width, height, type)
     } else {
         // 票神图片代理裁切
-        return imgProxy(imgUrl.url, width, height, type = 4)
+        return imgProxy(imgUrl.url, width, height, type)
     }
 }
 

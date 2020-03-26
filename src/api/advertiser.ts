@@ -126,3 +126,11 @@ export async function submitDLSmsCode(query: any) {
     const res = await post('/xadvert/downloads/log', query)
     return res
 }
+
+/**
+ * 获取我的服务
+ */
+export async function getMyService(query: any) {
+    const res = await get('/mock/420/yuqing/user/serveList', query)
+    return res
+}

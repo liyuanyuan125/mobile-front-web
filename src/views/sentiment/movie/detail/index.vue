@@ -525,6 +525,9 @@ nav.formattab {
   top: 88px;
   z-index: 11;
 }
+/deep/ nav.formattab .van-tab {
+  flex-basis: 14.2% !important;
+}
 .hotanalysis {
   margin-top: 40px;
   .heat {

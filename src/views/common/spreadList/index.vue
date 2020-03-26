@@ -29,7 +29,7 @@
               />
             </p>
           </div>
-          <h5 class="texts">{{item.topicInfo.content}}</h5>
+          <h5 class="texts van-ellipsis">{{item.topicInfo.content}}</h5>
           <p class="flex-box">
             <span class="counts flex-box" v-for="(ele,index) in item.interactiveList" :key="index">
               <img :src="ele.interactUrl" width="15" />
@@ -79,10 +79,10 @@ export default class SpreadList extends Vue {
         if (it.markList && it.markList.length) {
           for (const item of it.markList) {
             switch (item.markType) {
-              case 1:
+              case '1':
                 item.color = '#FF6262'
                 break
-              case 2:
+              case '2':
                 item.color = '#9374DB'
                 break
               default:

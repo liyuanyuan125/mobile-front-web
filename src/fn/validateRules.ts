@@ -164,7 +164,10 @@ export function roleNumber(num: string | number) {
     return num.replace(/^(\d{1})(\d{3})$/, '$1,$2')
   } else if (num.length >= 5 && num.length < 9) {
     const tenThousand = (Number(num) / 10000).toFixed(1)
-    return `${tenThousand}万`
+    const number = tenThousand.replace(/^\d+/, (m: string) => m.replace(/(?=(?!^)(\d{3})+$)/g, ','))
+
+    console.log('tenThousand', tenThousand, number)
+    return `${number}万`
   } else if (num.length >= 9) {
     const calculate = (Number(num) / 100000000).toFixed(1)
     return `${calculate}亿`

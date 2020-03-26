@@ -19,7 +19,7 @@ export interface BubbleBottomItem {
   /** 气泡数值 */
   value: string | number
   /** 数值升降 */
-  trend?: string | number
+  trend?: string | number | undefined
   /** 是否展示下降 */
   showdown?: boolean
   styles?: string

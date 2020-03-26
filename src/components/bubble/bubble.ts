@@ -19,7 +19,7 @@ export function normalizeData(list: BubbleBottomItem[]) {
 
   let result = list.map(it => {
     if (!it.showdown) {
-      if (it.trend && it.trend <= 0) {
+      if (it.trend == null || it.trend <= 0) {
         it.trend = '-'
         it.styles = 'line-height: 10px'
       }

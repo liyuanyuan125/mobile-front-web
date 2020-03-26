@@ -3,7 +3,7 @@
     <SentimentBar :title="movieInfo.movieNameCn" :sidebar="sidebar" />
     <BaseInfoArea :baseInfo="movieInfo" :overView="movieOverView" />
     <TabNav :list="tabList" class="formattab" />
-    <div class="hotanalysis">
+    <div class="hotanalysis" id="hot">
       <selectTime ref="refsTime" class="heat" />
       <heatLineCom :overAllList="overAllHeat" :platformList="platformHeat" :params="params" />
     </div>
@@ -520,10 +520,13 @@ export default class MoviePage extends ViewBase {
 .page {
   color: #303030;
 }
-nav.formattab {
+/deep/ nav.formattab {
   margin-top: 0;
   top: 88px;
   z-index: 11;
+  &::before {
+    display: none;
+  }
 }
 /deep/ nav.formattab .van-tab {
   flex-basis: 14.2% !important;

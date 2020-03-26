@@ -102,7 +102,7 @@ export default class SpreadList extends Vue {
     const link: AppLink = {
       page: 'h5Page',
       url: encodeURIComponent(item.topicInfo.sourceLink),
-      isOpenByBrowser: true // 设置 url 是否在 app外打开
+      isOpenByBrowser: 'YES' // 设置 url 是否在 app外打开
     }
     openAppLink(link)
   }

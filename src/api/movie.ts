@@ -32,7 +32,7 @@ export async function getRivalListById(movieId: string) {
  * 详情页获取营销事件
  */
 export async function getEventListByIdAndType(query: EventItem) {
-    const res = await get('/yuqing/common/eventAnalysis', query)
+    const res = await get('/mock/416/yuqing/common/eventAnalysis', query)
     return res
 }
 

@@ -35,3 +35,12 @@ export function getPlayAnalysis(query: any) {
 export function getSimilarList(query: any) {
   return get('/yuqing/song/rival/list', query)
 }
+
+/**
+ * 2.5单曲用户分析二级页
+ * https://yapi.aiads-dev.com/project/404/interface/api/11013
+ * @param id 单曲 Id
+ */
+export function getUserAnalysis(id: number) {
+  return get('/yuqing/music/song/user/analysis', { songId: id })
+}

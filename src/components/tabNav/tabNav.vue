@@ -7,7 +7,7 @@
     }"
     ref="box"
   >
-    <Tabs v-model="model" @click="handleClick">
+    <Tabs v-model="model" @click="handleClick" v-if="list && list.length > 0">
       <Tab
         v-for="{ name, label } in list"
         :key="name"

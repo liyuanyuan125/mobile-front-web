@@ -214,6 +214,13 @@ export default new Router({
       component: () => import('./views/sentiment/song/index.vue'),
       props: idProps
     },
+    // 用户分析二级页
+    {
+      path: '/sentiment/song/:id/user',
+      name: 'sentiment-song-user',
+      component: () => import('./views/sentiment/song/user.vue'),
+      props: idProps
+    },
 
     // demo
     {

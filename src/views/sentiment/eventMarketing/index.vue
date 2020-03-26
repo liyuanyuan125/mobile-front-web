@@ -145,28 +145,6 @@ export default class KolPage extends ViewBase {
     this.overAllHeatList = this.eventInfo[params.key] || []
   }
 
-  // 所有的 applink
-  // 业务类型 businessType 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
-  // 业务 Id businessObjectId
-  appLinks = {
-    // 票房
-    boxOffice: {
-      page: 'movieBoxOffice',
-      boxOfficeType: 1,
-      movieId: '100038'
-    },
-    praise: {
-      page: 'praiseHotWordsList',
-      businessType: 101,
-      businessObjectId: '100038'
-    },
-    user: {
-      page: 'praiseHotWordsList',
-      businessType: 101,
-      businessObjectId: '100038'
-    }
-  }
-
   /**
    * 获取 applink
    * 业务类型 businessType 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑

@@ -32,7 +32,7 @@
           <h5 class="texts van-ellipsis">{{item.topicInfo.content}}</h5>
           <p class="flex-box">
             <span class="counts flex-box" v-for="(ele,index) in item.interactiveList" :key="index">
-              <img :src="ele.interactUrl" width="15" />
+              <img :src="ele.interactiveUrl.url" width="15" />
               <i>{{ele.interactiveValue}}</i>
             </span>
           </p>

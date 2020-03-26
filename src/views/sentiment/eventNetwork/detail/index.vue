@@ -16,15 +16,15 @@
             <!-- 示例 -->
             <div slot="right">
               <div class="content">
-                <h5>{{bubbleTotal.overallHot}}</h5>
+                <h5>{{bubbleTotal.overallHot? bubbleTotal.overallHot :'-'}}</h5>
                 <p>综合热度</p>
               </div>
               <div class="content">
-                <h5>{{bubbleTotal.materials}}</h5>
+                <h5>{{bubbleTotal.materials ?bubbleTotal.materials : '-'}}</h5>
                 <p>累计媒体物料</p>
               </div>
               <div class="content">
-                <h5>{{bubbleTotal.interact}}</h5>
+                <h5>{{bubbleTotal.interact ? bubbleTotal.interact :'-'}}</h5>
                 <p @click="showNote">
                   累计互动数
                   <Icon name="question-o" size="16" color="#303030" />

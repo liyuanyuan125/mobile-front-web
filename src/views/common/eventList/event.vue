@@ -7,7 +7,7 @@
           <span class="days" v-if="item.creatDay">{{item.creatDay}}</span>
           <span class="date" v-else>{{item.creatDate}}</span>
           <i
-            v-for="el in item.target"
+            v-for="el in item.targetList"
             :key="el.targetCode"
             :style="{color:el.color,borderColor:el.color}"
             class="target"
@@ -57,7 +57,7 @@ export default class EventList extends Vue {
       list.map((it: any) => {
         const time1 = Math.abs(moment(it.createTime).diff(moment(), 'day'))
         // 前10天显示 N 天前
-        it.creatDay = datetimeParse(it.createTime)
+        it.creatDay = time1 > 10 ? null : datetimeParse(it.createTime)
         it.creatDate = moment(it.createTime).format('YYYY-MM-DD')
         // 处理标签颜色
         if (it.targetList && it.targetList.length) {

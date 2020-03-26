@@ -468,7 +468,7 @@ export default class MoviePage extends ViewBase {
   async getEventList() {
     const res: any = await getEventList({
       type: 3,
-      objectId: 9
+      objectId: this.movieId
     })
     this.eventList = res
   }

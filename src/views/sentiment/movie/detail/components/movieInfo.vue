@@ -45,13 +45,13 @@ export default class BaseInfoArea extends ViewBase {
           type: '1',
           title: '累计媒体物料',
           value: this.overView.materialsCount,
-          trend: this.overView.materialsTrend
+          trend: this.overView.materialsTrend || 0
         },
         {
           type: '2',
           title: '累计评论数',
           value: this.overView.commentCount,
-          trend: this.overView.commnetTrend
+          trend: this.overView.commnetTrend || 0
         },
         {
           type: '3',

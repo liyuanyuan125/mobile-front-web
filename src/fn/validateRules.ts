@@ -162,7 +162,7 @@ export function roleNumber(num: string | number) {
     return num
   } else if (num.length == 4) {
     return num.replace(/^(\d{1})(\d{3})$/, '$1,$2')
-  } else if (num.length >= 5) {
+  } else if (num.length >= 5 && num.length < 9) {
     const tenThousand = (Number(num) / 10000).toFixed(1)
     return `${tenThousand}万`
   } else if (num.length >= 9) {

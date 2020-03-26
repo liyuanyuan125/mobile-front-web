@@ -161,16 +161,16 @@ export default class BoxOffice extends ViewBase {
   }
 
   // 处理chart 浮层 tooltip
-  formatterHtml = (params: any, query: any) => {
+  formatterHtml = (params: any, time: any) => {
     const weekDays = ['日', '一', '二', '三', '四', '五', '六']
-    const day = weekDays[moment(query).day()]
-    const date = moment(query).format('YYYY-MM-DD')
+    const day = weekDays[moment(time).day()]
+    const date = moment(time).format('YYYY-MM-DD')
     return `
            <div style="border:2px solid rgba(48,48,48,.1);border-radius:6px; padding:7px 10px;background-color:#fff">
              <p style="color:#47403B;font-size:14px;line-height:16px">${date} 周${day}</p>
              <div style="color:#88AAF6;font-weight:bold;font-size:14px;line-height:16px;margin-top:5px">${roleNumber(
                Math.abs(params.data)
-             )}票房</div>
+             )}</div>
            </div>
           `
   }

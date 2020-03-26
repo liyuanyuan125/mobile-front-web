@@ -184,11 +184,11 @@ export default new Router({
       component: () => import('./views/sentiment/movie/userAnalysis/index.vue')
     },
     // 电视剧舆情
-    {
-      path: '/sentiment/tv/:tvId',
-      name: 'sentimenttv',
-      component: () => import('./views/sentiment/tv/index.vue')
-    },
+    // {
+    //   path: '/sentiment/tv/:tvId',
+    //   name: 'sentimenttv',
+    //   component: () => import('./views/sentiment/tv/index.vue')
+    // },
     {
       path: '/sentiment/common/userRegion',
       name: 'sentimentuserregion',

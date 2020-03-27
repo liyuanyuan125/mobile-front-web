@@ -84,7 +84,7 @@ export default class RivalList extends Vue {
 
   // 删除竞品
   delRival(id: string) {
-    console.log('this.rivalIds', this.rivalIds)
+    // console.log('this.rivalIds', this.rivalIds)
     const index = this.rivalIds.indexOf(id)
     if (index > -1) {
       this.rivalIds.splice(index, 1)

@@ -123,7 +123,9 @@ export default class KolPage extends ViewBase {
     ]
   }
   // 口碑评论
-  publicPraise: any = {}
+  publicPraise: any = {
+    // fetch: async () => { const data = awiat rivalPraise{id: 123 }）return data }
+  }
   // 平台分布
   publicObj: any = {
     title: '平台分布',
@@ -254,12 +256,11 @@ export default class KolPage extends ViewBase {
       })
       this.publicPraise.query = {
         actorIdList: this.$route.params.ids,
-        startTime: 20200304,
-        endTime: 20200311
       }
       // const as = this.publicPraise.query
       this.publicPraise.fetch = async (query: any) => { // query: 查询参数
-        return data
+        const datas = await rivalPraise(query)
+        return datas
       }
     } catch (ex) {
       toast(ex)

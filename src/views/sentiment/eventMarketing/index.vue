@@ -20,17 +20,17 @@
           @click="chgnewPk(item)"
         >{{item.name}}</Button>
         <div @click="openAnalysisPage">
-          <hotLine
-            :lineDatas="lineDatas"
-            :platformList="platformHeat"
-            :params="params"
-            v-if="this.yDate.length"
-            ref="hots"
-          />
+          <LineGrap :lineData="linedata" class="wantchart" :formatterHtml="formatterHtml" />
         </div>
       </div>
     </div>
-    <spread :dataList="spreadList" :link="getApplink('eventSpreadPathList')" />
+    <platForm
+      :platformList="platformHeatList"
+      v-if="platformHeatList.length"
+      :params="platformParams"
+      class="platform"
+    />
+    <SpreadList :dataList="spreadList" :link="getApplink('eventSpreadPathList')" />
     <!-- 口碑评论 -->
     <PraiseComment
       :favorable="publicPraise.favorable"
@@ -43,14 +43,17 @@
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
+import { roleNumber } from '@/fn/validateRules'
+import moment from 'moment'
+import { toast } from '@/util/toast'
+import LineGrap from '@/components/lineGraph'
+import { eventDetail } from './data'
 import { Tab, Tabs, Icon, Button } from 'vant'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import PraiseComment from '@/views/common/praiseComment/index.vue' // 口碑评论
-import spread from '@/views/common/spreadList/index.vue' // 事件
-import { toast } from '@/util/toast'
-import { alert } from '@/util/toast'
-import { eventDetail } from './data'
-import { hotLine } from '@/components/hotLine'
+import SpreadList from '@/views/common/spreadList/index.vue' // 事件
+import { platForm } from '@/components/hotLine'
+
 import { openAppLink, AppLink } from '@/util/native'
 
 @Component({
@@ -61,44 +64,34 @@ import { openAppLink, AppLink } from '@/util/native'
     SentimentBar,
     PraiseComment,
     Button,
-    hotLine,
-    spread
+    LineGrap,
+    SpreadList,
+    platForm
   }
 })
 export default class KolPage extends ViewBase {
-  /* 标题name */
-  @Prop({ type: String, default: '《封神三部曲》曝小寒海报中国首部 神话史诗将映' })
   title!: string
   eventId: string = ''
 
-  xDate = []
-  yDate = []
-  eventList = []
-  platformHeat = []
+  // 热度分析
+  linedata: any = {}
+  overAllHeatList: any = []
+  // 热度平台
+  platformHeatList: any = []
+  get platformParams() {
+    return {
+      type: 101, // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
+      id: this.$route.params.actorId, // 详情页id
+      name: this.title
+    }
+  }
 
   show: any = false
   newPk: any = 'newsList'
   newPkName: any = '新闻'
   // 口碑评论 数据
   favorable: any = ''
-  publicPraise = {
-    appraiseList: [
-      {
-        raisePercent: 1200,
-        raiseName: '正面评价'
-      },
-      {
-        raisePercent: 3200,
-        raiseName: '负面评价'
-      },
-      {
-        raisePercent: 2300,
-        raiseName: '中性评价'
-      }
-    ],
-    hotWordList: ['劲暴', '太帅了', '要严肃', '四个字的'],
-    badWordList: ['劲暴', '太帅', '严肃', '四个字的']
-  }
+  publicPraise = {}
   // 数据表切换列表
   tabList: any = [
     {
@@ -125,40 +118,10 @@ export default class KolPage extends ViewBase {
   spreadList: any = []
   eventInfo: any = {}
 
-  get startTime() {
-    return (this.$refs.hots as any).startTime
-  }
-
-  get endTime() {
-    return (this.$refs.hots as any).endTime
-  }
-
-  get params() {
-    return {
-      type: 101, // 1 品牌 2 艺人 3 电影 4 音乐-单曲 5 音乐-专辑  6 剧集
-      id: this.$route.params.eventId,
-      name: this.title, // 天数
-      startTime: 20200304, // this.startTime,
-      endTime: 20200304 // this.endTime
-    }
-  }
-
-  get lineDatas() {
-    return {
-      title: '',
-      xDate: this.xDate, // 格式 ['20201212', '20121122', '20121122','20121122','20121122','20121122','20121122']
-      eventList: this.eventList,
-      yDate: [
-        {
-          data: this.yDate, // 格式 [333,33333,303333333,33333,333,33333,303333333]
-          name: this.newPkName
-        }
-      ]
-    }
-  }
-
   created() {
     this.eventId = this.$route.params.eventId
+    const tit: any = this.$route.query.title || '营销事件详情'
+    this.title = decodeURIComponent(tit)
     this.geteventDetail()
   }
 
@@ -170,10 +133,9 @@ export default class KolPage extends ViewBase {
       this.publicPraise = publicPraise
       this.spreadList = spreadList
       this.eventInfo = eventInfo
-      this.xDate = (eventInfo.newsList || []).map((it: any) => it.name)
-      this.yDate = (eventInfo.newsList || []).map((it: any) => it.value)
-      // this.eventList = (overAllHeatList || []).map((it: any) => it.eventList)
-      this.platformHeat = platformList || []
+      this.overAllHeatList = eventInfo.newsList
+      this.formatDatas(eventInfo.newsList)
+      this.platformHeatList = platformList || []
     } catch (ex) {
       toast(ex)
     } finally {
@@ -181,35 +143,31 @@ export default class KolPage extends ViewBase {
     }
   }
 
+  // 处理数据
+  formatDatas(data: any[]) {
+    if (data && data.length) {
+      const xDate = (data || []).map((it: any) => it.name)
+      const yDate = (data || []).map((it: any) => it.value)
+      const eventList = (data || []).map((it: any) => it.eventList)
+
+      this.linedata = {
+        xDate,
+        eventList,
+        yDate: [
+          {
+            data: yDate
+          }
+        ]
+      }
+    }
+  }
+
   // 切换平台热度对比
   chgnewPk(params: any) {
     this.newPk = params.key
     this.newPkName = params.name
-    this.xDate = (this.eventInfo[params.key] || []).map((it: any) => it.name)
-    this.yDate = (this.eventInfo[params.key] || []).map((it: any) => it.value)
-    // this.$emit('chgnewPk', num)
-  }
-
-  // 所有的 applink
-  // 业务类型 businessType 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
-  // 业务 Id businessObjectId
-  appLinks = {
-    // 票房
-    boxOffice: {
-      page: 'movieBoxOffice',
-      boxOfficeType: 1,
-      movieId: '100038'
-    },
-    praise: {
-      page: 'praiseHotWordsList',
-      businessType: 2,
-      businessObjectId: '100038'
-    },
-    user: {
-      page: 'praiseHotWordsList',
-      businessType: 2,
-      businessObjectId: '100038'
-    }
+    this.overAllHeatList = this.eventInfo[params.key] || []
+    this.formatDatas(this.overAllHeatList)
   }
 
   /**
@@ -227,6 +185,18 @@ export default class KolPage extends ViewBase {
           eventType: 101 // 100=全网事件 101=营销事件
         }
     }
+  }
+
+  // 处理chart 浮层 tooltip
+  formatterHtml = (params: any, time: any) => {
+    const date = moment(time).format('YYYY年MM月DD日')
+    return `
+           <div style="border:2px solid rgba(48,48,48,.1);border-radius:6px; padding:7px 10px;background-color:#fff">
+             <p style="color:#47403B;font-size:13px;line-height:16px">${date}</p>
+             <div style="color:#88AAF6;font-size:14px;line-height:16px;margin-top:5px">
+             ${this.newPkName} ${roleNumber(Math.abs(params.data))}</div>
+           </div>
+          `
   }
 
   // 打开趋势大图
@@ -291,10 +261,15 @@ export default class KolPage extends ViewBase {
   background: #88aaf6;
   color: #fff;
 }
-.alertwid {
-  width: 90%;
-}
 /deep/ .line-title {
   display: none;
+}
+.wantchart {
+  padding-bottom: 0;
+}
+// 平台热度
+.platform {
+  border-top: 20px solid rgba(216, 216, 216, 0.2);
+  padding: 0 30px;
 }
 </style>

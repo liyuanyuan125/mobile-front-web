@@ -3,7 +3,7 @@
     <SentimentBar :title="movieInfo.movieNameCn" :sidebar="sidebar" />
     <BaseInfoArea :baseInfo="movieInfo" :overView="movieOverView" />
     <TabNav :list="tabList" class="formattab" />
-    <div class="hotanalysis" id="hot">
+    <div class="hotanalysis">
       <selectTime ref="refsTime" class="heat" />
       <heatLineCom :overAllList="overAllHeat" :platformList="platformHeat" :params="params" />
     </div>
@@ -468,7 +468,7 @@ export default class MoviePage extends ViewBase {
   async getEventList() {
     const res: any = await getEventList({
       type: 3,
-      objectId: this.movieId
+      objectId: 9
     })
     this.eventList = res
   }
@@ -520,16 +520,10 @@ export default class MoviePage extends ViewBase {
 .page {
   color: #303030;
 }
-/deep/ nav.formattab {
+nav.formattab {
   margin-top: 0;
   top: 88px;
   z-index: 11;
-  &::before {
-    display: none;
-  }
-}
-/deep/ nav.formattab .van-tab {
-  flex-basis: 14.2% !important;
 }
 .hotanalysis {
   margin-top: 40px;

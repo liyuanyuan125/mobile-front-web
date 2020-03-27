@@ -107,6 +107,12 @@ export default new Router({
     },
 
     // ---------------舆情---------------
+    // 个人中心-我的
+    {
+      path: '/my/service',
+      name: 'myservice',
+      component: () => import('./views/my/index.vue')
+    },
     // 品牌舆情
     {
       path: '/sentiment/brand/:id',
@@ -184,11 +190,11 @@ export default new Router({
       component: () => import('./views/sentiment/movie/userAnalysis/index.vue')
     },
     // 电视剧舆情
-    {
-      path: '/sentiment/tv/:tvId',
-      name: 'sentimenttv',
-      component: () => import('./views/sentiment/tv/index.vue')
-    },
+    // {
+    //   path: '/sentiment/tv/:tvId',
+    //   name: 'sentimenttv',
+    //   component: () => import('./views/sentiment/tv/index.vue')
+    // },
     {
       path: '/sentiment/common/userRegion',
       name: 'sentimentuserregion',

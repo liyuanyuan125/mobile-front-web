@@ -2,17 +2,20 @@
   <div class="title">
     <div>{{title}}</div>
     <div class="selectdate">
-      <select v-model="days" class="items" >
-        <option v-for="(item, index) in list" :key="index"  :value="item.key">{{ item.text }}</option>
-      </select>
+      <Select v-model="days" :list="list" >
+      </Select>
     </div>
   </div>
 </template>
 
 <script lang='ts'>
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
-
-@Component
+import Select from '@/components/select'
+@Component({
+  components: {
+    Select
+  }
+})
 export default class Main extends Vue {
   /* 展示天数 默认展示最近7天 */
   @Prop({ type: String, default: 'last_7_day'}) value!: string
@@ -21,11 +24,11 @@ export default class Main extends Vue {
 
   days = this.value
   list = [
-    {key: 'last_7_day', text: '最近7天'},
-    {key: 'last_15_day', text: '最近15天'},
-    {key: 'last_30_day', text: '最近30天'},
-    {key: 'last_60_day', text: '最近60天'},
-    {key: 'last_90_day', text: '最近90天'},
+    {value: 'last_7_day', name: '最近7天'},
+    {value: 'last_15_day', name: '最近15天'},
+    {value: 'last_30_day', name: '最近30天'},
+    {value: 'last_60_day', name: '最近60天'},
+    {value: 'last_90_day', name: '最近90天'},
   ]
 
   @Watch('days')
@@ -46,16 +49,5 @@ export default class Main extends Vue {
     font-size: 40px;
     font-weight: 400;
   }
-}
-.items {
-  width: 200px;
-  height: 60px;
-  background: rgba(255, 255, 255, 1);
-  border-radius: 30px;
-  border: 2px solid rgba(235, 235, 235, 1);
-  text-align: center;
-  color: #303030;
-  font-size: 14px;
-  padding-left: 40px;
 }
 </style>

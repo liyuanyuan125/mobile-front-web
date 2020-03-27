@@ -1,7 +1,7 @@
 <template>
   <!-- 传播路径 营网事件详情页和营销事件详情页 -->
   <div class="eventspread">
-    <ModuleHeader title="传播路径" :link="link" />
+    <ModuleHeader title="传播路径" :link="dataList.length < 3 ? null :link" />
     <dl class="spreadlist" v-if="dataList.length">
       <dd v-for="(item,index) in list" :key="item.spreadId + index" @click="openWithoutApp(item)">
         <img
@@ -29,10 +29,10 @@
               />
             </p>
           </div>
-          <h5 class="texts">{{item.topicInfo.content}}</h5>
+          <h5 class="texts van-ellipsis">{{item.topicInfo.content}}</h5>
           <p class="flex-box">
             <span class="counts flex-box" v-for="(ele,index) in item.interactiveList" :key="index">
-              <img :src="ele.interactUrl" width="15" />
+              <img :src="ele.interactiveUrl.url" width="15" />
               <i>{{ele.interactiveValue}}</i>
             </span>
           </p>
@@ -79,10 +79,10 @@ export default class SpreadList extends Vue {
         if (it.markList && it.markList.length) {
           for (const item of it.markList) {
             switch (item.markType) {
-              case 1:
+              case '1':
                 item.color = '#FF6262'
                 break
-              case 2:
+              case '2':
                 item.color = '#9374DB'
                 break
               default:
@@ -102,8 +102,9 @@ export default class SpreadList extends Vue {
     const link: AppLink = {
       page: 'h5Page',
       url: encodeURIComponent(item.topicInfo.sourceLink),
-      isOpenByBrowser: true // 设置 url 是否在 app外打开
+      isOpenByBrowser: 'YES' // 设置 url 是否在 app外打开
     }
+    openAppLink(link)
   }
 }
 </script>
@@ -164,6 +165,7 @@ export default class SpreadList extends Vue {
       font-size: 26px;
       width: 33%;
       line-height: 30px;
+      margin-top: 15px;
       img {
         margin-right: 10px;
         width: 30px;

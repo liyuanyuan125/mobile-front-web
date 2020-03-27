@@ -4,7 +4,7 @@
     <brandInfoArea :brandInfo="brandInfo" :bubbleData="bubbleData"/>
     <TabNav
       :list="navList"
-      class="tab-nav"
+      class="formattab"
     />
     <section class="brand-hot bg_fff" id="hot">
       <selectTime ref="refsTime" v-model="day" class="select-time"/>
@@ -35,7 +35,7 @@
       id="event"
       class="bg_fff"
     />
-    <!-- <Competing :rivalList="rivalList" v-if="rivalList.length" id="part" /> -->
+    <Competing :rivalList="rivalList" v-if="rivalList.length" id="part" />
   </div>
 </template>
 
@@ -221,10 +221,14 @@ export default class BrandPage extends ViewBase {
 .select-time {
   padding: 68px 30px 30px;
 }
-.tab-nav {
-  /deep/ .van-tab {
-    flex-basis: 20% !important;
-  }
+
+/deep/ nav.formattab {
+  margin-top: 0;
+  top: 88px;
+  z-index: 11;
+}
+/deep/ nav.formattab .van-tab {
+  flex-basis: 20% !important;
 }
 .bg_fff {
   background: #fff;

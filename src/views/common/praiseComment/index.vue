@@ -1,7 +1,7 @@
 <template>
   <div class="options-page">
     <ModuleHeader title="口碑评论" :link="link" />
-    <div class="options-top">
+    <div class="options-top" v-if="appraiseList.length > 0">
       <div class="options-left">
         <span class="hot" @click="showNote">
           好感度
@@ -23,11 +23,12 @@
         </div>
       </div>
     </div>
+    <dataEmpty v-else />
     <div
       class="options-bottom"
-      v-if="publicPraise.hotWordList.length || publicPraise.badWordList.length"
+      v-if="(publicPraise.hotWordList || []).length || (publicPraise.badWordList || []).length"
     >
-      <div class="hot-box" v-if="publicPraise.hotWordList.length">
+      <div class="hot-box" v-if="(publicPraise.hotWordList || []).length">
         <div class="hot-box-left">
           <p>
             <i class="ico-hot"></i>全网热词
@@ -36,7 +37,7 @@
         <div class="hot-box-right">
           <div>
             <span
-              v-for="(it,index) in publicPraise.hotWordList"
+              v-for="(it,index) in (publicPraise.hotWordList || [])"
               :key="it+index"
               class="van-ellipsis"
               @click="wordLink(it,0)"
@@ -44,7 +45,7 @@
           </div>
         </div>
       </div>
-      <div class="hot-box" v-if="publicPraise.hotWordList.length">
+      <div class="hot-box" v-if="(publicPraise.hotWordList || []).length">
         <div class="hot-box-left">
           <p>
             <i class="ico-bad"></i>负面热词
@@ -53,7 +54,7 @@
         <div class="hot-box-right">
           <div>
             <span
-              v-for="(it,index) in publicPraise.badWordList"
+              v-for="(it,index) in (publicPraise.badWordList || [])"
               :key="it + index"
               class="van-ellipsis"
               @click="wordLink(it,3)"
@@ -62,6 +63,7 @@
         </div>
       </div>
     </div>
+    <dataEmpty v-else />
   </div>
 </template>
 
@@ -72,12 +74,14 @@ import ModuleHeader from '@/components/moduleHeader'
 import { alert } from '@/util/toast'
 import { openAppLink, AppLink } from '@/util/native'
 import { DetailItem } from './types'
+import dataEmpty from '@/views/common/dataEmpty/index.vue'
 
 @Component({
   components: {
     Progress,
     Icon,
-    ModuleHeader
+    ModuleHeader,
+    dataEmpty
   }
 })
 export default class PraiseComment extends Vue {
@@ -88,7 +92,7 @@ export default class PraiseComment extends Vue {
   praiseList: any[] = []
 
   get appraiseList() {
-    const list = this.publicPraise.appraiseList
+    const list = this.publicPraise.appraiseList || []
     if (list && list.length) {
       for (const item of list) {
         item.raisePercent = (item.raisePercent / 100).toFixed(1)

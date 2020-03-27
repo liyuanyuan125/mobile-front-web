@@ -1,5 +1,5 @@
 <template>
-  <div class="topbar">
+  <div class="topbar" :style="{background:bgColor}">
     <span class="reBack" @click="goBack"></span>
     <h1 class="title van-ellipsis" v-show="titleShow || hasTitle">{{title}}</h1>
     <div class="tool" v-if="sidebar">
@@ -10,7 +10,7 @@
       <path
         d="M30,89 C13.4314575,89 0,102.431458 0,119 L0,89 L30,89 Z"
         transform="translate(0, -89)"
-        fill="#F2F3F6"
+        :fill="bgColor"
       />
     </svg>
   </div>
@@ -70,7 +70,7 @@ export default class SentimentBar extends Vue {
   async hideNavBarStatus() {
     const objectData = {
       isShowNavBar: false,
-      statusBarColor: this.bgColor || '#F2F3F6'
+      statusBarColor: this.bgColor
     }
     const obj = { params: objectData }
     await setNavBarStatus(obj)

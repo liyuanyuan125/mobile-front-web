@@ -161,13 +161,15 @@ export function roleNumber(num: string | number) {
   if (num.length < 4) {
     return num
   } else if (num.length == 4) {
-    return num.replace(/^(\d{1})(\d{3})$/, '$1,$2')
-  } else if (num.length >= 5) {
+    return num.replace(/^\d+/, (m: string) => m.replace(/(?=(?!^)(\d{3})+$)/g, ','))
+  } else if (num.length >= 5 && num.length < 9) {
     const tenThousand = (Number(num) / 10000).toFixed(1)
-    return `${tenThousand}万`
+    const number = tenThousand.replace(/^\d+/, (m: string) => m.replace(/(?=(?!^)(\d{3})+$)/g, ','))
+    return `${number}万`
   } else if (num.length >= 9) {
     const calculate = (Number(num) / 100000000).toFixed(1)
-    return `${calculate}亿`
+    const number = calculate.replace(/^\d+/, (m: string) => m.replace(/(?=(?!^)(\d{3})+$)/g, ','))
+    return `${number}亿`
   } else {
     return 0
   }

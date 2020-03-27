@@ -1,6 +1,5 @@
 <template>
   <div class='pages'>
-    <!-- <SentimentBar title="竞品分析详细报告" :sidebar="sidebar" /> -->
     <SentimentBar title="竞品分析详细报告" :titleShow="true" />
     <RivalList type="2" :rivalList="rivalList" v-if="rivalList.length" class="movierival" />
     <TabNav
@@ -20,7 +19,7 @@
         />
     </section>
 
-    <section v-if='showpraise' class="pane" id="praise" >
+    <section v-if='showpraise' class="pane" id="praise" style='padding-top: 20px;padding-right:15px;'>
       <!-- 口碑评论 -->
       <div class='public'>
         <MarketContrast :fetch="publicPraise.fetch" :query="publicPraise.query" />
@@ -416,7 +415,7 @@ export default class KolPage extends ViewBase {
     this.getLineData()
     this.getDetail()
     this.getPublicPraise()
-    document.body.style.background = '#FBFBFB'
+    document.body.style.background = '#f2f3f6'
   }
 
   async getLineData() {
@@ -507,10 +506,10 @@ export default class KolPage extends ViewBase {
   width: 100%;
   // background: #f7f7f7;
 }
-/deep/ .van-sticky, /deep/ .van-tabs--line .van-tabs__wrap {
-  // height: 100px;
-  // background: rgba(255, 255, 255, 1);
-  // border-radius: 60px 60px 0 0;
+/deep/ .tab-nav {
+  // margin-top: 0;
+  top: 88px;
+  z-index: 11;
 }
 .userpk {
   background: #fff;

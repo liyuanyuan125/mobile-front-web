@@ -93,9 +93,9 @@ export default class Main extends Vue {
 .header-info {
   position: relative;
   padding-top: 100px;
-  margin-bottom: -120px;
 }
 .header {
+  position: relative;
   display: flex;
   padding: 0 40px 0;
   .img {
@@ -122,8 +122,10 @@ export default class Main extends Vue {
 }
 .bubble {
   padding: 0 30px;
+  margin-top: -43px;
   position: relative;
+  z-index: 12;
+  height: 400px;
   overflow: hidden;
-  margin-top: -40px;
 }
 </style>

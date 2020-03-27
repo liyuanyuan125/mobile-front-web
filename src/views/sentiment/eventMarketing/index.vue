@@ -9,42 +9,45 @@
         <br />分析周期内分析报告每日更新，请耐心等待！
       </p>
     </div>
-    <div class="main"  v-if="eventStatus === 2 || eventStatus === 3">
-      <h2 class="van-multi-ellipsis--l2">{{title}}</h2>
-      <div class="show-num">
-        <div class="left">
-          <span class="s1">{{eventInfo.interactCount}}</span>
-          <span class="s2">&nbsp;累计互动</span>
+    <div v-if="eventStatus === 2 || eventStatus === 3">
+      <div class="main"  >
+        <h2 class="van-multi-ellipsis--l2">{{title}}</h2>
+        <div class="show-num">
+          <div class="left">
+            <span class="s1">{{eventInfo.interactCount}}</span>
+            <span class="s2">&nbsp;累计互动</span>
+          </div>
+          <div class="right">今日新增：{{eventInfo.todayInteractAdd}}</div>
         </div>
-        <div class="right">今日新增：{{eventInfo.todayInteractAdd}}</div>
-      </div>
-      <div class="show-echarts">
-        <Button
-          class="chg"
-          v-for="(item) in tabList"
-          :key="item.key"
-          :class="{'chgbgc': newPk == item.key}"
-          type="primary"
-          @click="chgnewPk(item)"
-        >{{item.name}}</Button>
-        <div @click="openAnalysisPage">
-          <LineGrap :lineData="linedata" class="wantchart" :formatterHtml="formatterHtml" />
+        <div class="show-echarts">
+          <Button
+            class="chg"
+            v-for="(item) in tabList"
+            :key="item.key"
+            :class="{'chgbgc': newPk == item.key}"
+            type="primary"
+            @click="chgnewPk(item)"
+          >{{item.name}}</Button>
+          <div @click="openAnalysisPage">
+            <LineGrap :lineData="linedata" class="wantchart" :formatterHtml="formatterHtml" />
+          </div>
         </div>
       </div>
+      <platForm
+        :platformList="platformHeatList"
+        v-if="platformHeatList.length"
+        :params="platformParams"
+        class="platform"
+      />
+      <SpreadList :dataList="spreadList" :link="getApplink('eventSpreadPathList')" />
+      <!-- 口碑评论 -->
+      <PraiseComment
+        :favorable="publicPraise.favorable"
+        :publicPraise="publicPraise"
+        :link="getApplink('eventPraiseHotWordsList')"
+      />
     </div>
-    <platForm
-      :platformList="platformHeatList"
-      v-if="platformHeatList.length"
-      :params="platformParams"
-      class="platform"
-    />
-    <SpreadList :dataList="spreadList" :link="getApplink('eventSpreadPathList')" />
-    <!-- 口碑评论 -->
-    <PraiseComment
-      :favorable="publicPraise.favorable"
-      :publicPraise="publicPraise"
-      :link="getApplink('eventPraiseHotWordsList')"
-    />
+    
   </div>
 </template>
 

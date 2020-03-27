@@ -32,7 +32,8 @@
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
-import { getMovieDetail, getEventList, getRivalList } from './data'
+import { getMovieDetail, getEventList, getRivalList, getMovieHeat } from './data'
+import moment from 'moment'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import BaseInfoArea from './components/movieInfo.vue' // 影片基本信息
 import TabNav, { TabNavItem } from '@/components/tabNav'
@@ -444,12 +445,14 @@ export default class MoviePage extends ViewBase {
   }
 
   async created() {
+    console.log('refsTime', this.$refs.refsTime)
     this.movieId = this.$route.params.movieId
     this.sidebar.diggId = this.movieId
     if (this.movieId) {
       await this.getMovieInfo()
       await this.getEventList()
       await this.getRivalList()
+      await this.getHeatAnalysis()
     }
   }
   // api获取电影详情页
@@ -463,6 +466,11 @@ export default class MoviePage extends ViewBase {
     this.actorList = res.actorList ? res.actorList : []
     this.produceList = res.produceList ? res.produceList : []
     document.title = res.movieInfo.movieNameCn
+  }
+  // api获取热度分析
+  async getHeatAnalysis() {
+    const res: any = await getMovieHeat(this.params)
+    console.log('params', res)
   }
   // api获取营销事件
   async getEventList() {

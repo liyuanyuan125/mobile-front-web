@@ -16,7 +16,16 @@ export interface PraiseItem {
  * @param query  object
  */
 export async function getMovieDetailById(movieId: string) {
-    const res = await get('/mock/400/yuqing/movie/detail', { movieId })
+    const res = await get('/yuqing/movie/detail', { movieId })
+    return res
+}
+
+/**
+ * 获取电影详情页 - 获取热度分析
+ * @param query  object
+ */
+export async function getMovieHeatAnalysis(query: any) {
+    const res = await get('/yuqing/movie/heatAanlysis', query)
     return res
 }
 

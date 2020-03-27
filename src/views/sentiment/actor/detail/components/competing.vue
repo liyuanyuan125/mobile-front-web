@@ -37,12 +37,12 @@
               <li>
                 <p class='hot1'>热度</p>
                 <p class='hot2'>{{item.yesterHeatCount}}</p>
-                <p class='blue'>{{item.yesterHeatTrend}}</p>
+                <p :class="item.yesterHeatTrend > 0 ?'red':'blue'">{{item.yesterHeatTrend}}</p>
               </li>
               <li>
                 <p class='hot1'>全网粉丝数</p>
                 <p class='hot2'>{{item.interFansCount}}</p>
-                <p class='blue'>{{item.interFansTrend}}</p>
+                <p :class="item.interFansTrend > 0?'red':'blue'">{{item.interFansTrend}}</p>
               </li>
             </ul>
           </div>
@@ -91,7 +91,7 @@ export default class Main extends Vue {
   }
 
   // 影人详情页跳转
-  goActorDetail(id: string) {
+  goActorDetail(id: any) {
     this.$router.push({
       name: 'sentimentactor',
       params: {
@@ -151,12 +151,14 @@ export default class Main extends Vue {
       white-space: nowrap;
     }
     .hot {
-      height: 110px;
+      height: 150px;
       ul {
         padding-top: 30px;
+        height: 100%;
         li {
           float: left;
           width: 50%;
+          height: 100%;
         }
         .hot1 {
           font-size: 26px;
@@ -199,7 +201,7 @@ export default class Main extends Vue {
     width: 90%;
     height: 60px;
     background: rgba(242, 243, 246, 0.5);
-    margin-top: 30px;
+    margin-top: 20px;
     font-size: 26px;
     font-weight: 300;
     color: rgba(48, 48, 48, 1);
@@ -225,11 +227,13 @@ export default class Main extends Vue {
   font-size: 26px;
   font-weight: 600;
   color: rgba(136, 170, 246, 1);
+  margin-top: 10px;
 }
 .red {
   font-size: 26px;
   font-weight: 600;
   color: rgba(255, 98, 98, 1);
+  margin-top: 10px;
 }
 .submit-button {
   margin-top: 0;

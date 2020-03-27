@@ -20,16 +20,17 @@
           @click="chgnewPk(item)"
         >{{item.name}}</Button>
         <div @click="openAnalysisPage">
-          <heatLineCom 
-            :overAllList="overAllHeatList" 
-            :platformList="platformHeatList"
-            :params="platformParams"
-            lineTitle=""
-          />
+          <LineGrap :lineData="linedata" class="wantchart" :formatterHtml="formatterHtml" />
         </div>
       </div>
     </div>
-    <spread :dataList="spreadList" :link="getApplink('eventSpreadPathList')" />
+    <platForm
+      :platformList="platformHeatList"
+      v-if="platformHeatList.length"
+      :params="platformParams"
+      class="platform"
+    />
+    <SpreadList :dataList="spreadList" :link="getApplink('eventSpreadPathList')" />
     <!-- 口碑评论 -->
     <PraiseComment
       :favorable="publicPraise.favorable"
@@ -42,14 +43,16 @@
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
+import { roleNumber } from '@/fn/validateRules'
+import moment from 'moment'
+import { toast } from '@/util/toast'
+import LineGrap from '@/components/lineGraph'
+import { eventDetail } from './data'
 import { Tab, Tabs, Icon, Button } from 'vant'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import PraiseComment from '@/views/common/praiseComment/index.vue' // 口碑评论
-import spread from '@/views/common/spreadList/index.vue' // 事件
-import { toast } from '@/util/toast'
-import { alert } from '@/util/toast'
-import { eventDetail } from './data'
-import heatLineCom from '@/views/common/heatLineCom/index.vue' // 热度分析
+import SpreadList from '@/views/common/spreadList/index.vue' // 事件
+import { platForm } from '@/components/hotLine'
 
 import { openAppLink, AppLink } from '@/util/native'
 
@@ -61,24 +64,25 @@ import { openAppLink, AppLink } from '@/util/native'
     SentimentBar,
     PraiseComment,
     Button,
-    heatLineCom,
-    spread
+    LineGrap,
+    SpreadList,
+    platForm
   }
 })
 export default class KolPage extends ViewBase {
   title!: string
   eventId: string = ''
 
-      // 热度分析+平台信息
+  // 热度分析
+  linedata: any = {}
   overAllHeatList: any = []
+  // 热度平台
   platformHeatList: any = []
   get platformParams() {
     return {
       type: 101, // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
       id: this.$route.params.actorId, // 详情页id
-      name: this.title,
-      startTime: 20200304, // this.startTime,
-      endTime: 20200310 // this.endTime
+      name: this.title
     }
   }
 
@@ -130,6 +134,7 @@ export default class KolPage extends ViewBase {
       this.spreadList = spreadList
       this.eventInfo = eventInfo
       this.overAllHeatList = eventInfo.newsList
+      this.formatDatas(eventInfo.newsList)
       this.platformHeatList = platformList || []
     } catch (ex) {
       toast(ex)
@@ -138,11 +143,31 @@ export default class KolPage extends ViewBase {
     }
   }
 
+  // 处理数据
+  formatDatas(data: any[]) {
+    if (data && data.length) {
+      const xDate = (data || []).map((it: any) => it.name)
+      const yDate = (data || []).map((it: any) => it.value)
+      const eventList = (data || []).map((it: any) => it.eventList)
+
+      this.linedata = {
+        xDate,
+        eventList,
+        yDate: [
+          {
+            data: yDate
+          }
+        ]
+      }
+    }
+  }
+
   // 切换平台热度对比
   chgnewPk(params: any) {
     this.newPk = params.key
     this.newPkName = params.name
     this.overAllHeatList = this.eventInfo[params.key] || []
+    this.formatDatas(this.overAllHeatList)
   }
 
   /**
@@ -160,6 +185,18 @@ export default class KolPage extends ViewBase {
           eventType: 101 // 100=全网事件 101=营销事件
         }
     }
+  }
+
+  // 处理chart 浮层 tooltip
+  formatterHtml = (params: any, time: any) => {
+    const date = moment(time).format('YYYY年MM月DD日')
+    return `
+           <div style="border:2px solid rgba(48,48,48,.1);border-radius:6px; padding:7px 10px;background-color:#fff">
+             <p style="color:#47403B;font-size:13px;line-height:16px">${date}</p>
+             <div style="color:#88AAF6;font-size:14px;line-height:16px;margin-top:5px">
+             ${this.newPkName} ${roleNumber(Math.abs(params.data))}</div>
+           </div>
+          `
   }
 
   // 打开趋势大图
@@ -224,10 +261,15 @@ export default class KolPage extends ViewBase {
   background: #88aaf6;
   color: #fff;
 }
-.alertwid {
-  width: 90%;
-}
 /deep/ .line-title {
   display: none;
+}
+.wantchart {
+  padding-bottom: 0;
+}
+// 平台热度
+.platform {
+  border-top: 20px solid rgba(216, 216, 216, 0.2);
+  padding: 0 30px;
 }
 </style>

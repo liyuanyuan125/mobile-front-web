@@ -165,6 +165,7 @@ export default class SpreadList extends Vue {
       font-size: 26px;
       width: 33%;
       line-height: 30px;
+      margin-top: 15px;
       img {
         margin-right: 10px;
         width: 30px;

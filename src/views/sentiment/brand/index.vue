@@ -2,8 +2,12 @@
   <div class="content">
     <SentimentBar :title="brandInfo.brandName" :sidebar="sidebar" />
     <brandInfoArea :brandInfo="brandInfo" :bubbleData="bubbleData"/>
-    <section class="brand-hot">
-      <selectTime ref="refsTime" class="select-time"/>
+    <TabNav
+      :list="navList"
+      class="formattab"
+    />
+    <section class="brand-hot bg_fff" id="hot">
+      <selectTime ref="refsTime" v-model="day" class="select-time"/>
       <heatLineCom 
         :overAllList="overAllHeatList" 
         :platformList="platformHeatList"
@@ -15,19 +19,23 @@
       :publicPraise="publicPraise"
       :link="getApplink('praiseHotWordsList')"
       v-if="publicPraise.appraiseList"
+      id="praise"
     />
     <UserPortrait 
       :ageRangeList="userAnalysis.ageRangeList" 
       :genderList="userAnalysis.genderList"
       v-if="userAnalysis.genderList"
       :link="getApplink('userAnalysis')"
+      id="user"
     />
     <eventList 
       :eventList="brandEventList" 
       :params="eventParams"
       :link="getApplink('eventMarketingList')" 
+      id="event"
+      class="bg_fff"
     />
-    <Competing :rivalList="rivalList" v-if="rivalList.length" />
+    <Competing :rivalList="rivalList" v-if="rivalList.length" id="part" />
   </div>
 </template>
 
@@ -35,6 +43,8 @@
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import { toast } from '@/util/toast'
+import { lastDays } from '@/util/timeSpan'
+import TabNav, { TabNavItem } from '@/components/tabNav'
 import { getList, brandList, eventAnalysisList, brandAnalysisList } from '@/api/brand'
 import { selectTime } from '@/components/hotLine'
 import SentimentBar from '@/views/common/sentimentBar/index.vue' // 头部bar
@@ -45,8 +55,6 @@ import eventList from '@/views/common/eventList/event.vue' // 事件分析
 import heatLineCom from '@/views/common/heatLineCom/index.vue' // 热度分析
 import Competing from './components/competing.vue' // 竞品分析
 
-
-
 @Component({
   components: {
     SentimentBar,
@@ -56,32 +64,46 @@ import Competing from './components/competing.vue' // 竞品分析
     PraiseComment,
     UserPortrait,
     eventList,
-    Competing
+    Competing,
+    TabNav
   }
 })
 export default class BrandPage extends ViewBase {
   @Prop({ type: Number, default: 0}) id!: number
+
+  navList: TabNavItem[] = [
+    { name: 'hot', label: '热度' },
+    { name: 'praise', label: '口碑' },
+    { name: 'user', label: '用户' },
+    { name: 'event', label: '事件' },
+    { name: 'part', label: '竞品' },
+  ]
   // 头部
   sidebar = {
     diggType: 'movie',
     diggId: '100038',
     rivalIds: '1,2,4'
   }
+
   // 气泡
   bubbleData: any = {}
   brandInfo: any = {}
+
   // 热度分析+平台信息
+  day = 7
   overAllHeatList: any = []
   platformHeatList: any = []
   get platformParams() {
+    const [ startTime, endTime ] = lastDays(this.day)
     return {
       type: 1, // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
       id: this.id, // 详情页id
       name: '奔驰',
-      startTime: 20200304, // this.startTime,
-      endTime: 20200310 // this.endTime
+      startTime,
+      endTime,
     }
   }
+
   // 口碑评论 数据
   publicPraise = {}
   // 用户分析
@@ -91,10 +113,6 @@ export default class BrandPage extends ViewBase {
   brandEventList: any = {}
   // 竞品分析
   rivalList = []
-
-  get refsTime() {
-    return (this.$refs.refsTime as any)
-  }
 
   mounted() {
     this.brandDetail() // 品牌详情页
@@ -123,17 +141,18 @@ export default class BrandPage extends ViewBase {
   }
 
   async getHotList() {
+    const [ startTime, endTime ] = lastDays(this.day)
     try {
       const { data: {
         overAllHeatList,
         platformHeatList
       } } = await getList({
         brandId: this.id,
-        startTime: 20200304, // this.refsTime.beginDate
-        endTime: 20200310 // this.refsTime.endDate
+        startTime,
+        endTime
       })
-      this.overAllHeatList = overAllHeatList
-      this.platformHeatList = platformHeatList
+      this.overAllHeatList = overAllHeatList || []
+      this.platformHeatList = platformHeatList || []
     } catch (ex) {
       toast(ex)
     }
@@ -142,8 +161,8 @@ export default class BrandPage extends ViewBase {
   async eventAnalysis() {
     try {
       const { data } = await eventAnalysisList({
-        type: 2, // 1
-        objectId: 9 // this.id
+        type: 1,
+        objectId: this.id
       })
       this.brandEventList = data
     } catch (ex) {
@@ -185,13 +204,33 @@ export default class BrandPage extends ViewBase {
         }
     }
   }
+
+  @Watch('day', {deep: true})
+  watchDay() {
+    this.getHotList()
+  }
 }
 </script>
 
 <style lang="less" scoped>
 @import '~@/views/sentiment/brand/less/lib.less';
 @import './less/com.less';
+.content {
+  background: #f2f3f6;
+}
 .select-time {
-  padding: 20px 30px 30px;
+  padding: 68px 30px 30px;
+}
+
+/deep/ nav.formattab {
+  margin-top: 0;
+  top: 88px;
+  z-index: 11;
+}
+/deep/ nav.formattab .van-tab {
+  flex-basis: 20% !important;
+}
+.bg_fff {
+  background: #fff;
 }
 </style>

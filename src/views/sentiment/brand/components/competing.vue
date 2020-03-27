@@ -47,6 +47,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Icon } from 'vant'
 import moment from 'moment'
 import ModuleHeader from '@/components/moduleHeader'
+import { imgFixed } from '@/fn/imgProxy'
 
 @Component({
   components: {
@@ -72,7 +73,8 @@ export default class Main extends Vue {
         ...it,
         eventCreatTime: moment(it.eventCreatTime).format('YYYY-MM-DD'),
         yesterHeatTrend,
-        yesterInteractTrend
+        yesterInteractTrend,
+        coverImg: imgFixed(it.rivalCover, 80, 80)
       }
     })
     return list

@@ -1,5 +1,5 @@
 <template>
-  <div class="content-wrap">
+  <div class="content-wrap" ref="box">
     <div class="line-echart" ref="refChart" v-if="lineData.xDate.length" />
   </div>
 </template>
@@ -21,6 +21,8 @@ export default class Main extends Vue {
   @Prop({ type: String, default: '#f7a345' }) dotColor!: string
   /** tooltip 文本色 */
   @Prop({ type: String, default: '#8f8f8f' }) textColor!: string
+  /** tooltip 事件处理 */
+  @Prop({ type: Object, default: () => ({}) }) events!: any
   /** 自定义 tooltip框 内容 */
   @Prop({ type: String, default: '' }) formatterHtml!: string
 
@@ -30,6 +32,23 @@ export default class Main extends Vue {
 
   mounted() {
     this.initChart()
+    const box = this.$refs.box as HTMLDivElement
+    ['click', 'touchstart'].forEach(name => {
+      box.addEventListener(name, ev => {
+        const el = ev.target as HTMLDivElement
+        const {
+          tooltipEventTipname,
+          tooltipEventName,
+          tooltipEventId
+        } = el && el.dataset
+
+        const click = this.events.click
+        if (tooltipEventTipname && tooltipEventTipname in this.events) {
+          ev.preventDefault()
+          click && click({ id: tooltipEventId, name: tooltipEventName })
+        }
+      })
+    })
   }
 
   // tab切换 数据重新渲染
@@ -96,7 +115,7 @@ export default class Main extends Vue {
         trigger: 'axis',
         backgroundColor: '#fff',
         enterable: true, // 如需详情内交互，添加链接，按钮，则设置为true
-        confine: true, // 限制在图表的区域内
+        // confine: true, // 限制在图表的区域内
         axisPointer: {
           // 指示线
           lineStyle: {
@@ -106,38 +125,42 @@ export default class Main extends Vue {
           }
         },
         extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);',
-        // 跳转链接事件详情页url暂定处理
+
         formatter: (params: any) => {
           const {name, value, dataIndex, seriesName} = params[0]
-          const eventList = this.lineData.eventList[dataIndex] || []
           const boxStyle = cssifyObject({
             position: 'relative',
-            lineHeight: '16px',
-            paddingLeft: '12px'
+            paddingLeft: '16px',
+            lineHeight: '22px'
           })
           const dotStyle = cssifyObject({
             position: 'absolute',
             left: '2px',
-            top: '5px',
-            width: '6px',
-            height: '6px',
+            top: '7px',
+            width: '8px',
+            height: '8px',
             borderRadius: '100%',
             backgroundColor: this.dotColor,
           })
           const nameStyle = cssifyObject({
             color: this.textColor,
-            fontSize: '11px',
+            fontSize: '14px',
           })
-          const eventStyle = cssifyObject({
-            color: '#4c97ff',
-            textDecoration: 'underline'
-          })
-
-          const eventHtml = eventList.map((it: any) => {
-            return `<p style="${boxStyle}">
+          const events = this.events[name] || []
+          // console.log(this.events)
+          // console.log(this.events[name])
+          const eventHtml = events.map(({eventName, eventId}: any) => {
+            const eventListHTML = `
+            <div style="${boxStyle}" class="tooltip-event"
+             data-tooltip-event-tipname="${name}"
+             data-tooltip-event-name="${eventName}"
+             data-tooltip-event-id="${eventId}"
+            >
             <i style="${dotStyle}"></i>
-            <a href="" style="${eventStyle}">${it.eventName}</a>
-            </p>`
+             ${eventName}
+            </div>
+            `
+            return eventListHTML.trim()
           })
 
           const html = `
@@ -192,8 +215,8 @@ export default class Main extends Vue {
         // 分割线样式
         splitLine: {
           lineStyle: {
-            color: 'rgba(151,167,195,.45)',
-            type: 'dashed'
+            type: 'dotted',
+            color: 'rgba(48, 48, 48, .2)',
           }
         }
       },
@@ -209,6 +232,18 @@ export default class Main extends Vue {
 </script>
 
 <style lang='less' scoped>
+/deep/ .tooltip-event {
+  max-width: 300px;
+  word-wrap: nowrap;
+  word-break: keep-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #88aaf6;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 22px;
+}
 .content-wrap {
   position: relative;
   width: 100%;

@@ -8,7 +8,12 @@
           @click="goPlatformDetail(item)"
         >
           <div class="flex-box">
-            <img :src="item.coverImg" alt="" >
+            <div class="plat-left">
+              <img :src="item.coverImg" v-if="item.coverImg" />
+              <img v-else src="@/assets/platform-default-icon.png" width="60" height="60" />
+              <div class="name van-ellipsis">{{item.platformName}}</div>
+            </div>
+            
             <div class="item-centers">
               <p class="values flex-box flex-between"><span v-for="it in item.platformValueList" :key="it.name">{{it.name}} {{it.value}}</span></p>
               <p class="texts">{{item.platformNotice}}</p>
@@ -142,6 +147,14 @@ export default class Main extends Vue {
     &:last-child {
       border-bottom: solid 1px @c-divider;
     }
+  }
+}
+.plat-left {
+  width: 120px;
+  text-align: center;
+  .name {
+    font-size: 20px;
+    color: #4a4a4a;
   }
 }
 

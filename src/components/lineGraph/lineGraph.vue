@@ -24,12 +24,18 @@ export default class LineGrap extends Vue {
   /** 自定义 tooltip框 内容 */
   @Prop({ type: Function }) formatterHtml!: (params: any, query: any) => Promise<string>
 
+  maxData: any = 0
+
   get xAxisDate() {
+    const ydate = this.lineData.yDate[0].data
+    const max = Math.max(...ydate)
+    this.maxData = ydate.indexOf(max)
     return (this.lineData.xDate || []).map((it: any) => moment(it).format('MM-DD'))
   }
 
   mounted() {
     this.initChart()
+    // 判断最大值那天进行默认显示
   }
 
   // tab切换 数据重新渲染
@@ -161,6 +167,11 @@ export default class LineGrap extends Vue {
     }
     myChart.clear() // 清空画布内容，实例可用
     myChart.setOption(options)
+    myChart.dispatchAction({
+      type: 'showTip',
+      seriesIndex: 0, // 显示第几个series
+      dataIndex: this.maxData // 显示第几个数据
+    })
   }
 }
 </script>

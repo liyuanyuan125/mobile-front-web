@@ -7,8 +7,8 @@
           <span class="days" v-if="item.creatDay">{{item.creatDay}}</span>
           <span class="date" v-else>{{item.creatDate}}</span>
           <i
-            v-for="el in item.targetList"
-            :key="el.targetCode"
+            v-for="(el,i) in item.targetList"
+            :key="el.targetCode+i"
             :style="{color:el.color,borderColor:el.color}"
             class="target"
           >{{el.targetName}}</i>

@@ -16,7 +16,7 @@ export interface PraiseItem {
  * @param query  object
  */
 export async function getMovieDetailById(movieId: string) {
-    const res = await get('/yuqing/movie/detail', { movieId })
+    const res = await get('/mock/400/yuqing/movie/detail', { movieId })
     return res
 }
 

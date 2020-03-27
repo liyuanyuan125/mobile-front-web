@@ -2,7 +2,7 @@
   <div class="content" v-if="show">
     <SentimentBar title="营销事件详情" :titleShow="true" />
     <div class="main">
-      <h2>{{title}}</h2>
+      <h2 class="van-multi-ellipsis--l2">{{title}}</h2>
       <div class="show-num">
         <div class="left">
           <span class="s1">{{eventInfo.interactCount}}</span>
@@ -81,7 +81,7 @@ export default class KolPage extends ViewBase {
   get platformParams() {
     return {
       type: 101, // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
-      id: this.$route.params.actorId, // 详情页id
+      id: this.$route.params.eventId, // 详情页id
       name: this.title
     }
   }
@@ -215,7 +215,7 @@ export default class KolPage extends ViewBase {
 @import '~@/views/sentiment/brand/less/lib.less';
 
 .main {
-  padding: 110px 30px 0 30px;
+  padding: 140px 30px 0 30px;
   h2 {
     width: 100%;
   }

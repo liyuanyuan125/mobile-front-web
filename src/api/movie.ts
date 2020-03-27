@@ -21,6 +21,15 @@ export async function getMovieDetailById(movieId: string) {
 }
 
 /**
+ * 获取电影详情页 - 获取热度分析
+ * @param query  object
+ */
+export async function getMovieHeatAnalysis(query: any) {
+    const res = await get('/yuqing/movie/heatAanlysis', query)
+    return res
+}
+
+/**
  * 详情页获取竞品分析
  */
 export async function getRivalListById(movieId: string) {

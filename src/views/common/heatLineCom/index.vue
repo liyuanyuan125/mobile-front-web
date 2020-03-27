@@ -1,11 +1,20 @@
 <template>
    <div>
      <div>
-       <dubline :lineData="lineDatas" v-if="lineDatas.xDate.length" :key="lineDatas.title"/>
+       <dubline 
+          :lineData="lineDatas" 
+          v-if="lineDatas.xDate.length" 
+          :key="lineDatas.title"
+          :events="getEvents"
+        />
        <DataEmpty v-else/>
      </div>
      <div class="heat">
-       <platForm :platformList="platformList" v-if="platformList.length" :params="params" class="platfrom"/>
+       <platForm 
+         :platformList="platformList" 
+         v-if="platformList.length" 
+         :params="params" 
+         class="platfrom"/>
        <DataEmpty v-else/>
      </div>
      
@@ -16,6 +25,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { platForm, dubline } from '@/components/hotLine'
 import DataEmpty from '@/views/common/dataEmpty/index.vue'
+import moment from 'moment'
 
 @Component({
   components: {
@@ -31,14 +41,33 @@ export default class Main extends Vue {
   @Prop({ type: Object}) params!: any
   @Prop({ type: String, default: '综合热度'}) lineTitle!: string
 
+
+  get getEvents() {
+    // 定义eventList数据
+    const click = ({ id, name }: any) => {
+      this.$router.push({name: 'sentimenteventmarketing', params: {eventId: id}})
+    }
+    const obj: any = {}
+    const result = (this.overAllList || []).map( (it: any ) => {
+      const date = moment(it.date).format('MM-DD')
+      obj[date] = it.eventList || []
+    })
+    return {
+      click,
+      ...obj,
+      '03-05': [
+        {eventName: '事件名字事件名字', eventId: 12938},
+        {eventName: 'eventname-2', eventId: 12938},
+      ]
+    }
+  }
+
   get lineDatas() {
     const xDate = (this.overAllList || []).map((it: any) => it.date)
     const yDate = (this.overAllList || []).map((it: any) => it.value)
-    const eventList = (this.overAllList || []).map((it: any) => it.eventList || [])
     return {
       title: this.lineTitle,
       xDate,
-      eventList,
       yDate: [
         {
           data: yDate,

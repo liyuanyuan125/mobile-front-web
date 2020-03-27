@@ -271,5 +271,11 @@ export default new Router({
       name: 'demo-options',
       component: () => import('./views/demo/options.vue')
     }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    return {
+      x: 0,
+      y: 0
+    }
+  }
 })

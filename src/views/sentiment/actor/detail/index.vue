@@ -16,7 +16,7 @@
             </span>
         </p>
         <p v-if="actorInfo.rankingName && actorInfo.rankingId">
-          <router-link to="" class="event-name flex-box">
+          <router-link :to="{name: 'sentimenteventmarketing', params: {eventId: actorInfo.rankingId}}" class="event-name flex-box">
             <span>
               <i class='hid'>#{{actorInfo.rankingNum}}&nbsp;</i>
               <i class='bor'>{{actorInfo.rankingName}}</i>
@@ -36,11 +36,11 @@
     />
     <section v-if='show' class="pane" id="hot" style='padding: 15px'>
       <!-- 热度分析 -->
-      <selectTime ref="refsTime" class="select-time"/>
+      <selectTime ref="refsTime" v-model="day" class="select-time"/>
       <heatLineCom 
         :overAllList="overAllHeatList" 
         :platformList="platformHeatList"
-        :params="platformParams"
+        :params="platformParams(actorInfo.actorName)"
        />
     </section>
 
@@ -77,7 +77,7 @@
 
     <section v-if='show && worksAnalysis.movieAnalysis != null && worksAnalysis.tvAnalysis != null && worksAnalysis.musicAnalysis != null && worksAnalysis.brandAnalysis != null' class="pane" id="work">
       <!-- 作品分析 -->
-      <Works :worksAnalysis='worksAnalysis' />
+      <Works :worksAnalysis='worksAnalysis' :link="getApplink('actorWorksAnalysis')" />
     </section>
     
   </div>
@@ -88,6 +88,7 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import { Tab, Tabs, Icon } from 'vant'
 import TabNav, { TabNavItem } from '@/components/tabNav'
+import { lastDays } from '@/util/timeSpan'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import { selectTime } from '@/components/hotLine'
 import heatLineCom from '@/views/common/heatLineCom/index.vue' // 热度分析
@@ -132,34 +133,9 @@ export default class KolPage extends ViewBase {
     rivalIds: '1,2,4'
   }
   // 艺人基本信息
-  actorInfo = {
-    actorName: '玄彬',
-    actorId: 1,
-    coverUrl: 'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg', // 封面图
-    kolLogo: {
-      source: '',
-      url: ''
-    },
-    rankingId: '', // 有值则加热搜事件链接
-    rankingNum: '热搜No.8',
-    rankingName: '#1111111111111', // 有值则显示模块，无则不显示模块,
-    favorable: 'B+'
-  }
+  actorInfo = {}
   // 气泡数据概览
-  bubbleData: any = [
-    {type: '1', value: '235,454', trend: '123',  renderTitle: (h: any) => {
-      return h(Title, {
-        props: {
-          title: `近90日新增互动`
-        },
-        on: {
-          click: this.showNote
-      }})
-    }},
-    {type: '2', title: '全网粉丝数', value: '1,423', trend: '-6', showdown: true},
-    {type: '3', title: '实时热度', value: '234,234', trend: '-256', showdown: true},
-    {type: '4', title: '好感度', value: 'B+'}
-  ]
+  bubbleData: any = []
   // tab导航
   list: TabNavItem[] = [
     { name: 'hot', label: '热度' },
@@ -170,186 +146,26 @@ export default class KolPage extends ViewBase {
     { name: 'work', label: '作品' },
   ]
 
-    // 热度分析+平台信息
+  // 热度分析+平台信息
+  day = 7
   overAllHeatList: any = []
   platformHeatList: any = []
-  get platformParams() {
+  platformParams(name: any) {
+    const [ startTime, endTime ] = lastDays(this.day)
     return {
-      type: 1, // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
+      type: 2, // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
       id: this.$route.params.actorId, // 详情页id
-      name: this.actorInfo.actorName,
-      startTime: 20200304, // this.startTime,
-      endTime: 20200310 // this.endTime
+      name,
+      startTime,
+      endTime
     }
   }
   // 用户分析
-  userAnalysis: any = {
-    genderList: [
-      {
-        'name ': '男',
-        value: 1200
-      },
-      {
-        'name ': '女',
-        value: 8800
-      }
-    ],
-    ageRangeList: [
-      {
-        name: '小于20',
-        value: 1400
-      },
-      {
-        name: '20-30',
-        value: 2000
-      },
-      {
-        name: '30-40',
-        value: 3400
-      },
-      {
-        name: '40-50',
-        value: 3000
-      },
-      {
-        name: '大于50',
-        value: 200
-      }
-    ]
-  }
+  userAnalysis: any = {}
   // 口碑评论 数据
-  publicPraise = {
-    appraiseList: [
-      {
-        raisePercent: 1200,
-        raiseName: '正面评价'
-      },
-      {
-        raisePercent: 3200,
-        raiseName: '负面评价'
-      },
-      {
-        raisePercent: 2300,
-        raiseName: '中性评价'
-      }
-    ],
-    hotWordList: ['劲暴', '太帅了', '要严肃', '四个字的'],
-    badWordList: ['劲暴', '太帅', '严肃', '四个字的']
-  }
+  publicPraise = {}
   // 事件跟踪
-  eventList = [
-    {
-      eventName: '乔乔的异想世界获最佳喜剧片剪辑',
-      eventId: '12332',
-      creatTime: 1584146173812,
-      target: [
-        {
-          targetCode: '1',
-          targetName: '正面'
-        }
-      ],
-      interactiveList: [
-        {
-          interactiveUrl: {
-            source: 'jydata',
-            url:
-              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-          },
-          interactiveValue: '100万+'
-        },
-        {
-          interactiveUrl: {
-            source: 'jydata',
-            url:
-              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-          },
-          interactiveValue: '1,212'
-        }
-      ]
-    },
-    {
-      eventName: '冲奥片"乔乔的异想世界"曝豪华卡司幕后',
-      eventId: '12332',
-      creatTime: 1584146173812,
-      target: [
-        {
-          targetCode: '1',
-          targetName: '热点'
-        },
-        {
-          targetCode: '2',
-          targetName: '负面'
-        }
-      ],
-      interactiveList: [
-        {
-          interactiveUrl: {
-            source: 'jydata',
-            url:
-              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-          },
-          interactiveValue: '100万+'
-        },
-        {
-          interactiveUrl: {
-            source: 'jydata',
-            url:
-              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-          },
-          interactiveValue: '1,212'
-        },
-        {
-          interactiveUrl: {
-            source: 'jydata',
-            url:
-              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-          },
-          interactiveValue: '100万+'
-        }
-      ]
-    },
-    {
-      eventName: '乔乔的异想世界获最佳喜剧片剪辑',
-      eventId: '12332',
-      creatTime: 1584146173812,
-      target: [
-        {
-          targetCode: '1',
-          targetName: '热点'
-        },
-        {
-          targetCode: '2',
-          targetName: '负面'
-        }
-      ],
-      interactiveList: [
-        {
-          interactiveUrl: {
-            source: 'jydata',
-            url:
-              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-          },
-          interactiveValue: '100万+'
-        },
-        {
-          interactiveUrl: {
-            source: 'jydata',
-            url:
-              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-          },
-          interactiveValue: '1,212'
-        },
-        {
-          interactiveUrl: {
-            source: 'jydata',
-            url:
-              'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-          },
-          interactiveValue: '100万+'
-        }
-      ]
-    }
-  ]
+  eventList = []
   // 作品分析
   worksAnalysis: any = {}
 
@@ -365,28 +181,6 @@ export default class KolPage extends ViewBase {
     document.body.style.background = '#FBFBFB'
   }
 
-  // 所有的 applink
-  // 业务类型 businessType 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
-  // 业务 Id businessObjectId
-  appLinks = {
-    // 票房
-    boxOffice: {
-      page: 'movieBoxOffice',
-      boxOfficeType: 1,
-      movieId: '100038'
-    },
-    praise: {
-      page: 'praiseHotWordsList',
-      businessType: 2,
-      businessObjectId: '100038'
-    },
-    user: {
-      page: 'praiseHotWordsList',
-      businessType: 2,
-      businessObjectId: '100038'
-    }
-  }
-
   /**
    * 获取 applink
    * 业务类型 businessType 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
@@ -399,34 +193,31 @@ export default class KolPage extends ViewBase {
         return {
           name: 'sentimentactoruser',
           params: {
-            movieId: 100038
+            actorId: this.$route.params.actorId
           }
         }
       default:
         return {
           page,
           businessType: 2,
-          businessObjectId: 100038
+          businessObjectId: this.$route.params.actorId
         }
     }
   }
 
-  get refsTime() {
-    return (this.$refs.refsTime as any)
-  }
-
   async getHotList() {
+    const [ startTime, endTime ] = lastDays(this.day)
     try {
       const { data: {
         overAllHeatList,
         platformHeatList
       } } = await getList({
         actorId: this.$route.params.actorId,
-        startTime: this.refsTime.beginDate, // this.refsTime.beginDate
-        endTime: this.refsTime.endDate // this.refsTime.endDate
+        startTime,
+        endTime
       })
-      this.overAllHeatList = overAllHeatList
-      this.platformHeatList = platformHeatList
+      this.overAllHeatList = overAllHeatList || []
+      this.platformHeatList = platformHeatList || []
     } catch (ex) {
       toast(ex)
     }
@@ -455,7 +246,7 @@ export default class KolPage extends ViewBase {
         }},
         {type: '2', title: '全网粉丝数', value: actorOverView.fansCount, trend: actorOverView.fansTrend, showdown: true},
         {type: '3', title: '实时热度', value: actorOverView.heatCount, trend: actorOverView.heatTrend	, showdown: true},
-        {type: '4', title: '好感度', value: actorInfo.favorable}
+        {type: '4', title: '好感度', value: actorInfo.favorable == null ? '-' : actorInfo.favorable}
       ]
       this.publicPraise = publicPraise
       this.userAnalysis = userAnalysis
@@ -502,6 +293,19 @@ export default class KolPage extends ViewBase {
       showConfirmButton: true,
       className: 'alertwid'
     })
+  }
+
+  @Watch('day', {deep: true})
+  watchDay() {
+    this.getHotList()
+  }
+
+  @Watch('$route', {deep: true})
+  watchRoute() {
+    this.getHotList()
+    this.getActorDetail()
+    this.getPkUser()
+    this.getEventList()
   }
 }
 </script>
@@ -590,7 +394,7 @@ export default class KolPage extends ViewBase {
 }
 .dubble {
   padding: 0 4vw;
-  margin-top: -5.73333vw;
+  margin-top: -4.73333vw;
   position: relative;
   z-index: 12;
   height: 49.33333vw;

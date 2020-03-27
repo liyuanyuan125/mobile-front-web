@@ -8,8 +8,8 @@ const toIntDate = (m: moment.Moment) => parseInt(m.format('YYYYMMDD'), 10)
  */
 export function lastDays(days: number) {
   const result = [
-    toIntDate(moment()),
-    toIntDate(moment().subtract(days, 'days'))
+    toIntDate(moment().subtract(days, 'days')),
+    toIntDate(moment())
   ]
   return result
 }

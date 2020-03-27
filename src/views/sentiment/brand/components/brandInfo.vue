@@ -6,7 +6,7 @@
         <p class="brand-name">{{brandInfo.brandName}}</p>
         <p v-if="brandInfo.rankingName && !brandInfo.rankingId " class="event-name">{{brandInfo.rankingName}}</p>
         <p v-if="brandInfo.rankingName && brandInfo.rankingId">
-          <router-link to="" class="event-name flex-box">
+          <router-link :to="{name: 'sentimenteventmarketing', params: {eventId: brandInfo.rankingId}}" class="event-name flex-box">
             <i>{{brandInfo.rankingName}}</i>
             <van-icon name="arrow" size="13" class="icon-arrow" />
           </router-link> 
@@ -72,7 +72,8 @@ export default class Main extends Vue {
         title: '综合热度',
         value: this.bubbleData.heatCount,
         trend: this.bubbleData.heatTrend,
-        showdown: true
+        showdown: true,
+        big: true,
       },
       {
         type: '4',
@@ -92,6 +93,7 @@ export default class Main extends Vue {
 .header-info {
   position: relative;
   padding-top: 100px;
+  margin-bottom: -120px;
 }
 .header {
   display: flex;

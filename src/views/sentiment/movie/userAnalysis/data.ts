@@ -13,8 +13,11 @@ export const userAnalysisData = async (movieId: string) => {
                 }
             }
             if (data.userRegionList && data.userRegionList.length) {
+                let inx: number = 0
                 for (const it of data.userRegionList) {
+                    inx += 1
                     it.value = (it.value / 100).toFixed(1)
+                    it.name = inx + '.' + it.name
                 }
             }
             if (data.consumePrefer && data.consumePrefer.length) {

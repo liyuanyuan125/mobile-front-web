@@ -3,12 +3,11 @@
   <div class="viewpage">
     <div class="movieinfo">
       <div class="moviebox">
-        <img :src="movieCover" :alt="baseInfo.movieNameCn" class="img" v-if="movieCover" />
-        <img src="@/assets/moviedefault.png" :alt="baseInfo.movieNameCn" class="img" v-else />
-        <h3 class="van-ellipsis">{{baseInfo.movieNameCn}}</h3>
-        <h5 class="van-ellipsis">{{baseInfo.movieNameEn}}</h5>
-        <p>{{baseInfo.duration}}{{!baseInfo.duration || !baseInfo.genreName ? '' : ' - '}}{{baseInfo.genreName}}</p>
-        <p>{{baseInfo.releaseDate}}</p>
+        <img :src="movieCover" :alt="baseInfo.tvName" class="img" v-if="movieCover" />
+        <img src="@/assets/moviedefault.png" :alt="baseInfo.tvName" class="img" v-else />
+        <h3 class="van-ellipsis">{{baseInfo.tvName}}</h3>
+        <p>{{baseInfo.episodes}}{{!baseInfo.episodes ? '' : ' / '}}{{baseInfo.duration}}{{!baseInfo.duration ? '' : ' / '}}{{baseInfo.genreName}}</p>
+        <p v-if="baseInfo.releaseDate">{{baseInfo.releaseDate}}</p>
       </div>
     </div>
     <div class="bubble">

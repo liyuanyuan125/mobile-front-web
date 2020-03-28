@@ -1,12 +1,12 @@
-import { getMovieDetailById, getEventListByIdAndType, getRivalListById } from '@/api/movie'
+import { getTVDetailById, getEventListByIdAndType, getRivalListById } from '@/api/tv'
 import { toast } from '@/util/toast'
 
 /**
  * 获取电影详情页
  */
-export const getMovieDetail = async (movieId: string) => {
+export const getTvDetail = async (tvId: string) => {
     try {
-        const res: any = await getMovieDetailById(movieId)
+        const res: any = await getTVDetailById(tvId)
         if (res && res.code === 0) {
             return res.data
         } else {
@@ -41,9 +41,9 @@ export const getEventList = async (query: any) => {
 /**
  * 获取竞品对手
  */
-export const getRivalList = async (movieId: string) => {
+export const getRivalList = async (tvId: string) => {
     try {
-        const res: any = await getRivalListById(movieId)
+        const res: any = await getRivalListById(tvId)
         if (res && res.code === 0) {
             return res.data
         } else {

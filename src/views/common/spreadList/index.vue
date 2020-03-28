@@ -22,11 +22,8 @@
               >{{it.markValue}}</i>
             </p>
             <p class="user">
-              {{item.userInfo.userName}}
-              <img
-                :src="item.userInfo.imgUrl"
-                :alt="item.userInfo.userName"
-              />
+              <span class="van-ellipsis">{{item.userInfo.userName}}</span>
+              <img :src="item.userInfo.imgUrl" :alt="item.userInfo.userName" />
             </p>
           </div>
           <h5 class="texts van-ellipsis">{{item.topicInfo.content}}</h5>
@@ -185,6 +182,13 @@ export default class SpreadList extends Vue {
         font-size: 26px;
         color: rgba(71, 64, 59, 0.5);
         line-height: 40px;
+        width: 300px;
+        text-align: right;
+        span {
+          max-width: 70%;
+          display: inline-block;
+          vertical-align: middle;
+        }
         img {
           width: 40px;
           height: 40px;

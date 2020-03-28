@@ -114,7 +114,7 @@ export default class TVPage extends ViewBase {
     return {
       type: 4, // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
       id: this.tvId, // 详情页id
-      name: this.tvInfo.movieNameCn,
+      name: this.tvInfo.tvName,
       startTime,
       endTime
     }
@@ -373,10 +373,11 @@ export default class TVPage extends ViewBase {
         return {
           name: 'sentimenttvuseranalysis',
           params: {
-            movieId: this.tvId
+            tvId: this.tvId
           }
         }
       case 'tvPlayCountDetail':
+        // 播放量监控
         return {
           page,
           tvId: this.tvId

@@ -1,13 +1,13 @@
-import { getMovieRivalList, getRivalPraise, PraiseItem, getRivalWantSeeTrend } from '@/api/movie'
+import { getRivalReport, getRivalPraise, PraiseItem, getRivalPlatformTrend } from '@/api/tv'
 import { toast } from '@/util/toast'
 import { imgFixed } from '@/fn/imgProxy'
 
 /**
  * 获取竞品详情
  */
-export const movieRivalList = async (movieIdList: string) => {
+export const tvRivalList = async (movieIdList: string) => {
     try {
-        const res: any = await getMovieRivalList(movieIdList)
+        const res: any = await getRivalReport(movieIdList)
         if (res && res.code === 0) {
             // const data = res.data
             // if (data.rivalList && data.rivalList.length) {
@@ -30,7 +30,7 @@ export const movieRivalList = async (movieIdList: string) => {
 /**
  * 获取竞品详情-口碑对比
  */
-export const movieRivalPraise = async (query: any) => {
+export const tvRivalPraise = async (query: any) => {
     // console.log('data', query)
     try {
         const res: any = await getRivalPraise(query)
@@ -63,12 +63,12 @@ export const movieRivalPraise = async (query: any) => {
 }
 
 /**
- * 获取竞品详情-想看趋势
+ * 获取竞品详情-指数趋势
  */
-export const movieRivalWantSee = async (query: any) => {
+export const tvRivalPlatform = async (query: any) => {
     // console.log('data', query)
     try {
-        const res: any = await getRivalWantSeeTrend(query)
+        const res: any = await getRivalPlatformTrend(query)
         if (res && res.code === 0) {
 
             return res

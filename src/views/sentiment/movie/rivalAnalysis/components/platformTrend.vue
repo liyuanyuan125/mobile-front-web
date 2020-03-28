@@ -1,5 +1,5 @@
 <template>
-  <!--想看趋势 -->
+  <!--指数趋势 -->
   <div class="wantsee">
     <div class="titbox">
       <h4>指数趋势</h4>

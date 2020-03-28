@@ -242,13 +242,14 @@ export default class KolPage extends ViewBase {
       font-size: 26px;
       font-weight: 600;
       color: rgba(136, 170, 246, 1);
+      white-space: nowrap;
       .s1 {
-        font-size: 70px;
+        font-size: 58px;
         font-weight: bold;
       }
     }
     .right {
-      padding-top: 7%;
+      padding-top: 5%;
       width: 50%;
       text-align: right;
       font-size: 26px;

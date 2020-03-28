@@ -191,7 +191,7 @@ export default new Router({
     },
     // 电视剧舆情
     {
-      path: '/sentiment/tv/:tvId',
+      path: '/sentiment/tv/:tvId(\\d+)',
       name: 'sentimenttv',
       component: () => import('./views/sentiment/tv/detail/index.vue')
     },
@@ -203,7 +203,7 @@ export default new Router({
     },
     // 电视剧用户分析
     {
-      path: '/sentiment/movie/userAnalysis/:movieId(\\d+)',
+      path: '/sentiment/tv/userAnalysis/:tvId(\\d+)',
       name: 'sentimenttvuseranalysis',
       component: () => import('./views/sentiment/tv/userAnalysis/index.vue')
     },

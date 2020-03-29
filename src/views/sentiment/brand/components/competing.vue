@@ -2,7 +2,7 @@
   <div class="compet-content">
     <ModuleHeader title="竞品分析" />
     <ul>
-      <li class="flex-box" v-for="item in getRivalList" :key="item.rivalId">
+      <li class="flex-box" v-for="(item, index) in getRivalList" v-if="index < 2" :key="item.rivalId">
         <div class="parse-left">
           <img :src="item.rivalCover.url" alt=""/>
           <p>{{item.rivalName}}</p>
@@ -37,7 +37,7 @@
       </li>
     </ul>
     <div class="submit-button">
-      <router-link :to="{name: 'sentimentbrand-analyze', query: {ids: idsString}}" class="to-link" >查看详细报告</router-link>
+      <router-link :to="{name: 'sentimentbrand-analyze', params: {ids: idsString}}" class="to-link" >查看详细报告</router-link>
     </div>
   </div>
 </template>
@@ -63,8 +63,11 @@ export default class Main extends Vue {
     return this.ids.join(',')
   }
   get getRivalList() {
-    const list = (this.rivalList || []).map((it: any) => {
-      this.ids.push(it.rivalId)
+    const list = (this.rivalList || []).map((it: any, index: number) => {
+      // 测试用这里要去除判断
+      if (index < 2) {
+        this.ids.push(it.rivalId)
+      }
       const yesterHeatTrend = it.yesterHeatTrend < 0 ? `低${Math.abs(it.yesterHeatTrend)}` : `高${it.yesterHeatTrend}`
       const yesterInteractTrend = it.yesterInteractTrend < 0 ?
       `低${Math.abs(it.yesterInteractTrend)}` : `高${it.yesterInteractTrend}`

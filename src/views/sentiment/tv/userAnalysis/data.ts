@@ -1,10 +1,13 @@
 import { getUserAnalysisById } from '@/api/movie'
 import { toast } from '@/util/toast'
 
-/** */
-export const userAnalysisData = async (movieId: string) => {
+/**
+ * 获取电视剧用户分析
+ * @param tvId
+ */
+export const userAnalysisData = async (tvId: string) => {
     try {
-        const res: any = await getUserAnalysisById(movieId)
+        const res: any = await getUserAnalysisById(tvId)
         if (res && res.code === 0) {
             const data = res.data
             if (data.ageRangeList && data.ageRangeList.length) {
@@ -13,8 +16,11 @@ export const userAnalysisData = async (movieId: string) => {
                 }
             }
             if (data.userRegionList && data.userRegionList.length) {
+                let inx: number = 0
                 for (const it of data.userRegionList) {
+                    inx += 1
                     it.value = (it.value / 100).toFixed(1)
+                    it.name = inx + '.' + it.name
                 }
             }
             if (data.consumePrefer && data.consumePrefer.length) {

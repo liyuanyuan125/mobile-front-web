@@ -1,55 +1,69 @@
 <template>
   <div class="content" v-if="show">
     <SentimentBar title="营销事件详情" :titleShow="true" />
-    <div class="main">
-      <h2>{{title}}</h2>
-      <div class="show-num">
-        <div class="left">
-          <span class="s1">{{eventInfo.interactCount}}</span>
-          <span class="s2">&nbsp;累计互动</span>
-        </div>
-        <div class="right">今日新增：{{eventInfo.todayInteractAdd}}</div>
-      </div>
-      <div class="show-echarts">
-        <Button
-          class="chg"
-          v-for="(item) in tabList"
-          :key="item.key"
-          :class="{'chgbgc': newPk == item.key}"
-          type="primary"
-          @click="chgnewPk(item)"
-        >{{item.name}}</Button>
-        <div @click="openAnalysisPage">
-          <heatLineCom 
-            :overAllList="overAllHeatList" 
-            :platformList="platformHeatList"
-            :params="platformParams"
-            lineTitle=""
-          />
-        </div>
-      </div>
+    <div v-if="eventStatus === 1 || !eventStatus" class="unevent">
+      <span></span>
+      <h6>暂无数据</h6>
+      <p>
+        该事件的分析报告将于分析周期开始的第二天展示，
+        <br />分析周期内分析报告每日更新，请耐心等待！
+      </p>
     </div>
-    <spread :dataList="spreadList" :link="getApplink('eventSpreadPathList')" />
-    <!-- 口碑评论 -->
-    <PraiseComment
-      :favorable="publicPraise.favorable"
-      :publicPraise="publicPraise"
-      :link="getApplink('eventPraiseHotWordsList')"
-    />
+    <div v-if="eventStatus === 2 || eventStatus === 3">
+      <div class="main"  >
+        <h2 class="van-multi-ellipsis--l2">{{title}}</h2>
+        <div class="show-num">
+          <div class="left">
+            <span class="s1">{{eventInfo.interactCount}}</span>
+            <span class="s2">&nbsp;累计互动</span>
+          </div>
+          <div class="right">今日新增：{{eventInfo.todayInteractAdd}}</div>
+        </div>
+        <div class="show-echarts">
+          <Button
+            class="chg"
+            v-for="(item) in tabList"
+            :key="item.key"
+            :class="{'chgbgc': newPk == item.key}"
+            type="primary"
+            @click="chgnewPk(item)"
+          >{{item.name}}</Button>
+          <div @click="openAnalysisPage">
+            <LineGrap :lineData="linedata" class="wantchart" :formatterHtml="formatterHtml" />
+          </div>
+        </div>
+      </div>
+      <platForm
+        :platformList="platformHeatList"
+        v-if="platformHeatList.length"
+        :params="platformParams"
+        class="platform"
+      />
+      <SpreadList :dataList="spreadList" :link="getApplink('eventSpreadPathList')" />
+      <!-- 口碑评论 -->
+      <PraiseComment
+        :favorable="publicPraise.favorable"
+        :publicPraise="publicPraise"
+        :link="getApplink('eventPraiseHotWordsList')"
+      />
+    </div>
+    
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
+import { roleNumber } from '@/fn/validateRules'
+import moment from 'moment'
+import { toast } from '@/util/toast'
+import LineGrap from '@/components/lineGraph'
+import { eventDetail } from './data'
 import { Tab, Tabs, Icon, Button } from 'vant'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import PraiseComment from '@/views/common/praiseComment/index.vue' // 口碑评论
-import spread from '@/views/common/spreadList/index.vue' // 事件
-import { toast } from '@/util/toast'
-import { alert } from '@/util/toast'
-import { eventDetail } from './data'
-import heatLineCom from '@/views/common/heatLineCom/index.vue' // 热度分析
+import SpreadList from '@/views/common/spreadList/index.vue' // 事件
+import { platForm } from '@/components/hotLine'
 
 import { openAppLink, AppLink } from '@/util/native'
 
@@ -61,24 +75,26 @@ import { openAppLink, AppLink } from '@/util/native'
     SentimentBar,
     PraiseComment,
     Button,
-    heatLineCom,
-    spread
+    LineGrap,
+    SpreadList,
+    platForm
   }
 })
 export default class KolPage extends ViewBase {
   title!: string
   eventId: string = ''
+  eventStatus: number = 1
 
-      // 热度分析+平台信息
+  // 热度分析
+  linedata: any = {}
   overAllHeatList: any = []
+  // 热度平台
   platformHeatList: any = []
   get platformParams() {
     return {
       type: 101, // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
-      id: this.$route.params.actorId, // 详情页id
-      name: this.title,
-      startTime: 20200304, // this.startTime,
-      endTime: 20200310 // this.endTime
+      id: this.$route.params.eventId, // 详情页id
+      name: this.title
     }
   }
 
@@ -124,12 +140,14 @@ export default class KolPage extends ViewBase {
   async geteventDetail() {
     try {
       const {
-        data: { eventInfo, platformList, spreadList, publicPraise }
+        data: { eventInfo, platformList, spreadList, publicPraise , eventStatus }
       } = await eventDetail({ eventId: this.$route.params.eventId })
       this.publicPraise = publicPraise
+      this.eventStatus = eventStatus
       this.spreadList = spreadList
       this.eventInfo = eventInfo
       this.overAllHeatList = eventInfo.newsList
+      this.formatDatas(eventInfo.newsList)
       this.platformHeatList = platformList || []
     } catch (ex) {
       toast(ex)
@@ -138,11 +156,31 @@ export default class KolPage extends ViewBase {
     }
   }
 
+  // 处理数据
+  formatDatas(data: any[]) {
+    if (data && data.length) {
+      const xDate = (data || []).map((it: any) => it.name)
+      const yDate = (data || []).map((it: any) => it.value)
+      const eventList = (data || []).map((it: any) => it.eventList)
+
+      this.linedata = {
+        xDate,
+        eventList,
+        yDate: [
+          {
+            data: yDate
+          }
+        ]
+      }
+    }
+  }
+
   // 切换平台热度对比
   chgnewPk(params: any) {
     this.newPk = params.key
     this.newPkName = params.name
     this.overAllHeatList = this.eventInfo[params.key] || []
+    this.formatDatas(this.overAllHeatList)
   }
 
   /**
@@ -162,6 +200,18 @@ export default class KolPage extends ViewBase {
     }
   }
 
+  // 处理chart 浮层 tooltip
+  formatterHtml = (params: any, time: any) => {
+    const date = moment(time).format('YYYY年MM月DD日')
+    return `
+           <div style="border:2px solid rgba(48,48,48,.1);border-radius:6px; padding:7px 10px;background-color:#fff">
+             <p style="color:#47403B;font-size:13px;line-height:16px">${date}</p>
+             <div style="color:#88AAF6;font-size:14px;line-height:16px;margin-top:5px">
+             ${this.newPkName} ${roleNumber(Math.abs(params.data))}</div>
+           </div>
+          `
+  }
+
   // 打开趋势大图
   openAnalysisPage() {
     const link: AppLink = {
@@ -178,7 +228,7 @@ export default class KolPage extends ViewBase {
 @import '~@/views/sentiment/brand/less/lib.less';
 
 .main {
-  padding: 110px 30px 0 30px;
+  padding: 140px 30px 0 30px;
   h2 {
     width: 100%;
   }
@@ -192,13 +242,14 @@ export default class KolPage extends ViewBase {
       font-size: 26px;
       font-weight: 600;
       color: rgba(136, 170, 246, 1);
+      white-space: nowrap;
       .s1 {
-        font-size: 70px;
+        font-size: 58px;
         font-weight: bold;
       }
     }
     .right {
-      padding-top: 7%;
+      padding-top: 5%;
       width: 50%;
       text-align: right;
       font-size: 26px;
@@ -224,10 +275,41 @@ export default class KolPage extends ViewBase {
   background: #88aaf6;
   color: #fff;
 }
-.alertwid {
-  width: 90%;
-}
 /deep/ .line-title {
   display: none;
+}
+.wantchart {
+  padding-bottom: 0;
+}
+// 平台热度
+.platform {
+  border-top: 20px solid rgba(216, 216, 216, 0.2);
+  padding: 0 30px;
+}
+// 事件未开始
+.unevent,
+.eventclose {
+  text-align: center;
+  padding: 200px 0 0;
+  span {
+    display: inline-block;
+    background: url('../../../assets/sentiment/event-null.png') no-repeat center;
+    background-size: 100%;
+    width: 268px;
+    height: 220px;
+  }
+  h6 {
+    font-weight: normal;
+    font-size: 33px;
+    line-height: 45px;
+    margin-top: 15px;
+    color: #88aaf6;
+  }
+  p {
+    font-size: 25px;
+    line-height: 40px;
+    color: #8f8f8f;
+    margin-top: 15px;
+  }
 }
 </style>

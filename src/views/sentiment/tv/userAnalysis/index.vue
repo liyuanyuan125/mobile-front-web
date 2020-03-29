@@ -50,6 +50,7 @@ import moduleHeaer from '@/components/moduleHeader'
   }
 })
 export default class MovieUserAnalysisPage extends ViewBase {
+  // canvas的宽高
   annularWid: number = document.documentElement.clientWidth - 60
   // 性别
   sexdata: any = {
@@ -77,13 +78,13 @@ export default class MovieUserAnalysisPage extends ViewBase {
   moviePrefer: any = []
 
   created() {
-    const movieId: string = this.$route.params.movieId
-    this.userAnalysis(movieId)
+    const tvId: string = this.$route.params.tvId
+    this.userAnalysis(tvId)
   }
 
-  async userAnalysis(movieId: string) {
+  async userAnalysis(tvId: string) {
     try {
-      const res: any = await userAnalysisData(movieId)
+      const res: any = await userAnalysisData(tvId)
       // 性别
       this.sexdata.data = res.genderList
       this.agedata = res.ageRangeList

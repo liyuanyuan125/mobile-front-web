@@ -1,7 +1,7 @@
 <template>
   <div class='main' v-if='show'>
-      <ModuleTitle :title="title" />
-      <!-- <div class='title'>{{title}}</div> -->
+      <!-- <ModuleTitle :title="title" /> -->
+      <div class='title'>{{title}}</div>
       <div style='padding: 0 15px'>
         <div class='but' v-if='regionPk != ""'>
           <Button class='chg' v-for='(item) in tabList' :key='item.key' :class="{'chgbgc': regionPk == item.key}" type="primary" @click='chgregionPk(item.key)'>{{item.name}}</Button>
@@ -25,10 +25,10 @@
                 <div v-if='itemlist.name != ""' class='bottom'>{{(itemlist.value/100).toFixed(1)}}%</div>
                 <!-- <div v-if='itemlist.name == ""'>--</div> -->
               </li>
-              <li>--</li>
-              <li>--</li>
-              <li>--</li>
-              <li>--</li>
+              <li>-</li>
+              <li>-</li>
+              <li>-</li>
+              <li>-</li>
             </ul>
           </div>
         </List>
@@ -89,6 +89,7 @@ export default class KolPage extends ViewBase {
   line-height: 34px;
   margin-top: 48px;
   margin-bottom: 30px;
+  padding-left: 30px;
 }
 .but {
   margin-bottom: 40px;

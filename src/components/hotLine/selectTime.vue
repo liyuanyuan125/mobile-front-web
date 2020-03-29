@@ -1,82 +1,50 @@
 <template>
-  <div class="line-title">
+  <div class="select-time">
     <div>{{title}}</div>
-    <select v-model="value" class="items">
-      <option v-for="(item,index) in list" :key="item.key + index" :value="item.key">{{ item.text }}</option>
-    </select>
+    <Select v-model="day" :list="dayList" class="day-list"/>
   </div>
 </template>
 
 <script lang='ts'>
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import moment from 'moment'
+import Select from '@/components/select'
 
-@Component({})
-export default class Main extends Vue {
-  /* 展示天数 默认展示最近7天 */
-  @Prop({ type: String, default: 'last_7_day' }) days!: string
-  /* 标题name */
-  @Prop({ type: String, default: '热度分析' }) title!: string
-  /* 接口传参日期格式 */
-  @Prop({ type: String, default: 'YYYYMMDD' }) timeFormat!: string
-  /* tabs切换标题 默认不展示 */
-  @Prop({ type: Array, default: () => [] }) tabList!: any
-
-  value = this.days
-  list = [
-    { key: 'last_7_day', text: '最近7天' },
-    { key: 'last_15_day', text: '最近15天' },
-    { key: 'last_30_day', text: '最近30天' },
-    { key: 'last_60_day', text: '最近60天' },
-    { key: 'last_90_day', text: '最近90天' }
-  ]
-  // 接口传入数据
-  get beginDate() {
-    switch (this.value) {
-      case 'last_7_day':
-        return moment(new Date())
-          .add(-7, 'days')
-          .format(this.timeFormat)
-      case 'last_15_day':
-        return moment(new Date())
-          .add(-15, 'days')
-          .format(this.timeFormat)
-      case 'last_30_day':
-        return moment(new Date())
-          .add(-30, 'days')
-          .format(this.timeFormat)
-      case 'last_60_day':
-        return moment(new Date())
-          .add(-60, 'days')
-          .format(this.timeFormat)
-      case 'last_90_day':
-        return moment(new Date())
-          .add(-90, 'days')
-          .format(this.timeFormat)
-    }
+@Component({
+  components: {
+    Select
   }
-  get endDate() {
-    return moment(new Date()).format(this.timeFormat)
+})
+export default class Main extends Vue {
+  /** 日期范围列表，数字代表最近几天 */
+  @Prop({ type: Array, default: () => [ 7, 15, 30, 60, 90 ] }) days!: number[]
+  @Prop({ type: String, default: '热度分析' }) title!: string
+  /* value */
+  @Prop({ type: [ String, Number, Boolean ], default: '' }) value!: any
+
+  day = 7
+
+  get dayList() {
+    const list = (this.days || []).map(value => ({ name: `最近${value}天`, value }))
+    return list
+  }
+  @Watch('value', { immediate: true })
+  watchValue(value: any) {
+    this.day = value
+  }
+
+  @Watch('day')
+  watchDay(value: any) {
+    this.$emit('input', value)
   }
 }
 </script>
 
 <style lang='less' scoped>
-.line-title {
+.select-time {
   display: flex;
   justify-content: space-between;
   justify-items: center;
   font-size: 40px;
-}
-.items {
-  width: 200px;
-  height: 60px;
-  background: rgba(255, 255, 255, 1);
-  border-radius: 30px;
-  border: 2px solid rgba(235, 235, 235, 1);
-  text-align: center;
-  color: #303030;
-  font-size: 26px;
-  padding-left: 40px;
 }
 </style>

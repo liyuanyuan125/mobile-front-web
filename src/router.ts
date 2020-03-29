@@ -190,11 +190,24 @@ export default new Router({
       component: () => import('./views/sentiment/movie/userAnalysis/index.vue')
     },
     // 电视剧舆情
-    // {
-    //   path: '/sentiment/tv/:tvId',
-    //   name: 'sentimenttv',
-    //   component: () => import('./views/sentiment/tv/index.vue')
-    // },
+    {
+      path: '/sentiment/tv/:tvId(\\d+)',
+      name: 'sentimenttv',
+      component: () => import('./views/sentiment/tv/detail/index.vue')
+    },
+    // 电视剧竞品分析
+    {
+      path: '/sentiment/tv/rivalAnalysis',
+      name: 'sentimenttvrivalanalysis',
+      component: () => import('./views/sentiment/tv/rivalAnalysis/index.vue')
+    },
+    // 电视剧用户分析
+    {
+      path: '/sentiment/tv/userAnalysis/:tvId(\\d+)',
+      name: 'sentimenttvuseranalysis',
+      component: () => import('./views/sentiment/tv/userAnalysis/index.vue')
+    },
+    // 用户地域分布三级页
     {
       path: '/sentiment/common/userRegion',
       name: 'sentimentuserregion',
@@ -278,5 +291,11 @@ export default new Router({
       name: 'demo-options',
       component: () => import('./views/demo/options.vue')
     }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    return {
+      x: 0,
+      y: 0
+    }
+  }
 })

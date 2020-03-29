@@ -4,8 +4,12 @@
     <BaseInfoArea :baseInfo="movieInfo" :overView="movieOverView" />
     <TabNav :list="tabList" class="formattab" />
     <div class="hotanalysis" id="hot">
-      <selectTime ref="refsTime" class="heat" />
-      <heatLineCom :overAllList="overAllHeat" :platformList="platformHeat" :params="params" />
+      <selectTime ref="refsTime" v-model="day" class="select-time" />
+      <heatLineCom
+        :overAllList="overAllHeat"
+        :platformList="platformHeat"
+        :params="platformParams"
+      />
     </div>
     <WantSeeTrend :dataTrend="wantSeeTrend" />
     <BoxOffice :boxoffice="boxOffice" :link="getApplink('movieBoxOffice')" id="boxoffice" />
@@ -32,7 +36,9 @@
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
-import { getMovieDetail, getEventList, getRivalList } from './data'
+import { getMovieDetail, getEventList, getRivalList, getMovieHeat } from './data'
+import moment from 'moment'
+import { lastDays } from '@/util/timeSpan'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import BaseInfoArea from './components/movieInfo.vue' // 影片基本信息
 import TabNav, { TabNavItem } from '@/components/tabNav'
@@ -102,14 +108,18 @@ export default class MoviePage extends ViewBase {
     { name: 'rival', label: '竞品' },
     { name: 'actor', label: '资料' }
   ]
-  // 热度分析传参
-  get params() {
+  // 热度分析+平台信息
+  day = 7
+  overAllHeatList: any = []
+  platformHeatList: any = []
+  get platformParams() {
+    const [startTime, endTime] = lastDays(this.day)
     return {
-      type: 3, // 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
-      id: 1, // 详情页id
-      name: '奔驰',
-      startTime: 20200304, // this.startTime,
-      endTime: 20200310 // this.endTime
+      type: 3, // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
+      id: this.movieId, // 详情页id
+      name: this.movieInfo.movieNameCn,
+      startTime,
+      endTime
     }
   }
   overAllHeat = [
@@ -450,6 +460,7 @@ export default class MoviePage extends ViewBase {
       await this.getMovieInfo()
       await this.getEventList()
       await this.getRivalList()
+      await this.getHeatAnalysis()
     }
   }
   // api获取电影详情页
@@ -463,6 +474,11 @@ export default class MoviePage extends ViewBase {
     this.actorList = res.actorList ? res.actorList : []
     this.produceList = res.produceList ? res.produceList : []
     document.title = res.movieInfo.movieNameCn
+  }
+  // api获取热度分析
+  async getHeatAnalysis() {
+    const res: any = await getMovieHeat(this.platformParams)
+    // console.log('params', res)
   }
   // api获取营销事件
   async getEventList() {
@@ -489,6 +505,12 @@ export default class MoviePage extends ViewBase {
       }
     }
   }
+  // 监测热度分析的日期选择
+  @Watch('day', { deep: true })
+  watchDay() {
+    this.platformParams
+    this.getHeatAnalysis()
+  }
 
   /**
    * 获取 applink
@@ -498,12 +520,20 @@ export default class MoviePage extends ViewBase {
    */
   getApplink(page: string) {
     switch (page) {
+      // 用户分析
       case 'userAnalysis':
         return {
           name: 'sentimentmovieuseranalysis',
           params: {
             movieId: this.movieId
           }
+        }
+      case 'movieBoxOffice':
+        // 票房
+        return {
+          page,
+          businessType: 1,
+          movieId: this.movieId
         }
       default:
         return {
@@ -536,5 +566,8 @@ export default class MoviePage extends ViewBase {
   .heat {
     padding: 0 30px 30px;
   }
+}
+.select-time {
+  padding: 0 30px 30px;
 }
 </style>

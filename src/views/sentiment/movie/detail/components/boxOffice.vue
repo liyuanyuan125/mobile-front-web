@@ -1,23 +1,31 @@
 <template>
   <!--影片票房 -->
   <div class="boxoffice mod">
-    <ModuleHeader title="影片票房" :link="appLink" />
+    <ModuleHeader title="影片票房" :link="boxoffice ? link : null" />
     <div v-if="boxoffice">
       <div class="bfstatis">
         <div>
-          <strong>{{boxoffice.totalBoxOffice ? boxoffice.totalBoxOffice : '-'}}</strong>
+          <strong
+            style="fontFamily: 'DIN Alternate'"
+          >{{boxoffice.totalBoxOffice ? boxoffice.totalBoxOffice : '-'}}</strong>
           <p>累计票房</p>
         </div>
         <div>
-          <strong>{{boxoffice.totalPerson ? boxoffice.totalPerson : '-'}}</strong>
+          <strong
+            style="fontFamily: 'DIN Alternate'"
+          >{{boxoffice.totalPerson ? boxoffice.totalPerson : '-'}}</strong>
           <p>总人次</p>
         </div>
         <div>
-          <strong>{{boxoffice.firstDayBoxOffice ? boxoffice.firstDayBoxOffice : '-'}}</strong>
+          <strong
+            style="fontFamily: 'DIN Alternate'"
+          >{{boxoffice.firstDayBoxOffice ? boxoffice.firstDayBoxOffice : '-'}}</strong>
           <p>首日票房</p>
         </div>
         <div>
-          <strong>{{boxoffice.firstWeekBoxOffice ? boxoffice.firstWeekBoxOffice : '-'}}</strong>
+          <strong
+            style="fontFamily: 'DIN Alternate'"
+          >{{boxoffice.firstWeekBoxOffice ? boxoffice.firstWeekBoxOffice : '-'}}</strong>
           <p>首周票房</p>
         </div>
       </div>
@@ -78,7 +86,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
-import LineGrap from './lineGraph.vue'
+import LineGrap from '@/components/lineGraph'
 import ModuleHeader from '@/components/moduleHeader'
 import { openAppLink, AppLink } from '@/util/native'
 import { roleNumber } from '@/fn/validateRules'
@@ -94,7 +102,6 @@ export default class BoxOffice extends ViewBase {
   @Prop({ type: Object }) boxoffice!: any
   @Prop({ type: Object }) link!: any
 
-  appLink: any = this.link
   tabList: any = [
     {
       id: 1,
@@ -156,8 +163,12 @@ export default class BoxOffice extends ViewBase {
 
   // 去往原生页
   goLink(type: number) {
-    this.appLink.boxOfficeType = type ? type : 1
-    openAppLink(this.appLink)
+    const link: AppLink = {
+      page: 'movieBoxOffice',
+      businessType: type,
+      movieId: this.link.movieId
+    }
+    openAppLink(link)
   }
 
   // 处理chart 浮层 tooltip
@@ -291,7 +302,7 @@ export default class BoxOffice extends ViewBase {
       border-top: 2px solid #cfd1d9;
       transform: rotate(-45deg);
       position: absolute;
-      right: -4px;
+      right: -5px;
       top: 50%;
       margin-top: -3px;
     }

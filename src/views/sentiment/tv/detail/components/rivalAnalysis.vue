@@ -1,7 +1,7 @@
 <template>
   <!--竞品分析 -->
   <div class="rival mod">
-    <ModuleHeader title="同档期影片分析" />
+    <ModuleHeader title="同档期剧集分析" />
     <div v-if="list.length">
       <dl>
         <dd v-for="(item,index) in list" :key="item.rivalId + index">
@@ -37,7 +37,7 @@
         </dd>
       </dl>
       <div class="golink">
-        <router-link :to="{path:'/sentiment/movie/rivalAnalysis',query:{ids:rivalIds}}">查看详细报告</router-link>
+        <router-link :to="{name:'sentimenttvrivalanalysis',query:{ids:rivalIds}}">查看详细报告</router-link>
       </div>
     </div>
     <dataEmpty v-else />

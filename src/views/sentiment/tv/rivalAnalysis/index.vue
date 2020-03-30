@@ -2,7 +2,7 @@
   <div class="page">
     <SentimentBar title="竞品分析详细报告" :titleShow="true" />
     <RivalList
-      type="3"
+      type="4"
       :rivalList="rivalList"
       v-if="rivalList.length"
       class="movierival"
@@ -10,14 +10,8 @@
     />
 
     <BasisList :basisList="basisList" v-if="basisList.length" />
-    <WantSeeTrend :fetch="wantSeeFetch" :query="movieIdList" v-if="movieIdList" />
-    <PlatformTrend :fetch="wantSeeFetch" :query="movieIdList" v-if="movieIdList" />
-    <marketContrast
-      :fetch="praiseFetch"
-      :query="{movieIdList}"
-      v-if="movieIdList"
-      class="praisebox"
-    />
+    <PlatformTrend :fetch="platformFetch" :query="tvIdList" v-if="tvIdList" />
+    <marketContrast :fetch="praiseFetch" :query="{tvIdList}" v-if="tvIdList" class="praisebox" />
     <div class="portrait">
       <moduleHeader title="受众画像" />
       <SexVs :data="vsData" class="genderbox" />
@@ -29,11 +23,10 @@
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
-import { movieRivalList, movieRivalPraise, movieRivalWantSee } from './data'
+import { tvRivalList, tvRivalPraise, tvRivalPlatform } from './data'
 import SentimentBar from '@/views/common/sentimentBar/index.vue' // topbar
 import RivalList from '@/views/common/rivalList/index.vue' // 竞品列表
 import BasisList from './components/baseList.vue' // 基础信息
-import WantSeeTrend from './components/wantSeeTrend.vue'
 import PlatformTrend from './components/platformTrend.vue'
 import marketContrast from '@/views/common/marketContrast/index.vue' // 口碑对比
 import SexVs, { VsItem } from '@/views/common/sexVs' // 性别分布
@@ -45,7 +38,6 @@ import moduleHeader from '@/components/moduleHeader'
     SentimentBar,
     RivalList,
     BasisList,
-    WantSeeTrend,
     PlatformTrend,
     marketContrast,
     moduleHeader,
@@ -53,15 +45,15 @@ import moduleHeader from '@/components/moduleHeader'
     AgeDistribution
   }
 })
-export default class MovieRivalAnalysisPage extends ViewBase {
-  movieIdList: any = ''
+export default class TVRivalAnalysisPage extends ViewBase {
+  tvIdList: any = ''
   rivalList: any = []
   basisList: any = []
   vsData: VsItem[] = []
   ageRangeList: any = []
 
   created() {
-    this.movieIdList = this.$route.query.ids
+    this.tvIdList = this.$route.query.ids
     this.init()
   }
   init() {
@@ -70,7 +62,7 @@ export default class MovieRivalAnalysisPage extends ViewBase {
 
   // 获取数据
   async getRivalData() {
-    const res: any = await movieRivalList(this.movieIdList)
+    const res: any = await tvRivalList(this.tvIdList)
     this.rivalList = res.rivalList
     this.basisList = res.basisDataList
     // 处理性别分布
@@ -89,22 +81,22 @@ export default class MovieRivalAnalysisPage extends ViewBase {
 
   // 调取口碑对比的接口
   praiseFetch = async (query: any) => {
-    const res: any = await movieRivalPraise(query)
+    const res: any = await tvRivalPraise(query)
     return res
   }
 
   // 调取想看趋势
-  wantSeeFetch = async (query: any) => {
-    const res: any = await movieRivalWantSee(query)
+  platformFetch = async (query: any) => {
+    const res: any = await tvRivalPlatform(query)
     return res
   }
 
   // 设置竞品对手
   changeIds(ids: string) {
-    this.movieIdList = ids
+    this.tvIdList = ids
     this.init()
     this.praiseFetch
-    this.wantSeeFetch
+    this.platformFetch
   }
 }
 </script>

@@ -2,7 +2,7 @@
   <div class="compet-content">
     <ModuleHeader title="竞品分析" />
     <ul>
-      <li class="flex-box" v-for="(item, index) in getRivalList" v-if="index < 2" :key="item.rivalId">
+      <li class="flex-box" v-for="(item, index) in getRivalList" v-if="index < 3" :key="item.rivalId">
         <div class="parse-left">
           <img :src="item.rivalCover.url" alt=""/>
           <p>{{item.rivalName}}</p>
@@ -64,10 +64,7 @@ export default class Main extends Vue {
   }
   get getRivalList() {
     const list = (this.rivalList || []).map((it: any, index: number) => {
-      // 测试用这里要去除判断
-      if (index < 2) {
-        this.ids.push(it.rivalId)
-      }
+      this.ids.push(it.rivalId)
       const yesterHeatTrend = it.yesterHeatTrend < 0 ? `低${Math.abs(it.yesterHeatTrend)}` : `高${it.yesterHeatTrend}`
       const yesterInteractTrend = it.yesterInteractTrend < 0 ?
       `低${Math.abs(it.yesterInteractTrend)}` : `高${it.yesterInteractTrend}`

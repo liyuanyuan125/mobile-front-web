@@ -33,8 +33,14 @@
         <!-- 平台分布 -->
         <Table :title='publicObj.title' :tabList='publicObj.tabList' :tableTitle='publicObj.tableTitle' :tableItem='publicObj.tableItem'/>
         <!-- </div> -->
+        <div class='hr' style='margin-top: 50px'>
+          <p></p>
+        </div>
         <!-- 年龄分布 -->
         <Age :ageRangeList='ageRangeList' />
+        <div class='hr' style='margin-bottom: 50px'>
+          <p></p>
+        </div>
         <!-- 性别分布 -->
         <div class='title'>性别分布</div>
         <div class='main-show'>
@@ -43,7 +49,9 @@
             class="chart"
           />
         </div>
-
+        <div class='hr' style='margin-bottom: 50px'>
+          <p></p>
+        </div>
         <!-- 用户地域分布对比 -->
         <Table :title='regionObj.title' :tabList='regionObj.tabList' :tableTitle='regionObj.tableTitle' :tableItem='regionObj.tableItem' @chgregionPk='chgregionPk'/>
       </div>
@@ -116,28 +124,7 @@ export default class KolPage extends ViewBase {
   }
   // 口碑评论
   publicPraise: any = {
-    // 口碑评论补充数据
-    // 口碑评论 查询
-    query : {
-        movieIdList: 12345
-    },
-    fetch : async (query: any) => { // query: 查询参数
-        return {
-            code: '',
-            msg: '',
-            data: {
-                goodList: [
-                    {
-                        rivalName: query.startTime,
-                        percent: 12.35,
-                        hotWordList: [
-                            '你好'
-                        ]
-                    }
-                ]
-            }
-        }
-    }
+    // fetch: async () => { const data = awiat rivalPraise{id: 123 }）return data }
   }
   // 平台分布
   publicObj: any = {
@@ -169,83 +156,7 @@ export default class KolPage extends ViewBase {
         value: 'TOP5'
       },
     ],
-    tableItem: [
-      {
-        rivalName: '111',
-        dataList: [
-          {
-            name: '微博123',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-        ]
-      },
-      {
-        rivalName: '222',
-        dataList: [
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-        ]
-      },
-      {
-        rivalName: '333',
-        dataList: [
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '',
-            value: ''
-          }
-        ]
-      },
-    ]
+    tableItem: []
   }
   // 性别分布
   sexdata: VsItem[] = [
@@ -258,34 +169,7 @@ export default class KolPage extends ViewBase {
   // 地域数据
   userRegion: any = {}
   // 年龄分布数据
-  ageRangeList = [
-      {
-          ageType: '20-30',
-          rivalList: [
-              {
-                  rivalName: '奔驰',
-                  rivalPercent: 32,
-              },
-              {
-                  rivalName: '奔驰',
-                  rivalPercent: 80,
-              }
-          ]
-      },
-      {
-          ageType: '20-30',
-          rivalList: [
-            {
-                  rivalName: '奔驰',
-                  rivalPercent: 32,
-              },
-              {
-                  rivalName: '奔驰',
-                  rivalPercent: 80,
-              }
-          ]
-      }
-  ]
+  ageRangeList = []
 
   // 用户地域分布
   regionObj: any = {
@@ -326,83 +210,7 @@ export default class KolPage extends ViewBase {
         value: 'TOP5'
       },
     ],
-    tableItem: [
-      {
-        rivalName: '111',
-        dataList: [
-          {
-            name: '微博123',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-        ]
-      },
-      {
-        rivalName: '222',
-        dataList: [
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-        ]
-      },
-      {
-        rivalName: '333',
-        dataList: [
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '',
-            value: ''
-          }
-        ]
-      },
-    ]
+    tableItem: []
   }
   list: TabNavItem[] = [
     { name: 'hot', label: '热度' },
@@ -427,7 +235,7 @@ export default class KolPage extends ViewBase {
           materialList
         }
       }} = await rivalHeatAnalysis({
-        actorIdList: '1,2',
+        actorIdList: this.$route.params.ids,
         startTime: 20200304,
         endTime: 20200311
       })
@@ -442,18 +250,17 @@ export default class KolPage extends ViewBase {
   async getPublicPraise() {
     try {
       const  data = await rivalPraise({
-        actorIdList: '1,2,3',
+        actorIdList: this.$route.params.ids,
         startTime: 20200304,
         endTime: 20200311
       })
       this.publicPraise.query = {
-        actorIdList: '1,2,3',
-        startTime: 20200304,
-        endTime: 20200311
+        actorIdList: this.$route.params.ids,
       }
       // const as = this.publicPraise.query
       this.publicPraise.fetch = async (query: any) => { // query: 查询参数
-        return data
+        const datas = await rivalPraise(query)
+        return datas
       }
     } catch (ex) {
       toast(ex)
@@ -596,5 +403,17 @@ export default class KolPage extends ViewBase {
 }
 /deep/ h3 {
   margin-bottom: 40px;
+}
+.hr {
+  width: 100%;
+  padding: 0 30px;
+  height: 1px;
+  p {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: rgba(216, 216, 216, 1);
+    opacity: 0.5;
+  }
 }
 </style>

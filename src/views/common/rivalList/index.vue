@@ -88,6 +88,7 @@ export default class RivalList extends Vue {
     if (index > -1) {
       this.rivalIds.splice(index, 1)
     }
+    this.$emit('setRival', this.rivalIds.join(','))
   }
 
   // 设置业务 class

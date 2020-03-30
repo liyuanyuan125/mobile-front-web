@@ -6,7 +6,7 @@
           <echartLines :lineData="lineData" v-if="overAllHeat.length" :colors="colors"/>
           <DataEmpty v-else/>
         </div>
-        
+        <div class="van-hairline--top item-hairline"></div>
         <h2 class="platform-title">平台热度对比</h2>
         <div class="tabbar">
           <span 
@@ -132,7 +132,7 @@ export default class Main extends Vue {
   font-size: 34px;
   color: #303030;
   padding: 50px 0 40px;
-  border-top: solid 1px #d8d8d8;
+  // border-top: solid 1px #d8d8d8;
 }
 .tabbar {
   display: flex;

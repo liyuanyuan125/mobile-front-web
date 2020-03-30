@@ -12,16 +12,16 @@ export interface PraiseItem {
     endTime: string
 }
 /**
- * 获取电影详情页
+ * 获取电视剧详情页
  * @param query  object
  */
-export async function getMovieDetailById(movieId: string) {
-    const res = await get('/mock/400/yuqing/movie/detail', { movieId })
+export async function getTVDetailById(tvId: string) {
+    const res = await get('/mock/402/yuqing/tv/detail', { tvId })
     return res
 }
 
 /**
- * 获取电影详情页 - 获取热度分析
+ * 获取电视剧详情页 - 获取热度分析
  * @param query  object
  */
 export async function getMovieHeatAnalysis(query: any) {
@@ -30,15 +30,15 @@ export async function getMovieHeatAnalysis(query: any) {
 }
 
 /**
- * 详情页获取竞品分析
+ * 获取电视剧详情页 - 竞品分析
  */
-export async function getRivalListById(movieId: string) {
-    const res = await get('/mock/400/yuqing/movie/rivalAnalysis', { movieId })
+export async function getRivalListById(tvId: string) {
+    const res = await get('/mock/402/yuqing/tv/rivalAnalysis', { tvId })
     return res
 }
 
 /**
- * 详情页获取营销事件
+ * 获取电视剧详情页 - 营销事件
  */
 export async function getEventListByIdAndType(query: EventItem) {
     const res = await get('/mock/416/yuqing/common/eventAnalysis', query)
@@ -48,8 +48,8 @@ export async function getEventListByIdAndType(query: EventItem) {
 /**
  * 获取竞品报告详情页
  */
-export async function getMovieRivalList(movieIdList: string) {
-    const res = await get('/mock/400/yuqing/movie/rivalreport', { movieIdList })
+export async function getRivalReport(tvIdList: string) {
+    const res = await get('/mock/402/yuqing/tv/rivalreport', { tvIdList })
     return res
 }
 
@@ -62,18 +62,18 @@ export async function getRivalPraise(query: PraiseItem) {
 }
 
 /**
- * 竞品报告详情页 - 获取想看趋势
+ * 竞品报告详情页 - 获取指数趋势
  */
-export async function getRivalWantSeeTrend(query: PraiseItem) {
-    const res = await get('/mock/400/yuqing/movie/getRivalWantSee', query)
+export async function getRivalPlatformTrend(query: PraiseItem) {
+    const res = await get('/mock/402/yuqing/tv/getRivalExponent', query)
     return res
 }
 
 /**
  * 获取用户分析
  */
-export async function getUserAnalysisById(movieId: string) {
-    const res = await get('/mock/400/yuqing/movie/useranalysis', { movieId })
+export async function getUserAnalysisById(tvId: string) {
+    const res = await get('/mock/402/yuqing/tv/getUserAnalysis', { tvId })
     return res
 }
 

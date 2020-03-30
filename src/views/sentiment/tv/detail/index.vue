@@ -1,16 +1,19 @@
 <template>
   <div class="page">
-    <SentimentBar :title="movieInfo.movieNameCn" :sidebar="sidebar" />
-    <BaseInfoArea :baseInfo="movieInfo" :overView="movieOverView" />
+    <SentimentBar :title="tvInfo.tvName" :sidebar="sidebar" />
+    <BaseInfoArea :baseInfo="tvInfo" :overView="tvOverView" />
     <TabNav :list="tabList" class="formattab" />
-    <div class="hotanalysis">
-      <selectTime ref="refsTime" class="heat" />
-      <heatLineCom :overAllList="overAllHeat" :platformList="platformHeat" :params="params" />
+    <div class="hotanalysis" id="hot">
+      <selectTime ref="refsTime" v-model="day" class="select-time" />
+      <heatLineCom
+        :overAllList="overAllHeat"
+        :platformList="platformHeat"
+        :params="platformParams"
+      />
     </div>
-    <WantSeeTrend :dataTrend="wantSeeTrend" />
-    <BoxOffice :boxoffice="boxOffice" :link="getApplink('movieBoxOffice')" id="boxoffice" />
+    <PlayTrend :dataTrend="playTrend" :link="getApplink('tvPlayCountDetail')" />
     <PraiseComment
-      :favorable="movieInfo.favorable"
+      :favorable="tvInfo.favorable"
       :publicPraise="publicPraise"
       :link="getApplink('praiseHotWordsList')"
       v-if="publicPraise.appraiseList"
@@ -21,6 +24,7 @@
       :genderList="userAnalysis.genderList"
       id="user"
       :link="getApplink('userAnalysis')"
+      :title="tvInfo.tvName"
     />
     <EventList :eventList="eventList" id="event" :link="getApplink('eventMarketingList')" />
     <RivalAnalysis :rivalList="rivalAnalysis" id="rival" />
@@ -32,14 +36,15 @@
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
-import { getMovieDetail, getEventList, getRivalList } from './data'
+import { getTvDetail, getEventList, getRivalList } from './data'
+import moment from 'moment'
+import { lastDays } from '@/util/timeSpan'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
-import BaseInfoArea from './components/movieInfo.vue' // 影片基本信息
+import BaseInfoArea from './components/tvInfo.vue' // 电视剧基本信息
 import TabNav, { TabNavItem } from '@/components/tabNav'
 import { selectTime } from '@/components/hotLine'
 import heatLineCom from '@/views/common/heatLineCom/index.vue'
-import WantSeeTrend from './components/wantSeeTrend.vue' // 想看趋势
-import BoxOffice from './components/boxOffice.vue' // 影片票房
+import PlayTrend from './components/playTrend.vue' // 播放量监控
 import PraiseComment from '@/views/common/praiseComment/index.vue' // 口碑评论
 import UserPortrait from '@/views/common/user/userPortrait.vue'
 import EventList from '@/views/common/eventList/event.vue' // 事件跟踪
@@ -55,8 +60,7 @@ import ProduceList from '@/views/common/produceList/index.vue' // 出品发行
     TabNav,
     selectTime,
     heatLineCom,
-    WantSeeTrend,
-    BoxOffice,
+    PlayTrend,
     PraiseComment,
     UserPortrait,
     EventList,
@@ -65,19 +69,19 @@ import ProduceList from '@/views/common/produceList/index.vue' // 出品发行
     ProduceList
   }
 })
-export default class MoviePage extends ViewBase {
+export default class TVPage extends ViewBase {
   // 顶部 topbar 传参
   sidebar = {
-    diggType: 3, // 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
+    diggType: 4, // 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
     diggId: '',
     rivalIds: {} // 竞争对手的 url
   }
-  // 电影id
-  movieId: string = ''
-  // 电影详细信息
-  movieInfo: any = {}
+  // 电视剧id
+  tvId: string = ''
+  // 电视剧详细信息
+  tvInfo: any = {}
   // 电影数据概览
-  movieOverView: any = {}
+  tvOverView: any = {}
   // 电影票房
   boxOffice: any = {}
   // 口碑
@@ -95,21 +99,24 @@ export default class MoviePage extends ViewBase {
   // 二级导航
   tabList: TabNavItem[] = [
     { name: 'hot', label: '热度' },
-    { name: 'boxoffice', label: '票房' },
     { name: 'praise', label: '口碑' },
     { name: 'user', label: '用户' },
     { name: 'event', label: '事件' },
     { name: 'rival', label: '竞品' },
     { name: 'actor', label: '资料' }
   ]
-  // 热度分析传参
-  get params() {
+  // 热度分析+平台信息
+  day = 7
+  overAllHeatList: any = []
+  platformHeatList: any = []
+  get platformParams() {
+    const [startTime, endTime] = lastDays(this.day)
     return {
-      type: 3, // 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
-      id: 1, // 详情页id
-      name: '奔驰',
-      startTime: 20200304, // this.startTime,
-      endTime: 20200310 // this.endTime
+      type: 4, // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
+      id: this.tvId, // 详情页id
+      name: this.tvInfo.tvName,
+      startTime,
+      endTime
     }
   }
   overAllHeat = [
@@ -240,241 +247,97 @@ export default class MoviePage extends ViewBase {
       platformNotice: '媒体一 媒体二 媒体三'
     }
   ]
-  wantSeeTrend = {
-    dailyGainList: [
+  playTrend = {
+    dailyFormList: [
       {
-        date: 1584622361149,
-        eventList: [
+        date: 1583979099061,
+        platformList: [
           {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
+            platformName: '爱奇艺',
+            platformValue: '1,321.5万'
           }
         ],
-        value: 1300
+        markName: '上线首日'
       },
       {
-        date: 1584622361149,
-        eventList: [
+        date: 1583970088061,
+        platformList: [
           {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
+            platformName: '爱奇艺',
+            platformValue: '1,321'
           }
         ],
-        value: 32132
+        markName: ''
       },
       {
-        date: 1584622361149,
-        eventList: [
+        date: 1583109088061,
+        platformList: [
           {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
+            platformName: '爱奇艺',
+            platformValue: '321.5万'
           }
         ],
-        value: 323132
-      },
-      {
-        date: 1584622361149,
-        eventList: [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          }
-        ],
-        value: 12313
-      },
-      {
-        date: 1584622361149,
-        eventList: [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          }
-        ],
-        value: 320
+        markName: ''
       }
     ],
-    totalGainList: [
+    playDataList: [
       {
-        date: 1583979088061,
-        eventList: [
+        platformName: '腾讯视频',
+        dataList: [
           {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
+            date: 1583979088061,
+            value: 12
           },
           {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
+            date: 1583979088061,
+            value: 323
           },
           {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
+            date: 1583979088061,
+            value: 1323
+          },
+          {
+            date: 1583979088061,
+            value: 12323
           }
-        ],
-        value: 32311323
-      },
-      {
-        date: 1583979088061,
-        eventList: [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          }
-        ],
-        value: 32311323
-      },
-      {
-        date: 1583979088061,
-        eventList: [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          }
-        ],
-        value: 32311323
-      },
-      {
-        date: 1583979088061,
-        eventList: [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          }
-        ],
-        value: 32311323
-      },
-      {
-        date: 1583979088061,
-        eventList: [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          }
-        ],
-        value: 32311323
+        ]
       }
     ]
   }
 
   async created() {
-    this.movieId = this.$route.params.movieId
-    this.sidebar.diggId = this.movieId
-    if (this.movieId) {
-      await this.getMovieInfo()
+    this.tvId = this.$route.params.tvId
+    this.sidebar.diggId = this.tvId
+    if (this.tvId) {
+      await this.getTVInfo()
       await this.getEventList()
       await this.getRivalList()
     }
   }
   // api获取电影详情页
-  async getMovieInfo() {
-    const res: any = await getMovieDetail(this.movieId)
-    this.movieInfo = res.movieInfo
-    this.movieOverView = res.movieOverView
+  async getTVInfo() {
+    const res: any = await getTvDetail(this.tvId)
+    this.tvInfo = res.tvInfo
+    this.tvOverView = res.tvOverView
     this.boxOffice = res.boxOffice
     this.publicPraise = res.publicPraise
     this.userAnalysis = res.userAnalysis
     this.actorList = res.actorList ? res.actorList : []
     this.produceList = res.produceList ? res.produceList : []
-    document.title = res.movieInfo.movieNameCn
+    document.title = res.tvInfo.tvName
   }
+
   // api获取营销事件
   async getEventList() {
     const res: any = await getEventList({
-      type: 3,
-      objectId: 9
+      type: 4,
+      objectId: this.tvId
     })
     this.eventList = res
   }
   // api获取竞品对手
   async getRivalList() {
-    const res: any = await getRivalList(this.movieId)
+    const res: any = await getRivalList(this.tvId)
     this.rivalAnalysis = res
     const ids = []
     if (res && res.length) {
@@ -490,6 +353,13 @@ export default class MoviePage extends ViewBase {
     }
   }
 
+  // 监测热度分析的日期选择
+  @Watch('day', { deep: true })
+  watchDay() {
+    this.platformParams
+    // this.getHeatAnalysis()
+  }
+
   /**
    * 获取 applink
    * 业务类型 businessType 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
@@ -498,18 +368,25 @@ export default class MoviePage extends ViewBase {
    */
   getApplink(page: string) {
     switch (page) {
+      // 有户分析
       case 'userAnalysis':
         return {
-          name: 'sentimentmovieuseranalysis',
+          name: 'sentimenttvuseranalysis',
           params: {
-            movieId: this.movieId
+            tvId: this.tvId
           }
+        }
+      case 'tvPlayCountDetail':
+        // 播放量监控
+        return {
+          page,
+          tvId: this.tvId
         }
       default:
         return {
           page,
-          businessType: 3,
-          businessObjectId: this.movieId
+          businessType: 4,
+          businessObjectId: this.tvId
         }
     }
   }
@@ -520,15 +397,24 @@ export default class MoviePage extends ViewBase {
 .page {
   color: #303030;
 }
-nav.formattab {
+/deep/ nav.formattab {
   margin-top: 0;
   top: 88px;
   z-index: 11;
+  &::before {
+    display: none;
+  }
+}
+/deep/ nav.formattab .van-tab {
+  flex-basis: 14.2% !important;
 }
 .hotanalysis {
   margin-top: 40px;
   .heat {
     padding: 0 30px 30px;
   }
+}
+.select-time {
+  padding: 0 30px 30px;
 }
 </style>

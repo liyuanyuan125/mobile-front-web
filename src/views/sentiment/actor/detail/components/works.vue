@@ -1,10 +1,10 @@
 <template>
   <div class="compet-content">
-    <div class="title">作品分析</div>
-    <Movie v-if='movieAnalysis.length == 0' :data='movieAnalysis' />
-    <Series v-if='tvAnalysis.length == 0' :data='tvAnalysis' />
-    <Music v-if='musicAnalysis.length == 0' :data='musicAnalysis' />
-    <Brand v-if='brandAnalysis.length == 0' :data='brandAnalysis' />
+    <ModuleHeader title="作品分析" :link="link" />
+    <Movie v-if='movieAnalysis.movieCount' :data='movieAnalysis' />
+    <Series v-if='tvAnalysis.tvCount' :data='tvAnalysis' />
+    <Music v-if='musicAnalysis.musicCount' :data='musicAnalysis' />
+    <Brand v-if='brandAnalysis.brandCount' :data='brandAnalysis' />
   </div>
 </template>
 
@@ -16,6 +16,8 @@ import Movie from './movie.vue'
 import Series from './series.vue'
 import Music from './music.vue'
 import Brand from './brand.vue'
+import ModuleHeader from '@/components/moduleHeader'
+
 
 @Component({
   components: {
@@ -24,10 +26,12 @@ import Brand from './brand.vue'
     Series,
     Music,
     Brand,
+    ModuleHeader
   }
 })
 export default class Main extends Vue {
   @Prop({ type: Object, default: []}) worksAnalysis!: any
+  @Prop({ type: Object }) link!: any
 
   movieAnalysis: any = this.worksAnalysis.movieAnalysis || {}
   tvAnalysis: any = this.worksAnalysis.tvAnalysis || {}

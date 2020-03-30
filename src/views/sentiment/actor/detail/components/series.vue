@@ -152,7 +152,7 @@ export default class Main extends Vue {
 
 .movielist {
   width: 100%;
-  display: flex;
+  display: -webkit-box;
   overflow: scroll;
   -webkit-flex-wrap: nowrap;
   flex-wrap: nowrap;

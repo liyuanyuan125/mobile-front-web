@@ -15,19 +15,11 @@ export async function reportDetail(query: any) {
       rate2,
     }
   })
-  // 竞品列表 rivalLogo 修改为 coverUrl  - 接口待修改
-  const rivalListData = (rivalList || []).map((it: any) => {
-    return {
-      ...it,
-      coverUrl: it.rivalLogo
-    }
-  })
   return {
     code,
     data: {
       ...data,
-      sexData,
-      rivalList: rivalListData
+      sexData
     },
     msg
   }

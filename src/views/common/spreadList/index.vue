@@ -12,7 +12,7 @@
         <div class="spread">
           <div class="datebox">
             <p>
-              <span class="days" v-if="item.topicInfo.publishTime">10天前</span>
+              <span class="days" v-if="item.topicInfo.creatDay">{{item.topicInfo.creatDay}}</span>
               <span class="date" v-else>{{item.topicInfo.creatDate}}</span>
               <i
                 class="target"
@@ -22,11 +22,8 @@
               >{{it.markValue}}</i>
             </p>
             <p class="user">
-              {{item.userInfo.userName}}
-              <img
-                :src="item.userInfo.imgUrl"
-                :alt="item.userInfo.userName"
-              />
+              <span class="van-ellipsis">{{item.userInfo.userName}}</span>
+              <img :src="item.userInfo.imgUrl" :alt="item.userInfo.userName" />
             </p>
           </div>
           <h5 class="texts van-ellipsis">{{item.topicInfo.content}}</h5>
@@ -70,8 +67,9 @@ export default class SpreadList extends Vue {
       list.map((it: any) => {
         const time1 = Math.abs(moment(it.topicInfo.publishTime).diff(moment(), 'day'))
         // 前10天显示 N 天前
-        it.topicInfo.creatDay = datetimeParse(it.createTime)
-        it.topicInfo.creatDate = moment(it.createTime).format('YYYY-MM-DD')
+        it.topicInfo.creatDay =
+          time1 > 10 ? null : datetimeParse(it.topicInfo.publishTime)
+        it.topicInfo.creatDate = moment(it.topicInfo.publishTime).format('YYYY-MM-DD')
         // 处理图片
         it.platformInfo.imgUrl = imgFixed(it.platformInfo.avatarUrl)
         it.userInfo.imgUrl = imgFixed(it.userInfo.avatarUrl)
@@ -184,6 +182,13 @@ export default class SpreadList extends Vue {
         font-size: 26px;
         color: rgba(71, 64, 59, 0.5);
         line-height: 40px;
+        width: 300px;
+        text-align: right;
+        span {
+          max-width: 70%;
+          display: inline-block;
+          vertical-align: middle;
+        }
         img {
           width: 40px;
           height: 40px;

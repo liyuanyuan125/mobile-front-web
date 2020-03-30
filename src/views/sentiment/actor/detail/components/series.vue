@@ -25,7 +25,7 @@
             <div class='rowmovie' v-for='item in data.tvList' :key='item.tvId'>
                 <div class="img">
                   <!-- <img :src=item.coverUrl.url alt=""> -->
-                  <img :src="item.coverUrl.url || defaultImg"  alt="">
+                  <img :src="item.coverUrl.url || require('@/assets/tvdefault.png')"  alt="">
                 </div>
                 <div class='name'>
                   {{item.tvName}}

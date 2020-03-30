@@ -164,6 +164,9 @@ export default class KolPage extends ViewBase {
         .top {
           height: 55px;
           line-height: 70px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
         .bottom {
           height: 55px;

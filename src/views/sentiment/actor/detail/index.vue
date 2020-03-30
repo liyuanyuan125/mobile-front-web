@@ -1,10 +1,10 @@
 <template>
   <div class="content" >
     <SentimentBar :title="actorInfo.actorName" :sidebar="sidebar" />
-    <div class="header">
+    <div class="header" v-if='show'>
       <div class='left'>
         <div>
-          <img :src="actorInfo.coverUrl || defaultActorImg" class="img" />
+          <img :src="actorInfo.coverUrl.url || require('@/assets/actordefault.png')" class="img" />
         </div>
       </div>
       <div class='right'>
@@ -102,6 +102,7 @@ import {BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
 import { getList, getActorDetail , getPkUser , getEventList } from '@/api/kol'
 import { alert } from '@/util/toast'
 
+
 @Component({
   components: {
     Tab,
@@ -120,6 +121,7 @@ import { alert } from '@/util/toast'
   }
 })
 export default class KolPage extends ViewBase {
+
 
   defaultActorImg: any = '@/assets/actordefault.png'
 
@@ -174,8 +176,8 @@ export default class KolPage extends ViewBase {
   pkIdList: any = []
 
   created() {
-    this.getHotList()
     this.getActorDetail()
+    this.getHotList()
     this.getPkUser()
     this.getEventList()
     document.body.style.background = '#FBFBFB'
@@ -459,5 +461,8 @@ export default class KolPage extends ViewBase {
 }
 .alertwid {
   width: 90%;
+}
+.select-time {
+  padding: 69px 30px 15px;
 }
 </style>

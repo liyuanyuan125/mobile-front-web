@@ -1,25 +1,29 @@
 <template>
   <div class="content" >
     <SentimentBar :title="actorInfo.actorName" :sidebar="sidebar" />
-    <div class="header">
+    <div class="header" v-if='show'>
       <div class='left'>
         <div>
-          <img :src="actorInfo.coverUrl || defaultActorImg" class="img" />
+          <img :src="coverImg || require('@/assets/actordefault.png')" class="img" />
         </div>
       </div>
       <div class='right'>
         <p class="kol-name">{{actorInfo.actorName}}</p>
         <p v-if="actorInfo.rankingName && !actorInfo.rankingId " class="event-name">
-            <span>
-              <i class='hid'>热搜No.{{actorInfo.rankingNum}}&nbsp;</i>
+            <span style='    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;'>
+              <i class='hid'>{{actorInfo.rankingNum}}&nbsp;</i>
               <i class='bor'>#{{actorInfo.rankingName}}</i>
             </span>
         </p>
         <p v-if="actorInfo.rankingName && actorInfo.rankingId">
           <router-link :to="{name: 'sentimenteventmarketing', params: {eventId: actorInfo.rankingId}}" class="event-name flex-box">
-            <span>
-              <i class='hid'>#{{actorInfo.rankingNum}}&nbsp;</i>
-              <i class='bor'>{{actorInfo.rankingName}}</i>
+            <span style='    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;'>
+              <i class='hid'>{{actorInfo.rankingNum}}&nbsp;</i>
+              <i class='bor'>#{{actorInfo.rankingName}}111111111111111111111111</i>
             </span>
             <Icon name="arrow" size="13" class="icon-arrow" />
           </router-link> 
@@ -101,6 +105,7 @@ import { toast } from '@/util/toast'
 import {BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
 import { getList, getActorDetail , getPkUser , getEventList } from '@/api/kol'
 import { alert } from '@/util/toast'
+import { imgFixed } from '@/fn/imgProxy'
 
 @Component({
   components: {
@@ -121,8 +126,6 @@ import { alert } from '@/util/toast'
 })
 export default class KolPage extends ViewBase {
 
-  defaultActorImg: any = '@/assets/actordefault.png'
-
   show: any = false
   showuser: any = false
   showevent: any = false
@@ -134,6 +137,7 @@ export default class KolPage extends ViewBase {
   }
   // 艺人基本信息
   actorInfo = {}
+  coverImg: any = ''
   // 气泡数据概览
   bubbleData: any = []
   // tab导航
@@ -174,8 +178,8 @@ export default class KolPage extends ViewBase {
   pkIdList: any = []
 
   created() {
-    this.getHotList()
     this.getActorDetail()
+    this.getHotList()
     this.getPkUser()
     this.getEventList()
     document.body.style.background = '#FBFBFB'
@@ -233,6 +237,7 @@ export default class KolPage extends ViewBase {
         worksAnalysis, // 作品分析
       } } = await getActorDetail({actorId: this.$route.params.actorId})
       this.actorInfo = actorInfo
+      this.coverImg = imgFixed(actorInfo.coverUrl, 172, 172)
       this.bubbleData = [
         {type: '1', value: actorOverView.interactCount, trend: actorOverView.interactTrend,
          renderTitle: (h: any) => {
@@ -346,14 +351,14 @@ export default class KolPage extends ViewBase {
       height: 172px;
       border-radius: 50%;
       overflow: hidden;
-      background: url('~@/assets/actordefault.png');
+      // background: url('~@/assets/actordefault.png');
       img {
         width: 100%;
         height: 100%;
         border-radius: 50%;
         // max-width: 172px;
         // min-height: 130px;
-        object-fit: contain;
+        // object-fit: contain;
         background-color: #fff;
       }
     }
@@ -380,9 +385,11 @@ export default class KolPage extends ViewBase {
     white-space: nowrap;
     span {
       .hid {
+        // display: inline-block;
         color: rgba(48, 48, 48, 1);
       }
       .bor {
+        // display: inline-block;
         text-decoration: underline;
         // border-bottom: 1px solid rgba(136, 170, 246, 1);
       }
@@ -459,5 +466,8 @@ export default class KolPage extends ViewBase {
 }
 .alertwid {
   width: 90%;
+}
+.select-time {
+  padding: 69px 30px 15px;
 }
 </style>

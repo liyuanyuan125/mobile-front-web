@@ -22,10 +22,10 @@
             </li>
         </ul>
         <div class='movielist'>
-            <div class='rowmovie' v-for='item in data.tvList' :key='item.tvId'>
+            <div class='rowmovie' v-for='item in dataList' :key='item.tvId'>
                 <div class="img">
                   <!-- <img :src=item.coverUrl.url alt=""> -->
-                  <img :src="item.coverUrl.url || defaultImg"  alt="">
+                  <img :src="item.coverImg || require('@/assets/tvdefault.png')"  alt="">
                 </div>
                 <div class='name'>
                   {{item.tvName}}
@@ -41,6 +41,8 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Icon } from 'vant'
 import moment from 'moment'
 import { alert } from '@/util/toast'
+import { imgFixed } from '@/fn/imgProxy'
+
 
 @Component({
   components: {
@@ -51,6 +53,16 @@ export default class Main extends Vue {
   @Prop({ type: Object, default: []}) data!: any
 
   defaultImg: any = '@/assets/tvdefault.png'
+
+  dataList: any = []
+  created() {
+    this.dataList = (this.data.tvList || []).map((it: any) => {
+      return {
+        ...it,
+        coverImg: imgFixed(it.coverUrl, 200, 260),
+      }
+    })
+  }
 
     // 显示说明
   showplayCount() {
@@ -176,7 +188,7 @@ export default class Main extends Vue {
     img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      // object-fit: contain;
     }
   }
   .name {

@@ -27,7 +27,7 @@
       <li class='li-item-pk' v-for='item in pkUserListData' :key='item.rivalName' >
         <div class='li-left' @click='goActorDetail(item.rivalId)'>
           <div>
-            <img :src=item.rivalCover.url alt="">
+            <img :src="item.coverImg || require('@/assets/actordefault.png')" alt="">
           </div>
         </div>
         <div class='li-right'>
@@ -37,12 +37,12 @@
               <li>
                 <p class='hot1'>热度</p>
                 <p class='hot2'>{{item.yesterHeatCount}}</p>
-                <p :class="item.yesterHeatTrend > 0 ?'red':'blue'">{{item.yesterHeatTrend}}</p>
+                <p :class="Number(item.chgyesterHeatTrend) > 0 ?'red':'blue'">{{item.yesterHeatTrend}}</p>
               </li>
               <li>
                 <p class='hot1'>全网粉丝数</p>
                 <p class='hot2'>{{item.interFansCount}}</p>
-                <p :class="item.interFansTrend > 0?'red':'blue'">{{item.interFansTrend}}</p>
+                <p :class="Number(item.chginterFansTrend) > 0?'red':'blue'">{{item.interFansTrend}}</p>
               </li>
             </ul>
           </div>
@@ -79,13 +79,22 @@ export default class Main extends Vue {
 
   pkUserListData: any = null
   pkDate: any = null
+  coverImg: any = ''
 
   created() {
     this.pkDate = this.pkUserList[0]
+    this.coverImg = imgFixed(this.pkUserList[0].rivalCover, 200, 200),
     this.pkUserListData = (this.pkUserList.slice(1) || []).map((it: any) => {
       return {
         ...it,
-        eventCreatTimeDate: moment(it.eventCreatTime).format(format)
+        coverImg: imgFixed(it.rivalCover, 200, 260),
+        eventCreatTimeDate: moment(it.eventCreatTime).format(format),
+        yesterHeatTrend: it.yesterHeatTrend == 0 ? 0 : (it.yesterHeatTrend > 0 ?
+        '高' + String(it.yesterHeatTrend) : '低' + String(it.yesterHeatTrend).substr(1)),
+        interFansTrend: it.interFansTrend == 0 ? 0 : (it.interFansTrend > 0 ?
+        '高' + String(it.interFansTrend) : '低' + String(it.interFansTrend).substr(1)),
+        chgyesterHeatTrend: it.yesterHeatTrend,
+        chginterFansTrend: it.interFansTrend,
       }
     })
   }
@@ -128,7 +137,7 @@ export default class Main extends Vue {
       img {
         width: 100%;
         height: 100%;
-        object-fit: contain;
+        // object-fit: contain;
         background-color: #fff;
         border-radius: 5px;
       }
@@ -191,7 +200,7 @@ export default class Main extends Vue {
       img {
         width: 100%;
         height: 100%;
-        object-fit: contain;
+        // object-fit: contain;
         background-color: #fff;
         border-radius: 5px;
       }

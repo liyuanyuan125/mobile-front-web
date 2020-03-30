@@ -2,9 +2,9 @@
     <div class='scroll'>
         <div class='title'>品牌({{data.brandCount}})</div>
         <div class='movielist'>
-            <div class='rowmovie' v-for='item in data.brandList' :key='item.brandId'>
+            <div class='rowmovie' v-for='item in dataList' :key='item.brandId'>
                 <div class="img">
-                  <img :src="item.coverUrl.url || defaultImg"  alt="">
+                  <img :src="item.coverImg || require('@/assets/branddefault.png')"  alt="">
                 </div>
                 <div class='name'>
                   {{item.brandName}}
@@ -19,6 +19,8 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Icon } from 'vant'
 import moment from 'moment'
+import { imgFixed } from '@/fn/imgProxy'
+
 
 @Component({
   components: {
@@ -29,6 +31,16 @@ export default class Main extends Vue {
   @Prop({ type: Object, default: []}) data!: any
 
   defaultImg: any = '@/assets/branddefault.png'
+
+  dataList: any = []
+  created() {
+    this.dataList = (this.data.brandList || []).map((it: any) => {
+      return {
+        ...it,
+        coverImg: imgFixed(it.coverUrl, 200, 260),
+      }
+    })
+  }
 
 }
 
@@ -120,7 +132,7 @@ export default class Main extends Vue {
     img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      // object-fit: contain;
     }
   }
   .name {

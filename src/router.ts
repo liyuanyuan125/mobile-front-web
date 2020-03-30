@@ -116,21 +116,22 @@ export default new Router({
     // 品牌舆情
     {
       path: '/sentiment/brand/:id',
-      name: 'sentimentbrand',
-      component: () => import('./views/sentiment/brand/index.vue'),
+      name: 'sentiment-brand',
+      component: () => import('./views/sentiment/brand/detail.vue'),
       props: idProps
     },
     // 品牌舆情 - 用户分析二级详情页
     {
-      path: '/sentiment/branduser/:brandId',
+      path: '/sentiment/branduser/:id',
       name: 'sentimentbrand-user',
-      component: () => import('./views/sentiment/brand/userAnalysis/user.vue')
+      component: () => import('./views/sentiment/brand/userAnalysis/user.vue'),
+      props: idProps
     },
     // 品牌舆情 - 竞品分析二级详情页
     {
-      path: '/sentiment/brand/rivalAnalysis',
+      path: '/sentiment/brand/rivalAnalysis/:ids',
       name: 'sentimentbrand-analyze',
-      component: () => import('./views/sentiment/brand/rivalAnalysis/analyze.vue'),
+      component: () => import('./views/sentiment/brand/rivalAnalysis/index.vue'),
     },
     // 平台热度 - 查看更多（通用页）
     {

@@ -165,7 +165,7 @@ export default class BoxOffice extends ViewBase {
   goLink(type: number) {
     const link: AppLink = {
       page: 'movieBoxOffice',
-      businessType: type,
+      boxOfficeType: type,
       movieId: this.link.movieId
     }
     openAppLink(link)

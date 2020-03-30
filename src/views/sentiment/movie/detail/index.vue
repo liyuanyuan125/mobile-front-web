@@ -532,7 +532,7 @@ export default class MoviePage extends ViewBase {
         // 票房
         return {
           page,
-          businessType: 1,
+          boxOfficeType: 1,
           movieId: this.movieId
         }
       default:

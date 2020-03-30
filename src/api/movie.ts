@@ -33,7 +33,7 @@ export async function getMovieHeatAnalysis(query: any) {
  * 详情页获取竞品分析
  */
 export async function getRivalListById(movieId: string) {
-    const res = await get('/mock/400/yuqing/movie/rivalAnalysis', { movieId })
+    const res = await get('/yuqing/movie/rivalAnalysis', { movieId })
     return res
 }
 
@@ -49,7 +49,7 @@ export async function getEventListByIdAndType(query: EventItem) {
  * 获取竞品报告详情页
  */
 export async function getMovieRivalList(movieIdList: string) {
-    const res = await get('/mock/400/yuqing/movie/rivalreport', { movieIdList })
+    const res = await get('/yuqing/movie/rivalreport', { movieIdList })
     return res
 }
 

@@ -359,3 +359,542 @@ mockGet('/yuqing/song/rival/list', () => {
     },
   ]
 })
+
+mockGet('/yuqing/music/song/user/analysis', () => {
+  return {
+    genderList: [
+      { value: 1335, name: '男性' },
+      { value: 310, name: '女性' }
+    ],
+
+    ageRangeList: [
+      { name: '小于19岁', value: 880 },
+      { name: '20-24', value: 1760 },
+      { name: '25-29', value: 3280 },
+      { name: '30-34', value: 2800 },
+      { name: '35-39', value: 920 },
+      { name: '大于40岁', value: 310 },
+    ],
+
+    userRegionList: [
+      { name: '新疆', value: 0 },
+      { name: '西藏', value: 2080 },
+      { name: '青海', value: 3000 },
+      { name: '甘肃', value: 4000 },
+      { name: '内蒙古', value: 5000 },
+      { name: '宁夏', value: 8088 },
+      { name: '陕西', value: 6099 },
+      { name: '黑龙江', value: 8000 },
+      { name: '吉林', value: 3000 },
+      { name: '辽宁', value: 5000 },
+      { name: '河南', value: 9900 },
+      { name: '北京', value: 8866 },
+      { name: '天津', value: 6666 },
+      { name: '江苏', value: 6666 },
+      { name: '安徽', value: 8888 },
+      { name: '湖北', value: 3888 },
+      { name: '湖南', value: 5888 },
+      { name: '河北', value: 3888 },
+      { name: '山西', value: 4888 },
+      { name: '四川', value: 2888 },
+      { name: '广东', value: 5288 },
+      { name: '山东', value: 8222 },
+      { name: '广西', value: 8233 },
+      { name: '重庆', value: 8255 },
+      { name: '江西', value: 5288 },
+      { name: '浙江', value: 5222 },
+      { name: '福建', value: 8200 },
+      { name: '台湾', value: 9200 },
+      { name: '云南', value: 9200 },
+      { name: '贵州', value: 6200 },
+    ]
+  }
+})
+
+mockGet('/yuqing/music/song/rival/report', () => {
+  return {
+    rivalList: [
+      {
+        rivalId: 1,
+        rivalName: '挪威的森林',
+        coverUrl: {
+          source: 'piaoshen',
+          url: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/movie/images/2019/11/09/5601F7C08816AB57A432.jpg',
+        },
+        rivalDesc: '伍佰/wubai',
+      },
+      {
+        rivalId: 2,
+        rivalName: '学猫叫',
+        coverUrl: {
+          source: 'piaoshen',
+          url: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/movie/images/2019/11/09/5601F7C08816AB57A432.jpg',
+        },
+        rivalDesc: '学猫叫',
+      },
+    ],
+
+    basisDataList: [
+      {
+        rivalName: '挪威的森林',
+        releaseDate: '2019-12-22',
+        companyName: '滚石音乐',
+        playCount: '1,223',
+        interactCount: '1.7万',
+        favorable: 'B+',
+      },
+      {
+        rivalName: '学猫叫',
+        releaseDate: '2019-02-22',
+        companyName: '滚石音乐',
+        playCount: '99,888',
+        interactCount: '2.6万',
+        favorable: 'A+',
+      },
+      {
+        rivalName: '想见你想见你想见你',
+        releaseDate: '2020-02-22',
+        companyName: '滚石音乐',
+        playCount: '66,883',
+        interactCount: '3.8万',
+        favorable: 'C+',
+      },
+    ],
+
+    rankAnalysis: [
+      {
+        rivalName: '挪威的森林',
+        rankCount: '2,311',
+        rankBest: 'NO.32',
+        rankType: '流行 最热',
+        platformList: [
+          { platformName: '抖音', platformNotice: '上榜数/最高排名', platformValue: '3/NO.2' },
+          { platformName: '酷我音乐', platformNotice: '上榜数/最高排名', platformValue: '8/NO.23' },
+          { platformName: '搜狗音乐', platformNotice: '上榜数/最高排名', platformValue: '6/NO.88' },
+          { platformName: '网易云音乐', platformNotice: '上榜数/最高排名', platformValue: '9/NO.21' },
+          { platformName: 'QQ音乐', platformNotice: '上榜数/最高排名', platformValue: '3/NO.66' },
+        ]
+      },
+      {
+        rivalName: '学猫叫',
+        rankCount: '8,311',
+        rankBest: 'NO.82',
+        rankType: '口水歌',
+        platformList: [
+          { platformName: '抖音', platformNotice: '上榜数/最高排名', platformValue: '3/NO.2' },
+          { platformName: '酷我音乐', platformNotice: '上榜数/最高排名', platformValue: '8/NO.23' },
+          { platformName: '搜狗音乐', platformNotice: '上榜数/最高排名', platformValue: '6/NO.88' },
+          { platformName: '网易云音乐', platformNotice: '上榜数/最高排名', platformValue: '9/NO.21' },
+          { platformName: 'QQ音乐', platformNotice: '上榜数/最高排名', platformValue: '3/NO.66' },
+        ]
+      },
+      {
+        rivalName: '想见你想见你想见你',
+        rankCount: '8,311',
+        rankBest: 'NO.182',
+        rankType: '口水歌',
+        platformList: [
+          { platformName: '抖音', platformNotice: '上榜数/最高排名', platformValue: '3/NO.2' },
+          { platformName: '酷我音乐', platformNotice: '上榜数/最高排名', platformValue: '8/NO.23' },
+          { platformName: '搜狗音乐', platformNotice: '上榜数/最高排名', platformValue: '6/NO.88' },
+          { platformName: '网易云音乐', platformNotice: '上榜数/最高排名', platformValue: '9/NO.21' },
+          { platformName: 'QQ音乐', platformNotice: '上榜数/最高排名', platformValue: '3/NO.66' },
+        ]
+      },
+    ],
+
+    ageRangeList: [
+      {
+        ageType: '20岁以下',
+        rivalList: [
+          { rivalName: 'Last Dance', rivalPercent: 6360 },
+          { rivalName: '挪威的森林', rivalPercent: 3960 },
+          { rivalName: '想见你想见你想见你', rivalPercent: 2520 },
+        ]
+      },
+      {
+        ageType: '20-24岁',
+        rivalList: [
+          { rivalName: '学猫叫', rivalPercent: 2360 },
+          { rivalName: '挪威的森林', rivalPercent: 5960 },
+          { rivalName: '想见你想见你想见你', rivalPercent: 8520 },
+        ]
+      },
+      {
+        ageType: '25-29岁',
+        rivalList: [
+          { rivalName: 'Last Dance', rivalPercent: 1360 },
+          { rivalName: '挪威的森林', rivalPercent: 2960 },
+          { rivalName: '想见你想见你想见你', rivalPercent: 3520 },
+        ]
+      },
+      {
+        ageType: '30-34岁',
+        rivalList: [
+          { rivalName: 'Last Dance', rivalPercent: 8360 },
+          { rivalName: '挪威的森林', rivalPercent: 2960 },
+          { rivalName: '想见你想见你想见你', rivalPercent: 1520 },
+        ]
+      },
+      {
+        ageType: '35-39岁',
+        rivalList: [
+          { rivalName: 'Last Dance', rivalPercent: 2360 },
+          { rivalName: '挪威的森林', rivalPercent: 8960 },
+          { rivalName: '想见你想见你想见你', rivalPercent: 1620 },
+        ]
+      },
+      {
+        ageType: '40岁以上',
+        rivalList: [
+          { rivalName: 'Last Dance', rivalPercent: 3360 },
+          { rivalName: '挪威的森林', rivalPercent: 6960 },
+          { rivalName: '想见你想见你想见你', rivalPercent: 8520 },
+        ]
+      },
+    ],
+
+    genderList: [
+      {
+        rivalName: 'Last Dance',
+        dataList: [
+          { name: '男', value: 3120 },
+          { name: '女', value: 6880 },
+        ]
+      },
+      {
+        rivalName: '挪威的森林',
+        dataList: [
+          { name: '男', value: 5220 },
+          { name: '女', value: 4780 },
+        ]
+      },
+      {
+        rivalName: '想见你想见你想见你',
+        dataList: [
+          { name: '男', value: 8220 },
+          { name: '女', value: 1780 },
+        ]
+      },
+    ],
+
+    userRegion: {
+      cityList: [
+        {
+          rivalName: 'Last Dance',
+          dataList: [
+            { name: '深圳', value: 3120 },
+            { name: '广州', value: 6880 },
+            { name: '上海', value: 2880 },
+            { name: '北京', value: 1880 },
+            { name: '杭州', value: 280 },
+          ]
+        },
+        {
+          rivalName: '挪威的森林',
+          dataList: [
+            { name: '深圳', value: 5120 },
+            { name: '广州', value: 2880 },
+            { name: '上海', value: 3880 },
+            { name: '北京', value: 2880 },
+            { name: '杭州', value: 8280 },
+          ]
+        },
+        {
+          rivalName: '想见你想见你想见你',
+          dataList: [
+            { name: '深圳', value: 1120 },
+            { name: '广州', value: 3880 },
+            { name: '上海', value: 5880 },
+            { name: '北京', value: 7880 },
+            { name: '杭州', value: 9280 },
+          ]
+        },
+      ],
+      provinceList: [
+        {
+          rivalName: '学猫叫',
+          dataList: [
+            { name: '深圳', value: 2120 },
+            { name: '广州', value: 3880 },
+            { name: '上海', value: 4880 },
+            { name: '北京', value: 5880 },
+            { name: '杭州', value: 880 },
+          ]
+        },
+        {
+          rivalName: '挪威的森林',
+          dataList: [
+            { name: '深圳', value: 2120 },
+            { name: '广州', value: 3880 },
+            { name: '上海', value: 5880 },
+            { name: '北京', value: 8880 },
+            { name: '杭州', value: 1280 },
+          ]
+        },
+        {
+          rivalName: '想见你想见你想见你',
+          dataList: [
+            { name: '深圳', value: 2120 },
+            { name: '广州', value: 4880 },
+            { name: '上海', value: 6880 },
+            { name: '北京', value: 8880 },
+            { name: '杭州', value: 1280 },
+          ]
+        },
+      ],
+    }
+  }
+})
+
+mockGet('/yuqing/music/song/rival/heat/analysis', () => {
+  const list = [
+    {
+      rivalName: '挪威的森林',
+      data: [
+        { date: 1583251200000, value: 32100 },
+        { date: 1583337600000, value: 3211 },
+        { date: 1583424000000, value: 300 },
+        { date: 1583510400000, value: 32100 },
+        { date: 1583596800000, value: 32100 },
+        { date: 1583683200000, value: 32100 },
+        { date: 1583769600000, value: 32100 },
+      ]
+    },
+    {
+      rivalName: '学猫叫',
+      data: [
+        { date: 1583251200000, value: 92100 },
+        { date: 1583337600000, value: 2211 },
+        { date: 1583424000000, value: 800 },
+        { date: 1583510400000, value: 92100 },
+        { date: 1583596800000, value: 82100 },
+        { date: 1583683200000, value: 62100 },
+        { date: 1583769600000, value: 52100 },
+      ]
+    },
+    {
+      rivalName: '想见你想见你想见你',
+      data: [
+        { date: 1583251200000, value: 22100 },
+        { date: 1583337600000, value: 8211 },
+        { date: 1583424000000, value: 1800 },
+        { date: 1583510400000, value: 22100 },
+        { date: 1583596800000, value: 52100 },
+        { date: 1583683200000, value: 82100 },
+        { date: 1583769600000, value: 92100 },
+      ]
+    },
+  ]
+  return {
+    overAllHeat: list,
+    platform: {
+      interactList: [
+        { platformName: '微博', dataList: list },
+        { platformName: '微信', dataList: list },
+        { platformName: '抖音', dataList: list },
+      ],
+      materialList: [
+        { platformName: '抖音', dataList: list },
+        { platformName: '微博', dataList: list },
+        { platformName: '微信', dataList: list },
+      ],
+    },
+    rivalList: [
+      {
+        rivalId: 1,
+        rivalName: '挪威的森林',
+        coverUrl: {
+          source: 'piaoshen',
+          url: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/movie/images/2019/11/09/5601F7C08816AB57A432.jpg',
+        },
+        rivalDesc: '伍佰/wubai',
+      },
+      {
+        rivalId: 2,
+        rivalName: '学猫叫',
+        coverUrl: {
+          source: 'piaoshen',
+          url: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/movie/images/2019/11/09/5601F7C08816AB57A432.jpg',
+        },
+        rivalDesc: '学猫叫',
+      },
+    ],
+
+    basisDataList: [
+      {
+        rivalName: '挪威的森林',
+        releaseDate: '2019-12-22',
+        companyName: '滚石音乐',
+        playCount: '1,223',
+        interactCount: '1.7万',
+        favorable: 'B+',
+      },
+      {
+        rivalName: '学猫叫',
+        releaseDate: '2019-02-22',
+        companyName: '滚石音乐',
+        playCount: '99,888',
+        interactCount: '2.6万',
+        favorable: 'A+',
+      },
+      {
+        rivalName: '想见你想见你想见你',
+        releaseDate: '2020-02-22',
+        companyName: '滚石音乐',
+        playCount: '66,883',
+        interactCount: '3.8万',
+        favorable: 'C+',
+      },
+    ],
+  }
+})
+
+mockGet('/yuqing/music/song/rival/play/analysis', () => {
+  return {
+    rivalPlay: [
+      {
+        platformName: '网易云音乐',
+        rivalName: '挪威的森林',
+        playCountShow: '2,432.4万',
+        dataList: [
+          { date: 1581782400000, value: 18888 },
+          { date: 1582041600000, value: 28888 },
+          { date: 1582300800000, value: 38888 },
+        ],
+        dateShowList: [
+          { date: '2020-02-16', value: '18,888' },
+          { date: '2020-02-19', value: '28,888' },
+          { date: '2020-02-22', value: '38,888' },
+        ]
+      },
+      {
+        platformName: 'QQ音乐',
+        rivalName: '学猫叫',
+        playCountShow: '8,432.4万',
+        dataList: [
+          { date: 1581782400000, value: 18888 },
+          { date: 1582041600000, value: 38888 },
+          { date: 1582300800000, value: 58888 },
+        ],
+        dateShowList: [
+          { date: '2020-02-16', value: '18,888' },
+          { date: '2020-02-19', value: '38,888' },
+          { date: '2020-02-22', value: '58,888' },
+        ]
+      },
+      {
+        platformName: '酷我',
+        rivalName: '学猫叫',
+        playCountShow: '8,432.4万',
+        dataList: [
+          { date: 1581782400000, value: 18888 },
+          { date: 1582041600000, value: 88888 },
+          { date: 1582300800000, value: 98888 },
+        ],
+        dateShowList: [
+          { date: '2020-02-16', value: '18,888' },
+          { date: '2020-02-19', value: '88,888' },
+          { date: '2020-02-22', value: '98,888' },
+        ]
+      },
+    ],
+    videoView: {
+      platformList: [
+        { name: '网易云音乐', value: 1880, countShow: '2.59亿' },
+        { name: 'QQ音乐', value: 9888, countShow: '3.8亿' },
+        { name: '酷我音乐', value: 3888, countShow: '8.8亿' },
+      ],
+      dailyPlay: {
+        eventName: '',
+        eventId: '',
+      },
+      dailyFormList: [
+        {
+          date: 1581955200000,
+          playCount: '876.9万',
+          markName: '上线首日',
+          platformList: [
+            { name: '网易云音乐', value: '688.8万' },
+            { name: 'QQ音乐', value: '66.8万' },
+            { name: '酷我音乐', value: '' },
+          ]
+        },
+        {
+          date: 1582041600000,
+          playCount: '388.8万',
+          platformList: [
+            { name: '网易云音乐', value: '288.8万' },
+            { name: 'QQ音乐', value: '138.8万' },
+            { name: '酷我音乐', value: '20.8万' },
+          ]
+        },
+        {
+          date: 1582128000000,
+          playCount: '666.9万',
+          platformList: [
+            { name: '网易云音乐', value: '199.8万' },
+            { name: 'QQ音乐', value: '166.8万' },
+            { name: '酷我音乐', value: '20万' },
+          ]
+        },
+      ]
+    }
+  }
+})
+
+mockGet('/yuqing/music/song/rival/praise', () => {
+  return {
+    goodList: [
+      {
+        rivalName: 'Last Dance',
+        percent: 1600,
+        hotWordList: ['商务', '豪华无比', '象征']
+      },
+      {
+        rivalName: '挪威森林',
+        percent: 8600,
+        hotWordList: ['商务', '豪华无比', '象征']
+      },
+      {
+        rivalName: '想见你想见你想见你',
+        percent: 3888,
+        hotWordList: ['商务', '豪华无比', '象征']
+      },
+    ],
+    neutralList: [
+      {
+        rivalName: '学猫叫',
+        percent: 2680,
+        hotWordList: ['商务', '豪华无比', '象征']
+      },
+      {
+        rivalName: '挪威森林',
+        percent: 3660,
+        hotWordList: ['商务', '豪华无比', '象征']
+      },
+      {
+        rivalName: '想见你想见你想见你',
+        percent: 6888,
+        hotWordList: ['商务', '豪华无比', '象征']
+      },
+    ],
+    badList: [
+      {
+        rivalName: '学猫叫',
+        percent: 600,
+        hotWordList: ['商务', '豪华无比', '象征']
+      },
+      {
+        rivalName: '挪威森林',
+        percent: 6600,
+        hotWordList: ['商务', '豪华无比', '象征']
+      },
+      {
+        rivalName: '想见你想见你想见你',
+        percent: 8888,
+        hotWordList: ['商务', '豪华无比', '象征']
+      },
+    ],
+  }
+})

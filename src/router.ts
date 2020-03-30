@@ -122,9 +122,10 @@ export default new Router({
     },
     // 品牌舆情 - 用户分析二级详情页
     {
-      path: '/sentiment/branduser/:brandId',
+      path: '/sentiment/branduser/:id',
       name: 'sentimentbrand-user',
-      component: () => import('./views/sentiment/brand/userAnalysis/user.vue')
+      component: () => import('./views/sentiment/brand/userAnalysis/user.vue'),
+      props: idProps
     },
     // 品牌舆情 - 竞品分析二级详情页
     {

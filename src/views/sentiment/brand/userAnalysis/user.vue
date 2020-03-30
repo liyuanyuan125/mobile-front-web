@@ -9,41 +9,46 @@
       class="pane"
     />
 
-    <section class="item-sales">
+    <!-- <section class="item-sales">
       <div class="van-hairline--top hairline" />
       <ModuleHeader title="促销敏感度" class="sales-header" />
-    </section>
+    </section> -->
 
-    <pointChart :width='375' :height='300' :data='data3' />
+    <!-- <pointChart :width='375' :height='300' :data='data3' /> -->
 
-    <section class="item-sales">
+    <!-- <section class="item-sales">
       <div class="van-hairline--top top-hairline" />
       <ModuleHeader title="评论敏感度" class="sales-header" />
-    </section>
+    </section> -->
 
-    <pointChart :width='375' :height='300' :data='data3' />
+    <!-- <pointChart :width='375' :height='300' :data='data3' /> -->
 
-    <UserArea :data="userRegionList" v-if="userRegionList.length" class="item-areas"/>
+    <UserArea 
+      :data="userRegionList" 
+      v-if="userRegionList.length" 
+      class="item-areas"
+      :moreLink="userLink"
+    />
     
-    <section class="item-city">
+    <!-- <section class="item-city">
       <ModuleHeader 
         title="高消费偏好地区"
         moreText="查看更多"
-        :link="{ page: 'xxx' }"
+        :link="linkObj"
         class="sex-rate"/>
        <User :consumRegion="consumRegion" v-if="consumRegion.cityList" />
-    </section>
+    </section> -->
 
-    <section class="items-consum">
+    <!-- <section class="items-consum">
       <ModuleHeader  title="分城市购买力" class="sex-rate"/>
       <cityConsum :cityConsum="cityConsumList" v-if="cityConsumList.length" />
-    </section>
+    </section> -->
     
   </div>
 </template>
 
 <script lang='ts'>
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 import { useranalysis } from '@/api/brand'
 import UserArea, { ChinaMapItem } from '@/views/common/userArea'
 import UserPortrait, { VerticalBarItem, NameValue } from '@/views/common/userPortrait'
@@ -66,17 +71,19 @@ import { toast } from '@/util/toast'
   }
 })
 export default class Main extends Vue {
-  data3: any = {
-    data: [
-      {value: 335, name: '极度敏感'},
-      {value: 310, name: '高度敏感'},
-      {value: 234, name: '中度敏感'},
-      {value: 135, name: '轻度敏感'},
-      {value: 1548, name: '不敏感'}],
-    color: '', // 修改颜色
-    title: '促销敏感度',
-    sesnsitivity: '敏感度高'// 显示的敏感度  这个需要自己计算了
-  }
+  @Prop({ type: Number, default: 0}) id!: number
+
+  // data3: any = {
+  //   data: [
+  //     {value: 335, name: '极度敏感'},
+  //     {value: 310, name: '高度敏感'},
+  //     {value: 234, name: '中度敏感'},
+  //     {value: 135, name: '轻度敏感'},
+  //     {value: 1548, name: '不敏感'}],
+  //   color: '', // 修改颜色
+  //   title: '促销敏感度',
+  //   sesnsitivity: '敏感度高'// 显示的敏感度  这个需要自己计算了
+  // }
 
 
   // 性别+年龄占比
@@ -87,6 +94,30 @@ export default class Main extends Vue {
   userRegionList = []
   consumRegion = {}
   cityConsumList = []
+
+  get linkObj() {
+    return {
+      name: 'sentimentuserregion',
+      query: {
+        src: 1,
+        id: this.id,
+        type: 1,
+        objType: 2
+      }
+    }
+  }
+
+  get userLink() {
+    return {
+      name: 'sentimentuserregion',
+      query: {
+        src: 1,
+        id: this.id,
+        type: 1,
+        objType: 1
+      }
+    }
+  }
 
   mounted() {
     this.list()
@@ -99,7 +130,7 @@ export default class Main extends Vue {
         userRegionList,
         consumRegion,
         cityConsumList,
-      }} = await useranalysis({brandId: 1})
+      }} = await useranalysis({brandId: this.id})
       this.genderList = genderList || [] // 性别占比
       this.ageRangeList = ageList || [] // 年龄占比
       this.promotionList = promotionList || [] // 促销敏感度
@@ -127,6 +158,7 @@ export default class Main extends Vue {
 }
 .pane {
   padding-top: 160px;
+  padding-bottom: 120px;
 }
 .top-hairline {
   margin-top: -60px;

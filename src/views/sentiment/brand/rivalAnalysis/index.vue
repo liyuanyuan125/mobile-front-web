@@ -4,11 +4,12 @@
     <RivalList 
        :rivalList="rivalList" 
        v-if="rivalList.length" 
-       class="movierival" 
+       class="movierival"
+       type="1"
        @setRival="changeIds"
     />
     <TabNav :list ="list" class="tab-nav" normal/>
-    <section id="hot">
+    <section id="hot" class="item-hots">
       <selectTime v-model="day" class="select-time"  ref="reftimes"/>
       <heatContrast 
         :overAllHeat="overAllHeat"
@@ -26,7 +27,7 @@
       <div class="van-hairline--top item-hairline"></div>
       <SexVs :data="genderList" v-if="genderList.length" class="genderbox" />
       <div class="van-hairline--top item-hairline"></div>
-      <Table 
+      <!-- <Table 
         class="item-high"
         :title='sensTitle' 
         :tabList='sensTabList' 
@@ -34,7 +35,7 @@
         :tableItem='sensTableItem'
         @chgregionPk='changeTabs'
       />
-      <div class="van-hairline--top item-hairline"></div>
+      <div class="van-hairline--top item-hairline"></div> -->
       <Table 
         class="item-user"
         :title='userTitle' 
@@ -43,7 +44,7 @@
         :tableItem='userTableItem'
         @chgregionPk='userTabs'
       />
-      <div class="van-hairline--top item-hairline"></div>
+      <!-- <div class="van-hairline--top item-hairline"></div>
       <Table
         class="item-high"
         :title='highTitle' 
@@ -51,7 +52,7 @@
         :tableTitle='highTableTitle' 
         :tableItem='highTableItem'
         @chgregionPk='highTabs'
-      />
+      /> -->
     </section>
     
  </div>
@@ -127,20 +128,20 @@ export default class Main extends Vue {
   highProvinceList = []
 
   // 用户敏感度
-  sensTitle = '用户敏感度'
-  sensTabList = [
-    { name: '促销敏感度', key: 'sales'},
-    { name: '评论敏感度', key: 'comment'}
-  ]
-  sensTableTitle = [
-    {key: 'brand', value: '品牌'},
-    {key: 'extreme', value: '极度敏感'},
-    {key: 'high', value: '高度敏感'},
-    {key: 'medium', value: '中度敏感'},
-    {key: 'mild', value: '轻度敏感'},
-    {key: 'no', value: '不敏感'},
-  ]
-  sensTableItem = []
+  // sensTitle = '用户敏感度'
+  // sensTabList = [
+  //   { name: '促销敏感度', key: 'sales'},
+  //   { name: '评论敏感度', key: 'comment'}
+  // ]
+  // sensTableTitle = [
+  //   {key: 'brand', value: '品牌'},
+  //   {key: 'extreme', value: '极度敏感'},
+  //   {key: 'high', value: '高度敏感'},
+  //   {key: 'medium', value: '中度敏感'},
+  //   {key: 'mild', value: '轻度敏感'},
+  //   {key: 'no', value: '不敏感'},
+  // ]
+  // sensTableItem = []
 
   // 用户地域分布
   userTitle = '用户地域分布'
@@ -159,20 +160,20 @@ export default class Main extends Vue {
   userTableItem = []
 
   // 高消费用户地域分布
-  highTitle = '高消费用户地域分布'
-  highTabList = [
-    { name: '城市分布', key: 'city'},
-    { name: '省份分布', key: 'province'}
-  ]
-  highTableTitle = [
-    {key: 'brand', value: '品牌'},
-    {key: 'top1', value: 'TOP1'},
-    {key: 'top2', value: 'TOP2'},
-    {key: 'top3', value: 'TOP3'},
-    {key: 'top4', value: 'TOP4'},
-    {key: 'top5', value: 'TOP5'},
-  ]
-  highTableItem = []
+  // highTitle = '高消费用户地域分布'
+  // highTabList = [
+  //   { name: '城市分布', key: 'city'},
+  //   { name: '省份分布', key: 'province'}
+  // ]
+  // highTableTitle = [
+  //   {key: 'brand', value: '品牌'},
+  //   {key: 'top1', value: 'TOP1'},
+  //   {key: 'top2', value: 'TOP2'},
+  //   {key: 'top3', value: 'TOP3'},
+  //   {key: 'top4', value: 'TOP4'},
+  //   {key: 'top5', value: 'TOP5'},
+  // ]
+  // highTableItem = []
 
   mounted() {
     this.brandIdList = this.$route.params.ids
@@ -233,17 +234,17 @@ export default class Main extends Vue {
       this.ageRangeList = ageRangeList || []
       this.genderList = sexData || []
 
-      this.promotionList = promotionList || []
-      this.sensTableItem = promotionList || []
-      this.commentList = commentList || []
+      // this.promotionList = promotionList || []
+      // this.sensTableItem = promotionList || []
+      // this.commentList = commentList || []
 
       this.userTableItem = cityList || []
       this.userCityList = cityList || []
       this.userProvinceList = provinceList || []
 
-      this.highTableItem = hightConsume.cityList ? hightConsume.cityList : []
-      this.highCityList = hightConsume.cityList ? hightConsume.cityList : []
-      this.highProvinceList = hightConsume.provinceList ? hightConsume.provinceList : []
+      // this.highTableItem = hightConsume.cityList ? hightConsume.cityList : []
+      // this.highCityList = hightConsume.cityList ? hightConsume.cityList : []
+      // this.highProvinceList = hightConsume.provinceList ? hightConsume.provinceList : []
 
     } catch (ex) {
       toast(ex)
@@ -277,13 +278,14 @@ export default class Main extends Vue {
     this.init()
   }
 
-  changeTabs(key: string) {
-    if (key == 'sales') {
-      this.sensTableItem = this.promotionList
-    } else {
-      this.sensTableItem = this.commentList
-    }
-  }
+  // changeTabs(key: string) {
+  //   if (key == 'sales') {
+  //     this.sensTableItem = this.promotionList
+  //   } else {
+  //     this.sensTableItem = this.commentList
+  //   }
+  // }
+
   userTabs(key: string) {
     if (key == 'city') {
       this.userTableItem = this.userCityList
@@ -291,13 +293,13 @@ export default class Main extends Vue {
       this.userTableItem = this.userProvinceList
     }
   }
-  highTabs(key: string) {
-    if (key == 'city') {
-      this.highTableItem = this.highCityList
-    } else {
-      this.highTableItem = this.highProvinceList
-    }
-  }
+  // highTabs(key: string) {
+  //   if (key == 'city') {
+  //     this.highTableItem = this.highCityList
+  //   } else {
+  //     this.highTableItem = this.highProvinceList
+  //   }
+  // }
 
   @Watch('day')
   watchDay() {
@@ -308,8 +310,11 @@ export default class Main extends Vue {
 </script>
 
 <style lang='less' scoped>
+.item-hots {
+  padding-bottom: 57px;
+}
 /deep/ .tab-nav {
-  // margin-top: 0;
+  margin-top: 0;
   top: 88px;
   z-index: 11;
 }

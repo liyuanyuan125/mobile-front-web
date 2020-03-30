@@ -113,13 +113,15 @@ export default class PlatformTrend extends ViewBase {
       })
       // 处理平台名称
       let index = 0
+      const navlist = []
       for (const it of data) {
         index += 1
-        this.tabList.push({
+        navlist.push({
           key: index,
           name: it.platformName
         })
       }
+      this.tabList = navlist
       this.response = data
       this.formatDatas(data[0].dataList)
     } catch (ex) {

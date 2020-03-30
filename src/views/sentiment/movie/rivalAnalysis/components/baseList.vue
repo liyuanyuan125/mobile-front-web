@@ -14,9 +14,9 @@
       <dd v-for="item in basisList" :key="item.rivalName">
         <ul>
           <li>{{item.rivalName}}</li>
-          <li>{{item.boxOfficeCount}}</li>
-          <li>{{item.jydataGrade}}分</li>
-          <li>{{item.wantSeeCount}}人</li>
+          <li>{{item.boxOfficeCount ? item.boxOfficeCount : '-'}}</li>
+          <li>{{item.jydataGrade ? item.jydataGrade + '分' : '-'}}</li>
+          <li>{{item.wantSeeCount ? item.wantSeeCount + '人' : '-'}}人</li>
         </ul>
       </dd>
     </dl>
@@ -49,8 +49,7 @@ export default class BasisList extends ViewBase {
   }
   dt {
     background: #f2f3f6;
-    font-size: 26px;
-    line-height: 80px;
+    font-size: 24px;
     padding: 0 30px;
   }
   dd {
@@ -65,9 +64,12 @@ export default class BasisList extends ViewBase {
   li {
     width: 25%;
     flex: 1;
+    min-height: 110px;
+    padding: 18px 0;
     align-items: center;
     justify-content: center;
     display: flex;
+    font-size: 26px;
     box-sizing: border-box;
     &:first-child {
       justify-content: flex-start;
@@ -76,11 +78,8 @@ export default class BasisList extends ViewBase {
       justify-content: flex-end;
     }
   }
-  dd li {
-    padding-top: 18px;
-    padding-bottom: 18px;
-    font-size: 26px;
-    line-height: 36px;
+  dd li:first-child {
+    font-weight: bold;
   }
 }
 </style>

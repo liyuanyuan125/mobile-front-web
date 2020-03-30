@@ -240,8 +240,8 @@ export default class KolPage extends ViewBase {
         endTime
       })
       this.combinedHeat.overAllHeat = overAllHeat || []
-      this.combinedHeat.interactList = interactList || []
-      this.combinedHeat.materialList = fansCountList || []
+      this.combinedHeat.interactList = fansCountList || []
+      this.combinedHeat.materialList = interactList || []
     } catch (ex) {
       toast(ex)
     }

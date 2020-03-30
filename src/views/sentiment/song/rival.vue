@@ -20,7 +20,9 @@
     </section>
 
     <section class="pane pane-heat" id="hot">
+      <ModuleHeader title="热度分析"/>
       <HeatContrast
+        lineTitle="综合热度对比"
         :colors="['#88aaf6', '#4cc8d0', '#c965dd']"
         :overAllHeat="heatContrastData.overAllHeat"
         :interactList="heatContrastData.interactList"
@@ -256,6 +258,9 @@ export default class extends ViewBase {
 
 .pane-heat {
   padding: 50px 0 30px;
+  /deep/ .module-header {
+    padding: 0 0 20px 30px;
+  }
 }
 
 .basic-table,
@@ -284,5 +289,9 @@ export default class extends ViewBase {
   /deep/ .col-align-left {
     padding: 28px 16px;
   }
+}
+
+.pane-user {
+  padding-bottom: 50px;
 }
 </style>

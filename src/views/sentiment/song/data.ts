@@ -133,10 +133,7 @@ export async function getRivalHeat(query: any) {
   const interactList = dot(data, 'platform.interactList') || []
   const materialList = dot(data, 'platform.materialList') || []
   const result = {
-    overAllHeat: {
-      title: '综合热度对比',
-      dateList: overAllHeat
-    },
+    overAllHeat,
     interactList,
     materialList,
   }

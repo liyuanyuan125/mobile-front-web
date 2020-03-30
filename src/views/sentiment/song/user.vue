@@ -34,7 +34,7 @@ import UserArea, { ChinaMapItem } from '@/views/common/userArea'
     UserArea,
   }
 })
-export default class KolPage extends ViewBase {
+export default class extends ViewBase {
   @Prop({ type: Number }) id!: number
 
   userAnalysis: any = null

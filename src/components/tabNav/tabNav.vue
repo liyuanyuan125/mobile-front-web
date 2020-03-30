@@ -130,13 +130,29 @@ export default class TabNav extends Vue {
 }
 
 .tab-nav-normal {
-  margin-top: 65px;
+  margin-top: 0;
+  background-color: transparent;
 
   &::before {
-    content: '';
-    top: -55px;
-    background: #fff;
-    border-radius: 130px;
+    display: none;
+  }
+
+  /deep/ .van-tabs__wrap {
+    height: 100px;
+    overflow: visible;
+  }
+
+  /deep/ .van-tabs__nav {
+    border-radius: 60px 60px 0 0;
+    padding-bottom: 2px;
+  }
+
+  /deep/ .van-tab {
+    padding: 30px 0 6px 0;
+  }
+
+  /deep/ .van-tabs__line {
+    bottom: 0;
   }
 }
 

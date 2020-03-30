@@ -2,7 +2,7 @@
   <div >
     <!-- 宽高不填写默认是 width='375' height='300' -->
       <sexChart  :data='data1'></sexChart>
-      <annularChart :width='375' :height='300' :data='data2'></annularChart>
+      <annularChart :width='300' :data='data2'></annularChart>
       <pointChart :width='375' :height='300' :data='data3'></pointChart>
   </div>
 </template>

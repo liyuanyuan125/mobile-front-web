@@ -20,10 +20,10 @@
             </li>
         </ul>
         <div class='movielist'>
-            <div class='rowmovie' v-for='item in data.movieList' :key='item.movieId'>
+            <div class='rowmovie' v-for='item in dataList' :key='item.movieId'>
                 <div class="img">
                   <!-- <img :src=item.coverUrl.url alt=""> -->
-                  <img :src="item.coverUrl.url || require('@/assets/moviedefault.png')"  alt="">
+                  <img :src="item.coverImg || require('@/assets/moviedefault.png')"  alt="">
                 </div>
                 <div class='name'>
                   {{item.movieName}}
@@ -39,6 +39,7 @@ import { Component, Vue , Prop } from 'vue-property-decorator'
 import { Icon } from 'vant'
 import moment from 'moment'
 import { alert } from '@/util/toast'
+import { imgFixed } from '@/fn/imgProxy'
 
 @Component({
   components: {
@@ -47,6 +48,16 @@ import { alert } from '@/util/toast'
 })
 export default class Main extends Vue {
   @Prop({ type: Object, default: []}) data!: any
+
+  dataList: any = []
+  created() {
+    this.dataList = (this.data.movieList || []).map((it: any) => {
+      return {
+        ...it,
+        coverImg: imgFixed(it.coverUrl, 200, 260),
+      }
+    })
+  }
 
   defaultImg: any = '@/assets/moviedefault.png'
 
@@ -164,7 +175,7 @@ export default class Main extends Vue {
     img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      // object-fit: contain;
     }
   }
   .name {

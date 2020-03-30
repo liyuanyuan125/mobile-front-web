@@ -15,10 +15,10 @@
             </li>
         </ul>
         <div class='movielist'>
-            <div class='rowmovie' v-for='item in data.musicList' :key='item.musicId'>
+            <div class='rowmovie' v-for='item in dataList' :key='item.musicId'>
                 <div class="img">
                   <!-- <img :src=item.coverUrl.url alt=""> -->
-                  <img :src="item.coverUrl.url || require('@/assets/musicdefault.png')"  alt="">
+                  <img :src="item.coverImg || require('@/assets/musicdefault.png')"  alt="">
                 </div>
                 <div class='name'>
                   {{item.musicName}}
@@ -34,6 +34,8 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Icon } from 'vant'
 import moment from 'moment'
 import { alert } from '@/util/toast'
+import { imgFixed } from '@/fn/imgProxy'
+
 
 @Component({
   components: {
@@ -44,6 +46,16 @@ export default class Main extends Vue {
   @Prop({ type: Object, default: []}) data!: any
 
   defaultImg: any = '@/assets/musicdefault.png'
+
+  dataList: any = []
+  created() {
+    this.dataList = (this.data.musicList || []).map((it: any) => {
+      return {
+        ...it,
+        coverImg: imgFixed(it.coverUrl, 200, 260),
+      }
+    })
+  }
 
     // 显示说明
   showNote() {
@@ -159,7 +171,7 @@ export default class Main extends Vue {
     img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      // object-fit: contain;
     }
   }
   .name {

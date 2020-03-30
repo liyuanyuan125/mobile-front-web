@@ -27,7 +27,7 @@
       <li class='li-item-pk' v-for='item in pkUserListData' :key='item.rivalName' >
         <div class='li-left' @click='goActorDetail(item.rivalId)'>
           <div>
-            <img :src=item.rivalCover.url alt="">
+            <img :src="item.coverImg || require('@/assets/actordefault.png')" alt="">
           </div>
         </div>
         <div class='li-right'>
@@ -79,12 +79,15 @@ export default class Main extends Vue {
 
   pkUserListData: any = null
   pkDate: any = null
+  coverImg: any = ''
 
   created() {
     this.pkDate = this.pkUserList[0]
+    this.coverImg = imgFixed(this.pkUserList[0].rivalCover, 200, 200),
     this.pkUserListData = (this.pkUserList.slice(1) || []).map((it: any) => {
       return {
         ...it,
+        coverImg: imgFixed(it.rivalCover, 200, 260),
         eventCreatTimeDate: moment(it.eventCreatTime).format(format),
         yesterHeatTrend: it.yesterHeatTrend == 0 ? 0 : (it.yesterHeatTrend > 0 ?
         '高' + String(it.yesterHeatTrend) : '低' + String(it.yesterHeatTrend).substr(1)),
@@ -134,7 +137,7 @@ export default class Main extends Vue {
       img {
         width: 100%;
         height: 100%;
-        object-fit: contain;
+        // object-fit: contain;
         background-color: #fff;
         border-radius: 5px;
       }
@@ -197,7 +200,7 @@ export default class Main extends Vue {
       img {
         width: 100%;
         height: 100%;
-        object-fit: contain;
+        // object-fit: contain;
         background-color: #fff;
         border-radius: 5px;
       }

@@ -93,28 +93,12 @@ export default class WantSeeTrend extends ViewBase {
     }
   }
 
-  // 处理数据
-  //   formatDatas(data: any[]) {
-  //     const xDate = (data || []).map((it: any) => it.date)
-  //     const yDate = (data || []).map((it: any) => it.value)
-  //     const eventList = (data || []).map((it: any) => it.eventList)
-  //     this.lineDatas = {
-  //       xDate,
-  //       eventList,
-  //       yDate: [
-  //         {
-  //           data: yDate,
-  //           name: '营销事件'
-  //         }
-  //       ]
-  //     }
-  //   }
-
   // 综合热度数据处理 title，xdata，ydata
   formatDatas(dataObj: any[]) {
-    const xDate = (dataObj || []).map((it: any) => moment(it.date).format('MM-DD'))
+    let xDate: any = []
     const yDate = (dataObj || []).map((it: any) => {
       const { rivalName, data } = it
+      xDate = (data || []).map((ite: any) => moment(ite.date).format('MM-DD'))
       return {
         name: rivalName,
         list: (data || []).map((ite: any) => ite.value)
@@ -155,6 +139,7 @@ export default class WantSeeTrend extends ViewBase {
   position: relative;
   padding: 50px 30px;
   border-top: 20px solid rgba(216, 216, 216, 0.2);
+  margin-top: 1px;
   .titbox {
     display: flex;
     h4 {

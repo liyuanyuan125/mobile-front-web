@@ -37,12 +37,12 @@
               <li>
                 <p class='hot1'>热度</p>
                 <p class='hot2'>{{item.yesterHeatCount}}</p>
-                <p :class="item.yesterHeatTrend > 0 ?'red':'blue'">{{item.yesterHeatTrend}}</p>
+                <p :class="Number(item.chgyesterHeatTrend) > 0 ?'red':'blue'">{{item.yesterHeatTrend}}</p>
               </li>
               <li>
                 <p class='hot1'>全网粉丝数</p>
                 <p class='hot2'>{{item.interFansCount}}</p>
-                <p :class="item.interFansTrend > 0?'red':'blue'">{{item.interFansTrend}}</p>
+                <p :class="Number(item.chginterFansTrend) > 0?'red':'blue'">{{item.interFansTrend}}</p>
               </li>
             </ul>
           </div>
@@ -85,7 +85,13 @@ export default class Main extends Vue {
     this.pkUserListData = (this.pkUserList.slice(1) || []).map((it: any) => {
       return {
         ...it,
-        eventCreatTimeDate: moment(it.eventCreatTime).format(format)
+        eventCreatTimeDate: moment(it.eventCreatTime).format(format),
+        yesterHeatTrend: it.yesterHeatTrend == 0 ? 0 : (it.yesterHeatTrend > 0 ?
+        '高' + String(it.yesterHeatTrend) : '低' + String(it.yesterHeatTrend).substr(1)),
+        interFansTrend: it.interFansTrend == 0 ? 0 : (it.interFansTrend > 0 ?
+        '高' + String(it.interFansTrend) : '低' + String(it.interFansTrend).substr(1)),
+        chgyesterHeatTrend: it.yesterHeatTrend,
+        chginterFansTrend: it.interFansTrend,
       }
     })
   }

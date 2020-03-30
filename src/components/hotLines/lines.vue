@@ -30,7 +30,6 @@ export default class Main extends Vue {
   initChart() {
     const chartEl = this.$refs.refChart as HTMLDivElement
     echarts.dispose(chartEl)
-    // chartEl.innerHTML = ''
     const myChart = echarts.init(chartEl)
 
     const seriesItems = (this.lineData.yDate || []).map((it: any) => {
@@ -48,7 +47,8 @@ export default class Main extends Vue {
         text: this.lineData.title,
         left: -5,
         textStyle: {
-          fontSize: 14,
+          fontSize: 17,
+          fontWeight: 0,
           color: '#303030',
         },
       },
@@ -110,7 +110,7 @@ export default class Main extends Vue {
         splitLine: {
           lineStyle: {
             color: 'rgba(151,167,195,.45)',
-            type: 'dashed'
+            type: 'dotted'
           }
         }
       },

@@ -7,7 +7,7 @@
       class="formattab"
     />
     <section class="brand-hot bg_fff" id="hot">
-      <selectTime ref="refsTime" v-model="day" class="select-time"/>
+      <selectTime v-model="day" class="select-time"/>
       <heatLineCom 
         :overAllList="overAllHeatList" 
         :platformList="platformHeatList"

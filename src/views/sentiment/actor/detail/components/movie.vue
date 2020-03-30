@@ -23,7 +23,7 @@
             <div class='rowmovie' v-for='item in data.movieList' :key='item.movieId'>
                 <div class="img">
                   <!-- <img :src=item.coverUrl.url alt=""> -->
-                  <img :src="item.coverUrl.url || defaultImg"  alt="">
+                  <img :src="item.coverUrl.url || require('@/assets/moviedefault.png')"  alt="">
                 </div>
                 <div class='name'>
                   {{item.movieName}}

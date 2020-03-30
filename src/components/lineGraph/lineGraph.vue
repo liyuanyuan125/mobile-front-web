@@ -116,9 +116,9 @@ export default class LineGrap extends Vue {
         }
       },
       grid: {
-        left: 0,
+        left: 10,
         right: 16,
-        top: 50,
+        top: 30,
         bottom: 40,
         containLabel: true
       },

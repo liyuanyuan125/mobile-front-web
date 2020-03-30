@@ -37,7 +37,7 @@
         <div class="hot-box-right">
           <div>
             <span
-              v-for="(it,index) in (publicPraise.hotWordList || [])"
+              v-for="(it,index) in (publicPraise.hotWordList || []).slice(0,4)"
               :key="it+index"
               class="van-ellipsis"
               @click="wordLink(it,0)"
@@ -54,7 +54,7 @@
         <div class="hot-box-right">
           <div>
             <span
-              v-for="(it,index) in (publicPraise.badWordList || [])"
+              v-for="(it,index) in (publicPraise.badWordList || []).slice(0,4)"
               :key="it + index"
               class="van-ellipsis"
               @click="wordLink(it,3)"

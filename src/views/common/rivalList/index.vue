@@ -3,7 +3,9 @@
     <div class="rivalpage">
       <dl :class="typeClass">
         <dd v-for="item in rivals" :key="item.rivalId">
-          <img :src="item.coverImg" class="img" :alt="item.rivalName" />
+          <span class="imgout">
+            <img :src="item.coverImg" class="img" :alt="item.rivalName" />
+          </span>
           <h4 class="van-multi-ellipsis--l2">{{item.rivalName}}</h4>
           <p class="van-ellipsis">{{item.rivalDesc}}</p>
           <span class="close" v-if="rivals.length > 2" @click="delRival(item.rivalId)">
@@ -52,13 +54,13 @@ export default class RivalList extends Vue {
         ids.push(it.rivalId)
         switch (this.type) {
           case '3':
-            it.coverImg = imgFixed(it.coverUrl, 150, 195)
+            it.coverImg = imgFixed(it.coverUrl, 150, 195, 4)
             break
           case '4':
-            it.coverImg = imgFixed(it.coverUrl, 150, 195)
+            it.coverImg = imgFixed(it.coverUrl, 150, 195, 4)
             break
           default:
-            it.coverImg = imgFixed(it.coverUrl, 150, 150)
+            it.coverImg = imgFixed(it.coverUrl, 150, 150, 4)
         }
       }
     }
@@ -109,10 +111,10 @@ export default class RivalList extends Vue {
         type = 'movie'
         break
       case '5':
-        type = 'music'
+        type = 'song'
         break
       case '6':
-        type = 'music'
+        type = 'album'
         break
     }
     return type
@@ -223,7 +225,7 @@ dl.brand {
     border-radius: 10px;
   }
 }
-dl.music {
+dl.song {
   dd {
     .img {
       height: 150px;
@@ -240,6 +242,32 @@ dl.music {
   .addrival {
     height: 150px;
     border-radius: 50%;
+  }
+}
+dl.album {
+  dd {
+    .imgout {
+      display: block;
+      background: url('../../../assets/sentiment/albumbg.png') no-repeat center 0;
+      background-size: 100% auto;
+      padding-top: 24px;
+    }
+    .img {
+      height: 150px;
+      border-radius: 10px;
+      background: url('../../../assets/musicdefault.png') no-repeat center center;
+      background-size: cover;
+      border: none;
+    }
+    .close {
+      right: -15px;
+      top: 0;
+    }
+  }
+  .addrival {
+    height: 150px;
+    border-radius: 10px;
+    margin-top: 24px;
   }
 }
 </style>

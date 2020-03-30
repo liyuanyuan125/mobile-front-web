@@ -7,15 +7,14 @@
       class="tab-nav"
       normal
     />
-    <section v-if="combinedHeat.interactList.length" class="pane" id="hot" style='padding-bottom: 30px;'>
+    <section class="pane" id="hot" style='padding-bottom: 30px;'>
+      <selectTime v-model="day" class="select-time"  ref="reftimes"/>
       <heatContrast 
         style='padding-top: 33px; background: #FFF;'
-        :overAllHeat="combinedHeat.heatLineDate"
-        :colors="combinedHeat.colors"
+        :overAllHeat="combinedHeat.overAllHeat"
         :interactList="combinedHeat.interactList"
         :materialList="combinedHeat.materialList"
         :tabs="combinedHeat.tabs"
-        v-if="combinedHeat.interactList.length"
         />
     </section>
 
@@ -64,6 +63,8 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import RivalList from '@/views/common/rivalList/index.vue' // 竞品列表
+ import { lastDays } from '@/util/timeSpan'
+import { selectTime } from '@/components/hotLine' // 日期选择
 import heatContrast from '@/views/common/heatContrast/index.vue' // 热度分析对比
 import MarketContrast from '@/views/common/marketContrast/index.vue' // 口碑评论对比
 import Age from '@/views/common/ageDistribution/index.vue'
@@ -79,6 +80,7 @@ import { Tab, Tabs } from 'vant'
   components: {
     Tab,
     Tabs,
+    selectTime,
     heatContrast,
     MarketContrast,
     Age,
@@ -104,21 +106,18 @@ export default class KolPage extends ViewBase {
 
   rivalList: any = []
 
-  active: any = 0
+  // active: any = 0
+  day = 7
   // 热度分析数据
   combinedHeat: any = {
-    colors: ['#88AAF6', '#4CC8D0', '#C965DD'],
     // 综合对比数据值
-    heatLineDate: {
-      title: '综合热度分析',
-      dateList: []
-    },
+    overAllHeat: [],
     // 新增互动
     interactList: [],
     // 新增物料
     materialList: [],
     tabs: [
-      {key: 0, text: '新增物料数'},
+      {key: 0, text: '粉丝数'},
       {key: 1, text: '新增互动数'}
     ]
   }
@@ -227,21 +226,22 @@ export default class KolPage extends ViewBase {
   }
 
   async getLineData() {
+    const [ startTime, endTime ] = lastDays(this.day)
     try {
       const { data: {
         overAllHeat,
         platform: {
           interactList,
-          materialList
+          fansCountList
         }
       }} = await rivalHeatAnalysis({
         actorIdList: this.$route.params.ids,
-        startTime: 20200304,
-        endTime: 20200311
+        startTime,
+        endTime
       })
-      this.combinedHeat.heatLineDate.dateList = overAllHeat || []
-      this.combinedHeat.interactList = interactList || []
-      this.combinedHeat.materialList = materialList || []
+      this.combinedHeat.overAllHeat = overAllHeat || []
+      this.combinedHeat.interactList = fansCountList || []
+      this.combinedHeat.materialList = interactList || []
     } catch (ex) {
       toast(ex)
     }
@@ -303,6 +303,11 @@ export default class KolPage extends ViewBase {
     } else if (num == 'city') {
       this.regionObj.tableItem = this.userRegion.cityList
     }
+  }
+
+  @Watch('day')
+  watchDay() {
+    this.getLineData()
   }
 
 }
@@ -415,5 +420,8 @@ export default class KolPage extends ViewBase {
     background: rgba(216, 216, 216, 1);
     opacity: 0.5;
   }
+}
+.select-time {
+  padding: 69px 30px 15px;
 }
 </style>

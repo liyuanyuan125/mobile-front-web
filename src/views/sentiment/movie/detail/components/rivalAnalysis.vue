@@ -66,7 +66,7 @@ export default class RivalAnalysis extends ViewBase {
     const list = this.rivalList
     for (const item of this.rivalList) {
       item.eventCreatTime = moment(item.eventCreatTime).format('YYYY-MM-DD')
-      item.coverImg = imgFixed(item.rivalCover, 200, 260)
+      item.coverImg = imgFixed(item.rivalCover, 200, 260, 4)
       item.heatTrendShow = roleNumber(Math.abs(item.heatTrend))
       item.materialsTrendShow = roleNumber(Math.abs(item.materialsTrend))
     }

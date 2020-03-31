@@ -42,7 +42,7 @@
       class="tab-nav"
     />
 
-    <section class="pane" id="hot">
+    <section class="pane pane-hot" id="hot">
       <ModuleHeader title="热度分析"/>
       <HeatLineCom
         :overAllList="overAllHeatList"
@@ -57,7 +57,10 @@
     </section>
 
     <section class="pane">
-      <ModuleHeader title="榜单表现"/>
+      <ModuleHeader
+        title="榜单表现"
+        :link="{ page: 'songRankPerformance', songId: id }"
+      />
       <ul class="rank-list" v-if="rankAnalysis">
         <li class="rank-item">
           <em>{{rankAnalysis.rankCount}}</em>
@@ -87,11 +90,7 @@
       <PraiseComment
         :favorable="praiseData.favorable"
         :publicPraise="praiseData.publicPraise"
-        :link="{
-          page: 'praiseHotWordsList',
-          businessType: 3,
-          businessObjectId: 100038
-        }"
+        :link="businessPage('praiseHotWordsList')"
         v-if="praiseData"
       />
     </section>
@@ -101,23 +100,19 @@
         :ageRangeList="userAnalysis.ageRangeList"
         :genderList="userAnalysis.genderList"
         :colorList="['#7CA4FF', '#FF6262']"
-        :link="{
-          name: 'sentimentmovieuseranalysis',
-          params: {
-            movieId: id
-          }
-        }"
+        :link="{ name: 'sentiment-song-user', params: { id } }"
         v-if="userAnalysis"
       />
     </section>
 
-    <!-- <section class="pane event-pane" id="event">
+    <section class="pane event-pane" id="event">
       <EventList
         eventName='营销事件'
-        :eventList="eventList"
+        :eventList="eventData"
         :params="{}"
+        :link="businessPage('eventMarketingList')"
       />
-    </section> -->
+    </section>
 
     <section class="pane">
       <ModuleHeader title="音乐人分析"/>
@@ -197,6 +192,13 @@
           </router-link>
         </li>
       </ul>
+
+      <div class="similar-more">
+        <router-link
+          :to="{ name: 'sentiment-song-rival', params: { ids: similarIds } }"
+          class="similar-button"
+        >查看详细报告</router-link>
+      </div>
     </section>
   </main>
 </template>
@@ -205,7 +207,7 @@
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import TabNav, { TabNavItem } from '@/components/tabNav'
-import { getDetail, getHotAnalysis, getPlayAnalysis, getSimilarList } from './data'
+import { getDetail, getHotAnalysis, getPlayAnalysis, getEventList, getSimilarList } from './data'
 import ModuleHeader from '@/components/moduleHeader'
 import { BubbleBottom } from '@/components/bubble'
 import HeatLineCom from '@/views/common/heatLineCom/index.vue'
@@ -293,125 +295,27 @@ export default class extends ViewBase {
 
   userAnalysis: any = null
 
-  get eventList() {
-    return [
-      {
-        eventName: '乔乔的异想世界获最佳喜剧片剪辑',
-        eventId: '12332',
-        creatTime: 1584146173812,
-        target: [
-          {
-            targetCode: '1',
-            targetName: '正面'
-          }
-        ],
-        interactiveList: [
-          {
-            interactiveUrl: {
-              source: 'jydata',
-              url:
-                'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-            },
-            interactiveValue: '100万+'
-          },
-          {
-            interactiveUrl: {
-              source: 'jydata',
-              url:
-                'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-            },
-            interactiveValue: '1,212'
-          }
-        ]
-      },
-      {
-        eventName: '冲奥片"乔乔的异想世界"曝豪华卡司幕后',
-        eventId: '12332',
-        creatTime: 1584146173812,
-        target: [
-          {
-            targetCode: '1',
-            targetName: '热点'
-          },
-          {
-            targetCode: '2',
-            targetName: '负面'
-          }
-        ],
-        interactiveList: [
-          {
-            interactiveUrl: {
-              source: 'jydata',
-              url:
-                'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-            },
-            interactiveValue: '100万+'
-          },
-          {
-            interactiveUrl: {
-              source: 'jydata',
-              url:
-                'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-            },
-            interactiveValue: '1,212'
-          },
-          {
-            interactiveUrl: {
-              source: 'jydata',
-              url:
-                'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-            },
-            interactiveValue: '100万+'
-          }
-        ]
-      },
-      {
-        eventName: '乔乔的异想世界获最佳喜剧片剪辑',
-        eventId: '12332',
-        creatTime: 1584146173812,
-        target: [
-          {
-            targetCode: '1',
-            targetName: '热点'
-          },
-          {
-            targetCode: '2',
-            targetName: '负面'
-          }
-        ],
-        interactiveList: [
-          {
-            interactiveUrl: {
-              source: 'jydata',
-              url:
-                'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-            },
-            interactiveValue: '100万+'
-          },
-          {
-            interactiveUrl: {
-              source: 'jydata',
-              url:
-                'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-            },
-            interactiveValue: '1,212'
-          },
-          {
-            interactiveUrl: {
-              source: 'jydata',
-              url:
-                'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-            },
-            interactiveValue: '100万+'
-          }
-        ]
-      }
-    ]
-  } // end of eventList
+  eventData: any = null
 
   singerList: any = null
 
   similarList: any = null
+
+  get similarIds() {
+    if (this.similarList == null) {
+      return ''
+    }
+    const ids = (this.similarList as any[]).map(it => it.rivalId)
+    return ids.join(',')
+  }
+
+  businessPage(page: string) {
+    return {
+      page,
+      businessType: 5,
+      businessObjectId: this.id
+    }
+  }
 
   created() {
     this.init()
@@ -421,6 +325,7 @@ export default class extends ViewBase {
     this.getBasic()
     this.getHot()
     this.getPlay()
+    this.getEvent()
     this.getSimilar()
   }
 
@@ -503,7 +408,7 @@ export default class extends ViewBase {
       const {
         songMusicView,
         videoView
-      } = await getHotAnalysis({
+      } = await getPlayAnalysis({
         songId: this.id,
         startTime,
         endTime
@@ -512,6 +417,15 @@ export default class extends ViewBase {
       songMusicView && playStatsList.push({ label: '单曲', view: songMusicView })
       videoView && playStatsList.push({ label: '视频', view: videoView })
       this.playStatsList = playStatsList
+    } catch (ex) {
+      this.handleError(ex)
+    }
+  }
+
+  async getEvent() {
+    try {
+      const eventData = await getEventList({})
+      this.eventData = eventData
     } catch (ex) {
       this.handleError(ex)
     }
@@ -671,6 +585,14 @@ export default class extends ViewBase {
   min-height: 200px;
   background-color: #fff;
   margin-bottom: 20px;
+}
+
+.pane-hot {
+  padding-left: 0;
+  padding-right: 0;
+  /deep/ .module-header {
+    padding: 0 0 20px 30px;
+  }
 }
 
 .play-stats {
@@ -964,5 +886,21 @@ export default class extends ViewBase {
   font-family: SanFranciscoDisplay-Light, SanFranciscoDisplay, serif;
   font-weight: 300;
   color: rgba(48, 48, 48, .4);
+}
+
+.similar-more {
+  text-align: center;
+  margin: 60px 0 30px;
+}
+
+.similar-button {
+  display: inline-block;
+  width: 400px;
+  height: 90px;
+  line-height: 90px;
+  border-radius: 55px;
+  border: 2px solid #88aaf6;
+  color: #88aaf6;
+  letter-spacing: 1px;
 }
 </style>

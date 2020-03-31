@@ -8,6 +8,7 @@ import {
   getRivalHeat as apiGetRivalHeat,
   getRivalPlay as apiGetRivalPlay,
   getRivalPraise as apiGetRivalPraise,
+  getEventList as apiGetEventList,
 } from '@/api/song'
 import { dot } from '@jydata/fe-util'
 import { TableColumn } from '@/components/table'
@@ -157,4 +158,9 @@ export async function getRivalPraise(query: any) {
     neutralList: toPercent(data.neutralList, 'percent'),
   }
   return ret
+}
+
+export async function getEventList(query: any) {
+  const { data } = await apiGetEventList(query)
+  return data
 }

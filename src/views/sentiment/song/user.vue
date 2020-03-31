@@ -1,5 +1,7 @@
 <template>
   <main class="main-page">
+    <SentimentBar title="用户分析" titleShow/>
+
     <TabNav class="tab-nav"/>
 
     <UserPortrait
@@ -11,6 +13,7 @@
 
     <UserArea
       :data="userRegionList"
+      :moreLink="`/sentiment/common/userRegion?src=5&id=${id}&type=1`"
       class="user-area"
       v-if="userRegionList"
     />
@@ -20,6 +23,7 @@
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
+import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import TabNav from '@/components/tabNav'
 import ModuleHeader from '@/components/moduleHeader'
 import { getUserAnalysis } from './data'
@@ -28,6 +32,7 @@ import UserArea, { ChinaMapItem } from '@/views/common/userArea'
 
 @Component({
   components: {
+    SentimentBar,
     TabNav,
     ModuleHeader,
     UserPortrait,

@@ -1,39 +1,39 @@
 import { get, post, put, del } from '@/fn/ajaxFix'
 
 /**
- * 获取单曲信息
+ * 1.单曲详情页
  * https://yapi.aiads-dev.com/project/404/interface/api/10878
  * @param id 单曲 id
  */
 export function getDetail(id: number) {
-  return get('/yuqing/song/detail', { songId: id })
+  return get('/yuqing/music/song/detail', { songId: id })
 }
 
 /**
- * 获取热度分析
+ * 1.1单曲详情页-获取热度分析数据
  * https://yapi.aiads-dev.com/project/404/interface/api/11173
  * @param query 查询
  */
 export function getHotAnalysis(query: any) {
-  return get('/yuqing/song/heat/analysis', query)
+  return get('/yuqing/music/song/heat/analysis', query)
 }
 
 /**
- * 获取播放量分析
- * https://yapi.aiads-dev.com/project/404/interface/api/11283
- * @param query 查询
- */
-export function getPlayAnalysis(query: any) {
-  return get('/yuqing/song/play/analysis', query)
-}
-
-/**
- * 获取相似歌曲
+ * 1.2单曲详情页-获取竞品对手
  * https://yapi.aiads-dev.com/project/404/interface/api/11228
  * @param query 查询
  */
 export function getSimilarList(query: any) {
-  return get('/yuqing/song/rival/list', query)
+  return get('/yuqing/music/song/rival/list', query)
+}
+
+/**
+ * 1.3单曲详情页-获取播放量分析
+ * https://yapi.aiads-dev.com/project/404/interface/api/11283
+ * @param query 查询
+ */
+export function getPlayAnalysis(query: any) {
+  return get('/yuqing/music/song/play/analysis', query)
 }
 
 /**
@@ -79,4 +79,12 @@ export function getRivalPlay(query: any) {
  */
 export function getRivalPraise(query: any) {
   return get('/yuqing/music/song/rival/praise', query)
+}
+
+/**
+ * TODO: 获取事件列表
+ * @param query 查询参数
+ */
+export function getEventList(query: any) {
+  return get('/mock/416/yuqing/common/eventAnalysis', query)
 }

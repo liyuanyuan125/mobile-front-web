@@ -54,7 +54,7 @@ export default class Main extends Vue {
     this.dataList = (this.data.movieList || []).map((it: any) => {
       return {
         ...it,
-        coverImg: imgFixed(it.coverUrl, 200, 260),
+        coverImg: imgFixed(it.coverUrl, 200, 260 , 4),
       }
     })
   }

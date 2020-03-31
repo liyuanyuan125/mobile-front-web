@@ -23,14 +23,14 @@
         </ul>
         <div class='movielist'>
             <div class='rowmovie' v-for='item in dataList' :key='item.tvId'>
-                <div class="img">
+                <div class="img" @click='goDetail(item.tvId)'>
                   <!-- <img :src=item.coverUrl.url alt=""> -->
                   <img :src="item.coverImg || require('@/assets/tvdefault.png')"  alt="">
                 </div>
                 <div class='name'>
                   {{item.tvName}}
                 </div>
-                <div class='type'>{{item.genres}}</div>
+                <div class='type'>{{item.genres == '' ? '-' : item.genres}}</div>
             </div>
        </div>
     </div>
@@ -83,6 +83,16 @@ export default class Main extends Vue {
         '作品评分为全网综合评分',
       showConfirmButton: true,
       className: 'alertwid'
+    })
+  }
+
+  // 详情页跳转
+  goDetail(id: any) {
+    this.$router.push({
+      name: 'sentimenttv',
+      params: {
+        tvId: id
+      }
     })
   }
 

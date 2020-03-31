@@ -23,7 +23,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;'>
               <i class='hid'>{{actorInfo.rankingNum}}&nbsp;</i>
-              <i class='bor'>#{{actorInfo.rankingName}}111111111111111111111111</i>
+              <i class='bor'>#{{actorInfo.rankingName}}</i>
             </span>
             <Icon name="arrow" size="13" class="icon-arrow" />
           </router-link> 

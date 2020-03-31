@@ -47,9 +47,7 @@
             </ul>
           </div>
           <div class='content'>
-            <div class='left'>
-              <router-link tag='span' :to="{ name:'sentimenteventmarketing', params: { eventId: item.interFansTrend } }">{{item.eventName}}</router-link>
-            </div>
+            <div class='left'>{{item.eventName}}</div>
             <div class='right'>{{item.eventCreatTimeDate}}</div>
           </div>
         </div>

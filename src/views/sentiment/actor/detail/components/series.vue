@@ -56,7 +56,7 @@ export default class Main extends Vue {
 
   dataList: any = []
   created() {
-    this.dataList = (this.data.tvList || []).map((it: any) => {
+    this.dataList = (this.data.tvList.slice(0, 10) || []).map((it: any) => {
       return {
         ...it,
         coverImg: imgFixed(it.coverUrl, 200, 260 , 4),
@@ -184,10 +184,11 @@ export default class Main extends Vue {
     width: 100%;
     height: 260px;
     border-radius: 10px;
-    border: 1px solid #ccc;
+    // border: 1px solid #ccc;
     img {
       width: 100%;
       height: 100%;
+      border-radius: 10px;
       // object-fit: contain;
     }
   }

@@ -34,10 +34,10 @@ export default class Main extends Vue {
 
   dataList: any = []
   created() {
-    this.dataList = (this.data.brandList || []).map((it: any) => {
+    this.dataList = (this.data.brandList.slice(0, 10) || []).map((it: any) => {
       return {
         ...it,
-        coverImg: imgFixed(it.coverUrl, 200, 260 , 4),
+        coverImg: imgFixed(it.coverUrl, 200, 200 , 4),
       }
     })
   }
@@ -126,12 +126,13 @@ export default class Main extends Vue {
   margin-bottom: 30px;
   .img {
     width: 100%;
-    height: 260px;
+    height: 200;
     border-radius: 10px;
-    border: 1px solid #ccc;
+    // border: 1px solid #ccc;
     img {
       width: 100%;
       height: 100%;
+      border-radius: 10px;
       // object-fit: contain;
     }
   }

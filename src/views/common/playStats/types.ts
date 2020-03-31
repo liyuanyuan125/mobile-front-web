@@ -7,19 +7,35 @@ export interface PlayPlatform extends NameValue {
   countShow: string
 }
 
-export interface PlayDate {
+export interface DateValue {
   date: number
   value: number
-  platformName: string
-  eventName: string
-  eventId: string
 }
 
-export interface PlayDaily {
-  eventName: string
-  eventId: string
-  dateList: PlayDate[]
+export interface PlayDailyPlatform {
+  platformName: string
+  dataList: DateValue[]
 }
+
+export interface PlayEvent {
+  date: number
+  eventName: string
+  eventId: number
+}
+
+// export interface PlayDate {
+//   date: number
+//   value: number
+//   platformName: string
+//   eventName: string
+//   eventId: string
+// }
+
+// export interface PlayDaily {
+//   eventName: string
+//   eventId: string
+//   dateList: PlayDate[]
+// }
 
 export interface PlayForm {
   date: number
@@ -33,7 +49,9 @@ export interface PlayForm {
  */
 export interface PlayView {
   platformList: PlayPlatform[]
-  dailyPlay: PlayDaily
+  dailyPlatformList: PlayDailyPlatform[]
+  dailyEventList: PlayEvent[]
+  // dailyPlay: PlayDaily
   dailyFormList: PlayForm[]
 }
 

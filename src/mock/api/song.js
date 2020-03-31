@@ -1,6 +1,10 @@
 import { mockGet, mockPost, mockPut, mockDel } from '../util'
 
-mockGet('/yuqing/song/detail', ({ songId }) => {
+/**
+ * 1.单曲详情页
+ * https://yapi.aiads-dev.com/project/404/interface/api/10878
+ */
+mockGet('/yuqing/music/song/detail', ({ songId }) => {
   return {
     songInfo: {
       songName: '向死而生',
@@ -126,7 +130,11 @@ mockGet('/yuqing/song/detail', ({ songId }) => {
   }
 })
 
-mockGet('/yuqing/song/heat/analysis', () => {
+/**
+ * 1.1单曲详情页-获取热度分析数据
+ * https://yapi.aiads-dev.com/project/404/interface/api/11173
+ */
+mockGet('/yuqing/music/song/heat/analysis', () => {
   return {
     "overAllHeatList": [
       {
@@ -227,94 +235,11 @@ mockGet('/yuqing/song/heat/analysis', () => {
   }
 })
 
-mockGet('/yuqing/song/heat/analysis', () => {
-  return {
-    songMusicView: {
-      platformList: [
-        { name: '网易云音乐', value: 6880, countShow: '7.59亿' },
-        { name: 'QQ音乐', value: 3888, countShow: '4.8亿' },
-        { name: '酷我音乐', value: 2888, countShow: '3.8亿' },
-      ],
-      dailyPlay: {
-        eventName: '',
-        eventId: '',
-      },
-      dailyFormList: [
-        {
-          date: 1581782400000,
-          playCount: '276.9万',
-          markName: '上线首日',
-          platformList: [
-            { name: '网易云音乐', value: '188.8万' },
-            { name: 'QQ音乐', value: '88.8万' },
-            { name: '酷我音乐', value: '' },
-          ]
-        },
-        {
-          date: 1582041600000,
-          playCount: '176.9万',
-          platformList: [
-            { name: '网易云音乐', value: '88.8万' },
-            { name: 'QQ音乐', value: '38.8万' },
-            { name: '酷我音乐', value: '20.8万' },
-          ]
-        },
-        {
-          date: 1582300800000,
-          playCount: '188.9万',
-          platformList: [
-            { name: '网易云音乐', value: '99.8万' },
-            { name: 'QQ音乐', value: '66.8万' },
-            { name: '酷我音乐', value: '' },
-          ]
-        },
-      ]
-    },
-    videoView: {
-      platformList: [
-        { name: '网易云音乐', value: 1880, countShow: '2.59亿' },
-        { name: 'QQ音乐', value: 9888, countShow: '3.8亿' },
-        { name: '酷我音乐', value: 3888, countShow: '8.8亿' },
-      ],
-      dailyPlay: {
-        eventName: '',
-        eventId: '',
-      },
-      dailyFormList: [
-        {
-          date: 1581955200000,
-          playCount: '876.9万',
-          markName: '上线首日',
-          platformList: [
-            { name: '网易云音乐', value: '688.8万' },
-            { name: 'QQ音乐', value: '66.8万' },
-            { name: '酷我音乐', value: '' },
-          ]
-        },
-        {
-          date: 1582041600000,
-          playCount: '388.8万',
-          platformList: [
-            { name: '网易云音乐', value: '288.8万' },
-            { name: 'QQ音乐', value: '138.8万' },
-            { name: '酷我音乐', value: '20.8万' },
-          ]
-        },
-        {
-          date: 1582128000000,
-          playCount: '666.9万',
-          platformList: [
-            { name: '网易云音乐', value: '199.8万' },
-            { name: 'QQ音乐', value: '166.8万' },
-            { name: '酷我音乐', value: '20万' },
-          ]
-        },
-      ]
-    }
-  }
-})
-
-mockGet('/yuqing/song/rival/list', () => {
+/**
+ * 1.2单曲详情页-获取竞品对手
+ * https://yapi.aiads-dev.com/project/404/interface/api/11228
+ */
+mockGet('/yuqing/music/song/rival/list', () => {
   return [
     {
       rivalName: '向死而生',
@@ -360,6 +285,155 @@ mockGet('/yuqing/song/rival/list', () => {
   ]
 })
 
+/**
+ * 1.3单曲详情页-获取播放量分析
+ * https://yapi.aiads-dev.com/project/404/interface/api/11283
+ */
+mockGet('/yuqing/music/song/play/analysis', () => {
+  return {
+    songMusicView: {
+      platformList: [
+        { name: '网易云音乐', value: 6880, countShow: '7.59亿' },
+        { name: 'QQ音乐', value: 3888, countShow: '4.8亿' },
+        { name: '酷我音乐', value: 2888, countShow: '3.8亿' },
+      ],
+      dailyPlatformList: [
+        {
+          platformName: '新浪',
+          dataList: [
+            { date: 1581782400000, value: 123231 },
+            { date: 1582041600000, value: 823231 },
+            { date: 1582300800000, value: 323231 },
+          ]
+        },
+        {
+          platformName: '网易',
+          dataList: [
+            { date: 1581782400000, value: 323231 },
+            { date: 1582041600000, value: 223231 },
+            { date: 1582300800000, value: 823231 },
+          ]
+        },
+        {
+          platformName: '搜狗',
+          dataList: [
+            { date: 1581782400000, value: 823231 },
+            { date: 1582041600000, value: 123231 },
+            { date: 1582300800000, value: 923231 },
+          ]
+        },
+      ],
+      dailyEventList: [
+        { date: 1581782400000, eventName: '1事件名事件名事件名事件名事件名', eventId: 1 },
+        { date: 1582041600000, eventName: '2事件名事件名事件名事件名事件名', eventId: 2 },
+        { date: 1582300800000, eventName: '3事件名事件名事件名事件名事件名', eventId: 3 },
+      ],
+      dailyFormList: [
+        {
+          date: 1581782400000,
+          playCount: '276.9万',
+          markName: '上线首日',
+          platformList: [
+            { name: '网易云音乐', value: '188.8万' },
+            { name: 'QQ音乐', value: '88.8万' },
+            { name: '酷我音乐', value: '' },
+          ]
+        },
+        {
+          date: 1582041600000,
+          playCount: '176.9万',
+          platformList: [
+            { name: '网易云音乐', value: '88.8万' },
+            { name: 'QQ音乐', value: '38.8万' },
+            { name: '酷我音乐', value: '20.8万' },
+          ]
+        },
+        {
+          date: 1582300800000,
+          playCount: '188.9万',
+          platformList: [
+            { name: '网易云音乐', value: '99.8万' },
+            { name: 'QQ音乐', value: '66.8万' },
+            { name: '酷我音乐', value: '' },
+          ]
+        },
+      ]
+    },
+    videoView: {
+      platformList: [
+        { name: '网易云音乐', value: 1880, countShow: '2.59亿' },
+        { name: 'QQ音乐', value: 9888, countShow: '3.8亿' },
+        { name: '酷我音乐', value: 3888, countShow: '8.8亿' },
+      ],
+      dailyPlatformList: [
+        {
+          platformName: '新浪',
+          dataList: [
+            { date: 1581782400000, value: 123231 },
+            { date: 1582041600000, value: 823231 },
+            { date: 1582300800000, value: 323231 },
+          ]
+        },
+        {
+          platformName: '网易',
+          dataList: [
+            { date: 1581782400000, value: 323231 },
+            { date: 1582041600000, value: 223231 },
+            { date: 1582300800000, value: 823231 },
+          ]
+        },
+        {
+          platformName: '搜狗',
+          dataList: [
+            { date: 1581782400000, value: 823231 },
+            { date: 1582041600000, value: 123231 },
+            { date: 1582300800000, value: 923231 },
+          ]
+        },
+      ],
+      dailyEventList: [
+        { date: 1581782400000, eventName: '1事件名事件名事件名事件名事件名', eventId: 1 },
+        { date: 1582041600000, eventName: '2事件名事件名事件名事件名事件名', eventId: 2 },
+        { date: 1582300800000, eventName: '3事件名事件名事件名事件名事件名', eventId: 3 },
+      ],
+      dailyFormList: [
+        {
+          date: 1581955200000,
+          playCount: '876.9万',
+          markName: '上线首日',
+          platformList: [
+            { name: '网易云音乐', value: '688.8万' },
+            { name: 'QQ音乐', value: '66.8万' },
+            { name: '酷我音乐', value: '' },
+          ]
+        },
+        {
+          date: 1582041600000,
+          playCount: '388.8万',
+          platformList: [
+            { name: '网易云音乐', value: '288.8万' },
+            { name: 'QQ音乐', value: '138.8万' },
+            { name: '酷我音乐', value: '20.8万' },
+          ]
+        },
+        {
+          date: 1582128000000,
+          playCount: '666.9万',
+          platformList: [
+            { name: '网易云音乐', value: '199.8万' },
+            { name: 'QQ音乐', value: '166.8万' },
+            { name: '酷我音乐', value: '20万' },
+          ]
+        },
+      ]
+    }
+  }
+})
+
+/**
+ * 2.5单曲用户分析二级页
+ * https://yapi.aiads-dev.com/project/404/interface/api/11013
+ */
 mockGet('/yuqing/music/song/user/analysis', () => {
   return {
     genderList: [
@@ -411,6 +485,10 @@ mockGet('/yuqing/music/song/user/analysis', () => {
   }
 })
 
+/**
+ * 2.6竞品分析报告详情
+ * https://yapi.aiads-dev.com/project/404/interface/api/11433
+ */
 mockGet('/yuqing/music/song/rival/report', () => {
   return {
     rivalList: [
@@ -647,6 +725,10 @@ mockGet('/yuqing/music/song/rival/report', () => {
   }
 })
 
+/**
+ * 2.6.1竞品分析报告详情-获取热度分析
+ * https://yapi.aiads-dev.com/project/404/interface/api/11618
+ */
 mockGet('/yuqing/music/song/rival/heat/analysis', () => {
   const list = [
     {
@@ -750,6 +832,10 @@ mockGet('/yuqing/music/song/rival/heat/analysis', () => {
   }
 })
 
+/**
+ * 2.6.2竞品分析报告详情-获取播放量对比
+ * https://yapi.aiads-dev.com/project/404/interface/api/11623
+ */
 mockGet('/yuqing/music/song/rival/play/analysis', () => {
   return {
     rivalPlay: [
@@ -843,6 +929,10 @@ mockGet('/yuqing/music/song/rival/play/analysis', () => {
   }
 })
 
+/**
+ * 2.6.3竞品分析报告详情-获取口碑评论对比
+ * https://yapi.aiads-dev.com/project/404/interface/api/11628
+ */
 mockGet('/yuqing/music/song/rival/praise', () => {
   return {
     goodList: [

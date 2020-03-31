@@ -15,6 +15,7 @@
     <TabNav
       :list ="list"
       class="tab-nav"
+      normal
     />
 
     <!-- <TabNav
@@ -100,6 +101,9 @@ export default class extends Vue {
     { name: 'event', label: '事件' },
     { name: 'part', label: '竞品' },
     { name: 'work', label: '作品' },
+    { name: 'other1', label: '其他1' },
+    { name: 'other2', label: '其他2' },
+    { name: 'other3', label: '其他3' },
   ]
 }
 </script>

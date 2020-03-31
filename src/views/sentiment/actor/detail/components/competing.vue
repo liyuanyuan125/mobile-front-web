@@ -14,11 +14,11 @@
             <ul>
               <li>
                 <p class='hot1'>昨日热度</p>
-                <p class='hot2'>{{pkDate.yesterHeatCount == null ? '暂无数据' : pkDate.yesterHeatCount}}</p>
+                <p class='hot2'>{{pkDate.yesterHeatCount == '' ? '-' : pkDate.yesterHeatCount}}</p>
               </li>
               <li>
                 <p class='hot1'>全网粉丝数</p>
-                <p class='hot2'>{{pkDate.interFansTrend == null ? '暂无数据' : pkDate.interFansTrend}}</p>
+                <p class='hot2'>{{pkDate.interFansTrend == '' ? '-' : pkDate.interFansTrend}}</p>
               </li>
             </ul>
           </div>
@@ -36,24 +36,26 @@
             <ul>
               <li>
                 <p class='hot1'>昨日热度</p>
-                <p class='hot2'>{{item.yesterHeatCount == null ? '暂无数据' : item.yesterHeatCount}}</p>
+                <p class='hot2'>{{item.yesterHeatCount == '' ? '-' : item.yesterHeatCount}}</p>
                 <p :class="Number(item.chgyesterHeatTrend) > 0 ?'red':'blue'">{{item.yesterHeatTrend}}</p>
               </li>
               <li>
                 <p class='hot1'>全网粉丝数</p>
-                <p class='hot2'>{{item.interFansCount == null ? '暂无数据' : item.interFansCount}}</p>
+                <p class='hot2'>{{item.interFansCount == '' ? '-' : item.interFansCount}}</p>
                 <p :class="Number(item.chginterFansTrend) > 0?'red':'blue'">{{item.interFansTrend}}</p>
               </li>
             </ul>
           </div>
           <div class='content'>
-            <div class='left'>{{item.eventName}}</div>
+            <div class='left'>
+              <router-link tag='span' :to="{ name:'sentimenteventmarketing', params: { eventId: item.interFansTrend } }">{{item.eventName}}</router-link>
+            </div>
             <div class='right'>{{item.eventCreatTimeDate}}</div>
           </div>
         </div>
       </li>
     </ul>
-    <div class="submit-button">
+    <div class="submit-button" v-if='pkUserListData.length > 0'>
       <router-link :to="{ name:'sentimentkolproducts', params: { ids: this.pkIdList.join(',') } }" class="to-link" >查看详细报告</router-link>
     </div>
   </div>
@@ -83,15 +85,15 @@ export default class Main extends Vue {
 
   created() {
     this.pkDate = this.pkUserList[0]
-    this.coverImg = imgFixed(this.pkUserList[0].rivalCover, 200, 200 , 4),
+    this.coverImg = imgFixed(this.pkUserList[0].rivalCover, 200, 200 , 4)
     this.pkUserListData = (this.pkUserList.slice(1) || []).map((it: any) => {
       return {
         ...it,
         coverImg: imgFixed(it.rivalCover, 200, 260 , 4),
         eventCreatTimeDate: moment(it.eventCreatTime).format(format),
-        yesterHeatTrend: it.yesterHeatTrend == 0 ? 0 : (it.yesterHeatTrend > 0 ?
+        yesterHeatTrend: it.yesterHeatTrend == 0 ? '相同' : (it.yesterHeatTrend > 0 ?
         '高' + String(roleNumber(it.yesterHeatTrend)) : '低' + String(roleNumber(it.yesterHeatTrend)).substr(1)),
-        interFansTrend: it.interFansTrend == 0 ? 0 : (it.interFansTrend > 0 ?
+        interFansTrend: it.interFansTrend == 0 ? '相同' : (it.interFansTrend > 0 ?
         '高' + String(roleNumber(it.interFansTrend)) : '低' + String(roleNumber(it.interFansTrend)).substr(1)),
         chgyesterHeatTrend: it.yesterHeatTrend,
         chginterFansTrend: it.interFansTrend,

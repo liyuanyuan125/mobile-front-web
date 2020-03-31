@@ -38,7 +38,7 @@
       :list ="list"
       class="tab-nav"
     />
-    <section v-if='show' class="pane" id="hot" style='padding: 15px'>
+    <section v-if='show' class="pane" id="hot">
       <!-- 热度分析 -->
       <selectTime ref="refsTime" v-model="day" class="select-time"/>
       <heatLineCom 
@@ -48,7 +48,7 @@
        />
     </section>
 
-    <section v-if='show' class="pane" id="praise" style='padding-top: 25px'>
+    <section v-if='show' class="pane" id="praise">
       <!-- 口碑评论 -->
       <PraiseComment 
         :favorable="actorInfo.favorable" 
@@ -57,7 +57,7 @@
       />
     </section>
 
-    <section v-if='show' class="pane" id="user" style='padding-top: 25px'>
+    <section v-if='show' class="pane" id="user">
       <!-- 用户分析 -->
       <UserPortrait 
           :genderList="userAnalysis.genderList" 
@@ -66,7 +66,7 @@
        />
     </section>
 
-    <section v-if='showevent' class="pane" id="event" style='padding-top: 25px'>
+    <section v-if='showevent' class="pane" id="event">
       <!-- 营销事件 -->
       <Event 
         :eventList='eventList'
@@ -74,7 +74,7 @@
       />
     </section>
 
-    <section v-if='showuser' class="pane" id="part" >
+    <section v-if='showuser && pkUserList.length > 0' class="pane" id="part" >
        <!-- 相似艺人 -->
         <Competing :pkUserList='pkUserList' :pkIdList='pkIdList' />
     </section>
@@ -267,7 +267,7 @@ export default class KolPage extends ViewBase {
     this.pkIdList = []
     try {
       const pkUser = await getPkUser({actorId: this.$route.params.actorId})
-      this.pkUserList = pkUser.data
+      this.pkUserList = pkUser.data || []
       this.pkIdList = (pkUser.data || []).map((it: any) => {
         return it.rivalId
       })
@@ -468,6 +468,6 @@ export default class KolPage extends ViewBase {
   width: 90%;
 }
 .select-time {
-  padding: 69px 30px 15px;
+  padding: 30px 30px 15px;
 }
 </style>

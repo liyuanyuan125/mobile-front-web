@@ -46,7 +46,7 @@
               </li>
             </ul>
           </div>
-          <div class='content'>
+          <div class='content' v-if='item.eventName != ""'>
             <div class='left'>{{item.eventName}}</div>
             <div class='right'>{{item.eventCreatTimeDate}}</div>
           </div>
@@ -88,7 +88,7 @@ export default class Main extends Vue {
       return {
         ...it,
         coverImg: imgFixed(it.rivalCover, 200, 260 , 4),
-        eventCreatTimeDate: moment(it.eventCreatTime).format(format),
+        eventCreatTimeDate: it.eventCreatTime == null ? '' : moment(it.eventCreatTime).format(format),
         yesterHeatTrend: it.yesterHeatTrend == 0 ? '相同' : (it.yesterHeatTrend > 0 ?
         '高' + String(roleNumber(it.yesterHeatTrend)) : '低' + String(roleNumber(it.yesterHeatTrend)).substr(1)),
         interFansTrend: it.interFansTrend == 0 ? '相同' : (it.interFansTrend > 0 ?

@@ -5,7 +5,7 @@
       <li class='li-item'>
         <div class='li-left'>
           <div>
-            <img :src=pkDate.rivalCover.url alt="">
+            <img :src="coverImg || require('@/assets/actordefault.png')" alt="">
           </div>
         </div>
         <div class='li-right'>
@@ -14,11 +14,11 @@
             <ul>
               <li>
                 <p class='hot1'>昨日热度</p>
-                <p class='hot2'>{{pkDate.yesterHeatCount}}</p>
+                <p class='hot2'>{{pkDate.yesterHeatCount == null ? '暂无数据' : pkDate.yesterHeatCount}}</p>
               </li>
               <li>
-                <p class='hot1'>昨日互动量</p>
-                <p class='hot2'>{{pkDate.yesterHeatTrend}}</p>
+                <p class='hot1'>全网粉丝数</p>
+                <p class='hot2'>{{pkDate.interFansTrend == null ? '暂无数据' : pkDate.interFansTrend}}</p>
               </li>
             </ul>
           </div>
@@ -35,13 +35,13 @@
           <div class='hot'>
             <ul>
               <li>
-                <p class='hot1'>热度</p>
-                <p class='hot2'>{{item.yesterHeatCount}}</p>
+                <p class='hot1'>昨日热度</p>
+                <p class='hot2'>{{item.yesterHeatCount == null ? '暂无数据' : item.yesterHeatCount}}</p>
                 <p :class="Number(item.chgyesterHeatTrend) > 0 ?'red':'blue'">{{item.yesterHeatTrend}}</p>
               </li>
               <li>
                 <p class='hot1'>全网粉丝数</p>
-                <p class='hot2'>{{item.interFansCount}}</p>
+                <p class='hot2'>{{item.interFansCount == null ? '暂无数据' : item.interFansCount}}</p>
                 <p :class="Number(item.chginterFansTrend) > 0?'red':'blue'">{{item.interFansTrend}}</p>
               </li>
             </ul>
@@ -64,7 +64,7 @@ import { Component, Vue , Prop } from 'vue-property-decorator'
 import { Icon } from 'vant'
 import moment from 'moment'
 import { imgFixed } from '@/fn/imgProxy'
-
+import { roleNumber } from '@/fn/validateRules'
 const format = 'YYYY-MM-DD'
 
 @Component({
@@ -83,16 +83,16 @@ export default class Main extends Vue {
 
   created() {
     this.pkDate = this.pkUserList[0]
-    this.coverImg = imgFixed(this.pkUserList[0].rivalCover, 200, 200),
+    this.coverImg = imgFixed(this.pkUserList[0].rivalCover, 200, 200 , 4),
     this.pkUserListData = (this.pkUserList.slice(1) || []).map((it: any) => {
       return {
         ...it,
-        coverImg: imgFixed(it.rivalCover, 200, 260),
+        coverImg: imgFixed(it.rivalCover, 200, 260 , 4),
         eventCreatTimeDate: moment(it.eventCreatTime).format(format),
         yesterHeatTrend: it.yesterHeatTrend == 0 ? 0 : (it.yesterHeatTrend > 0 ?
-        '高' + String(it.yesterHeatTrend) : '低' + String(it.yesterHeatTrend).substr(1)),
+        '高' + String(roleNumber(it.yesterHeatTrend)) : '低' + String(roleNumber(it.yesterHeatTrend)).substr(1)),
         interFansTrend: it.interFansTrend == 0 ? 0 : (it.interFansTrend > 0 ?
-        '高' + String(it.interFansTrend) : '低' + String(it.interFansTrend).substr(1)),
+        '高' + String(roleNumber(it.interFansTrend)) : '低' + String(roleNumber(it.interFansTrend)).substr(1)),
         chgyesterHeatTrend: it.yesterHeatTrend,
         chginterFansTrend: it.interFansTrend,
       }

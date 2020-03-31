@@ -48,7 +48,7 @@
        />
     </section>
 
-    <section v-if='show' class="pane" id="praise">
+    <section v-if='show' class="pane" id="praise" style='padding-top: 25px'>
       <!-- 口碑评论 -->
       <PraiseComment 
         :favorable="actorInfo.favorable" 
@@ -57,7 +57,7 @@
       />
     </section>
 
-    <section v-if='show' class="pane" id="user">
+    <section v-if='show' class="pane" id="user" style='padding-top: 25px'>
       <!-- 用户分析 -->
       <UserPortrait 
           :genderList="userAnalysis.genderList" 
@@ -66,7 +66,7 @@
        />
     </section>
 
-    <section v-if='showevent' class="pane" id="event">
+    <section v-if='showevent' class="pane" id="event" style='padding-top: 25px'>
       <!-- 营销事件 -->
       <Event 
         :eventList='eventList'
@@ -74,12 +74,12 @@
       />
     </section>
 
-    <section v-if='showuser' class="pane" id="part">
+    <section v-if='showuser' class="pane" id="part" >
        <!-- 相似艺人 -->
         <Competing :pkUserList='pkUserList' :pkIdList='pkIdList' />
     </section>
 
-    <section v-if='show && worksAnalysis.movieAnalysis != null && worksAnalysis.tvAnalysis != null && worksAnalysis.musicAnalysis != null && worksAnalysis.brandAnalysis != null' class="pane" id="work">
+    <section  v-if='show && worksAnalysis.movieAnalysis != null && worksAnalysis.tvAnalysis != null && worksAnalysis.musicAnalysis != null && worksAnalysis.brandAnalysis != null' class="pane" id="work">
       <!-- 作品分析 -->
       <Works :worksAnalysis='worksAnalysis' :link="getApplink('actorWorksAnalysis')" />
     </section>
@@ -237,7 +237,7 @@ export default class KolPage extends ViewBase {
         worksAnalysis, // 作品分析
       } } = await getActorDetail({actorId: this.$route.params.actorId})
       this.actorInfo = actorInfo
-      this.coverImg = imgFixed(actorInfo.coverUrl, 172, 172)
+      this.coverImg = imgFixed(actorInfo.coverUrl, 172, 172 , 4)
       this.bubbleData = [
         {type: '1', value: actorOverView.interactCount, trend: actorOverView.interactTrend,
          renderTitle: (h: any) => {
@@ -427,7 +427,7 @@ export default class KolPage extends ViewBase {
   z-index: 11;
 }
 .pane {
-  // padding: 15px;
+  padding-top: 30px;
   min-height: 200px;
   background-color: #fff;
   margin-bottom: 20px;

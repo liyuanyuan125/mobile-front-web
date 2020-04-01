@@ -1,7 +1,7 @@
 <template>
   <!--影片票房 -->
   <div class="boxoffice mod">
-    <ModuleHeader title="影片票房" :link="boxoffice ? appLink : null" />
+    <ModuleHeader title="影片票房" :link="boxoffice ? link : null" />
     <div v-if="boxoffice">
       <div class="bfstatis">
         <div>
@@ -102,7 +102,6 @@ export default class BoxOffice extends ViewBase {
   @Prop({ type: Object }) boxoffice!: any
   @Prop({ type: Object }) link!: any
 
-  appLink: any = this.link
   tabList: any = [
     {
       id: 1,
@@ -164,8 +163,12 @@ export default class BoxOffice extends ViewBase {
 
   // 去往原生页
   goLink(type: number) {
-    this.appLink.boxOfficeType = type ? type : 1
-    openAppLink(this.appLink)
+    const link: AppLink = {
+      page: 'movieBoxOffice',
+      boxOfficeType: type,
+      movieId: this.link.movieId
+    }
+    openAppLink(link)
   }
 
   // 处理chart 浮层 tooltip

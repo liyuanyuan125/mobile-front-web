@@ -1,42 +1,53 @@
 <template>
   <div class="content" v-if="show">
     <SentimentBar title="营销事件详情" :titleShow="true" />
-    <div class="main">
-      <h2 class="van-multi-ellipsis--l2">{{title}}</h2>
-      <div class="show-num">
-        <div class="left">
-          <span class="s1">{{eventInfo.interactCount}}</span>
-          <span class="s2">&nbsp;累计互动</span>
-        </div>
-        <div class="right">今日新增：{{eventInfo.todayInteractAdd}}</div>
-      </div>
-      <div class="show-echarts">
-        <Button
-          class="chg"
-          v-for="(item) in tabList"
-          :key="item.key"
-          :class="{'chgbgc': newPk == item.key}"
-          type="primary"
-          @click="chgnewPk(item)"
-        >{{item.name}}</Button>
-        <div @click="openAnalysisPage">
-          <LineGrap :lineData="linedata" class="wantchart" :formatterHtml="formatterHtml" />
-        </div>
-      </div>
+    <div v-if="eventStatus === 1 || !eventStatus" class="unevent">
+      <span></span>
+      <h6>暂无数据</h6>
+      <p>
+        该事件的分析报告将于分析周期开始的第二天展示，
+        <br />分析周期内分析报告每日更新，请耐心等待！
+      </p>
     </div>
-    <platForm
-      :platformList="platformHeatList"
-      v-if="platformHeatList.length"
-      :params="platformParams"
-      class="platform"
-    />
-    <SpreadList :dataList="spreadList" :link="getApplink('eventSpreadPathList')" />
-    <!-- 口碑评论 -->
-    <PraiseComment
-      :favorable="publicPraise.favorable"
-      :publicPraise="publicPraise"
-      :link="getApplink('eventPraiseHotWordsList')"
-    />
+    <div v-if="eventStatus === 2 || eventStatus === 3">
+      <div class="main"  >
+        <h2 class="van-multi-ellipsis--l2">{{title}}</h2>
+        <div class="show-num">
+          <div class="left">
+            <span class="s1">{{eventInfo.interactCount}}</span>
+            <span class="s2">&nbsp;累计互动</span>
+          </div>
+          <div class="right">今日新增：{{eventInfo.todayInteractAdd}}</div>
+        </div>
+        <div class="show-echarts">
+          <Button
+            class="chg"
+            v-for="(item) in tabList"
+            :key="item.key"
+            :class="{'chgbgc': newPk == item.key}"
+            type="primary"
+            @click="chgnewPk(item)"
+          >{{item.name}}</Button>
+          <div @click="openAnalysisPage">
+            <LineGrap :lineData="linedata" class="wantchart" :formatterHtml="formatterHtml" />
+          </div>
+        </div>
+      </div>
+      <platForm
+        :platformList="platformHeatList"
+        v-if="platformHeatList.length"
+        :params="platformParams"
+        class="platform"
+      />
+      <SpreadList :dataList="spreadList" :link="getApplink('eventSpreadPathList')" />
+      <!-- 口碑评论 -->
+      <PraiseComment
+        :favorable="publicPraise.favorable"
+        :publicPraise="publicPraise"
+        :link="getApplink('eventPraiseHotWordsList')"
+      />
+    </div>
+    
   </div>
 </template>
 
@@ -72,6 +83,7 @@ import { openAppLink, AppLink } from '@/util/native'
 export default class KolPage extends ViewBase {
   title!: string
   eventId: string = ''
+  eventStatus: number = 1
 
   // 热度分析
   linedata: any = {}
@@ -128,9 +140,10 @@ export default class KolPage extends ViewBase {
   async geteventDetail() {
     try {
       const {
-        data: { eventInfo, platformList, spreadList, publicPraise }
+        data: { eventInfo, platformList, spreadList, publicPraise , eventStatus }
       } = await eventDetail({ eventId: this.$route.params.eventId })
       this.publicPraise = publicPraise
+      this.eventStatus = eventStatus
       this.spreadList = spreadList
       this.eventInfo = eventInfo
       this.overAllHeatList = eventInfo.newsList
@@ -229,13 +242,14 @@ export default class KolPage extends ViewBase {
       font-size: 26px;
       font-weight: 600;
       color: rgba(136, 170, 246, 1);
+      white-space: nowrap;
       .s1 {
-        font-size: 70px;
+        font-size: 58px;
         font-weight: bold;
       }
     }
     .right {
-      padding-top: 7%;
+      padding-top: 5%;
       width: 50%;
       text-align: right;
       font-size: 26px;
@@ -271,5 +285,31 @@ export default class KolPage extends ViewBase {
 .platform {
   border-top: 20px solid rgba(216, 216, 216, 0.2);
   padding: 0 30px;
+}
+// 事件未开始
+.unevent,
+.eventclose {
+  text-align: center;
+  padding: 200px 0 0;
+  span {
+    display: inline-block;
+    background: url('../../../assets/sentiment/event-null.png') no-repeat center;
+    background-size: 100%;
+    width: 268px;
+    height: 220px;
+  }
+  h6 {
+    font-weight: normal;
+    font-size: 33px;
+    line-height: 45px;
+    margin-top: 15px;
+    color: #88aaf6;
+  }
+  p {
+    font-size: 25px;
+    line-height: 40px;
+    color: #8f8f8f;
+    margin-top: 15px;
+  }
 }
 </style>

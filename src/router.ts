@@ -116,21 +116,22 @@ export default new Router({
     // 品牌舆情
     {
       path: '/sentiment/brand/:id',
-      name: 'sentimentbrand',
-      component: () => import('./views/sentiment/brand/index.vue'),
+      name: 'sentiment-brand',
+      component: () => import('./views/sentiment/brand/detail.vue'),
       props: idProps
     },
     // 品牌舆情 - 用户分析二级详情页
     {
-      path: '/sentiment/branduser/:brandId',
+      path: '/sentiment/branduser/:id',
       name: 'sentimentbrand-user',
-      component: () => import('./views/sentiment/brand/userAnalysis/user.vue')
+      component: () => import('./views/sentiment/brand/userAnalysis/user.vue'),
+      props: idProps
     },
     // 品牌舆情 - 竞品分析二级详情页
     {
-      path: '/sentiment/brand/rivalAnalysis',
+      path: '/sentiment/brand/rivalAnalysis/:ids',
       name: 'sentimentbrand-analyze',
-      component: () => import('./views/sentiment/brand/rivalAnalysis/analyze.vue'),
+      component: () => import('./views/sentiment/brand/rivalAnalysis/index.vue'),
     },
     // 平台热度 - 查看更多（通用页）
     {
@@ -190,11 +191,24 @@ export default new Router({
       component: () => import('./views/sentiment/movie/userAnalysis/index.vue')
     },
     // 电视剧舆情
-    // {
-    //   path: '/sentiment/tv/:tvId',
-    //   name: 'sentimenttv',
-    //   component: () => import('./views/sentiment/tv/index.vue')
-    // },
+    {
+      path: '/sentiment/tv/:tvId(\\d+)',
+      name: 'sentimenttv',
+      component: () => import('./views/sentiment/tv/detail/index.vue')
+    },
+    // 电视剧竞品分析
+    {
+      path: '/sentiment/tv/rivalAnalysis',
+      name: 'sentimenttvrivalanalysis',
+      component: () => import('./views/sentiment/tv/rivalAnalysis/index.vue')
+    },
+    // 电视剧用户分析
+    {
+      path: '/sentiment/tv/userAnalysis/:tvId(\\d+)',
+      name: 'sentimenttvuseranalysis',
+      component: () => import('./views/sentiment/tv/userAnalysis/index.vue')
+    },
+    // 用户地域分布三级页
     {
       path: '/sentiment/common/userRegion',
       name: 'sentimentuserregion',
@@ -219,6 +233,20 @@ export default new Router({
       name: 'sentiment-song',
       component: () => import('./views/sentiment/song/index.vue'),
       props: idProps
+    },
+    // 单曲 - 用户分析二级页
+    {
+      path: '/sentiment/song/:id/user',
+      name: 'sentiment-song-user',
+      component: () => import('./views/sentiment/song/user.vue'),
+      props: idProps
+    },
+    // 单曲 - 竞品分析二级页
+    {
+      path: '/sentiment/song/rival/:ids',
+      name: 'sentiment-song-rival',
+      component: () => import('./views/sentiment/song/rival.vue'),
+      props: paramTypes({ ids: String })
     },
 
     // demo
@@ -271,5 +299,11 @@ export default new Router({
       name: 'demo-options',
       component: () => import('./views/demo/options.vue')
     }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    return {
+      x: 0,
+      y: 0
+    }
+  }
 })

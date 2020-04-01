@@ -53,8 +53,9 @@ export function aliImgClip(url: string, width?: number, height?: number, type = 
             return url + '?x-oss-process=image/resize' + encodeURIComponent(clipType + wid + hei)
         case 4:
             // 固定宽和高，如果小于则放大，宽截取中间的需求宽
+            // 调用 resize，默认是不允许放大。即如果请求的图片比原图大，那么返回的仍然是原图。如果想取到放大的图片，即增加参数调用 limit_0
             clipType = ',m_fill'
-            return url + '?x-oss-process=image/resize' + encodeURIComponent(clipType + wid + hei)
+            return url + '?x-oss-process=image/resize' + encodeURIComponent(clipType + wid + hei) + ',limit_0'
     }
 }
 

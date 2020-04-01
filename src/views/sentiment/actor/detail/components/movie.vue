@@ -20,15 +20,15 @@
             </li>
         </ul>
         <div class='movielist'>
-            <div class='rowmovie' v-for='item in data.movieList' :key='item.movieId'>
-                <div class="img">
+            <div class='rowmovie' v-for='item in dataList' :key='item.movieId'>
+                <div class="img" @click='goDetail(item.movieId)'>
                   <!-- <img :src=item.coverUrl.url alt=""> -->
-                  <img :src="item.coverUrl.url || defaultImg"  alt="">
+                  <img :src="item.coverImg || require('@/assets/moviedefault.png')"  alt="">
                 </div>
                 <div class='name'>
                   {{item.movieName}}
                 </div>
-                <div class='type'>{{item.genres}}</div>
+                <div class='type'>{{item.genres == '' ? '-' : item.genres}}</div>
             </div>
        </div>
     </div>
@@ -39,6 +39,7 @@ import { Component, Vue , Prop } from 'vue-property-decorator'
 import { Icon } from 'vant'
 import moment from 'moment'
 import { alert } from '@/util/toast'
+import { imgFixed } from '@/fn/imgProxy'
 
 @Component({
   components: {
@@ -48,9 +49,19 @@ import { alert } from '@/util/toast'
 export default class Main extends Vue {
   @Prop({ type: Object, default: []}) data!: any
 
+  dataList: any = []
+  created() {
+    this.dataList = (this.data.movieList.slice(0, 10) || []).map((it: any) => {
+      return {
+        ...it,
+        coverImg: imgFixed(it.coverUrl, 200, 260 , 4),
+      }
+    })
+  }
+
   defaultImg: any = '@/assets/moviedefault.png'
 
-    // 显示说明
+  // 显示说明
   showNote() {
     alert({
       title: '提示',
@@ -58,6 +69,16 @@ export default class Main extends Vue {
         '作品评分为全网综合评分',
       showConfirmButton: true,
       className: 'alertwid'
+    })
+  }
+
+  // 详情页跳转
+  goDetail(id: any) {
+    this.$router.push({
+      name: 'sentimentmovie',
+      params: {
+        movieId: id
+      }
     })
   }
 
@@ -139,7 +160,7 @@ export default class Main extends Vue {
 
 .movielist {
   width: 100%;
-  display: flex;
+  display: -webkit-box;
   overflow: scroll;
   -webkit-flex-wrap: nowrap;
   flex-wrap: nowrap;
@@ -160,11 +181,12 @@ export default class Main extends Vue {
     width: 100%;
     height: 260px;
     border-radius: 10px;
-    border: 1px solid #ccc;
+    // border: 1px solid #ccc;
     img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      border-radius: 10px;
+      // object-fit: contain;
     }
   }
   .name {

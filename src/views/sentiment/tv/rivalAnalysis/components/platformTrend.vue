@@ -1,5 +1,5 @@
 <template>
-  <!--想看趋势 -->
+  <!--指数趋势 -->
   <div class="wantsee">
     <div class="titbox">
       <h4>指数趋势</h4>
@@ -8,14 +8,14 @@
       </div>
     </div>
     <div class="tabbox">
-      <ul>
-        <li
-          v-for="item in tabList"
-          :class="tabIndex===item.id ? 'cur' : ''"
-          :key="item.key"
-          @click="changeTab(item.id)"
-        >{{item.name}}</li>
-      </ul>
+      <Button
+        class="chg"
+        v-for="(item) in tabList"
+        :key="item.key + item.name"
+        :class="{'chgbgc': tabIndex === item.key}"
+        type="primary"
+        @click="changeTab(item.key)"
+      >{{item.name}}</Button>
     </div>
     <div>
       <echartLines :lineData="lineDatas" :colors="colors" v-if="lineDatas.xDate" />
@@ -31,9 +31,11 @@ import { devLog, devInfo } from '@/util/dev'
 import echartLines from '@/components/hotLines'
 import { toast } from '@/util/toast'
 import moment from 'moment'
+import { Button } from 'vant'
 
 @Component({
   components: {
+    Button,
     echartLines,
     SelectDate
   }
@@ -45,18 +47,7 @@ export default class PlatformTrend extends ViewBase {
   /* 查询条件 */
   @Prop({ type: String }) query!: string
 
-  tabList: any = [
-    {
-      id: 1,
-      key: 'totalDataList',
-      name: '累计'
-    },
-    {
-      id: 2,
-      key: 'newDataList',
-      name: '新增'
-    }
-  ]
+  tabList: any = []
   colors: any[] = [
     '#79DDC5',
     '#8DC3FF',
@@ -86,35 +77,15 @@ export default class PlatformTrend extends ViewBase {
 
   @Watch('tabIndex', { deep: true })
   watchTabIndex(val: number) {
-    if (val === 1) {
-      this.formatDatas(this.response.totalDataList)
-    } else if (val === 2) {
-      this.formatDatas(this.response.newDataList)
-    }
+    this.formatDatas(this.response[this.tabIndex - 1].dataList)
   }
-
-  // 处理数据
-  //   formatDatas(data: any[]) {
-  //     const xDate = (data || []).map((it: any) => it.date)
-  //     const yDate = (data || []).map((it: any) => it.value)
-  //     const eventList = (data || []).map((it: any) => it.eventList)
-  //     this.lineDatas = {
-  //       xDate,
-  //       eventList,
-  //       yDate: [
-  //         {
-  //           data: yDate,
-  //           name: '营销事件'
-  //         }
-  //       ]
-  //     }
-  //   }
 
   // 综合热度数据处理 title，xdata，ydata
   formatDatas(dataObj: any[]) {
-    const xDate = (dataObj || []).map((it: any) => moment(it.date).format('MM-DD'))
+    let xDate: any[] = []
     const yDate = (dataObj || []).map((it: any) => {
       const { rivalName, data } = it
+      xDate = (data || []).map((ite: any) => moment(ite.date).format('MM-DD'))
       return {
         name: rivalName,
         list: (data || []).map((ite: any) => ite.value)
@@ -137,12 +108,22 @@ export default class PlatformTrend extends ViewBase {
   async uplist() {
     try {
       const { data } = await this.fetch({
-        movieIdList: this.query,
+        tvIdList: this.query,
         ...this.dates
       })
-      //   console.log('data', data)
+      // 处理平台名称
+      let index = 0
+      const navlist = []
+      for (const it of data) {
+        index += 1
+        navlist.push({
+          key: index,
+          name: it.platformName
+        })
+      }
+      this.tabList = navlist
       this.response = data
-      this.formatDatas(this.response.totalDataList)
+      this.formatDatas(data[0].dataList)
     } catch (ex) {
       toast(ex)
     }
@@ -167,70 +148,27 @@ export default class PlatformTrend extends ViewBase {
       text-align: right;
     }
   }
-  .citysel {
-    max-width: 210px;
-    height: 60px;
-    background-color: #fff;
-    border-radius: 30px;
-    border: 2px solid #ebebeb;
-    text-align: center;
-    color: #303030;
-    font-size: 14px;
-    padding: 0 54px 0 20px;
-    position: relative;
-    margin-right: 30px;
-    &::after {
-      content: '';
-      width: 0;
-      height: 0;
-      border-top: 10px solid #404d66;
-      border-left: 8px solid #fff;
-      border-right: 8px solid #fff;
-      background-color: #404d66;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      right: 20px;
-    }
-    span {
-      width: 100%;
-      display: block;
-      font-size: 26px;
-      line-height: 56px;
-      color: rgba(48, 48, 48, 0.6);
-    }
-  }
-  .tabbox {
-    text-align: center;
-    margin-top: 40px;
-    ul {
-      display: inline-block;
-    }
-    li {
-      display: inline-block;
-      padding: 0 40px;
-      font-size: 26px;
-      line-height: 58px;
-      color: rgba(48, 48, 48, 0.6);
-      border: 2px solid #ebebeb;
-      position: relative;
-      margin-left: -2px;
-      &:first-child {
-        border-radius: 30px 0 0 30px;
-      }
-      &:last-child {
-        border-radius: 0 30px 30px 0;
-      }
-      &.cur {
-        background-color: #88aaf6;
-        color: #fff;
-        border-color: #88aaf6;
-      }
-    }
-  }
 }
 .wantchart {
   padding-bottom: 0;
   border-bottom: none;
+}
+/deep/ .van-button--primary {
+  height: 60px;
+  background: rgba(255, 255, 255, 1);
+  color: #303030;
+  border-radius: 30px;
+  border: 2px solid rgba(235, 235, 235, 1);
+  font-size: 26px;
+  padding: 0 26px;
+}
+.chg {
+  margin-right: 20px;
+  margin-top: 35px;
+}
+
+.chgbgc {
+  background: #88aaf6;
+  color: #fff;
 }
 </style>

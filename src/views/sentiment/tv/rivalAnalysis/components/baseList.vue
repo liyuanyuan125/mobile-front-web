@@ -1,22 +1,18 @@
 <template>
-  <!--影片票房 -->
+  <!--基础数据 -->
   <div class="baseinfo">
     <h3>基础信息</h3>
     <dl>
       <dt>
         <ul>
-          <li>影片名称</li>
-          <li>累计票房</li>
-          <li>鲸鱼评分</li>
-          <li>想看人数</li>
+          <li>电视剧</li>
+          <li>累计播放量</li>
         </ul>
       </dt>
-      <dd v-for="item in basisList" :key="item.rivalName">
+      <dd v-for="(item,i) in basisList" :key="item.rivalName + i">
         <ul>
           <li>{{item.rivalName}}</li>
-          <li>{{item.boxOfficeCount}}</li>
-          <li>{{item.jydataGrade}}分</li>
-          <li>{{item.wantSeeCount}}人</li>
+          <li>{{item.totalPlayCount}}</li>
         </ul>
       </dd>
     </dl>
@@ -50,7 +46,6 @@ export default class BasisList extends ViewBase {
   dt {
     background: #f2f3f6;
     font-size: 26px;
-    line-height: 80px;
     padding: 0 30px;
   }
   dd {
@@ -64,6 +59,7 @@ export default class BasisList extends ViewBase {
   }
   li {
     width: 25%;
+    min-height: 110px;
     flex: 1;
     align-items: center;
     justify-content: center;
@@ -71,9 +67,7 @@ export default class BasisList extends ViewBase {
     box-sizing: border-box;
     &:first-child {
       justify-content: flex-start;
-    }
-    &:last-child {
-      justify-content: flex-end;
+      flex: 1;
     }
   }
   dd li {

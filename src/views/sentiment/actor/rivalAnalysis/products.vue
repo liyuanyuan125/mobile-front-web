@@ -7,15 +7,14 @@
       class="tab-nav"
       normal
     />
-    <section v-if="combinedHeat.interactList.length" class="pane" id="hot" style='padding-bottom: 30px;'>
+    <section class="pane" id="hot" style='padding-bottom: 30px;'>
+      <selectTime v-model="day" class="select-time"  ref="reftimes"/>
       <heatContrast 
         style='padding-top: 33px; background: #FFF;'
-        :overAllHeat="combinedHeat.heatLineDate"
-        :colors="combinedHeat.colors"
+        :overAllHeat="combinedHeat.overAllHeat"
         :interactList="combinedHeat.interactList"
         :materialList="combinedHeat.materialList"
         :tabs="combinedHeat.tabs"
-        v-if="combinedHeat.interactList.length"
         />
     </section>
 
@@ -33,8 +32,14 @@
         <!-- 平台分布 -->
         <Table :title='publicObj.title' :tabList='publicObj.tabList' :tableTitle='publicObj.tableTitle' :tableItem='publicObj.tableItem'/>
         <!-- </div> -->
+        <div class='hr' style='margin-top: 50px'>
+          <p></p>
+        </div>
         <!-- 年龄分布 -->
         <Age :ageRangeList='ageRangeList' />
+        <div class='hr' style='margin-bottom: 50px'>
+          <p></p>
+        </div>
         <!-- 性别分布 -->
         <div class='title'>性别分布</div>
         <div class='main-show'>
@@ -43,7 +48,9 @@
             class="chart"
           />
         </div>
-
+        <div class='hr' style='margin-bottom: 50px'>
+          <p></p>
+        </div>
         <!-- 用户地域分布对比 -->
         <Table :title='regionObj.title' :tabList='regionObj.tabList' :tableTitle='regionObj.tableTitle' :tableItem='regionObj.tableItem' @chgregionPk='chgregionPk'/>
       </div>
@@ -56,6 +63,8 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import RivalList from '@/views/common/rivalList/index.vue' // 竞品列表
+ import { lastDays } from '@/util/timeSpan'
+import { selectTime } from '@/components/hotLine' // 日期选择
 import heatContrast from '@/views/common/heatContrast/index.vue' // 热度分析对比
 import MarketContrast from '@/views/common/marketContrast/index.vue' // 口碑评论对比
 import Age from '@/views/common/ageDistribution/index.vue'
@@ -71,6 +80,7 @@ import { Tab, Tabs } from 'vant'
   components: {
     Tab,
     Tabs,
+    selectTime,
     heatContrast,
     MarketContrast,
     Age,
@@ -96,48 +106,24 @@ export default class KolPage extends ViewBase {
 
   rivalList: any = []
 
-  active: any = 0
+  // active: any = 0
+  day = 7
   // 热度分析数据
   combinedHeat: any = {
-    colors: ['#88AAF6', '#4CC8D0', '#C965DD'],
     // 综合对比数据值
-    heatLineDate: {
-      title: '综合热度分析',
-      dateList: []
-    },
+    overAllHeat: [],
     // 新增互动
     interactList: [],
     // 新增物料
     materialList: [],
     tabs: [
-      {key: 0, text: '新增物料数'},
+      {key: 0, text: '粉丝数'},
       {key: 1, text: '新增互动数'}
     ]
   }
   // 口碑评论
   publicPraise: any = {
-    // 口碑评论补充数据
-    // 口碑评论 查询
-    query : {
-        movieIdList: 12345
-    },
-    fetch : async (query: any) => { // query: 查询参数
-        return {
-            code: '',
-            msg: '',
-            data: {
-                goodList: [
-                    {
-                        rivalName: query.startTime,
-                        percent: 12.35,
-                        hotWordList: [
-                            '你好'
-                        ]
-                    }
-                ]
-            }
-        }
-    }
+    // fetch: async () => { const data = awiat rivalPraise{id: 123 }）return data }
   }
   // 平台分布
   publicObj: any = {
@@ -169,83 +155,7 @@ export default class KolPage extends ViewBase {
         value: 'TOP5'
       },
     ],
-    tableItem: [
-      {
-        rivalName: '111',
-        dataList: [
-          {
-            name: '微博123',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-        ]
-      },
-      {
-        rivalName: '222',
-        dataList: [
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-        ]
-      },
-      {
-        rivalName: '333',
-        dataList: [
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '',
-            value: ''
-          }
-        ]
-      },
-    ]
+    tableItem: []
   }
   // 性别分布
   sexdata: VsItem[] = [
@@ -258,34 +168,7 @@ export default class KolPage extends ViewBase {
   // 地域数据
   userRegion: any = {}
   // 年龄分布数据
-  ageRangeList = [
-      {
-          ageType: '20-30',
-          rivalList: [
-              {
-                  rivalName: '奔驰',
-                  rivalPercent: 32,
-              },
-              {
-                  rivalName: '奔驰',
-                  rivalPercent: 80,
-              }
-          ]
-      },
-      {
-          ageType: '20-30',
-          rivalList: [
-            {
-                  rivalName: '奔驰',
-                  rivalPercent: 32,
-              },
-              {
-                  rivalName: '奔驰',
-                  rivalPercent: 80,
-              }
-          ]
-      }
-  ]
+  ageRangeList = []
 
   // 用户地域分布
   regionObj: any = {
@@ -326,88 +209,13 @@ export default class KolPage extends ViewBase {
         value: 'TOP5'
       },
     ],
-    tableItem: [
-      {
-        rivalName: '111',
-        dataList: [
-          {
-            name: '微博123',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-        ]
-      },
-      {
-        rivalName: '222',
-        dataList: [
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-        ]
-      },
-      {
-        rivalName: '333',
-        dataList: [
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '微博',
-            value: '12%'
-          },
-          {
-            name: '',
-            value: ''
-          }
-        ]
-      },
-    ]
+    tableItem: []
   }
   list: TabNavItem[] = [
     { name: 'hot', label: '热度' },
     { name: 'praise', label: '口碑' },
     { name: 'user', label: '用户' },
+
   ]
 
   created() {
@@ -419,21 +227,22 @@ export default class KolPage extends ViewBase {
   }
 
   async getLineData() {
+    const [ startTime, endTime ] = lastDays(this.day)
     try {
       const { data: {
         overAllHeat,
         platform: {
           interactList,
-          materialList
+          fansCountList
         }
       }} = await rivalHeatAnalysis({
-        actorIdList: '1,2',
-        startTime: 20200304,
-        endTime: 20200311
+        actorIdList: this.$route.params.ids,
+        startTime,
+        endTime
       })
-      this.combinedHeat.heatLineDate.dateList = overAllHeat || []
-      this.combinedHeat.interactList = interactList || []
-      this.combinedHeat.materialList = materialList || []
+      this.combinedHeat.overAllHeat = overAllHeat || []
+      this.combinedHeat.interactList = fansCountList || []
+      this.combinedHeat.materialList = interactList || []
     } catch (ex) {
       toast(ex)
     }
@@ -442,18 +251,17 @@ export default class KolPage extends ViewBase {
   async getPublicPraise() {
     try {
       const  data = await rivalPraise({
-        actorIdList: '1,2,3',
+        actorIdList: this.$route.params.ids,
         startTime: 20200304,
         endTime: 20200311
       })
       this.publicPraise.query = {
-        actorIdList: '1,2,3',
-        startTime: 20200304,
-        endTime: 20200311
+        actorIdList: this.$route.params.ids,
       }
       // const as = this.publicPraise.query
       this.publicPraise.fetch = async (query: any) => { // query: 查询参数
-        return data
+        const datas = await rivalPraise(query)
+        return datas
       }
     } catch (ex) {
       toast(ex)
@@ -496,6 +304,11 @@ export default class KolPage extends ViewBase {
     } else if (num == 'city') {
       this.regionObj.tableItem = this.userRegion.cityList
     }
+  }
+
+  @Watch('day')
+  watchDay() {
+    this.getLineData()
   }
 
 }
@@ -596,5 +409,20 @@ export default class KolPage extends ViewBase {
 }
 /deep/ h3 {
   margin-bottom: 40px;
+}
+.hr {
+  width: 100%;
+  padding: 0 30px;
+  height: 1px;
+  p {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: rgba(216, 216, 216, 1);
+    opacity: 0.5;
+  }
+}
+.select-time {
+  padding: 69px 30px 15px;
 }
 </style>

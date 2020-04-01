@@ -161,18 +161,27 @@ export function roleNumber(num: string | number) {
   if (num.length < 4) {
     return num
   } else if (num.length == 4) {
-    return num.replace(/^\d+/, (m: string) => m.replace(/(?=(?!^)(\d{3})+$)/g, ','))
+    return thousand(num)
   } else if (num.length >= 5 && num.length < 9) {
     const tenThousand = (Number(num) / 10000).toFixed(1)
-    const number = tenThousand.replace(/^\d+/, (m: string) => m.replace(/(?=(?!^)(\d{3})+$)/g, ','))
+    const number = thousand(tenThousand)
     return `${number}万`
   } else if (num.length >= 9) {
     const calculate = (Number(num) / 100000000).toFixed(1)
-    const number = calculate.replace(/^\d+/, (m: string) => m.replace(/(?=(?!^)(\d{3})+$)/g, ','))
+    const number = thousand(calculate)
     return `${number}亿`
   } else {
     return 0
   }
+}
+
+/**
+ * 将数据转换成千位分符,兼容小数点
+ * @param  num
+ */
+export function thousand(num: string | number) {
+  num = '' + num
+  return num.replace(/^\d+/, (m: string) => m.replace(/(?=(?!^)(\d{3})+$)/g, ','))
 }
 /**
  * 验证URL格式

@@ -520,12 +520,20 @@ export default class MoviePage extends ViewBase {
    */
   getApplink(page: string) {
     switch (page) {
+      // 用户分析
       case 'userAnalysis':
         return {
           name: 'sentimentmovieuseranalysis',
           params: {
             movieId: this.movieId
           }
+        }
+      case 'movieBoxOffice':
+        // 票房
+        return {
+          page,
+          boxOfficeType: 1,
+          movieId: this.movieId
         }
       default:
         return {

@@ -1,8 +1,12 @@
 <template>
    <div>
      <section class="items">
-       <selectTime ref="reftimes"/>
-        <echartLines :lineData="lineData" :colors="colors"/>
+        <!-- 综合热度对比 -->
+        <div>
+          <echartLines :lineData="lineData" v-if="overAllHeat.length" :colors="colors"/>
+          <DataEmpty v-else/>
+        </div>
+        <div class="van-hairline--top item-hairline"></div>
         <h2 class="platform-title">平台热度对比</h2>
         <div class="tabbar">
           <span 
@@ -12,11 +16,17 @@
            @click="() => tabIndex = item.key"
            >{{item.text}}</span>
         </div>
-        <van-swipe class="my-swipe"  :show-indicators="false" :loop="false" :width="300">
-          <van-swipe-item v-for="(item, index) in interactData" >
-            <echartLines :lineData="item" :colors="colors" />
+        <van-swipe class="my-swipe"  
+          :show-indicators="false" 
+          :loop="false" 
+          :width="300"
+          v-if="interactData.length"
+        >
+          <van-swipe-item v-for="(item, index) in interactData" :key="'a' + index" >
+            <echartLines :lineData="item" :colors="colors" :key="index + item.platformName" />
           </van-swipe-item>
         </van-swipe>
+        <DataEmpty v-else/>
      </section>
      
    </div>
@@ -24,24 +34,28 @@
 
 <script lang='ts'>
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
-import { selectTime } from '@/components/hotLine'
 import echartLines from '@/components/hotLines'
 import { Swipe, SwipeItem } from 'vant'
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
 import moment from 'moment'
 const format = 'YYYY-MM-DD'
+const colors = ['#88AAF6', '#4CC8D0', '#C965DD']
 
 @Component({
   components: {
     echartLines,
-    selectTime,
     [Swipe.name]: Swipe,
     [SwipeItem.name]: SwipeItem,
+    DataEmpty,
   }
 })
 export default class Main extends Vue {
-  @Prop({ type: Object}) overAllHeat: any
+  /** 热度分析对比 */
+  @Prop({ type: Array, default: () => []}) overAllHeat: any
+  /** 热度分析对比title */
+  @Prop({ type: String, default: '综合热度分析'}) lineTitle!: string
   /** 线条颜色配置 */
-  @Prop({ type: Array, default: () => []}) colors!: any
+  @Prop({ type: Array, default: () => colors }) colors!: any
   /** 新增物料数data */
   @Prop({ type: Array, default: () => []}) interactList!: any
   /** 新增互动数data */
@@ -55,28 +69,26 @@ export default class Main extends Vue {
     return this.changeListData()
   }
 
-  get startTime() {
-    return (this.$refs.reftimes as any).beginDate
-  }
-
-  get endTime() {
-    return (this.$refs.reftimes as any).endDate
-  }
-  // 综合热度数据处理 title，xdata，ydata
   get lineData() {
-    this.xDate = (this.overAllHeat.dateList[0].data || []).map((it: any) => moment(it.date).format('MM-DD'))
-    const yDate = (this.overAllHeat.dateList || []).map((it: any) => {
-      const {rivalName, data} = it
+    // overAllHeat 逻辑从新处理 传递是数组
+    if (this.overAllHeat.length == 0) {
+      return {}
+    } else {
+      this.xDate = (this.overAllHeat[0].data || []).map((it: any) => moment(it.date).format('MM-DD'))
+      const yDate = (this.overAllHeat || []).map((it: any) => {
+        const {rivalName, data} = it
+        return {
+          name: rivalName,
+          list: (data || []).map((ite: any) => ite.value)
+        }
+      })
       return {
-        name: rivalName,
-        list: (data || []).map((ite: any) => ite.value)
+        title: this.lineTitle,
+        xDate: this.xDate,
+        yDate
       }
-    })
-    return {
-      title: this.overAllHeat.title,
-      xDate: this.xDate,
-      yDate
     }
+
   }
 
   mounted() {
@@ -96,7 +108,6 @@ export default class Main extends Vue {
         }
       })
       return {
-        key: this.tabIndex == 0 ? 'interact' : 'materia',
         title: platformName,
         xDate: this.xDate,
         yDate,
@@ -121,7 +132,7 @@ export default class Main extends Vue {
   font-size: 34px;
   color: #303030;
   padding: 50px 0 40px;
-  border-top: solid 1px #d8d8d8;
+  // border-top: solid 1px #d8d8d8;
 }
 .tabbar {
   display: flex;

@@ -14,7 +14,8 @@ export function getSexOption(data: any) {
     // tooltip 提示
     tooltip: {
         trigger: 'item',
-        formatter: '{a} <br/>{b}: {c} ({d}%)'
+        formatter: '{a} <br/>{b}: {c} ({d}%)',
+        show: false
     },
     // 展示的数据
     legend: {
@@ -117,7 +118,7 @@ export function getPointOption(data: any) {
     // 展示的数据
     legend: {
         orient: 'vertical',
-        left: '62%',
+        left: '60%',
         itemWidth : 6,
         itemHeight: 6,
         icon: 'circle',
@@ -157,7 +158,7 @@ export function getPointOption(data: any) {
         {
             name: data.title,
             type: 'pie',
-            radius: ['40%', '60%'],
+            radius: ['32%', '50%'],
             center: ['33%', '50%'],
             avoidLabelOverlap: true,
             label: {
@@ -268,7 +269,7 @@ export function getRingOption(data: any) {
                         show: true,
                         smooth: 0,
                         length: 5,
-                        length2: 80,
+                        length2: data.length2,
                         lineStyle: {
                           width: 1,
                           type: 'solid'

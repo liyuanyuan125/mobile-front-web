@@ -15,15 +15,15 @@
             </li>
         </ul>
         <div class='movielist'>
-            <div class='rowmovie' v-for='item in data.musicList' :key='item.musicId'>
-                <div class="img">
+            <div class='rowmovie' v-for='item in dataList' :key='item.musicId'>
+                <div class="img" @click='goDetail(item.musicId)'>
                   <!-- <img :src=item.coverUrl.url alt=""> -->
-                  <img :src="item.coverUrl.url || defaultImg"  alt="">
+                  <img :src="item.coverImg || require('@/assets/musicdefault.png')"  alt="">
                 </div>
                 <div class='name'>
                   {{item.musicName}}
                 </div>
-                <div class='type'>{{item.genres}}</div>
+                <div class='type'>{{item.genres == '' ? '-' : item.genres}}</div>
             </div>
        </div>
     </div>
@@ -34,6 +34,8 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Icon } from 'vant'
 import moment from 'moment'
 import { alert } from '@/util/toast'
+import { imgFixed } from '@/fn/imgProxy'
+
 
 @Component({
   components: {
@@ -44,6 +46,26 @@ export default class Main extends Vue {
   @Prop({ type: Object, default: []}) data!: any
 
   defaultImg: any = '@/assets/musicdefault.png'
+
+  dataList: any = []
+  created() {
+    this.dataList = (this.data.musicList.slice(0, 10) || []).map((it: any) => {
+      return {
+        ...it,
+        coverImg: imgFixed(it.coverUrl, 200, 200 , 4),
+      }
+    })
+  }
+
+  // 详情页跳转
+  goDetail(id: any) {
+    this.$router.push({
+      name: 'sentiment-song',
+      params: {
+        id
+      }
+    })
+  }
 
     // 显示说明
   showNote() {
@@ -134,7 +156,7 @@ export default class Main extends Vue {
 
 .movielist {
   width: 100%;
-  display: flex;
+  display: -webkit-box;
   overflow: scroll;
   -webkit-flex-wrap: nowrap;
   flex-wrap: nowrap;
@@ -153,13 +175,14 @@ export default class Main extends Vue {
   margin-bottom: 30px;
   .img {
     width: 100%;
-    height: 260px;
+    height: 200;
     border-radius: 10px;
-    border: 1px solid #ccc;
+    // border: 1px solid #ccc;
     img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      border-radius: 10px;
+      // object-fit: contain;
     }
   }
   .name {

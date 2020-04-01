@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="china-map">
-        <div ref="annular" :style="{width:width+'px',height:height+'px'}" class="chart-wrap"></div>
+    <div class="china-map"  >
+        <div ref="annular" :style="{width:sizeWidth+'px',height:sizeWidth+'px'}" class="chart-wrap"></div>
           <div class="chart-mask">
             <div class="chart-text">
                 <span class="proportion" :style="{color:nameColor}">{{proportion}}</span>
@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 
 import {DataItem} from './types'
 import { getRingOption} from './data'
@@ -25,19 +25,50 @@ export default class ChinaMap extends Vue {
   /** 数据 */
   @Prop({ type: Object, default: () => [] }) data!: DataItem
    /** 长宽 */
-  @Prop({ type: Number, default: 375 }) width!: number
-  @Prop({ type: Number, default: 300 }) height!: number
+  @Prop({ type: Number, default: 0 }) width!: number
   // 圈内的百分比
   proportion: string = ''
   // 圈内的文本
   name: string = ''
   // 文本颜色
   nameColor: string = ''
+  // 组件宽度
+  sizeWidth: number = this.getSize(this.width)
+  // 指示线的长度
+  length2: number = document.documentElement.clientWidth * 0.18
+
+  @Watch('width')
+  setSize() {
+    this.getSize(this.width)
+  }
   mounted() {
+    this.getSize(this.width)
     this.getcherts()
+  }
+  getSize(width: number) {
+    const w = document.documentElement.clientWidth
+        if (width >= w || width < 300) {
+            this.sizeWidth = w
+        } else {
+            this.sizeWidth = width
+        }
+        this.length2 =  this.sizeWidth * 0.18
+        return this.sizeWidth
   }
   getcherts() {
   const myEcharts = this.$refs.annular as HTMLDivElement
+  let colorIndex = -1
+  let maxValue = 0
+  let allValue = 0
+  let name = ''
+  this.data.data.forEach((it: any, index: number) => {
+    maxValue = it.value > maxValue ? it.value : maxValue
+    allValue +=  it.value
+    if (maxValue == it.value) {
+      colorIndex = index
+      name = it.name
+    }
+  })
   const myChart = eCharts.init(myEcharts)
   const openData: any = {
       data: this.data.data,
@@ -48,17 +79,33 @@ export default class ChinaMap extends Vue {
       titleLeft: this.data.titleLeft || 'left', // 标题位置 left center right
       titleSize: this.data.titleSize || 18, // 标题字体大小
       titleWeight: this.data.titleWeight || 'bold', // 标题字体粗细
-      legendtoFixed : this.data.legendtoFixed || 1 // legend显示几位小数
+      legendtoFixed : this.data.legendtoFixed || 1, // legend显示几位小数
+      length2: this.length2
   }
   const option: object = getRingOption(openData)
   myChart.setOption(option)
   // let index = 0
   const $this: any = this
+    // 设置默认选中高亮部分
+    this.proportion = (maxValue / allValue).toFixed(2) + '%'
+    if (openData.color[colorIndex]) {
+      this.nameColor = openData.color[colorIndex]
+    }
+    this.name = name
+    myChart.dispatchAction({type: 'highlight', seriesIndex: 0, dataIndex: colorIndex})
     // 当鼠标移入时
     myChart.on('mouseover', (e: any) => {
       $this.proportion = e.percent + '%'
       $this.name = e.name
       $this.nameColor = e.color
+      if (e.dataIndex != colorIndex) {
+        myChart.dispatchAction({type: 'downplay', seriesIndex: 0, dataIndex: colorIndex  })
+      }
+      if (e.dataIndex == 0) {
+        colorIndex =  e.dataIndex
+        myChart.dispatchAction({type: 'highlight', seriesIndex: 0 , dataIndex: e.dataIndex})
+      }
+
     })
 
     // 当鼠标离开时，把当前项置为选中
@@ -66,6 +113,7 @@ export default class ChinaMap extends Vue {
       $this.proportion = ''
       $this.name = ''
       $this.nameColor = ''
+      myChart.dispatchAction({type: 'downplay', seriesIndex: 0, dataIndex: colorIndex})
     })
   }
 }
@@ -74,15 +122,14 @@ export default class ChinaMap extends Vue {
 <style lang="less" scoped>
   .china-map {
     position: relative;
+    display: flex;
+    justify-content: center;
   }
-  .chart-wrap {
-    width: 100%;
-    height: 600px;
-  }
+
   .chart-mask {
     position: absolute;
     width: 100%;
-    height: 600px;
+    height: 100%;
     top: 0;
     background: 'rabg(255,255,255,0)';
     pointer-events: none;

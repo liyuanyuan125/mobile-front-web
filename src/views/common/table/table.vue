@@ -1,8 +1,8 @@
 <template>
   <div class='main' v-if='show'>
-      <ModuleTitle :title="title" />
-      <!-- <div class='title'>{{title}}</div> -->
-      <div style='padding: 0 15px'>
+      <!-- <ModuleTitle :title="title" /> -->
+      <div class='title'>{{title}}</div>
+      <div style='padding: 0 15px' v-if='tableItem.length > 0'>
         <div class='but' v-if='regionPk != ""'>
           <Button class='chg' v-for='(item) in tabList' :key='item.key' :class="{'chgbgc': regionPk == item.key}" type="primary" @click='chgregionPk(item.key)'>{{item.name}}</Button>
           <!-- <Button class='fans' :class="{'chgbgc': regionPk == 1}" type="primary" @click='chgregionPk(1)'>城市分布</Button> -->
@@ -25,14 +25,15 @@
                 <div v-if='itemlist.name != ""' class='bottom'>{{(itemlist.value/100).toFixed(1)}}%</div>
                 <!-- <div v-if='itemlist.name == ""'>--</div> -->
               </li>
-              <li>--</li>
-              <li>--</li>
-              <li>--</li>
-              <li>--</li>
+              <li>-</li>
+              <li>-</li>
+              <li>-</li>
+              <li>-</li>
             </ul>
           </div>
         </List>
       </div>
+      <dataEmpty v-if='tableItem.length == 0' />
       
   </div>
 </template>
@@ -44,12 +45,15 @@ import { toast } from '@/util/toast'
 import { List } from 'vant'
 import { Button } from 'vant'
 import ModuleTitle from '@/components/sentimentTitle'
+import dataEmpty from '@/views/common/dataEmpty/index.vue'
+
 
 @Component({
   components: {
     List,
     Button,
-    ModuleTitle
+    ModuleTitle,
+    dataEmpty
   }
 })
 export default class KolPage extends ViewBase {
@@ -89,6 +93,7 @@ export default class KolPage extends ViewBase {
   line-height: 34px;
   margin-top: 48px;
   margin-bottom: 30px;
+  padding-left: 30px;
 }
 .but {
   margin-bottom: 40px;
@@ -163,6 +168,9 @@ export default class KolPage extends ViewBase {
         .top {
           height: 55px;
           line-height: 70px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
         .bottom {
           height: 55px;

@@ -1,7 +1,8 @@
 <template>
   <div class="china-map">
-      <div ref="annular" :style="{width:width+'px',height:height+'px'}"  class="chart-wrap"></div>
-        <div class="chart-mask">
+      <div ref="annular" :style="{width:sizeWidth+'px',height:sizeWidth+'px'}"  class="chart-wrap"></div>
+        <div class="chart-mask" :style="{width:sizeWidth+'px',height:sizeWidth+'px'}">
+
           <div class="chart-text" :style="{color:nameColor}">{{sesnsitivity}}</div>
       </div>
   </div>
@@ -19,12 +20,13 @@ export default class ChinaMap extends Vue {
   /** 数据 */
   @Prop({ type: Object, default: () => [] }) data!: DataItem
  /** 长宽 */
-  @Prop({ type: Number, default: 375 }) width!: number
-  @Prop({ type: Number, default: 300 }) height!: number
+  @Prop({ type: Number, default: 0 }) width!: number
   // 敏感度
   sesnsitivity: string = ''
   // 文本颜色
   nameColor: string = ''
+  // 组件宽度
+  sizeWidth: number = this.getSize(this.width)
   mounted() {
     this.getcherts()
   }
@@ -77,12 +79,23 @@ export default class ChinaMap extends Vue {
       $this.nameColor = ''
     })
   }
+  getSize(width: number) {
+    const w = document.documentElement.clientWidth
+        if (width >= w || width < 300) {
+            this.sizeWidth = w
+        } else {
+            this.sizeWidth = width
+        }
+        return this.sizeWidth
+  }
 }
 </script>
 
 <style lang="less" scoped>
   .china-map {
     position: relative;
+    display: flex;
+    justify-content: center;
   }
   .chart-wrap {
     width: 100%;
@@ -90,8 +103,6 @@ export default class ChinaMap extends Vue {
   }
   .chart-mask {
     position: absolute;
-    width: 100%;
-    height: 600px;
     top: 0;
     background: 'rabg(255,255,255,0)';
     display: flex;

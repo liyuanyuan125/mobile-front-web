@@ -19,7 +19,7 @@
                     <div class="contrast-message">
                         <div class="contrast-message-progress">{{item.percent}}%</div>
                         <div class="contrast-message-text">
-                            <span :key="ins" v-for="(it, ins) in item.hotWordList">{{it}}</span>
+                            <span class="van-ellipsis" :key="ins" v-for="(it, ins) in item.hotWordList">{{it}}</span>
                         </div>
                     </div>
                 </div>

@@ -16,7 +16,7 @@
           <li>{{item.rivalName}}</li>
           <li>{{item.boxOfficeCount ? item.boxOfficeCount : '-'}}</li>
           <li>{{item.jydataGrade ? item.jydataGrade + '分' : '-'}}</li>
-          <li>{{item.wantSeeCount ? item.wantSeeCount + '人' : '-'}}人</li>
+          <li>{{item.wantSeeCount ? item.wantSeeCount + '人' : '-'}}</li>
         </ul>
       </dd>
     </dl>

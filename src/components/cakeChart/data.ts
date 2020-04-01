@@ -118,7 +118,7 @@ export function getPointOption(data: any) {
     // 展示的数据
     legend: {
         orient: 'vertical',
-        left: '62%',
+        left: '60%',
         itemWidth : 6,
         itemHeight: 6,
         icon: 'circle',
@@ -158,7 +158,7 @@ export function getPointOption(data: any) {
         {
             name: data.title,
             type: 'pie',
-            radius: ['40%', '60%'],
+            radius: ['32%', '50%'],
             center: ['33%', '50%'],
             avoidLabelOverlap: true,
             label: {

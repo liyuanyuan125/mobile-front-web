@@ -36,7 +36,7 @@ export async function getEventList(query: any) {
  * @param query  object
  */
 export async function getPkUser(query: any) {
-  const res = await get('https://yapi.aiads-dev.com/mock/406/yuqing/actor/people/rivalAnalysis', query)
+  const res = await get('/yuqing/actor/people/rivalAnalysis', query)
   // const res = await get('http://yapi.aiads-dev.com/mock/406/yuqing/actor/people/rivalAnalysis', query)
 
   return res

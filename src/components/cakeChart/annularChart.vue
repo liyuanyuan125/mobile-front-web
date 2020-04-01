@@ -94,7 +94,7 @@ export default class ChinaMap extends Vue {
 <style lang="less" scoped>
   .china-map {
     position: relative;
-    background: #ff0;
+    // background: #ff0;
     display: flex;
     justify-content: center;
   }

@@ -18,7 +18,7 @@
       >{{item.name}}</Button>
     </div>
     <div>
-      <echartLines :lineData="lineDatas" :colors="colors" v-if="lineDatas.xDate" />
+      <trendLines :lineData="lineDatas" :colors="colors" v-if="lineDatas.xDate" />
     </div>
   </div>
 </template>
@@ -28,7 +28,7 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import SelectDate from '@/components/selectDate'
 import { devLog, devInfo } from '@/util/dev'
-import echartLines from '@/components/hotLines'
+import trendLines from '@/components/trendLine'
 import { toast } from '@/util/toast'
 import moment from 'moment'
 import { Button } from 'vant'
@@ -36,7 +36,7 @@ import { Button } from 'vant'
 @Component({
   components: {
     Button,
-    echartLines,
+    trendLines,
     SelectDate
   }
 })
@@ -112,14 +112,16 @@ export default class PlatformTrend extends ViewBase {
         ...this.dates
       })
       // 处理平台名称
-      let index = 0
+      let index: number = 0
+      const navList: any[] = []
       for (const it of data) {
         index += 1
-        this.tabList.push({
+        navList.push({
           key: index,
           name: it.platformName
         })
       }
+      this.tabList = navList
       this.response = data
       this.formatDatas(data[0].dataList)
     } catch (ex) {

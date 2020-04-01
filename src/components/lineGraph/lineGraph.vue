@@ -181,6 +181,7 @@ export default class LineGrap extends Vue {
   position: relative;
   width: 100%;
   padding-bottom: 65px;
+  z-index: 2;
 }
 .line-echart {
   width: 100%;

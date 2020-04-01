@@ -49,7 +49,7 @@ export async function getEventListByIdAndType(query: EventItem) {
  * 获取竞品报告详情页
  */
 export async function getMovieRivalList(movieIdList: string) {
-    const res = await get('/yuqing/movie/rivalreport', { movieIdList })
+    const res = await get('/mock/400/yuqing/movie/rivalreport', { movieIdList })
     return res
 }
 
@@ -66,6 +66,14 @@ export async function getRivalPraise(query: PraiseItem) {
  */
 export async function getRivalWantSeeTrend(query: PraiseItem) {
     const res = await get('/mock/400/yuqing/movie/getRivalWantSee', query)
+    return res
+}
+
+/**
+ * 竞品报告详情页 - 平台指数趋势
+ */
+export async function getRivalPlatformTrend(query: PraiseItem) {
+    const res = await get('/mock/400/yuqing/movie/getRivalExponent', query)
     return res
 }
 

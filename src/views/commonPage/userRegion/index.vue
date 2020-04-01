@@ -72,7 +72,9 @@ export default class UserRegion extends ViewBase {
     const res: any = await regionList(this.source, this.query)
 
     // 处理数据
-    if (res && res.dataList) this.formatData(res.dataList)
+    if (res && res.dataList) {
+      this.formatData(res.dataList)
+    }
   }
 
   // 格式化数据

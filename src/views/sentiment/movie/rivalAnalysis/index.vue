@@ -11,7 +11,7 @@
 
     <BasisList :basisList="basisList" v-if="basisList.length" />
     <WantSeeTrend :fetch="wantSeeFetch" :query="movieIdList" v-if="movieIdList" />
-    <PlatformTrend :fetch="wantSeeFetch" :query="movieIdList" v-if="movieIdList" />
+    <PlatformTrend :fetch="platformTrendFetch" :query="movieIdList" v-if="movieIdList" />
     <marketContrast
       :fetch="praiseFetch"
       :query="{movieIdList}"
@@ -29,7 +29,12 @@
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
-import { movieRivalList, movieRivalPraise, movieRivalWantSee } from './data'
+import {
+  movieRivalList,
+  movieRivalPraise,
+  movieRivalWantSee,
+  movieRivalplatform
+} from './data'
 import SentimentBar from '@/views/common/sentimentBar/index.vue' // topbar
 import RivalList from '@/views/common/rivalList/index.vue' // 竞品列表
 import BasisList from './components/baseList.vue' // 基础信息
@@ -96,6 +101,12 @@ export default class MovieRivalAnalysisPage extends ViewBase {
   // 调取想看趋势
   wantSeeFetch = async (query: any) => {
     const res: any = await movieRivalWantSee(query)
+    return res
+  }
+
+  // 调取平台指数趋势
+  platformTrendFetch = async (query: any) => {
+    const res: any = await movieRivalplatform(query)
     return res
   }
 

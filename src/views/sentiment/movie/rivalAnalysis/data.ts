@@ -1,4 +1,4 @@
-import { getMovieRivalList, getRivalPraise, PraiseItem, getRivalWantSeeTrend } from '@/api/movie'
+import { getMovieRivalList, getRivalPraise, getRivalPlatformTrend, getRivalWantSeeTrend } from '@/api/movie'
 import { toast } from '@/util/toast'
 import { imgFixed } from '@/fn/imgProxy'
 
@@ -69,6 +69,25 @@ export const movieRivalWantSee = async (query: any) => {
     // console.log('data', query)
     try {
         const res: any = await getRivalWantSeeTrend(query)
+        if (res && res.code === 0) {
+
+            return res
+        } else {
+            toast(res.msg)
+        }
+    } catch (ex) {
+        // toast(ex)
+        // 注意这里重新 throw
+        throw ex
+    }
+}
+
+/**
+ * 获取竞品详情-平台指数趋势
+ */
+export const movieRivalplatform = async (query: any) => {
+    try {
+        const res: any = await getRivalPlatformTrend(query)
         if (res && res.code === 0) {
 
             return res

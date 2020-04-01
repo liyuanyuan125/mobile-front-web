@@ -2,26 +2,32 @@
   <div class="event-content">
     <ModuleHeader title="营销事件" :link="hasMore ? link : null" />
     <ul v-if="list.length" class="eventlist">
-      <li v-for="(item,index) in list" :key="item.eventId + index" @click="goEventDetail(item)">
+      <li
+        v-for="(item,index) in list.slice(0,3)"
+        :key="item.eventId + index"
+        @click="goEventDetail(item)"
+      >
         <p class="datebox">
           <span class="days" v-if="item.creatDay">{{item.creatDay}}</span>
           <span class="date" v-else>{{item.creatDate}}</span>
           <i
-            v-for="(el,i) in item.targetList"
+            v-for="(el,i) in item.targetList.slice(0,3)"
             :key="el.targetCode+i"
             :style="{color:el.color,borderColor:el.color}"
             class="target"
           >{{el.targetName}}</i>
         </p>
-        <h5 class="texts">{{item.eventName}}</h5>
+        <h5 class="texts van-ellipsis">{{item.eventName}}</h5>
         <p class="flex-box">
           <span
-            v-for="(it,index) in item.interactiveList"
+            v-for="(it,index) in item.interactiveList.slice(0,3)"
             :key="it.interactiveUrl.url + index"
             class="counts flex-box"
           >
-            <img :src="it.interactiveUrl.url" width="15" />
-            <i>{{it.interactiveValue}}</i>
+            <span v-if="it.interactiveValue">
+              <img :src="it.interactiveUrl.url" width="15" />
+              <i>{{it.interactiveValue}}</i>
+            </span>
           </span>
         </p>
       </li>

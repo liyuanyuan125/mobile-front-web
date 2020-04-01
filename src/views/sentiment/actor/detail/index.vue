@@ -130,6 +130,8 @@ export default class KolPage extends ViewBase {
   showuser: any = false
   showevent: any = false
 
+  title: any = '用户分析'
+
   sidebar = {
     diggType: 'actor',
     diggId: '100038',
@@ -198,6 +200,9 @@ export default class KolPage extends ViewBase {
           name: 'sentimentactoruser',
           params: {
             actorId: this.$route.params.actorId
+          },
+          query: {
+            title: this.title
           }
         }
       default:
@@ -237,6 +242,7 @@ export default class KolPage extends ViewBase {
         worksAnalysis, // 作品分析
       } } = await getActorDetail({actorId: this.$route.params.actorId})
       this.actorInfo = actorInfo
+      this.title = actorInfo.actorName
       this.coverImg = imgFixed(actorInfo.coverUrl, 172, 172 , 4)
       this.bubbleData = [
         {type: '1', value: actorOverView.interactCount, trend: actorOverView.interactTrend,

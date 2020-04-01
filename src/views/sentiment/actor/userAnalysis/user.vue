@@ -1,6 +1,6 @@
 <template>
   <div class='pages' v-if='show'>
-      <SentimentBar title="用户分析" :titleShow="true" />
+      <SentimentBar :title="title" :titleShow="true" />
       <div class='agelist'>
         <div class='title'>用户画像</div>
         <div class='sex'>
@@ -118,13 +118,13 @@ export default class KolPage extends ViewBase {
 
   theme = 0
 
-  title  = '欧阳娜娜'
+  title  = '用户分析'
 
   detail: any = null
 
 
   created() {
-    const mid = this.$route.params.kolId
+    this.title = this.$route.query.title + '用户分析'
     this.getDetail()
     document.body.style.background = '#FBFBFB'
   }

@@ -36,31 +36,31 @@ import {BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
 export default class CanvasPage extends Vue {
   data: BubbleItem[] = [{
     name: '微博',
-    value: 32,
+    value: 32.1,
   }, {
     name: '百度',
-    value: 16,
+    value: 16.1,
   }, {
     name: '头条',
-    value: 9,
+    value: 22.2,
   }, {
     name: '粉丝',
-    value: 13,
+    value: 13.1,
   }, {
     name: '腾讯',
-    value: 22,
+    value: 22.1,
   }, {
     name: '腾讯',
-    value: 4,
+    value: 4.0,
   }, {
     name: '其他',
-    value: 8,
+    value: 8.9,
   }, {
     name: '抖音',
-    value: 40,
+    value: 40.5,
   }, {
     name: '快手',
-    value: 3,
+    value: 3.4,
   }]
 
   // type: 代表气泡从大到小的顺序

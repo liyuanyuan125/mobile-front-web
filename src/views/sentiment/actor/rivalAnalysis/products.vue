@@ -215,6 +215,7 @@ export default class KolPage extends ViewBase {
     { name: 'hot', label: '热度' },
     { name: 'praise', label: '口碑' },
     { name: 'user', label: '用户' },
+
   ]
 
   created() {

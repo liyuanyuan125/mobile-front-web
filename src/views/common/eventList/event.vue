@@ -66,6 +66,7 @@ export default class EventList extends Vue {
         it.creatDay = time1 > 10 ? null : datetimeParse(it.createTime)
         it.creatDate = moment(it.createTime).format('YYYY-MM-DD')
         // 处理标签颜色
+        it.targetList = it.targetList == null ? [] : it.targetList
         if (it.targetList && it.targetList.length) {
           for (const item of it.targetList) {
             switch (item.targetCode) {

@@ -18,7 +18,7 @@
       </ul>
     </div>
     <div>
-      <echartLines :lineData="lineDatas" :colors="colors" v-if="lineDatas.xDate" />
+      <trendLines :lineData="lineDatas" :colors="colors" v-if="lineDatas.xDate" />
     </div>
   </div>
 </template>
@@ -28,13 +28,13 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import SelectDate from '@/components/selectDate'
 import { devLog, devInfo } from '@/util/dev'
-import echartLines from '@/components/hotLines'
+import trendLines from '@/components/trendLine'
 import { toast } from '@/util/toast'
 import moment from 'moment'
 
 @Component({
   components: {
-    echartLines,
+    trendLines,
     SelectDate
   }
 })
@@ -98,7 +98,7 @@ export default class WantSeeTrend extends ViewBase {
     let xDate: any = []
     const yDate = (dataObj || []).map((it: any) => {
       const { rivalName, data } = it
-      xDate = (data || []).map((ite: any) => moment(ite.date).format('MM-DD'))
+      xDate = (data || []).map((ite: any) => ite.date)
       return {
         name: rivalName,
         list: (data || []).map((ite: any) => ite.value)

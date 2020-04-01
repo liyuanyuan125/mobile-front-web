@@ -16,12 +16,14 @@
         <h5 class="texts">{{item.eventName}}</h5>
         <p class="flex-box">
           <span
-            v-for="(it,index) in item.interactiveList"
+            v-for="(it,index) in item.interactiveList.slice(0,3)"
             :key="it.interactiveUrl.url + index"
             class="counts flex-box"
           >
-            <img :src="it.interactiveUrl.url" width="15" />
-            <i>{{it.interactiveValue}}</i>
+            <span v-if="it.interactiveValue">
+              <img :src="it.interactiveUrl.url" width="15" />
+              <i>{{it.interactiveValue}}</i>
+            </span>
           </span>
         </p>
       </li>

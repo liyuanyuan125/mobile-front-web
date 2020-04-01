@@ -3,7 +3,11 @@
   <div class="eventspread">
     <ModuleHeader title="传播路径" :link="dataList.length < 3 ? null :link" />
     <dl class="spreadlist" v-if="dataList.length">
-      <dd v-for="(item,index) in list" :key="item.spreadId + index" @click="openWithoutApp(item)">
+      <dd
+        v-for="(item,index) in list.slice(0,3)"
+        :key="item.spreadId + index"
+        @click="openWithoutApp(item)"
+      >
         <img
           :src="item.platformInfo.imgUrl"
           class="platformlogo"
@@ -16,7 +20,7 @@
               <span class="date" v-else>{{item.topicInfo.creatDate}}</span>
               <i
                 class="target"
-                v-for="it in item.markList"
+                v-for="it in item.markList.slice(0,1)"
                 :key="it.markType"
                 :style="{color:it.color,borderColor:it.color}"
               >{{it.markValue}}</i>

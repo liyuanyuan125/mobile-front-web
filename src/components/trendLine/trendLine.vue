@@ -9,7 +9,7 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import echarts from 'echarts'
 import { cssifyObject } from 'css-in-js-utils'
 import moment from 'moment'
-const format = 'YYYY-MM-DD'
+import { thousand } from '@/fn/validateRules'
 
 @Component
 export default class TrendLine extends Vue {
@@ -27,6 +27,7 @@ export default class TrendLine extends Vue {
   mounted() {
     this.initChart()
   }
+
   initChart() {
     const chartEl = this.$refs.refChart as HTMLDivElement
     echarts.dispose(chartEl)
@@ -47,6 +48,9 @@ export default class TrendLine extends Vue {
         data: it.list
       }
     })
+    const xDates = (this.lineData.xDate || []).map((ite: any) =>
+      moment(ite).format('MM-DD')
+    )
 
     const options: any = {
       title: {
@@ -70,8 +74,12 @@ export default class TrendLine extends Vue {
       tooltip: {
         trigger: 'axis',
         backgroundColor: '#fff',
+        borderWidth: 1.2,
+        borderColor: 'rgba(48,48,48,.1)',
+        padding: [5, 10, 5, 10],
         confine: true, // 限制在图表的区域内
         axisPointer: {
+          zIndex: 100,
           // 指示线
           lineStyle: {
             width: 2,
@@ -84,19 +92,44 @@ export default class TrendLine extends Vue {
           fontSize: 12,
           width: 2
         },
-        extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);'
+        extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);',
+        formatter: (params: any) => {
+          const time = this.lineData.xDate[params[0].dataIndex]
+          const weekDays = ['日', '一', '二', '三', '四', '五', '六']
+          const day = weekDays[moment(time).day()]
+          const date = moment(time).format('YYYY-MM-DD')
+          const htmlArr: any[] = []
+          for (const it of params) {
+            const itemHtml = `
+              <p class="tooltip-item">
+                <i class="tooltip-dot" style="background-color: ${it.color}"></i>
+                <span class="tooltip-name">${it.seriesName}</span>
+                <span class="tooltip-value" style="color: ${it.color}">${thousand(
+              it.value
+            )}</span>
+              </p>
+            `
+            htmlArr.push(itemHtml)
+          }
+          const html = `<div>
+              <p>${date} 周${day}</p>
+              ${htmlArr.join('')}
+            </div>`
+
+          return html
+        }
       },
       grid: {
         left: 10,
         right: 20,
-        top: 50,
+        top: 30,
         bottom: 50,
         containLabel: true
       },
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: this.lineData.xDate,
+        data: xDates,
         axisLabel: {
           color: '#8f8f8f',
           fontSize: 11
@@ -107,7 +140,7 @@ export default class TrendLine extends Vue {
         },
         axisLine: {
           lineStyle: {
-            color: '#e8e8e8'
+            color: '#f2f2f2'
           }
         }
       },
@@ -117,19 +150,13 @@ export default class TrendLine extends Vue {
           formatter: (value: number) => {
             switch (this.unit) {
               case '亿':
-                const yiVal = String(value / 100000000).replace(/^\d+/, (m: string) =>
-                  m.replace(/(?=(?!^)(\d{3})+$)/g, ',')
-                )
+                const yiVal = thousand(value / 100000000)
                 return yiVal + this.unit
               case '万':
-                const wanVal = String(value / 10000).replace(/^\d+/, (m: string) =>
-                  m.replace(/(?=(?!^)(\d{3})+$)/g, ',')
-                )
+                const wanVal = thousand(value / 10000)
                 return wanVal + this.unit
               default:
-                return String(value).replace(/^\d+/, (m: string) =>
-                  m.replace(/(?=(?!^)(\d{3})+$)/g, ',')
-                )
+                return thousand(value)
             }
           },
           textStyle: {
@@ -139,7 +166,7 @@ export default class TrendLine extends Vue {
         },
         axisLine: {
           lineStyle: {
-            color: '#e8e8e8'
+            color: '#f2f2f2'
           }
         },
         axisTick: {
@@ -148,7 +175,7 @@ export default class TrendLine extends Vue {
         // 分割线样式
         splitLine: {
           lineStyle: {
-            color: 'rgba(151,167,195,.45)',
+            color: '#d7d7d7',
             type: 'dotted'
           }
         }
@@ -158,6 +185,7 @@ export default class TrendLine extends Vue {
       series: seriesItems
     }
     myChart.clear() // 清空画布内容，实例可用
+
     myChart.setOption(options)
   }
   @Watch('lineData', { deep: true })
@@ -171,9 +199,39 @@ export default class TrendLine extends Vue {
 .content-wrap {
   position: relative;
   width: 100%;
+  z-index: 1;
 }
 .line-echart {
   width: 100%;
-  height: 500px;
+  height: 550px;
+}
+
+/deep/ .tooltip-item {
+  display: flex;
+  font-weight: 500;
+  margin-top: 6px;
+}
+
+/deep/ .tooltip-dot {
+  position: relative;
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 100%;
+  margin-right: 10px;
+  vertical-align: middle;
+  top: 10px;
+}
+
+/deep/ .tooltip-name {
+  flex: 1;
+  width: 8em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  margin-right: 10px;
+}
+/deep/ .tooltip-value {
+  font-family: SanFranciscoDisplay-Semibold, SanFranciscoDisplay, serif;
 }
 </style>

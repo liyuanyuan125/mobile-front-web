@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="education" v-if="educationList.data.length">
-      <moduleHeaer title="教育信息" />
+      <moduleHeaer title="教育程度" />
       <annularChart :data="educationList" :width="annularWid"></annularChart>
     </div>
     <div class="work" v-if="workList.data.length">
@@ -116,7 +116,7 @@ export default class MovieUserAnalysisPage extends ViewBase {
   }
   .age {
     border-top: solid 1px #d8d8d8;
-    margin: 0 30px;
+    // margin: 0 30px;
     padding-bottom: 50px;
   }
 }

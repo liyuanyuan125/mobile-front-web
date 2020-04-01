@@ -171,7 +171,7 @@ export default class KolPage extends ViewBase {
   // 口碑评论 数据
   publicPraise = {}
   // 事件跟踪
-  eventList = []
+  eventList: any = {}
   // 作品分析
   worksAnalysis: any = {}
 

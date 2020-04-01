@@ -15,7 +15,7 @@
             </div>
             
             <div class="item-centers">
-              <p class="values flex-box flex-between"><span v-for="it in item.platformValueList" :key="it.name">{{it.name}} {{it.value}}</span></p>
+              <p class="values flex-box flex-between"><span v-for="it in item.platformValueList" :key="it.name">{{it.name}} {{it.value || '-'}}</span></p>
               <p class="texts">{{item.platformNotice}}</p>
             </div>
           </div>

@@ -55,10 +55,10 @@ export default class Main extends Vue {
     return {
       click,
       ...obj,
-      '03-05': [
-        {eventName: '事件名字事件名字', eventId: 12938},
-        {eventName: 'eventname-2', eventId: 12938},
-      ]
+      // '03-05': [
+      //   {eventName: '事件名字事件名字', eventId: 12938},
+      //   {eventName: 'eventname-2', eventId: 12938},
+      // ]
     }
   }
 
@@ -71,7 +71,7 @@ export default class Main extends Vue {
       yDate: [
         {
           data: yDate,
-          name: '热点'
+          name: '热点值'
         }
       ]
     }

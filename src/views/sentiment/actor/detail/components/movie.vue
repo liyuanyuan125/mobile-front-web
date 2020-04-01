@@ -61,7 +61,7 @@ export default class Main extends Vue {
 
   defaultImg: any = '@/assets/moviedefault.png'
 
-    // 显示说明
+  // 显示说明
   showNote() {
     alert({
       title: '提示',

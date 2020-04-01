@@ -61,6 +61,9 @@ export default class Main extends Vue {
   initChart() {
     const chartEl = this.$refs.refChart as any
     const myChart = echarts.init(chartEl)
+    // myChart.on('click', (params: any) => {
+    //   console.log(params)
+    // })
 
     const linearGradient = {
       normal: {
@@ -83,7 +86,7 @@ export default class Main extends Vue {
         symbolSize: 7,
         smooth: true, // 平滑
         name: it.name,
-        data: it.data
+        data: it.data,
       }
     })
 
@@ -115,6 +118,7 @@ export default class Main extends Vue {
       tooltip: {
         trigger: 'axis',
         backgroundColor: '#fff',
+        snap: false,
         // enterable: true, // 如需详情内交互，添加链接，按钮，则设置为true
         confine: true, // 限制在图表的区域内
         axisPointer: {

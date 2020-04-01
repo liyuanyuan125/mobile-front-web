@@ -8,7 +8,7 @@
         <p v-if="brandInfo.rankingName && brandInfo.rankingId">
           <router-link :to="{name: 'sentimenteventmarketing', params: {eventId: brandInfo.rankingId}}" class="event-name flex-box">
             <i>{{brandInfo.rankingName}}</i>
-            <van-icon name="arrow" size="13" class="icon-arrow" />
+            <Icon name="arrow" size="13" class="icon-arrow" />
           </router-link> 
         </p>
       </div>
@@ -22,12 +22,14 @@
 <script lang='ts'>
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { toast } from '@/util/toast'
+import { Icon } from 'vant'
 import {BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
 import { imgFixed } from '@/fn/imgProxy'
 
 @Component({
   components: {
-    BubbleBottom
+    BubbleBottom,
+    Icon
   }
 })
 export default class Main extends Vue {
@@ -115,6 +117,8 @@ export default class Main extends Vue {
     padding: 6px 20px;
     font-size: 26px;
     color: #7ca4ff;
+    display: flex;
+    align-items: center;
     .icon-arrow {
       padding-left: 10px;
     }

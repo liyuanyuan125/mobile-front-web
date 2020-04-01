@@ -35,7 +35,7 @@
       id="event"
       class="bg_fff"
     />
-    <Competing :rivalList="rivalList" v-if="rivalList.length" id="part" />
+    <!-- <Competing :rivalList="rivalList" v-if="rivalList.length" id="part" /> -->
   </div>
 </template>
 

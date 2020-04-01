@@ -15,39 +15,6 @@
       />
     </Tabs>
 
-    <section class="total-stats">
-      <ModuleHeader
-        title="累计分布"
-        tag="h4"
-        class="total-header"
-      />
-      <ul class="total-list">
-        <li
-          v-for="({ name, countShow, percent }, index) in platformList"
-          :key="name"
-          class="total-item"
-        >
-          <i class="total-no">{{index + 1}}</i>
-          <em class="total-name">{{name}}</em>
-          <Progress
-            :percentage="percent"
-            :show-pivot="false"
-            color="rgba(48, 48, 48, .8)"
-            track-color="#d0d1d2"
-            class="total-progress"
-          />
-          <em class="total-show">{{countShow}}</em>
-          <i class="total-percent">({{percent}}%)</i>
-        </li>
-      </ul>
-    </section>
-
-    <ModuleHeader
-      title="分日播放量"
-      tag="h4"
-      class="daily-header"
-    />
-
     <MultiLine
       :names="dailyNames"
       :data="dailyData"
@@ -81,7 +48,6 @@
           </tbody>
         </table>
       </div>
-      <a class="daily-form-more">查看全部日期</a>
     </section>
   </section>
 </template>
@@ -155,7 +121,6 @@ export default class PlayStats extends Vue {
     return [ '12-02', '12-03', '12-04', '12-05', '12-06', '12-07' ]
   }
 
-  // TODO:
   get dailyData() {
     const list: MultiLineItem[] = [
       { name: '网易云音乐', data: [ 7500, 7800, 6800, 5800, 3800, 8888 ], color: '#ff6262' },

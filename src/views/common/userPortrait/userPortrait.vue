@@ -51,8 +51,18 @@ export default class UserPortrait extends Vue {
   padding: 60px 30px 50px;
 }
 
+.module-header,
+.sex-rate {
+  position: relative;
+  z-index: 88;
+}
+
 .sex-rate {
   margin-top: 32px;
+}
+
+.sex-chart {
+  margin-top: -70px;
 }
 
 .hairline {

@@ -23,7 +23,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;'>
               <i class='hid'>{{actorInfo.rankingNum}}&nbsp;</i>
-              <i class='bor'>#{{actorInfo.rankingName}}111111111111111111111111</i>
+              <i class='bor'>#{{actorInfo.rankingName}}</i>
             </span>
             <Icon name="arrow" size="13" class="icon-arrow" />
           </router-link> 
@@ -38,7 +38,7 @@
       :list ="list"
       class="tab-nav"
     />
-    <section v-if='show' class="pane" id="hot" style='padding: 15px'>
+    <section v-if='show' class="pane" id="hot">
       <!-- 热度分析 -->
       <selectTime ref="refsTime" v-model="day" class="select-time"/>
       <heatLineCom 
@@ -74,12 +74,12 @@
       />
     </section>
 
-    <section v-if='showuser' class="pane" id="part">
+    <section v-if='showuser && pkUserList.length > 0' class="pane" id="part" >
        <!-- 相似艺人 -->
         <Competing :pkUserList='pkUserList' :pkIdList='pkIdList' />
     </section>
 
-    <section v-if='show && worksAnalysis.movieAnalysis != null && worksAnalysis.tvAnalysis != null && worksAnalysis.musicAnalysis != null && worksAnalysis.brandAnalysis != null' class="pane" id="work">
+    <section  v-if='show && worksAnalysis.movieAnalysis != null && worksAnalysis.tvAnalysis != null && worksAnalysis.musicAnalysis != null && worksAnalysis.brandAnalysis != null' class="pane" id="work">
       <!-- 作品分析 -->
       <Works :worksAnalysis='worksAnalysis' :link="getApplink('actorWorksAnalysis')" />
     </section>
@@ -129,6 +129,8 @@ export default class KolPage extends ViewBase {
   show: any = false
   showuser: any = false
   showevent: any = false
+
+  title: any = '用户分析'
 
   sidebar = {
     diggType: 'actor',
@@ -198,6 +200,9 @@ export default class KolPage extends ViewBase {
           name: 'sentimentactoruser',
           params: {
             actorId: this.$route.params.actorId
+          },
+          query: {
+            title: this.title
           }
         }
       default:
@@ -237,7 +242,8 @@ export default class KolPage extends ViewBase {
         worksAnalysis, // 作品分析
       } } = await getActorDetail({actorId: this.$route.params.actorId})
       this.actorInfo = actorInfo
-      this.coverImg = imgFixed(actorInfo.coverUrl, 172, 172)
+      this.title = actorInfo.actorName
+      this.coverImg = imgFixed(actorInfo.coverUrl, 172, 172 , 4)
       this.bubbleData = [
         {type: '1', value: actorOverView.interactCount, trend: actorOverView.interactTrend,
          renderTitle: (h: any) => {
@@ -267,7 +273,7 @@ export default class KolPage extends ViewBase {
     this.pkIdList = []
     try {
       const pkUser = await getPkUser({actorId: this.$route.params.actorId})
-      this.pkUserList = pkUser.data
+      this.pkUserList = pkUser.data || []
       this.pkIdList = (pkUser.data || []).map((it: any) => {
         return it.rivalId
       })
@@ -427,7 +433,7 @@ export default class KolPage extends ViewBase {
   z-index: 11;
 }
 .pane {
-  // padding: 15px;
+  padding-top: 30px;
   min-height: 200px;
   background-color: #fff;
   margin-bottom: 20px;
@@ -468,6 +474,6 @@ export default class KolPage extends ViewBase {
   width: 90%;
 }
 .select-time {
-  padding: 69px 30px 15px;
+  padding: 30px 30px 15px;
 }
 </style>

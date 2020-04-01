@@ -8,6 +8,7 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import echarts from 'echarts'
 import { cssifyObject } from 'css-in-js-utils'
+import {readableNumber} from '@/util/dealData'
 import moment from 'moment'
 const format = 'YYYY-MM-DD'
 
@@ -114,8 +115,8 @@ export default class Main extends Vue {
       tooltip: {
         trigger: 'axis',
         backgroundColor: '#fff',
-        enterable: true, // 如需详情内交互，添加链接，按钮，则设置为true
-        // confine: true, // 限制在图表的区域内
+        // enterable: true, // 如需详情内交互，添加链接，按钮，则设置为true
+        confine: true, // 限制在图表的区域内
         axisPointer: {
           // 指示线
           lineStyle: {
@@ -125,6 +126,7 @@ export default class Main extends Vue {
           }
         },
         extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);',
+        // position: 'inside',
 
         formatter: (params: any) => {
           const {name, value, dataIndex, seriesName} = params[0]
@@ -147,8 +149,6 @@ export default class Main extends Vue {
             fontSize: '14px',
           })
           const events = this.events[name] || []
-          // console.log(this.events)
-          // console.log(this.events[name])
           const eventHtml = events.map(({eventName, eventId}: any) => {
             const eventListHTML = `
             <div style="${boxStyle}" class="tooltip-event"
@@ -162,10 +162,10 @@ export default class Main extends Vue {
             `
             return eventListHTML.trim()
           })
-
+          const cloneData = moment(this.lineData.xDate[dataIndex]).format('YYYY-MM-DD')
           const html = `
            <div style="${nameStyle}" >
-             <p>${name} ${seriesName} ${value}</p>
+             <p>${cloneData} ${seriesName} ${readableNumber(value)}</p>
              <div>
              ${eventHtml.join('')}
              </div>

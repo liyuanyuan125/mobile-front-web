@@ -31,7 +31,7 @@
       title="TOP5 省份"
       tag="h4"
       moreText="查看更多"
-      :link="{ page: 'xxx' }"
+      :link="moreLink"
       class="top-5-header"
     />
 
@@ -63,7 +63,7 @@ export default class UserArea extends Vue {
     default: () => [ '#f1f5ff', '#d7e2ff', '#a3bdfd', '#598cfe', '#4763c6' ]
   }) colorRange!: string[]
 
-  /** 数据 */
+  /** 查看更多链接 */
   @Prop({ type: [ String, Object ], default: '' }) moreLink!: RawLocation
 
   get top5() {

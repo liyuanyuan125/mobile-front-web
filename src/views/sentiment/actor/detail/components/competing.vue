@@ -1,7 +1,7 @@
 <template>
   <div class="compet-content">
     <div class="title">相似艺人</div>
-    <ul>
+    <ul v-if='pkUserListData.length > 0'>
       <li class='li-item'>
         <div class='li-left'>
           <div>
@@ -56,6 +56,7 @@
     <div class="submit-button" v-if='pkUserListData.length > 0'>
       <router-link :to="{ name:'sentimentkolproducts', params: { ids: this.pkIdList.join(',') } }" class="to-link" >查看详细报告</router-link>
     </div>
+    <dataEmpty v-if='pkUserListData.length == 0' />
   </div>
 </template>
 
@@ -65,11 +66,13 @@ import { Icon } from 'vant'
 import moment from 'moment'
 import { imgFixed } from '@/fn/imgProxy'
 import { roleNumber } from '@/fn/validateRules'
+import dataEmpty from '@/views/common/dataEmpty/index.vue'
 const format = 'YYYY-MM-DD'
 
 @Component({
   components: {
     Icon,
+    dataEmpty
   }
 })
 export default class Main extends Vue {
@@ -120,7 +123,7 @@ export default class Main extends Vue {
 .compet-content {
   margin-bottom: 20px;
   background-color: #fff;
-  padding: 60px 30px 10px;
+  padding: 40px 30px 10px;
 }
 .li-item, .li-item-pk {
   height: 290px;

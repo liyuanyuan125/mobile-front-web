@@ -51,7 +51,7 @@ export default class Main extends Vue {
 .compet-content {
   margin-bottom: 20px;
   background-color: #fff;
-  padding: 60px 30px 10px;
+  padding: 40px 30px 10px;
 }
 
 </style>

@@ -22,7 +22,7 @@ export interface BubbleBottomItem {
   trend?: string | number | undefined
   /** 是否展示下降 */
   showdown?: boolean
-  styles?: string
+  styles?: string | object
   rotate?: boolean
   width?: string
   big?: boolean

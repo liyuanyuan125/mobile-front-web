@@ -2,8 +2,8 @@
   <div >
     <!-- 宽高不填写默认是 width='375' height='300' -->
       <sexChart  :data='data1'></sexChart>
-      <annularChart :width='300' :data='data2'></annularChart>
-      <pointChart :width='375' :height='300' :data='data3'></pointChart>
+      <annularChart :width='370' :data='data2'></annularChart>
+      <pointChart  :data='data3'></pointChart>
   </div>
 </template>
 
@@ -24,9 +24,9 @@ import pointChart from '@/components/cakeChart/pointChart.vue'
 export default class Apply extends Vue {
 
   data1: any = {
-    data: [
-      {value: 1335, name: '男性'},
-      {value: 310, name: '女性'}],
+    data: [{value: 310, name: '女性'},
+      {value: 1335, name: '男性'}
+      ],
     title: '性别占比',
     emphasisShow: true
       }
@@ -58,7 +58,7 @@ export default class Apply extends Vue {
     titleLeft:  'left', // 标题位置 left center right
     titleSize:  28, // 标题字体大小
     titleWeight:  '100', // 标题字体粗细
-    legendtoFixed :  3 // legend显示几位小数
+    legendtoFixed :  2 // legend显示几位小数
   }
 
   mounted() {

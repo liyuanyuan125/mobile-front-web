@@ -1,42 +1,44 @@
 <template>
   <div class="content" >
     <SentimentBar :title="actorInfo.actorName" :sidebar="sidebar" />
-    <div class="header" v-if='show'>
-      <div class='left'>
-        <div>
-          <img :src="coverImg || require('@/assets/actordefault.png')" class="img" />
+    <div class='info'>
+      <div class="header" v-if='show'>
+        <div class='left'>
+          <div>
+            <img :src="coverImg || require('@/assets/actordefault.png')" class="img" />
+          </div>
+        </div>
+        <div class='right'>
+          <p class="kol-name">{{actorInfo.actorName}}</p>
+          <p v-if="actorInfo.rankingName && !actorInfo.rankingId " class="event-name">
+              <span style='    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;'>
+                <i class='hid'>{{actorInfo.rankingNum}}&nbsp;</i>
+                <i class='bor'>#{{actorInfo.rankingName}}</i>
+              </span>
+          </p>
+          <p v-if="actorInfo.rankingName && actorInfo.rankingId">
+            <router-link :to="{name: 'sentimenteventmarketing', params: {eventId: actorInfo.rankingId} , query: {title: actorInfo.actorName}}" class="event-name flex-box">
+              <span style='    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;'>
+                <i class='hid'>{{actorInfo.rankingNum}}&nbsp;</i>
+                <i class='bor'>#{{actorInfo.rankingName}}</i>
+              </span>
+              <Icon name="arrow" size="13" class="icon-arrow" />
+            </router-link> 
+          </p>
         </div>
       </div>
-      <div class='right'>
-        <p class="kol-name">{{actorInfo.actorName}}</p>
-        <p v-if="actorInfo.rankingName && !actorInfo.rankingId " class="event-name">
-            <span style='    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;'>
-              <i class='hid'>{{actorInfo.rankingNum}}&nbsp;</i>
-              <i class='bor'>#{{actorInfo.rankingName}}</i>
-            </span>
-        </p>
-        <p v-if="actorInfo.rankingName && actorInfo.rankingId">
-          <router-link :to="{name: 'sentimenteventmarketing', params: {eventId: actorInfo.rankingId}}" class="event-name flex-box">
-            <span style='    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;'>
-              <i class='hid'>{{actorInfo.rankingNum}}&nbsp;</i>
-              <i class='bor'>#{{actorInfo.rankingName}}</i>
-            </span>
-            <Icon name="arrow" size="13" class="icon-arrow" />
-          </router-link> 
-        </p>
+      <div class="dubble"> 
+        <BubbleBottom :data="bubbleData" />
+      </div>
+      <div class="curve">
+        <div class="curvetop"></div>
+        <div class="curvebot"></div>
       </div>
     </div>
-
-    <div class="dubble"> 
-      <BubbleBottom :data="bubbleData" />
-    </div>
+    
     <TabNav
       :list ="list"
-      class="tab-nav"
+      class="formattab"
     />
     <section v-if='show' class="pane" id="hot">
       <!-- 热度分析 -->
@@ -133,9 +135,9 @@ export default class KolPage extends ViewBase {
   title: any = '用户分析'
 
   sidebar = {
-    diggType: 'actor',
-    diggId: '100038',
-    rivalIds: '1,2,4'
+    diggType: '2',
+    diggId: '',
+    rivalIds: {}
   }
   // 艺人基本信息
   actorInfo = {}
@@ -180,11 +182,12 @@ export default class KolPage extends ViewBase {
   pkIdList: any = []
 
   created() {
+    this.sidebar.diggId = this.$route.params.actorId
     this.getActorDetail()
     this.getHotList()
     this.getPkUser()
     this.getEventList()
-    document.body.style.background = '#FBFBFB'
+    // document.body.style.background = '#FBFBFB'
   }
 
   /**
@@ -277,6 +280,12 @@ export default class KolPage extends ViewBase {
       this.pkIdList = (pkUser.data || []).map((it: any) => {
         return it.rivalId
       })
+      // this.sidebar.rivalIds = {
+      //   name: 'sentimentkolproducts',
+      //   query: {
+      //     ids: this.pkIdList.join(',')
+      //   }
+      // }
     } catch (ex) {
       toast(ex)
     } finally {
@@ -322,34 +331,20 @@ export default class KolPage extends ViewBase {
 </script>
 
 <style lang="less" scoped>
-@import '~@/views/sentiment/brand/less/lib.less';
-@import './less/com.less';
+// @import '~@/views/sentiment/brand/less/lib.less';
+// @import './less/com.less';
 
-/deep/ .van-tab__pane {
-  display: block;
+.info {
+  padding-bottom: 30px;
+  position: relative;
 }
 .content {
   background: #f2f3f6;
-  /deep/ .van-tabs__wrap {
-    height: 55px;
-    border-bottom: solid 1px fade(@c-divider, 0.5);
-    .van-tab {
-      font-size: 30px;
-      padding: 0;
-      color: @c-text;
-      flex: 1;
-    }
-    .van-tab--active {
-      color: #7ca4ff;
-    }
-    .van-tabs__line {
-      background-color: #88aaf6;
-    }
-  }
 }
 .header {
   display: flex;
   padding: 88px 40px 0;
+  // position: relative;
   .left {
     width: 33%;
     div {
@@ -357,14 +352,10 @@ export default class KolPage extends ViewBase {
       height: 172px;
       border-radius: 50%;
       overflow: hidden;
-      // background: url('~@/assets/actordefault.png');
       img {
         width: 100%;
         height: 100%;
         border-radius: 50%;
-        // max-width: 172px;
-        // min-height: 130px;
-        // object-fit: contain;
         background-color: #fff;
       }
     }
@@ -391,13 +382,10 @@ export default class KolPage extends ViewBase {
     white-space: nowrap;
     span {
       .hid {
-        // display: inline-block;
         color: rgba(48, 48, 48, 1);
       }
       .bor {
-        // display: inline-block;
         text-decoration: underline;
-        // border-bottom: 1px solid rgba(136, 170, 246, 1);
       }
     }
     .icon-arrow {
@@ -426,11 +414,6 @@ export default class KolPage extends ViewBase {
   height: 50px;
   width: 100%;
   background: #fff;
-}
-/deep/ .tab-nav {
-  margin-top: 0;
-  top: 88px;
-  z-index: 11;
 }
 .pane {
   padding-top: 30px;
@@ -475,5 +458,43 @@ export default class KolPage extends ViewBase {
 }
 .select-time {
   padding: 30px 30px 15px;
+}
+/deep/ nav.formattab {
+  margin-top: 0;
+  top: 88px;
+  z-index: 11;
+  &::before {
+    display: none;
+  }
+}
+/deep/ nav.formattab .van-tab {
+  flex-basis: 16.6% !important;
+}
+
+.curve {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+}
+.curvetop {
+  background: #fff;
+  &::before {
+    content: '';
+    display: block;
+    background-color: #f2f3f6;
+    height: 60px;
+    border-radius: 0 0 60px 0;
+  }
+}
+.curvebot {
+  background: #f2f3f6;
+  &::before {
+    content: '';
+    display: block;
+    background-color: #fff;
+    height: 60px;
+    border-radius: 60px 0 0 0;
+  }
 }
 </style>

@@ -7,7 +7,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 
-import {DataItem} from './types'
+import {DataItem , ObjData} from './types'
 import {getSexOption , getRingOption} from './data'
 import eCharts from 'echarts'
 @Component({})
@@ -26,10 +26,35 @@ export default class ChinaMap extends Vue {
   getcherts() {
   const myEcharts = this.$refs.annular as HTMLDivElement
   const eChart = eCharts.init(myEcharts)
+  let sexData: ObjData[] = []
+  let man: ObjData = {
+    name: '',
+    value: 0
+  }
+  let woman: ObjData = {
+      name: '',
+      value: 0
+  }
+  this.data.data.forEach((it: any) => {
+      if ( RegExp(/男/).test(it.name)) {
+        man = {
+          name: it.name,
+          value: it.value
+        }
+      }
+      if (RegExp(/女/).test(it.name)) {
+        woman = {
+          name: it.name,
+          value: it.value
+        }
+      }
+    sexData = [man, woman]
+  })
+
   const data: any = {
       optionName: [],
       optionData: [],
-      data: this.data.data,
+      data: sexData,
       title: this.data.title || '', // title 名称
       emphasisShow: this.data.emphasisShow ||  true, // 是否显示中间的文字
       color: this.data.color || [  '#7CA4FF' , '#FF6262'], // 修改颜色
@@ -41,10 +66,10 @@ export default class ChinaMap extends Vue {
       legendtoFixed : this.data.legendtoFixed || 1 // legend显示几位小数
   }
   let max: number = 0
-  this.data.data.forEach((it: any) => {
+  sexData.forEach((it: any) => {
     max += Number(it.value + '')
   })
-  this.data.data.forEach((it: any) => {
+  sexData.forEach((it: any) => {
     data.optionName.unshift(it.name)
     const obj = {
       name: it.name,

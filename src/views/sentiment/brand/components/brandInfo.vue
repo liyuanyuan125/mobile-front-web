@@ -21,7 +21,8 @@
 
 <script lang='ts'>
 import { Component, Vue, Prop } from 'vue-property-decorator'
-import { toast } from '@/util/toast'
+// import { toast } from '@/util/toast'
+import { alert } from '@/util/toast'
 import { Icon } from 'vant'
 import {BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
 import { imgFixed } from '@/fn/imgProxy'
@@ -85,7 +86,14 @@ export default class Main extends Vue {
     ]
   }
   demo() {
-    toast('近90天内，物料新增的点赞、评论、转发、阅读或播放的累计之和')
+    // toast('近90天内，物料新增的点赞、评论、转发、阅读或播放的累计之和')
+    alert({
+      title: '提示',
+      message:
+        '近90天内，物料新增的点赞、评论、转发、阅读或播放的累计之和',
+      showConfirmButton: true,
+      className: 'alertwid'
+    })
   }
 }
 

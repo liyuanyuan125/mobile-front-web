@@ -89,7 +89,10 @@ export default class DemoPage extends Vue {
                         rivalName: query.startTime,
                         percent: 12.35,
                         hotWordList: [
-                            '你好'
+                            '你好傻炮',
+                            '你好傻炮',
+                            '你好傻炮',
+                            '你好傻炮'
                         ]
                     }
                 ]

@@ -18,6 +18,7 @@ export function normalizeData(list: BubbleBottomItem[]) {
   ]
 
   let result = list.map(it => {
+    it.styles = 'display: flex; align-items: center;'
     if (!it.showdown) {
       if (it.trend === null || (it.trend !== undefined && it.trend <= 0)) {
         it.trend = '-'

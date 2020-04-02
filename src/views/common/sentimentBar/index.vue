@@ -4,7 +4,12 @@
     <h1 class="title van-ellipsis" v-show="titleShow || hasTitle">{{title}}</h1>
     <div class="tool" v-if="sidebar">
       <i class="ico-pk" v-if="sidebar.rivalIds" title="竞品分析" @click="goRivalAnalysis"></i>
-      <i class="ico-digg" v-if="sidebar.diggType && sidebar.diggId" title="关注"></i>
+      <i
+        :class="['ico-digg',digg ? 'ico-diggon' : '' ]"
+        v-if="sidebar.diggType && sidebar.diggId"
+        @click="diggThis"
+        title="关注"
+      ></i>
     </div>
     <svg width="30px" height="30px" version="1.1" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -21,7 +26,7 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import { setNavBarStatus, handleGoBack } from '@/util/native'
 import { SentimentBarItem } from './types'
 import { isJyApp } from '@/fn/ua'
-import { hasDigg } from './data'
+import { hasDigg, diggSubject } from './data'
 import { handleSetRival } from '@/util/native'
 import { devLog, devInfo } from '@/util/dev'
 
@@ -35,7 +40,8 @@ export default class SentimentBar extends Vue {
   @Prop({ type: Object }) sidebar!: SentimentBarItem // 基本属性
   @Prop({ type: Boolean, default: false }) titleShow?: boolean // 初始时是否显示标题 例如详情页默认不显示标题
 
-  hasTitle: boolean = false
+  hasTitle: boolean = false // 滚动后显示标题
+  digg: boolean = false // 是否被用户关注了
 
   created() {
     if (isJyApp()) {
@@ -66,6 +72,23 @@ export default class SentimentBar extends Vue {
         businessType: this.sidebar.diggType || 0,
         businessId: this.sidebar.diggId || ''
       })
+      if (res.code === 0) {
+        this.digg = res.data
+      }
+    }
+  }
+
+  // 关注
+  async diggThis() {
+    if (this.sidebar && this.sidebar.diggType && this.sidebar.diggId) {
+      const res: any = await diggSubject({
+        businessType: this.sidebar.diggType || 0,
+        businessId: this.sidebar.diggId || '',
+        diggType: this.digg ? 2 : 1
+      })
+      if (res.code === 0) {
+        this.digg = res.data
+      }
     }
   }
 
@@ -156,6 +179,9 @@ export default class SentimentBar extends Vue {
   }
   .ico-digg {
     background-image: url('../../../assets/sentiment/bar-digg.png');
+  }
+  .ico-diggon {
+    background-image: url('../../../assets/sentiment/bar-diggon.png');
   }
   .ico-pk {
     background-image: url('../../../assets/sentiment/bar-pk.png');

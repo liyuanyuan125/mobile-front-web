@@ -95,7 +95,7 @@ export default class Main extends Vue {
     { name: 'user', label: '用户' },
   ]
 
-  brandIdList = ''
+  brandIdList: any = ''
   // 综合对比数据值, 新增互动, 新增物料
   day = 7
   overAllHeat = []
@@ -109,7 +109,7 @@ export default class Main extends Vue {
   // 口碑评论补充数据
   get query() {
     return {
-      brandIdList: this.$route.params.ids,
+      brandIdList: this.$route.query.ids,
     }
   }
 
@@ -176,7 +176,7 @@ export default class Main extends Vue {
   // highTableItem = []
 
   mounted() {
-    this.brandIdList = this.$route.params.ids
+    this.brandIdList = this.$route.query.ids
     this.init()
   }
 

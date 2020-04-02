@@ -57,6 +57,18 @@ export default class ChinaMap extends Vue {
   }
   getcherts() {
   const myEcharts = this.$refs.annular as HTMLDivElement
+  let colorIndex = -1
+  let maxValue = 0
+  let allValue = 0
+  let name = ''
+  this.data.data.forEach((it: any, index: number) => {
+    maxValue = it.value > maxValue ? it.value : maxValue
+    allValue +=  it.value
+    if (maxValue == it.value) {
+      colorIndex = index
+      name = it.name
+    }
+  })
   const myChart = eCharts.init(myEcharts)
   const openData: any = {
       data: this.data.data,
@@ -74,11 +86,26 @@ export default class ChinaMap extends Vue {
   myChart.setOption(option)
   // let index = 0
   const $this: any = this
+    // 设置默认选中高亮部分
+    this.proportion = (maxValue / allValue).toFixed(2) + '%'
+    if (openData.color[colorIndex]) {
+      this.nameColor = openData.color[colorIndex]
+    }
+    this.name = name
+    myChart.dispatchAction({type: 'highlight', seriesIndex: 0, dataIndex: colorIndex})
     // 当鼠标移入时
     myChart.on('mouseover', (e: any) => {
       $this.proportion = e.percent + '%'
       $this.name = e.name
       $this.nameColor = e.color
+      if (e.dataIndex != colorIndex) {
+        myChart.dispatchAction({type: 'downplay', seriesIndex: 0, dataIndex: colorIndex  })
+      }
+      if (e.dataIndex == 0) {
+        colorIndex =  e.dataIndex
+        myChart.dispatchAction({type: 'highlight', seriesIndex: 0 , dataIndex: e.dataIndex})
+      }
+
     })
 
     // 当鼠标离开时，把当前项置为选中
@@ -86,6 +113,7 @@ export default class ChinaMap extends Vue {
       $this.proportion = ''
       $this.name = ''
       $this.nameColor = ''
+      myChart.dispatchAction({type: 'downplay', seriesIndex: 0, dataIndex: colorIndex})
     })
   }
 }
@@ -94,7 +122,6 @@ export default class ChinaMap extends Vue {
 <style lang="less" scoped>
   .china-map {
     position: relative;
-    // background: #ff0;
     display: flex;
     justify-content: center;
   }

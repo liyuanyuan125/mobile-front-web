@@ -107,17 +107,8 @@ export default class Main extends Vue {
   goActorDetail(id: any) {
     this.$router.push({
       name: 'sentimentactor',
-      query: {
+      params: {
         actorId: id
-      }
-    })
-  }
-
-  chgPage() {
-    this.$router.push({
-      name: 'sentimentkolproducts',
-      query: {
-        ids: this.pkIdList.join(',')
       }
     })
   }

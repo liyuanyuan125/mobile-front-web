@@ -22,7 +22,10 @@
         <annularChart :width='375' :height='300' :data='platformFansList'></annularChart>
       </div>
       <div class='userlist'>
-        <UserArea :data="userRegionList"/>
+        <UserArea 
+          :data="userRegionList"
+          :moreLink="`/sentiment/common/userRegion?src=2&id=${$route.params.actorId}&type=1`"
+        />
       </div>
   </div>
 </template>

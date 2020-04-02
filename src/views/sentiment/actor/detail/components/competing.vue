@@ -37,12 +37,12 @@
               <li>
                 <p class='hot1'>昨日热度</p>
                 <p class='hot2'>{{item.yesterHeatCount == '' ? '-' : item.yesterHeatCount}}</p>
-                <p :class="Number(item.chgyesterHeatTrend) > 0 ?'red':'blue'">{{item.yesterHeatTrend}}</p>
+                <p :class="Number(item.chgyesterHeatTrend) == 0 ? '' : (Number(item.chgyesterHeatTrend) > 0 ?'red':'blue')">{{item.yesterHeatTrend}}</p>
               </li>
               <li>
                 <p class='hot1'>全网粉丝数</p>
                 <p class='hot2'>{{item.interFansCount == '' ? '-' : item.interFansCount}}</p>
-                <p :class="Number(item.chginterFansTrend) > 0?'red':'blue'">{{item.interFansTrend}}</p>
+                <p :class="Number(item.chginterFansTrend) == 0 ? '' : (Number(item.chginterFansTrend) > 0?'red':'blue')">{{item.interFansTrend}}</p>
               </li>
             </ul>
           </div>
@@ -93,12 +93,12 @@ export default class Main extends Vue {
         ...it,
         coverImg: imgFixed(it.rivalCover, 200, 260 , 4),
         eventCreatTimeDate: it.eventCreatTime == null ? '' : moment(it.eventCreatTime).format(format),
-        yesterHeatTrend: it.yesterHeatTrend == 0 ? '相同' : (it.yesterHeatTrend > 0 ?
+        yesterHeatTrend: (it.yesterHeatTrend == 0 || it.yesterHeatTrend == null) ? '-' : (it.yesterHeatTrend > 0 ?
         '高' + String(roleNumber(it.yesterHeatTrend)) : '低' + String(roleNumber(it.yesterHeatTrend)).substr(1)),
-        interFansTrend: it.interFansTrend == 0 ? '相同' : (it.interFansTrend > 0 ?
+        interFansTrend: (it.interFansTrend == 0 || it.interFansTrend == null) ? '-' : (it.interFansTrend > 0 ?
         '高' + String(roleNumber(it.interFansTrend)) : '低' + String(roleNumber(it.interFansTrend)).substr(1)),
-        chgyesterHeatTrend: it.yesterHeatTrend,
-        chginterFansTrend: it.interFansTrend,
+        chgyesterHeatTrend: it.yesterHeatTrend == null ? 0 : it.yesterHeatTrend,
+        chginterFansTrend: it.interFansTrend == null ? 0 : it.interFansTrend,
       }
     })
   }

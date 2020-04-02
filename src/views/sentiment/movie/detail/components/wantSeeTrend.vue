@@ -12,22 +12,13 @@
         <SelectDate v-model="dates" />
       </div>
     </div>
-    <div class="tabbox">
-      <ul>
-        <li
-          v-for="item in tabList"
-          :class="tabIndex===item.id ? 'cur' : ''"
-          :key="item.key"
-          @click="changeTab(item.id)"
-        >{{item.name}}</li>
-      </ul>
-    </div>
     <div>
-      <dubline
+      <LineGrap
         :lineData="lineDatas"
         v-if="lineDatas.xDate.length"
         :key="lineDatas.title"
         class="wantchart"
+        :formatterHtml="formatterHtml"
       />
     </div>
   </div>
@@ -39,30 +30,19 @@ import ViewBase from '@/util/ViewBase'
 import SelectDate from '@/components/selectDate'
 import { handleCitySelect } from '@/util/native'
 import { devLog, devInfo } from '@/util/dev'
-import { dubline } from '@/components/hotLine'
+import LineGrap from '@/components/lineGraph'
+import moment from 'moment'
+import { roleNumber } from '@/fn/validateRules'
 
 @Component({
   components: {
     SelectDate,
-    dubline
+    LineGrap
   }
 })
 export default class WantSeeTrend extends ViewBase {
   @Prop({ type: Object }) dataTrend!: any
 
-  tabList: any = [
-    {
-      id: 1,
-      key: 'totalGainList',
-      name: '累计'
-    },
-    {
-      id: 2,
-      key: 'dailyGainList',
-      name: '日增'
-    }
-  ]
-  tabIndex: number = 1
   lineDatas: any = {}
   city: any = {
     areaId: 'quanguo',
@@ -72,17 +52,13 @@ export default class WantSeeTrend extends ViewBase {
   dates: any = {}
 
   created() {
-    const date: any = this.$refs.selDate
-    this.formatDatas(this.dataTrend.totalGainList)
+    this.formatDatas(this.dataTrend.dailyGainList)
   }
 
-  @Watch('tabIndex', { deep: true })
-  watchTabIndex(val: number) {
-    if (val === 1) {
-      this.formatDatas(this.dataTrend.totalGainList)
-    } else if (val === 2) {
-      this.formatDatas(this.dataTrend.dailyGainList)
-    }
+  @Watch('dates', { deep: true })
+  watchDays(val: any) {
+    // console.log('获取日期选择组件选中的时间', val, this.dates)
+    // this.dates = val
   }
 
   // 处理数据
@@ -97,16 +73,9 @@ export default class WantSeeTrend extends ViewBase {
       yDate: [
         {
           data: yDate,
-          name: '营销事件'
+          name: '想看数'
         }
       ]
-    }
-  }
-
-  // tab 切换
-  changeTab(id: number) {
-    if (this.tabIndex !== id) {
-      this.tabIndex = id
     }
   }
 
@@ -122,10 +91,19 @@ export default class WantSeeTrend extends ViewBase {
     }
   }
 
-  @Watch('dates', { deep: true })
-  watchDays(val: any) {
-    // console.log('获取日期选择组件选中的时间', val, this.dates)
-    // this.dates = val
+  // 处理chart 浮层 tooltip
+  formatterHtml = (params: any, time: any) => {
+    const weekDays = ['日', '一', '二', '三', '四', '五', '六']
+    const day = weekDays[moment(time).day()]
+    const date = moment(time).format('YYYY-MM-DD')
+    return `
+           <div class="tiptool">
+             <p  class="name">
+             <i class="dot"></i>
+             ${date} 周${day} 日增${roleNumber(Math.abs(params.data))}人想看</p>
+             <div class="event">最适合跨年看得电影，曝终极预告片</div>
+           </div>
+          `
   }
 }
 </script>
@@ -212,5 +190,36 @@ export default class WantSeeTrend extends ViewBase {
 .wantchart {
   padding-bottom: 0;
   border-bottom: none;
+}
+/deep/ .tiptool {
+  border: 4px solid rgba(48, 48, 48, 0.1);
+  border-radius: 6px;
+  padding: 20px 30px;
+  background-color: #fff;
+  .name {
+    color: #47403b;
+    font-size: 22px;
+    line-height: 31px;
+  }
+  .dot {
+    background: #88aaf6;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+    position: relative;
+    margin-top: -5px;
+  }
+  .event {
+    font-size: 22px;
+    color: #88aaf6;
+    line-height: 37px;
+    padding-left: 26px;
+    margin-top: 10px;
+    white-space: nowrap;
+    text-decoration: underline;
+  }
 }
 </style>

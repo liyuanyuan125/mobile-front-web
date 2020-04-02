@@ -24,20 +24,25 @@
             <h5 class="flex-box numbers">
               <span class="pad-right trend-head">
                 {{item.yesterHeatCount}}
-                <i>{{item.yesterHeatTrend}}</i>
+                <i class="col_7ca4ff" v-if="item.yesterHeatTrend">{{changeNum(item.yesterHeatTrend)}}</i>
+                <i v-else>-</i>
               </span>
               <span class="trend-interact">
                 {{item.yesterInteractCount}}
-                <i>{{item.yesterInteractTrend}}</i>
+                <i class="col_ff6262" v-if="item.yesterInteractTrend">{{changeNum(item.yesterInteractTrend)}}</i>
+                <i v-else>-</i>
               </span>
             </h5>
-            <p class="event-name">{{item.eventName}} {{item.eventCreatTime}}</p>
+            <p class="event-name">
+              <span>{{item.eventNameStr}}</span>
+              <i>{{item.eventCreatTime}}</i>
+            </p>
           </div>
         </div>
       </li>
     </ul>
     <div class="submit-button">
-      <router-link :to="{name: 'sentimentbrand-analyze', params: {ids: idsString}}" class="to-link" >查看详细报告</router-link>
+      <router-link :to="{name: 'sentimentbrand-analyze', query: {ids: idsString}}" class="to-link" >查看详细报告</router-link>
     </div>
   </div>
 </template>
@@ -48,6 +53,7 @@ import { Icon } from 'vant'
 import moment from 'moment'
 import ModuleHeader from '@/components/moduleHeader'
 import { imgFixed } from '@/fn/imgProxy'
+import {readableNumber} from '@/util/dealData'
 
 @Component({
   components: {
@@ -62,22 +68,24 @@ export default class Main extends Vue {
   get idsString() {
     return this.ids.join(',')
   }
+
   get getRivalList() {
     const list = (this.rivalList || []).map((it: any, index: number) => {
       this.ids.push(it.rivalId)
-      const yesterHeatTrend = it.yesterHeatTrend < 0 ? `低${Math.abs(it.yesterHeatTrend)}` : `高${it.yesterHeatTrend}`
-      const yesterInteractTrend = it.yesterInteractTrend < 0 ?
-      `低${Math.abs(it.yesterInteractTrend)}` : `高${it.yesterInteractTrend}`
 
+      const eventNameStr = it.eventName && it.eventName.length > 10 ? it.eventName.slice(0, 10) + '...' : it.eventName
       return {
         ...it,
         eventCreatTime: moment(it.eventCreatTime).format('YYYY-MM-DD'),
-        yesterHeatTrend,
-        yesterInteractTrend,
+        eventNameStr,
         coverImg: imgFixed(it.rivalCover, 80, 80)
       }
     })
     return list
+  }
+
+  changeNum(num: number) {
+    return num < 0 ? `低${readableNumber(Math.abs(num))}` : `高${readableNumber(num)}`
   }
 }
 
@@ -131,12 +139,12 @@ li {
     }
   }
   .trend-head {
-    i {
+    .col_7ca4ff {
       color: #7ca4ff;
     }
   }
   .trend-interact {
-    i {
+    .col_ff6262 {
       color: #ff6262;
     }
   }

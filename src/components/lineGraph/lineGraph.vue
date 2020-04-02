@@ -1,6 +1,6 @@
 <template>
   <div class="content-wrap">
-    <div class="line-echart" ref="refChart" v-if="lineData.xDate.length" />
+    <div class="line-echart" ref="refChart" v-if="lineData.xDate.length"></div>
   </div>
 </template>
 
@@ -9,7 +9,7 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import echarts from 'echarts'
 import { cssifyObject } from 'css-in-js-utils'
 import moment from 'moment'
-const format = 'YYYY-MM-DD'
+import { thousand } from '@/fn/validateRules'
 
 @Component
 export default class LineGrap extends Vue {
@@ -24,12 +24,19 @@ export default class LineGrap extends Vue {
   /** 自定义 tooltip框 内容 */
   @Prop({ type: Function }) formatterHtml!: (params: any, query: any) => Promise<string>
 
-  maxData: any = 0
+  maxData: any = 0 // 算出最大值的位置
+  unit: string = '' // Y轴单位
 
   get xAxisDate() {
     const ydate = this.lineData.yDate[0].data
     const max = Math.max(...ydate)
     this.maxData = ydate.indexOf(max)
+    const len = max.toString().length
+    if (len >= 5 && len < 9) {
+      this.unit = '万'
+    } else if (len >= 9) {
+      this.unit = '亿'
+    }
     return (this.lineData.xDate || []).map((it: any) => moment(it).format('MM-DD'))
   }
 
@@ -128,7 +135,7 @@ export default class LineGrap extends Vue {
         interval: 5,
         data: this.xAxisDate,
         axisLabel: {
-          color: '#47403B',
+          color: '#908b88',
           fontSize: 11
         },
         axisTick: {
@@ -142,8 +149,24 @@ export default class LineGrap extends Vue {
         }
       },
       yAxis: {
+        type: 'value',
         axisLabel: {
-          color: '#47403B'
+          formatter: (value: number) => {
+            if (!value) {
+              return 0
+            }
+            switch (this.unit) {
+              case '亿':
+                const yiVal = thousand(value / 100000000)
+                return yiVal + this.unit
+              case '万':
+                const wanVal = thousand(value / 10000)
+                return wanVal + this.unit
+              default:
+                return thousand(value)
+            }
+          },
+          color: '#908b88'
         },
         axisLine: {
           lineStyle: {
@@ -157,7 +180,7 @@ export default class LineGrap extends Vue {
         splitLine: {
           lineStyle: {
             color: 'rgba(151,167,195,.45)',
-            type: 'dashed'
+            type: 'dotted'
           }
         }
       },
@@ -181,6 +204,7 @@ export default class LineGrap extends Vue {
   position: relative;
   width: 100%;
   padding-bottom: 65px;
+  min-height: 500px;
   z-index: 2;
 }
 .line-echart {

@@ -115,10 +115,12 @@ export default new Router({
     },
     // 品牌舆情
     {
-      path: '/sentiment/brand/:id',
+      path: '/sentiment/brand/:brandId(\\d+)',
       name: 'sentiment-brand',
       component: () => import('./views/sentiment/brand/detail.vue'),
-      props: idProps
+      props: paramTypes({
+        brandId: Number
+      })
     },
     // 品牌舆情 - 用户分析二级详情页
     {
@@ -129,7 +131,7 @@ export default new Router({
     },
     // 品牌舆情 - 竞品分析二级详情页
     {
-      path: '/sentiment/brand/rivalAnalysis/:ids',
+      path: '/sentiment/brand/rivalAnalysis',
       name: 'sentimentbrand-analyze',
       component: () => import('./views/sentiment/brand/rivalAnalysis/index.vue'),
     },

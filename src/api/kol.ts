@@ -36,8 +36,8 @@ export async function getEventList(query: any) {
  * @param query  object
  */
 export async function getPkUser(query: any) {
-  // const res = await get('/yuqing/actor/people/rivalAnalysis', query)
-  const res = await get('http://yapi.aiads-dev.com/mock/406/yuqing/actor/people/rivalAnalysis', query)
+  const res = await get('/yuqing/actor/people/rivalAnalysis', query)
+  // const res = await get('http://yapi.aiads-dev.com/mock/406/yuqing/actor/people/rivalAnalysis', query)
 
   return res
 }
@@ -58,8 +58,8 @@ export async function getPeople(query: any) {
  * @param query  object
  */
 export async function rivalanaly(query: any) {
-  // const res = await get('/yuqing/actor/people/rivalanaly', query)
-  const res = await get('http://yapi.aiads-dev.com/mock/406/yuqing/actor/people/rivalanaly', query)
+  const res = await get('/yuqing/actor/people/rivalanaly', query)
+  // const res = await get('http://yapi.aiads-dev.com/mock/406/yuqing/actor/people/rivalanaly', query)
 
   return res
 }
@@ -70,8 +70,8 @@ export async function rivalanaly(query: any) {
  * @param query  object
  */
 export async function rivalHeatAnalysis(query: any) {
-  // const res = await get('/yuqing/actor/actor/rivalHeatAnalysis', query)
-  const res = await get('http://yapi.aiads-dev.com/mock/406/yuqing/actor/actor/rivalHeatAnalysis', query)
+  const res = await get('/yuqing/actor/actor/rivalHeatAnalysis', query)
+  // const res = await get('http://yapi.aiads-dev.com/mock/406/yuqing/actor/actor/rivalHeatAnalysis', query)
 
   return res
 }
@@ -81,8 +81,8 @@ export async function rivalHeatAnalysis(query: any) {
  * @param query  object
  */
 export async function rivalPraise(query: any) {
-  // const res = await get('/yuqing/actor/actor/rivalPraise', query)
-  const res = await get('http://yapi.aiads-dev.com/mock/406/yuqing/actor/actor/rivalHeatAnalysis', query)
+  const res = await get('/yuqing/actor/actor/rivalPraise', query)
+  // const res = await get('http://yapi.aiads-dev.com/mock/406/yuqing/actor/actor/rivalHeatAnalysis', query)
 
   return res
 }

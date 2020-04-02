@@ -130,9 +130,7 @@ export default class KolPage extends ViewBase {
     ]
   }
   // 口碑评论
-  publicPraise: any = {
-    // fetch: async () => { const data = awiat rivalPraise{id: 123 }）return data }
-  }
+  publicPraise: any = {}
   // 平台分布
   publicObj: any = {
     title: '平台分布',
@@ -258,7 +256,6 @@ export default class KolPage extends ViewBase {
       this.publicPraise.query = {
         actorIdList: this.ids,
       }
-      // const as = this.publicPraise.query
       this.publicPraise.fetch = async (query: any) => { // query: 查询参数
         const datas = await rivalPraise(query)
         return datas
@@ -429,21 +426,6 @@ export default class KolPage extends ViewBase {
 .select-time {
   padding: 69px 30px 15px;
 }
-// /deep/ .van-tabs__line {
-//   width: 60px!important;
-// }
-// /deep/ .tab-nav {
-//   margin-top: 0;
-//   top: 88px;
-//   z-index: 11;
-//   // &::before {
-//   //   display: none;
-//   // }
-//   /deep/ .van-tab {
-//     flex-basis: auto !important;
-//   }
-
-// }
 .tab-nav {
   margin-top: 0;
   top: 88px;
@@ -456,7 +438,10 @@ export default class KolPage extends ViewBase {
     flex-basis: auto !important;
   }
 }
-// /deep/ nav.formattab .van-tab {
-//   flex-basis: auto !important;
-// }
+/deep/ .tab-nav-normal .van-tab {
+  padding: 1.7vw 0 0.8vw 0;
+}
+/deep/ .tab-nav-normal .van-tabs__wrap {
+  height: 10vw;
+}
 </style>

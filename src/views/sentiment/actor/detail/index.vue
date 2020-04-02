@@ -17,7 +17,7 @@
               </span>
           </p>
           <p v-if="actorInfo.rankingName && actorInfo.rankingId">
-            <router-link :to="{name: 'sentimenteventmarketing', params: {eventId: actorInfo.rankingId}}" class="event-name flex-box">
+            <router-link :to="{name: 'sentimenteventmarketing', params: {eventId: actorInfo.rankingId} , query: {title: actorInfo.actorName}}" class="event-name flex-box">
               <span style='    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;'>
                 <i class='hid'>{{actorInfo.rankingNum}}&nbsp;</i>
                 <i class='bor'>#{{actorInfo.rankingName}}</i>

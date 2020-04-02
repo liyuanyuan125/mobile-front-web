@@ -75,6 +75,7 @@ export default class SentimentBar extends Vue {
       if (res.code === 0) {
         this.digg = res.data
       }
+      devLog('isDiggThis', res, this.digg)
     }
   }
 
@@ -87,8 +88,9 @@ export default class SentimentBar extends Vue {
         diggType: this.digg ? 2 : 1
       })
       if (res.code === 0) {
-        this.digg = res.data
+        this.digg = !this.digg
       }
+      devLog('diggThis', res, this.digg)
     }
   }
 

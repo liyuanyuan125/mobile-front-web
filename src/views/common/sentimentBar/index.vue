@@ -100,6 +100,7 @@ export default class SentimentBar extends Vue {
     position: absolute;
     left: 0;
     top: 88px;
+    pointer-events: none;
   }
 }
 .tool {

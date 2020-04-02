@@ -10,9 +10,10 @@
         :class="item.type === tabIndex ? 'on' : ''"
       >{{item.name}}</span>
     </div>
-    <div>
+    <div v-if="regionData">
       <BarGraphRow :dataOption="regionData" :canvasHei="canvasHei" v-if="regionData" />
     </div>
+    <dataEmpty v-else />
   </div>
 </template>
 
@@ -23,11 +24,13 @@ import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import { BarGraphRow } from '@/components/barGraphRow'
 import { regionList } from './data'
 import { toast } from '@/util/toast'
+import dataEmpty from '@/views/common/dataEmpty/index.vue'
 
 @Component({
   components: {
     SentimentBar,
-    BarGraphRow
+    BarGraphRow,
+    dataEmpty
   }
 })
 export default class UserRegion extends ViewBase {
@@ -66,11 +69,12 @@ export default class UserRegion extends ViewBase {
 
   // 获取数据
   async getData() {
-    const result: any = await regionList(this.source, this.query)
-    // 处理页面 title
-    this.title = result.brandName + '用户地域分布'
+    const res: any = await regionList(this.source, this.query)
+
     // 处理数据
-    this.formatData(result.dataList)
+    if (res && res.dataList) {
+      this.formatData(res.dataList)
+    }
   }
 
   // 格式化数据

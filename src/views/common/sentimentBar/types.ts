@@ -6,7 +6,7 @@ export interface SentimentBarItem {
     /**
      * 是否显示关注
      */
-    diggType?: 'movie' | 'brand' | 'actor' | 'song' | 'album' | 'tv'
+    diggType?: number
     diggId?: string
 
     /**

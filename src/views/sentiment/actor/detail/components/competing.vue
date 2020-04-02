@@ -54,7 +54,8 @@
       </li>
     </ul>
     <div class="submit-button" v-if='pkUserListData.length > 0'>
-      <router-link :to="{ name:'sentimentkolproducts', params: { ids: this.pkIdList.join(',') } }" class="to-link" >查看详细报告</router-link>
+      <!-- 查看详细报告 -->
+      <router-link :to="{ name:'sentimentkolproducts', query: { ids: this.pkIdList.join(',') } }" class="to-link" >查看详细报告</router-link>
     </div>
     <dataEmpty v-if='pkUserListData.length == 0' />
   </div>
@@ -87,7 +88,7 @@ export default class Main extends Vue {
   created() {
     this.pkDate = this.pkUserList[0]
     this.coverImg = imgFixed(this.pkUserList[0].rivalCover, 200, 200 , 4)
-    this.pkUserListData = (this.pkUserList.slice(1) || []).map((it: any) => {
+    this.pkUserListData = (this.pkUserList.slice(1, 3) || []).map((it: any) => {
       return {
         ...it,
         coverImg: imgFixed(it.rivalCover, 200, 260 , 4),
@@ -106,8 +107,17 @@ export default class Main extends Vue {
   goActorDetail(id: any) {
     this.$router.push({
       name: 'sentimentactor',
-      params: {
+      query: {
         actorId: id
+      }
+    })
+  }
+
+  chgPage() {
+    this.$router.push({
+      name: 'sentimentkolproducts',
+      query: {
+        ids: this.pkIdList.join(',')
       }
     })
   }
@@ -231,7 +241,7 @@ export default class Main extends Vue {
       float: right;
       font-size: 22px;
       font-weight: 300;
-      color: rgba(48, 48, 48, 1);
+      color: rgba(48, 48, 48, 0.5);
     }
   }
 }

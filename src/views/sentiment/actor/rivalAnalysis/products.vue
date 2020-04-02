@@ -1,13 +1,19 @@
 <template>
   <div class='pages'>
     <SentimentBar title="竞品分析详细报告" :titleShow="true" />
-    <RivalList type="2" :rivalList="rivalList" v-if="rivalList.length" class="movierival" />
+    <RivalList 
+      type="2" 
+      :rivalList="rivalList" 
+      v-if="rivalList.length"
+      class="movierival"
+      @setRival="changeIds"
+    />
     <TabNav
       :list ="list"
       class="tab-nav"
       normal
     />
-    <section class="pane" id="hot" style='padding-bottom: 30px;'>
+    <section class="pane" id="hot" style='padding-bottom: 30px;border-top: 0px;'>
       <selectTime v-model="day" class="select-time"  ref="reftimes"/>
       <heatContrast 
         style='padding-top: 33px; background: #FFF;'
@@ -37,7 +43,7 @@
         </div>
         <!-- 年龄分布 -->
         <Age :ageRangeList='ageRangeList' />
-        <div class='hr' style='margin-bottom: 50px'>
+        <div class='hr' style='margin-bottom: 40px'>
           <p></p>
         </div>
         <!-- 性别分布 -->
@@ -48,7 +54,7 @@
             class="chart"
           />
         </div>
-        <div class='hr' style='margin-bottom: 50px'>
+        <div class='hr' style='margin-bottom: 40px'>
           <p></p>
         </div>
         <!-- 用户地域分布对比 -->
@@ -98,6 +104,8 @@ export default class KolPage extends ViewBase {
     diggId: '100038',
     rivalIds: '1,2,4'
   }
+
+  ids: any = null
 
   show: any = false
   showpraise: any = false
@@ -158,13 +166,7 @@ export default class KolPage extends ViewBase {
     tableItem: []
   }
   // 性别分布
-  sexdata: VsItem[] = [
-    { name: '奔驰', rate1: 63.6, rate2: 44.4 },
-    { name: '兰博基尼', rate1: 39.6, rate2: 60.4 },
-    { name: '林肯', rate1: 20.2, rate2: 79.8 },
-    { name: '雪佛兰', rate1: 2.2, rate2: 97.8 },
-    { name: '玛莎拉蒂名字很长', rate1: 98.8, rate2: 1.2 },
-  ]
+  sexdata: VsItem[] = []
   // 地域数据
   userRegion: any = {}
   // 年龄分布数据
@@ -215,15 +217,13 @@ export default class KolPage extends ViewBase {
     { name: 'hot', label: '热度' },
     { name: 'praise', label: '口碑' },
     { name: 'user', label: '用户' },
-
   ]
 
   created() {
-    const mid = this.$route.params.kolId
+    this.ids = this.$route.query.ids
     this.getLineData()
     this.getDetail()
     this.getPublicPraise()
-    document.body.style.background = '#f2f3f6'
   }
 
   async getLineData() {
@@ -236,7 +236,7 @@ export default class KolPage extends ViewBase {
           fansCountList
         }
       }} = await rivalHeatAnalysis({
-        actorIdList: this.$route.params.ids,
+        actorIdList: this.ids,
         startTime,
         endTime
       })
@@ -251,12 +251,12 @@ export default class KolPage extends ViewBase {
   async getPublicPraise() {
     try {
       const  data = await rivalPraise({
-        actorIdList: this.$route.params.ids,
+        actorIdList: this.ids,
         startTime: 20200304,
         endTime: 20200311
       })
       this.publicPraise.query = {
-        actorIdList: this.$route.params.ids,
+        actorIdList: this.ids,
       }
       // const as = this.publicPraise.query
       this.publicPraise.fetch = async (query: any) => { // query: 查询参数
@@ -280,7 +280,7 @@ export default class KolPage extends ViewBase {
            genderList,
            userRegion,
          }
-       } = await rivalanaly({actorIdList: this.$route.params.ids})
+       } = await rivalanaly({actorIdList: this.ids})
        this.rivalList = rivalList
        this.publicObj.tableItem = platformList
        this.ageRangeList = ageRangeList
@@ -306,23 +306,26 @@ export default class KolPage extends ViewBase {
     }
   }
 
+  // 设置竞品对手
+  changeIds(ids: string) {
+    this.ids = ids
+    // this.init()
+    this.getLineData()
+    this.getDetail()
+    this.getPublicPraise()
+  }
+
   @Watch('day')
   watchDay() {
     this.getLineData()
   }
-
 }
 </script>
 
 <style lang="less" scoped>
 .pages {
   width: 100%;
-  // background: #f7f7f7;
-}
-/deep/ .tab-nav {
-  // margin-top: 0;
-  top: 88px;
-  z-index: 11;
+  background: #f2f3f6;
 }
 .userpk {
   background: #fff;
@@ -342,7 +345,7 @@ export default class KolPage extends ViewBase {
     font-weight: 500;
     color: rgba(48, 48, 48, 1);
     line-height: 34px;
-    margin-top: 48px;
+    margin-top: 30px;
     // margin-bottom: 40px;
   }
 }
@@ -351,23 +354,24 @@ export default class KolPage extends ViewBase {
   margin-top: 20px;
 }
 
-/deep/ .van-tab {
-  font-weight: 500;
-  color: rgba(48, 48, 48, 1);
-  // line-height: 100px;
-  font-size: 30px;
-}
-/deep/ .van-tab--active, /deep/ .van-tabs__line {
-  color: #88aaf6;
-}
-/deep/ .van-tabs__line {
-  background-color: #88aaf6;
-}
+// /deep/ .van-tab {
+//   font-weight: 500;
+//   color: rgba(48, 48, 48, 1);
+//   // line-height: 100px;
+//   font-size: 30px;
+// }
+// /deep/ .van-tab--active, /deep/ .van-tabs__line {
+//   color: #88aaf6;
+// }
+// /deep/ .van-tabs__line {
+//   background-color: #88aaf6;
+// }
 .pane {
   // padding: 15px;
   min-height: 200px;
   background-color: #fff;
   margin-bottom: 20px;
+  border-top: 20px solid #f2f3f6;
 }
 
 .pane-head {
@@ -425,4 +429,34 @@ export default class KolPage extends ViewBase {
 .select-time {
   padding: 69px 30px 15px;
 }
+// /deep/ .van-tabs__line {
+//   width: 60px!important;
+// }
+// /deep/ .tab-nav {
+//   margin-top: 0;
+//   top: 88px;
+//   z-index: 11;
+//   // &::before {
+//   //   display: none;
+//   // }
+//   /deep/ .van-tab {
+//     flex-basis: auto !important;
+//   }
+
+// }
+.tab-nav {
+  margin-top: 0;
+  top: 88px;
+  z-index: 11;
+  /deep/ .van-tabs__nav {
+    padding-left: 190px;
+    padding-right: 190px;
+  }
+  /deep/ .van-tab {
+    flex-basis: auto !important;
+  }
+}
+// /deep/ nav.formattab .van-tab {
+//   flex-basis: auto !important;
+// }
 </style>

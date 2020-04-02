@@ -41,15 +41,6 @@ export default class ActorList extends Vue {
   @Prop({ type: Array }) actorList!: ActorItem[]
   @Prop({ type: Object }) link!: AppLink
 
-  mounted() {
-    const chief = this.$refs.chief as HTMLDListElement
-    if (this.actorList.length && this.actorList.length < 10) {
-      // 先算出每一个DD的宽度
-      const wid = (chief.offsetWidth / 10) * this.actorList.length
-      chief.style.width = wid + 'px'
-    }
-  }
-
   get personList() {
     const list = this.actorList
     if (list && list.length) {
@@ -92,7 +83,6 @@ export default class ActorList extends Vue {
     white-space: nowrap;
     padding-right: 30px;
     appearance: none;
-    width: 1820px;
   }
 
   dd {

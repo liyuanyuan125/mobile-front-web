@@ -101,6 +101,9 @@ export default class EventList extends Vue {
       name: 'sentimenteventmarketing',
       params: {
         eventId: item.eventId
+      },
+      query: {
+        title: item.eventName
       }
     })
   }

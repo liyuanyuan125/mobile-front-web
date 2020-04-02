@@ -46,6 +46,7 @@
           class="wantchart"
           :formatterHtml="formatterHtml"
         />
+        <dataEmpty v-else />
       </div>
       <div class="others">
         <div class="inner">
@@ -77,9 +78,7 @@
         </div>
       </div>
     </div>
-    <div v-else class="datanull">
-      <img src="@/assets/data-null.png" />
-    </div>
+    <dataEmpty v-else />
   </div>
 </template>
 
@@ -91,11 +90,13 @@ import ModuleHeader from '@/components/moduleHeader'
 import { openAppLink, AppLink } from '@/util/native'
 import { roleNumber } from '@/fn/validateRules'
 import moment from 'moment'
+import dataEmpty from '@/views/common/dataEmpty/index.vue'
 
 @Component({
   components: {
     ModuleHeader,
-    LineGrap
+    LineGrap,
+    dataEmpty
   }
 })
 export default class BoxOffice extends ViewBase {
@@ -322,13 +323,6 @@ export default class BoxOffice extends ViewBase {
     line-height: 26px;
     color: rgba(48, 48, 48, 0.6);
     margin-top: 8px;
-  }
-}
-.datanull {
-  text-align: center;
-  padding: 50px;
-  img {
-    width: 180px;
   }
 }
 </style>

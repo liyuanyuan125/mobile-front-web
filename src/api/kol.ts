@@ -59,6 +59,7 @@ export async function getPeople(query: any) {
  */
 export async function rivalanaly(query: any) {
   const res = await get('/yuqing/actor/people/rivalanaly', query)
+  // const res = await get('http://yapi.aiads-dev.com/mock/406/yuqing/actor/people/rivalanaly', query)
 
   return res
 }

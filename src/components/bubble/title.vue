@@ -36,14 +36,16 @@ export default class Title extends Vue {
   align-items: center;
   opacity: 0.7;
   i {
-    width: 24px;
+    font-size: 24px;
     color: #fff;
   }
   .title-more {
     display: flex;
     align-items: flex-end;
+    p {
+      font-size: 24px;
+      line-height: 26px;
+    }
   }
 }
-
-
 </style>

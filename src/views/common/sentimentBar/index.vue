@@ -17,10 +17,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import { setNavBarStatus, handleGoBack } from '@/util/native'
 import { SentimentBarItem } from './types'
 import { isJyApp } from '@/fn/ua'
+import { hasDigg } from './data'
+import { handleSetRival } from '@/util/native'
+import { devLog, devInfo } from '@/util/dev'
 
 @Component({})
 export default class SentimentBar extends Vue {
@@ -29,21 +32,53 @@ export default class SentimentBar extends Vue {
    */
   @Prop({ type: String }) title!: string // 基本属性
   @Prop({ type: String, default: '#F2F3F6' }) bgColor?: string // 主要是通过颜色来设置 app 项部时间区的背景色
-  @Prop({ type: Object }) sidebar?: SentimentBarItem // 基本属性
+  @Prop({ type: Object }) sidebar!: SentimentBarItem // 基本属性
   @Prop({ type: Boolean, default: false }) titleShow?: boolean // 初始时是否显示标题 例如详情页默认不显示标题
 
   hasTitle: boolean = false
 
-  mounted() {
+  created() {
     if (isJyApp()) {
       // 在 app 里执行隐藏native 导航
       this.hideNavBarStatus()
     }
+    this.isDiggThis()
     window.addEventListener('scroll', this.getScroll)
   }
 
   destroyed() {
     window.removeEventListener('scroll', this.getScroll)
+  }
+
+  // @Watch('sidebar', { deep: true })
+  // watchSidebar(val: any) {
+  //   if (val && val.rivalIds) {
+  //     console.log('vaafdfdfdfd', val)
+  //     const isAppLink = typeof val.rivalIds.name === 'string'
+  //     isAppLink ? this.$router.push(val.rivalIds) : this.setRival(val.rivalIds)
+  //   }
+  // }
+
+  // 是否关注过本体
+  async isDiggThis() {
+    if (this.sidebar) {
+      const res: any = await hasDigg({
+        businessType: this.sidebar.diggType || 0,
+        businessId: this.sidebar.diggId || ''
+      })
+    }
+  }
+
+  // 跳设置竞品
+  async setRival(item: any) {
+    const obj = {
+      callBackName: 'handleSetRivalCallBack',
+      params: item
+    }
+    const result: any = await handleSetRival(obj)
+    const codeJson = JSON.parse(result)
+
+    devLog('设置竞品', result)
   }
 
   // 监听滚动显示顶部导航的标题
@@ -79,7 +114,10 @@ export default class SentimentBar extends Vue {
   // 去 Pk 页
   goRivalAnalysis() {
     if (this.sidebar && this.sidebar.rivalIds) {
-      this.$router.push(this.sidebar.rivalIds)
+      const isAppLink = typeof this.sidebar.rivalIds.name === 'string'
+      isAppLink
+        ? this.$router.push(this.sidebar.rivalIds)
+        : this.setRival(this.sidebar.rivalIds)
     }
   }
 }

@@ -119,7 +119,7 @@ export default class Main extends Vue {
         trigger: 'axis',
         backgroundColor: '#fff',
         snap: false,
-        // enterable: true, // 如需详情内交互，添加链接，按钮，则设置为true
+        enterable: true, // 如需详情内交互，添加链接，按钮，则设置为true
         confine: true, // 限制在图表的区域内
         axisPointer: {
           // 指示线
@@ -153,18 +153,20 @@ export default class Main extends Vue {
             fontSize: '14px',
           })
           const events = this.events[name] || []
-          const eventHtml = events.map(({eventName, eventId}: any) => {
-            const eventListHTML = `
-            <div style="${boxStyle}" class="tooltip-event"
-             data-tooltip-event-tipname="${name}"
-             data-tooltip-event-name="${eventName}"
-             data-tooltip-event-id="${eventId}"
-            >
-            <i style="${dotStyle}"></i>
-             ${eventName}
-            </div>
-            `
-            return eventListHTML.trim()
+          const eventHtml = events.map(({eventName, eventId}: any, index: number) => {
+            if (index < 3) {
+              const eventListHTML = `
+              <div style="${boxStyle}" class="tooltip-event"
+              data-tooltip-event-tipname="${name}"
+              data-tooltip-event-name="${eventName}"
+              data-tooltip-event-id="${eventId}"
+              >
+              <i style="${dotStyle}"></i>
+               ${eventName}
+              </div>
+              `
+              return eventListHTML.trim()
+            }
           })
           const cloneData = moment(this.lineData.xDate[dataIndex]).format('YYYY-MM-DD')
           const html = `

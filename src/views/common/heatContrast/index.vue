@@ -74,6 +74,8 @@ export default class Main extends Vue {
     if (this.overAllHeat.length == 0) {
       return {}
     } else {
+      // yyDate 处理tooltip 日期展示
+      const yyDate: any = (this.overAllHeat[0].data || []).map((it: any) => moment(it.date).format('YYYY-MM-DD'))
       this.xDate = (this.overAllHeat[0].data || []).map((it: any) => moment(it.date).format('MM-DD'))
       const yDate = (this.overAllHeat || []).map((it: any) => {
         const {rivalName, data} = it
@@ -85,7 +87,8 @@ export default class Main extends Vue {
       return {
         title: this.lineTitle,
         xDate: this.xDate,
-        yDate
+        yDate,
+        yyDate,
       }
     }
 
@@ -98,21 +101,30 @@ export default class Main extends Vue {
   // 处理公共逻辑
   changeListData() {
     const list = this.tabIndex == 0 ? this.interactList : this.materialList
+    // 处理 xDate 和 yyDate日期处理
+    let yyDate: any[] = []
+    let xDate: any[] = []
     const result = list.map((item: any) => {
       const {platformName, dataList} = item
-
-      const yDate = dataList.map((it: any) => {
+      const yDate = dataList.map((it: any, index: number) => {
+        if (index == 0) {
+          yyDate = it.data.map((ite: any) => moment(ite.date).format('YYYY-MM-DD'))
+          xDate = it.data.map((ite: any) => moment(ite.date).format('MM-DD'))
+        }
         return {
           name: it.rivalName,
           list: it.data.map((ite: any) => ite.value)
         }
       })
+
       return {
         title: platformName,
-        xDate: this.xDate,
+        xDate,
         yDate,
+        yyDate
       }
     })
+
     return result
   }
 

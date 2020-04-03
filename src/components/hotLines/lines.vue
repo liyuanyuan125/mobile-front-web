@@ -10,6 +10,7 @@ import echarts from 'echarts'
 import { cssifyObject } from 'css-in-js-utils'
 import moment from 'moment'
 const format = 'YYYY-MM-DD'
+import { toThousands, readableNumber } from '@/util/dealData'
 
 
 @Component
@@ -55,6 +56,7 @@ export default class Main extends Vue {
       tooltip: {
         trigger: 'axis',
         backgroundColor: '#fff',
+        padding: [5, 10, 5, 10],
         confine: true, // 限制在图表的区域内
         axisPointer: { // 指示线
           lineStyle: {
@@ -69,9 +71,32 @@ export default class Main extends Vue {
           width: 2
         },
         extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);',
+        // 分为两个模块来展示html
+        formatter: (params: any) => {
+          const dataIndex = (params[0].dataIndex)
+          const titleDate = this.lineData.yyDate[dataIndex]
+          const listHtml = (params || []).map(({seriesName, name, value, color }: any) => {
+            const itemHtml = `
+              <p class="tooltip-item">
+                <i class="tooltip-dot" style="background-color: ${color}"></i>
+                <span class="tooltip-name" >${seriesName}</span>
+                <span class="tooltip-value">${readableNumber(value)}</span>
+              </p>
+            `
+            return itemHtml.trim()
+          })
+
+          const html = `
+            <div class="tooltip-box">
+              <div class="tooltip-title">${titleDate}</div>
+              ${listHtml.join('')}
+            </div>
+          `
+          return html.trim()
+        }
       },
       grid: {
-        left: 0,
+        left: 10,
         right: 16,
         top: 50,
         bottom: 40,
@@ -138,4 +163,36 @@ export default class Main extends Vue {
   width: 100%;
   height: 500px;
 }
+/deep/ .tooltip-item {
+  display: flex;
+  font-weight: 500;
+  font-family: SanFranciscoDisplay-Semibold, SanFranciscoDisplay, serif;
+}
+
+/deep/ .tooltip-dot {
+  position: relative;
+  display: inline-block;
+  top: 10px;
+  width: 14px;
+  height: 14px;
+  border-radius: 100%;
+  margin-right: 10px;
+}
+/deep/ .tooltip-name {
+  font-size: 22px;
+  color: #303030;
+  display: block;
+  margin-right: 15px;
+  min-width: 70px;
+}
+/deep/ .tooltip-value {
+  color: #303030;
+  font-size: 25px;
+}
+/deep/ .tooltip-title {
+  font-size: 26px;
+  color: #b8b8b8;
+  padding-bottom: 5px;
+}
+
 </style>

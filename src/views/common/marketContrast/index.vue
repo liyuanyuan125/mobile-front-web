@@ -14,9 +14,9 @@
         <div class="contrast-progress" v-for="(item, ins) in optionsMessage" :key="ins">
           <span>{{item.rivalName}}</span>
           <div class="progress">
-            <Progress :percentage="(item.percent / 100).toFixed(1) " color="#88aaf6" stroke-width="10" />
+            <Progress :percentage="(item.percent || 0) " color="#88aaf6" stroke-width="10" />
             <div class="contrast-message">
-              <div class="contrast-message-progress">{{(item.percent / 100).toFixed(1) }}%</div>
+              <div class="contrast-message-progress">{{(item.percent || 0) }}%</div>
               <div class="contrast-message-text">
                 <span class="van-ellipsis" :key="ins" v-for="(it, ins) in item.hotWordList">{{it}}</span>
               </div>

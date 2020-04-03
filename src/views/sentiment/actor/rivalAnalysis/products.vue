@@ -248,11 +248,11 @@ export default class KolPage extends ViewBase {
 
   async getPublicPraise() {
     try {
-      const  data = await rivalPraise({
-        actorIdList: this.ids,
-        startTime: 20200304,
-        endTime: 20200311
-      })
+      // const  data = await rivalPraise({
+      //   actorIdList: this.ids,
+      //   startTime: 20200304,
+      //   endTime: 20200311
+      // })
       this.publicPraise.query = {
         actorIdList: this.ids,
       }

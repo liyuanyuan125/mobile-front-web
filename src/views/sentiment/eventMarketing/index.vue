@@ -10,7 +10,7 @@
       </p>
     </div>
     <div v-if="eventStatus === 2 || eventStatus === 3">
-      <div class="main"  >
+      <div class="main">
         <h2 class="van-multi-ellipsis--l2">{{title}}</h2>
         <div class="show-num">
           <div class="left">
@@ -28,7 +28,7 @@
             type="primary"
             @click="chgnewPk(item)"
           >{{item.name}}</Button>
-          <div @click="openAnalysisPage">
+          <div @click="openAnalysisPage" class="eventchart">
             <LineGrap :lineData="linedata" class="wantchart" :formatterHtml="formatterHtml" />
           </div>
         </div>
@@ -47,7 +47,6 @@
         :link="getApplink('eventPraiseHotWordsList')"
       />
     </div>
-    
   </div>
 </template>
 
@@ -140,7 +139,7 @@ export default class KolPage extends ViewBase {
   async geteventDetail() {
     try {
       const {
-        data: { eventInfo, platformList, spreadList, publicPraise , eventStatus }
+        data: { eventInfo, platformList, spreadList, publicPraise, eventStatus }
       } = await eventDetail({ eventId: this.$route.params.eventId })
       this.publicPraise = publicPraise
       this.eventStatus = eventStatus
@@ -310,6 +309,19 @@ export default class KolPage extends ViewBase {
     line-height: 40px;
     color: #8f8f8f;
     margin-top: 15px;
+  }
+}
+.eventchart {
+  position: relative;
+  &::after {
+    background: rgba(216, 216, 216, 0);
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 5;
   }
 }
 </style>

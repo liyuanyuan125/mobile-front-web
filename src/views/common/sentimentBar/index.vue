@@ -60,7 +60,7 @@ export default class SentimentBar extends Vue {
   async isDiggThis() {
     if (this.sidebar) {
       const res: any = await hasDigg({
-        businessType: this.sidebar.diggType || 0,
+        businessType: Number(this.sidebar.diggType) || 0,
         businessId: this.sidebar.diggId || ''
       })
       if (res.code === 0) {
@@ -74,7 +74,7 @@ export default class SentimentBar extends Vue {
   async diggThis() {
     if (this.sidebar && this.sidebar.diggType && this.sidebar.diggId) {
       const res: any = await diggSubject({
-        businessType: this.sidebar.diggType || 0,
+        businessType: Number(this.sidebar.diggType) || 0,
         businessId: this.sidebar.diggId || '',
         diggType: this.digg ? 2 : 1
       })

@@ -12,21 +12,27 @@
             <div class="params">
               <div class="flex">
                 <p class="tit">热度</p>
-                <strong style="font-family: DIN Alternate;">{{item.heatCount}}</strong>
+                <strong
+                  style="font-family: DIN Alternate;"
+                >{{item.heatCount ? item.heatCount : '-'}}</strong>
                 <p
                   class="trend"
                   v-if="item.heatTrend"
                   :style="{color:item.heatTrend > 0 ? '#FF6262': '#88AAF6'}"
                 >{{item.heatTrend > 0 ? '高'+item.heatTrendShow : '低' + item.heatTrendShow}}</p>
+                <p v-else class="trend">-</p>
               </div>
               <div class="flex">
                 <p class="tit">新增物料</p>
-                <strong style="font-family: DIN Alternate;">{{item.materialsAdd}}</strong>
+                <strong
+                  style="font-family: DIN Alternate;"
+                >{{item.materialsAdd ? item.materialsAdd : '-'}}</strong>
                 <p
                   class="trend"
                   v-if="item.materialsTrend"
                   :style="{color:item.materialsTrend > 0 ? '#FF6262': '#88AAF6'}"
                 >{{item.materialsTrend > 0 ? '高' + item.materialsTrendShow : '低' + item.materialsTrendShow}}</p>
+                <p class="trend" v-else>-</p>
               </div>
             </div>
             <div class="eventbox" v-if="item.eventName">
@@ -149,12 +155,12 @@ export default class RivalAnalysis extends ViewBase {
     }
     strong {
       display: block;
-      font-size: 46px;
+      font-size: 42px;
       margin-top: 10px;
     }
     .trend {
       font-size: 26px;
-      margin-top: 10px;
+      margin-top: 15px;
     }
   }
   .eventbox {

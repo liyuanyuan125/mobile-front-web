@@ -16,8 +16,12 @@
           <div class="progress">
             <Progress :percentage="(item.percent || 0) " color="#88aaf6" stroke-width="10" />
             <div class="contrast-message">
-              <div class="contrast-message-progress">{{(item.percent || 0) }}%</div>
-              <div class="contrast-message-text">
+              <div class="contrast-message-progress">
+                <span v-if="item.percent">{{(item.percent || 0) }}%</span>
+                <span v-else>—</span>
+              </div>
+              <div class="contrast-message-text" v-if="(item.hotWordList || []).length > 0">
+                <span>热词</span>
                 <span class="van-ellipsis" :key="ins" v-for="(it, ins) in item.hotWordList">{{it}}</span>
               </div>
             </div>
@@ -40,7 +44,7 @@ import { FetchResult, FetchData } from './type'
 import { toast } from '@/util/toast'
 import dataEmpty from '@/views/common/dataEmpty/index.vue'
 
-const list = ['正面评论', '中性评论', '负面评论']
+const list = ['负面评论', '正面评论', '中性评论']
 const optionsList = {
   goodList: [],
   badList: [],
@@ -103,11 +107,11 @@ export default class Options extends Vue {
   optionsMessage = this.optionsList.goodList || []
   changeAge(ins: number) {
     if (ins == 0) {
-      this.optionsMessage = this.optionsList.goodList || []
-    } else if (ins == 1) {
-      this.optionsMessage = this.optionsList.neutralList || []
-    } else {
       this.optionsMessage = this.optionsList.badList || []
+    } else if (ins == 1) {
+      this.optionsMessage = this.optionsList.goodList || []
+    } else {
+      this.optionsMessage = this.optionsList.neutralList || []
     }
     this.indexs = ins
   }
@@ -115,7 +119,7 @@ export default class Options extends Vue {
   @Watch('optionsList', { deep: true })
   watchOptionsList(val: any) {
     this.indexs = 0
-    this.optionsMessage = val.goodList
+    this.optionsMessage = val.badList
   }
 
   async uplist() {
@@ -129,11 +133,6 @@ export default class Options extends Vue {
     } catch (ex) {
       toast(ex)
     }
-  }
-
-  @Watch('query', { deep: true })
-  watchQuer(val: any) {
-    this.uplist()
   }
 
   @Watch('days', { immediate: true })

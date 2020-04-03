@@ -56,15 +56,6 @@ export default class SentimentBar extends Vue {
     window.removeEventListener('scroll', this.getScroll)
   }
 
-  // @Watch('sidebar', { deep: true })
-  // watchSidebar(val: any) {
-  //   if (val && val.rivalIds) {
-  //     console.log('vaafdfdfdfd', val)
-  //     const isAppLink = typeof val.rivalIds.name === 'string'
-  //     isAppLink ? this.$router.push(val.rivalIds) : this.setRival(val.rivalIds)
-  //   }
-  // }
-
   // 是否关注过本体
   async isDiggThis() {
     if (this.sidebar) {
@@ -73,9 +64,9 @@ export default class SentimentBar extends Vue {
         businessId: this.sidebar.diggId || ''
       })
       if (res.code === 0) {
-        this.digg = res.data
+        // 1=已关注 其他=未关注
+        this.digg = res.data === 1 ? true : false
       }
-      devLog('isDiggThis', res, this.digg)
     }
   }
 
@@ -90,7 +81,6 @@ export default class SentimentBar extends Vue {
       if (res.code === 0) {
         this.digg = !this.digg
       }
-      devLog('diggThis', res, this.digg)
     }
   }
 

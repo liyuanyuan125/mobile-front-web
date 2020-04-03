@@ -132,7 +132,12 @@ export default class Main extends Vue {
         cityConsumList,
       }} = await useranalysis({brandId: this.id})
       this.genderList = genderList || [] // 性别占比
-      this.ageRangeList = ageList || [] // 年龄占比
+      this.ageRangeList = (ageList || []).map((it: any) => {
+        return {
+          ...it,
+          value: (it.value / 100).toFixed(1)
+        }
+      }) // 年龄占比
       this.promotionList = promotionList || [] // 促销敏感度
       this.commentList = commentList || [] // 评论敏感度
       this.userRegionList = (userRegionList || []).map((it: any) => {

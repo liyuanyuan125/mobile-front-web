@@ -69,7 +69,7 @@ import Competing from './components/competing.vue' // 竞品分析
   }
 })
 export default class BrandPage extends ViewBase {
-  @Prop({ type: Number, default: 0}) brandId!: number
+  @Prop({ type: Number, default: 0}) id!: number
 
   navList: TabNavItem[] = [
     { name: 'hot', label: '热度' },
@@ -97,7 +97,7 @@ export default class BrandPage extends ViewBase {
     const [ startTime, endTime ] = lastDays(this.day)
     return {
       type: 1, // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
-      id: this.brandId, // 详情页id
+      id: this.id, // 详情页id
       name: '奔驰',
       startTime,
       endTime,
@@ -122,7 +122,7 @@ export default class BrandPage extends ViewBase {
   }
 
   async brandDetail() {
-    const brandId = this.brandId
+    const brandId = this.id
     try {
       const { data: {
         brandInfo,
@@ -147,7 +147,7 @@ export default class BrandPage extends ViewBase {
         overAllHeatList,
         platformHeatList
       } } = await getList({
-        brandId: this.brandId,
+        brandId: this.id,
         startTime,
         endTime
       })
@@ -162,7 +162,7 @@ export default class BrandPage extends ViewBase {
     try {
       const { data } = await eventAnalysisList({
         type: 1,
-        objectId: this.brandId
+        objectId: this.id
       })
       this.brandEventList = data
     } catch (ex) {
@@ -173,7 +173,7 @@ export default class BrandPage extends ViewBase {
   async analysisList() {
     try {
       const { data } = await brandAnalysisList({
-        brandId: this.brandId
+        brandId: this.id
       })
       this.rivalList = data || []
     } catch (ex) {
@@ -193,14 +193,14 @@ export default class BrandPage extends ViewBase {
         return {
           name: 'sentimentbrand-user',
           params: {
-            brandId: this.brandId
+            brandId: this.id
           }
         }
       default:
         return {
           page,
           businessType: 1,
-          businessObjectId: this.brandId
+          businessObjectId: this.id
         }
     }
   }

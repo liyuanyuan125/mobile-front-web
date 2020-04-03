@@ -1,33 +1,36 @@
 <template>
-  <div class="content" >
+  <div class="content">
     <SentimentBar :title="actorInfo.actorName" :sidebar="sidebar" />
-    <div class='info'>
-      <div class="header" v-if='show'>
-        <div class='left'>
+    <div class="info">
+      <div class="header" v-if="show">
+        <div class="left">
           <div>
             <img :src="coverImg || require('@/assets/actordefault.png')" class="img" />
           </div>
         </div>
-        <div class='right'>
+        <div class="right">
           <p class="kol-name">{{actorInfo.actorName}}</p>
           <p v-if="actorInfo.rankingName && !actorInfo.rankingId " class="event-name">
-              <span style='    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;'>
-                <i class='hid'>{{actorInfo.rankingNum}}&nbsp;</i>
-                <i class='bor'>#{{actorInfo.rankingName}}</i>
-              </span>
+            <span style="    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+              <i class="hid">{{actorInfo.rankingNum}}&nbsp;</i>
+              <i class="bor">#{{actorInfo.rankingName}}</i>
+            </span>
           </p>
           <p v-if="actorInfo.rankingName && actorInfo.rankingId">
-            <router-link :to="{name: 'sentimenteventmarketing', params: {eventId: actorInfo.rankingId} , query: {title: actorInfo.actorName}}" class="event-name flex-box">
-              <span style='    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;'>
-                <i class='hid'>{{actorInfo.rankingNum}}&nbsp;</i>
-                <i class='bor'>#{{actorInfo.rankingName}}</i>
+            <router-link
+              :to="{name: 'sentimenteventmarketing', params: {eventId: actorInfo.rankingId} , query: {title: actorInfo.actorName}}"
+              class="event-name flex-box"
+            >
+              <span style="    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                <i class="hid">{{actorInfo.rankingNum}}&nbsp;</i>
+                <i class="bor">#{{actorInfo.rankingName}}</i>
               </span>
               <Icon name="arrow" size="13" class="icon-arrow" />
-            </router-link> 
+            </router-link>
           </p>
         </div>
       </div>
-      <div class="dubble"> 
+      <div class="dubble">
         <BubbleBottom :data="bubbleData" />
       </div>
       <div class="curve">
@@ -35,57 +38,54 @@
         <div class="curvebot"></div>
       </div>
     </div>
-    
-    <TabNav
-      :list ="list"
-      class="formattab"
-    />
-    <section v-if='show' class="pane" id="hot">
+
+    <TabNav :list="list" class="formattab" />
+    <section v-if="show" class="pane" id="hot">
       <!-- 热度分析 -->
-      <selectTime ref="refsTime" v-model="day" class="select-time"/>
-      <heatLineCom 
-        :overAllList="overAllHeatList" 
+      <selectTime ref="refsTime" v-model="day" class="select-time" />
+      <heatLineCom
+        :overAllList="overAllHeatList"
         :platformList="platformHeatList"
         :params="platformParams(actorInfo.actorName)"
-       />
+      />
     </section>
 
-    <section v-if='show' class="pane" id="praise">
+    <section v-if="show" class="pane" id="praise">
       <!-- 口碑评论 -->
-      <PraiseComment 
-        :favorable="actorInfo.favorable" 
+      <PraiseComment
+        :favorable="actorInfo.favorable"
         :publicPraise="publicPraise"
         :link="getApplink('praiseHotWordsList')"
       />
     </section>
 
-    <section v-if='show' class="pane" id="user">
+    <section v-if="show" class="pane" id="user">
       <!-- 用户分析 -->
-      <UserPortrait 
-          :genderList="userAnalysis.genderList" 
-          :ageRangeList="userAnalysis.ageRangeList"
-          :link="getApplink('userAnalysis')"
-       />
-    </section>
-
-    <section v-if='showevent' class="pane" id="event">
-      <!-- 营销事件 -->
-      <Event 
-        :eventList='eventList'
-        :link="getApplink('eventMarketingList')"
+      <UserPortrait
+        :genderList="userAnalysis.genderList"
+        :ageRangeList="userAnalysis.ageRangeList"
+        :link="getApplink('userAnalysis')"
       />
     </section>
 
-    <section v-if='showuser && pkUserList.length > 0' class="pane" id="part" >
-       <!-- 相似艺人 -->
-        <Competing :pkUserList='pkUserList' :pkIdList='pkIdList' />
+    <section v-if="showevent" class="pane" id="event">
+      <!-- 营销事件 -->
+      <Event :eventList="eventList" :link="getApplink('eventMarketingList')" />
     </section>
 
-    <section  v-if='show && worksAnalysis.movieAnalysis != null && worksAnalysis.tvAnalysis != null && worksAnalysis.musicAnalysis != null && worksAnalysis.brandAnalysis != null' class="pane" id="work">
-      <!-- 作品分析 -->
-      <Works :worksAnalysis='worksAnalysis' :link="getApplink('actorWorksAnalysis')" />
+    <section v-if="showuser && pkUserList.length > 0" class="pane" id="part">
+      <!-- 相似艺人 -->
+      <Competing :pkUserList="pkUserList" :pkIdList="pkIdList" />
     </section>
-    
+
+    <section
+      v-if="show && worksAnalysis.movieAnalysis != null && worksAnalysis.tvAnalysis != null && worksAnalysis.musicAnalysis != null && worksAnalysis.brandAnalysis != null"
+      class="pane"
+      id="work"
+    >
+      <!-- 作品分析 -->
+      <Works :worksAnalysis="worksAnalysis" :link="getApplink('actorWorksAnalysis')" />
+    </section>
   </div>
 </template>
 
@@ -104,8 +104,8 @@ import Event from '@/views/common/eventList/event.vue' // 事件跟踪
 import Competing from './components/competing.vue'
 import Works from './components/works.vue'
 import { toast } from '@/util/toast'
-import {BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
-import { getList, getActorDetail , getPkUser , getEventList } from '@/api/kol'
+import { BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
+import { getList, getActorDetail, getPkUser, getEventList } from '@/api/kol'
 import { alert } from '@/util/toast'
 import { imgFixed } from '@/fn/imgProxy'
 
@@ -127,7 +127,6 @@ import { imgFixed } from '@/fn/imgProxy'
   }
 })
 export default class KolPage extends ViewBase {
-
   show: any = false
   showuser: any = false
   showevent: any = false
@@ -151,7 +150,7 @@ export default class KolPage extends ViewBase {
     { name: 'user', label: '用户' },
     { name: 'event', label: '事件' },
     { name: 'part', label: '竞品' },
-    { name: 'work', label: '作品' },
+    { name: 'work', label: '作品' }
   ]
 
   // 热度分析+平台信息
@@ -159,7 +158,7 @@ export default class KolPage extends ViewBase {
   overAllHeatList: any = []
   platformHeatList: any = []
   platformParams(name: any) {
-    const [ startTime, endTime ] = lastDays(this.day)
+    const [startTime, endTime] = lastDays(this.day)
     return {
       type: 2, // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
       id: this.$route.params.actorId, // 详情页id
@@ -218,12 +217,11 @@ export default class KolPage extends ViewBase {
   }
 
   async getHotList() {
-    const [ startTime, endTime ] = lastDays(this.day)
+    const [startTime, endTime] = lastDays(this.day)
     try {
-      const { data: {
-        overAllHeatList,
-        platformHeatList
-      } } = await getList({
+      const {
+        data: { overAllHeatList, platformHeatList }
+      } = await getList({
         actorId: this.$route.params.actorId,
         startTime,
         endTime
@@ -237,30 +235,53 @@ export default class KolPage extends ViewBase {
 
   async getActorDetail() {
     try {
-      const { data: {
-        actorInfo, // 艺人基本信息
-        actorOverView, // 气泡数字概览
-        publicPraise, // 口碑
-        userAnalysis, // 用户分析
-        worksAnalysis, // 作品分析
-      } } = await getActorDetail({actorId: this.$route.params.actorId})
+      const {
+        data: {
+          actorInfo, // 艺人基本信息
+          actorOverView, // 气泡数字概览
+          publicPraise, // 口碑
+          userAnalysis, // 用户分析
+          worksAnalysis // 作品分析
+        }
+      } = await getActorDetail({ actorId: this.$route.params.actorId })
       this.actorInfo = actorInfo
       this.title = actorInfo.actorName
-      this.coverImg = imgFixed(actorInfo.coverUrl, 172, 172 , 4)
+      this.coverImg = imgFixed(actorInfo.coverUrl, 172, 172, 4)
       this.bubbleData = [
-        {type: '1', value: actorOverView.interactCount, trend: actorOverView.interactTrend,
-         renderTitle: (h: any) => {
-          return h(Title, {
-            props: {
-              title: `近90日新增互动`
-            },
-            on: {
-              click: this.showNote
-          }})
-        }},
-        {type: '2', title: '全网粉丝数', value: actorOverView.fansCount, trend: actorOverView.fansTrend, showdown: true},
-        {type: '3', title: '实时热度', value: actorOverView.heatCount, trend: actorOverView.heatTrend	, showdown: true},
-        {type: '4', title: '好感度', value: actorInfo.favorable == null ? '-' : actorInfo.favorable}
+        {
+          type: '1',
+          value: actorOverView.interactCount,
+          trend: actorOverView.interactTrend,
+          renderTitle: (h: any) => {
+            return h(Title, {
+              props: {
+                title: `近90日新增互动`
+              },
+              on: {
+                click: this.showNote
+              }
+            })
+          }
+        },
+        {
+          type: '2',
+          title: '全网粉丝数',
+          value: actorOverView.fansCount,
+          trend: actorOverView.fansTrend,
+          showdown: true
+        },
+        {
+          type: '3',
+          title: '实时热度',
+          value: actorOverView.heatCount,
+          trend: actorOverView.heatTrend,
+          showdown: true
+        },
+        {
+          type: '4',
+          title: '好感度',
+          value: actorInfo.favorable == null ? '-' : actorInfo.favorable
+        }
       ]
       this.publicPraise = publicPraise
       this.userAnalysis = userAnalysis
@@ -275,17 +296,26 @@ export default class KolPage extends ViewBase {
   async getPkUser() {
     this.pkIdList = []
     try {
-      const pkUser = await getPkUser({actorId: this.$route.params.actorId})
+      const pkUser = await getPkUser({ actorId: this.$route.params.actorId })
       this.pkUserList = pkUser.data || []
       this.pkIdList = (pkUser.data || []).map((it: any) => {
         return it.rivalId
       })
-      // this.sidebar.rivalIds = {
-      //   name: 'sentimentkolproducts',
-      //   query: {
-      //     ids: this.pkIdList.join(',')
-      //   }
-      // }
+      if (this.pkIdList.length) {
+        // 有竞品数据跳竞品报告页
+        this.sidebar.rivalIds = {
+          name: 'sentimentkolproducts',
+          query: {
+            ids: this.pkIdList.join(',')
+          }
+        }
+      } else {
+        // 无竞品的时候，跳设置竞品页
+        this.sidebar.rivalIds = {
+          businessType: 2,
+          businessObjectIdList: this.$route.params.actorId
+        }
+      }
     } catch (ex) {
       toast(ex)
     } finally {
@@ -295,7 +325,10 @@ export default class KolPage extends ViewBase {
 
   async getEventList() {
     try {
-      const event = await getEventList({objectId: this.$route.params.actorId, type: 2})
+      const event = await getEventList({
+        objectId: this.$route.params.actorId,
+        type: 2
+      })
       this.eventList = event.data
     } catch (ex) {
       toast(ex)
@@ -308,19 +341,18 @@ export default class KolPage extends ViewBase {
   showNote() {
     alert({
       title: '提示',
-      message:
-        '互动数为物料的点赞、转发、阅读及播放数之和',
+      message: '互动数为物料的点赞、转发、阅读及播放数之和',
       showConfirmButton: true,
       className: 'alertwid'
     })
   }
 
-  @Watch('day', {deep: true})
+  @Watch('day', { deep: true })
   watchDay() {
     this.getHotList()
   }
 
-  @Watch('$route', {deep: true})
+  @Watch('$route', { deep: true })
   watchRoute() {
     this.getHotList()
     this.getActorDetail()

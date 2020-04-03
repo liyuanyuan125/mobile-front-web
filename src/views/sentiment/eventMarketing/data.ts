@@ -6,6 +6,6 @@ import { get, post, put, del } from '@/fn/ajax'
  * @param query  object
  */
 export async function eventDetail(query: any) {
-  const res = await get('/mock/410/yuqing/market_event/event/marketing/detail', query)
+  const res = await get('/yuqing/market_event/event/marketing/detail', query)
   return res
 }

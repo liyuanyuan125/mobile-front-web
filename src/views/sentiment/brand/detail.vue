@@ -219,7 +219,7 @@ export default class BrandPage extends ViewBase {
   background: #f2f3f6;
 }
 .select-time {
-  padding: 68px 30px 30px;
+  padding: 60px 30px 30px;
 }
 
 /deep/ nav.formattab {

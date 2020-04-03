@@ -127,6 +127,7 @@ export default class Main extends Vue {
 <style lang='less' scoped>
 .items {
   padding: 0 30px;
+  background: #fff;
 }
 .platform-title {
   font-size: 34px;

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page">
     <SentimentBar title="竞品分析详细报告" :titleShow="true" />
     <RivalList 
        :rivalList="rivalList" 
@@ -8,7 +8,9 @@
        type="1"
        @setRival="changeIds"
     />
+
     <TabNav :list ="list" class="tab-nav" normal/>
+
     <section id="hot" class="item-hots">
       <selectTime v-model="day" class="select-time"  ref="reftimes"/>
       <heatContrast 
@@ -310,22 +312,35 @@ export default class Main extends Vue {
 </script>
 
 <style lang='less' scoped>
+.page {
+  background-color: #f2f3f6;
+}
 .item-hots {
   padding-bottom: 57px;
+  background: #fff;
 }
-/deep/ .tab-nav {
+
+.tab-nav {
   margin-top: 0;
   top: 88px;
   z-index: 11;
+  /deep/ .van-tabs__nav {
+    padding-left: 90px;
+    padding-right: 90px;
+  }
+  /deep/ .van-tab {
+    flex-basis: auto !important;
+  }
 }
 .user-model {
-  padding-top: 50px;
   padding-bottom: 10px;
   border-bottom: solid 20px #f2f3f6;
+  padding-top: 60px;
+  background: #fff;
 }
 .items-market {
   border-top: solid 20px #f2f3f6;
-  border-bottom: solid 20px #f2f3f6;
+  // border-bottom: solid 20px #f2f3f6;
   /deep/ .title {
     padding-top: 20px;
   }
@@ -335,23 +350,23 @@ export default class Main extends Vue {
   margin: 0 30px;
 }
 
-.item-high {
-  margin-top: 60px;
-}
+// .item-high {
+//   margin-top: 60px;
+// }
 .item-user {
-  margin-top: 60px;
   padding-bottom: 60px;
 }
 .items {
   padding: 0 30px;
+  background: #fff;
 }
 .select-time {
   padding: 69px 30px 15px;
 }
-.movierival {
-  padding-bottom: 60px;
-  background: #f2f3f6;
-}
+// .movierival {
+//   padding-bottom: 30px;
+//   background: #f2f3f6;
+// }
 /deep/ .options-page {
   padding: 40px 30px 50px;
 }

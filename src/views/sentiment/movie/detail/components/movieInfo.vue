@@ -51,12 +51,12 @@ export default class BaseInfoArea extends ViewBase {
           type: '2',
           title: '累计评论数',
           value: this.overView.commentCount,
-          trend: this.overView.commnetTrend
+          trend: this.overView.commentTrend
         },
         {
           type: '3',
           title: '行业实时热度',
-          value: this.overView.heatRanking,
+          value: this.overView.heatCount,
           trend: this.overView.heatTrend,
           showdown: true
         },

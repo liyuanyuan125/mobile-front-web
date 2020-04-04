@@ -79,15 +79,17 @@ export default class MovieRivalAnalysisPage extends ViewBase {
     this.rivalList = res.rivalList
     this.basisList = res.basisDataList
     // 处理性别分布
+    const genderList = []
     for (const el of res.genderList) {
       const rate1 = Number((el.dataList[0].value / 100).toFixed(1))
       const rate2 = 100 - rate1
-      this.vsData.push({
+      genderList.push({
         name: el.rivalName,
         rate1,
         rate2
       })
     }
+    this.vsData = genderList
     // 年龄分布
     this.ageRangeList = res.ageRangeList
   }

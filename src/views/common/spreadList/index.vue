@@ -18,12 +18,13 @@
             <p>
               <span class="days" v-if="item.topicInfo.creatDay">{{item.topicInfo.creatDay}}</span>
               <span class="date" v-else>{{item.topicInfo.creatDate}}</span>
-              <i
-                class="target"
-                v-for="it in item.markList.slice(0,1)"
-                :key="it.markType"
-                :style="{color:it.color,borderColor:it.color}"
-              >{{it.markValue}}</i>
+              <span v-for="it in (item.markList|| []).slice(0,1)" :key="it.markType">
+                <i
+                  class="target"
+                  v-if="it.markValue"
+                  :style="{color:it.color,borderColor:it.color}"
+                >{{it.markValue}}</i>
+              </span>
             </p>
             <p class="user">
               <span class="van-ellipsis">{{item.userInfo.userName}}</span>

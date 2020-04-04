@@ -1,7 +1,7 @@
 <template>
   <div class="plat-content">
     <SentimentBar :title="title" :titleShow="true" />
-      <ul class="platform-item" v-if="platformList.length">
+      <ul class="platform-item" v-if="flag && platformList.length">
         <li class="flex-box flex-between"
           v-for="item in platformList" 
           :key="item.platformId"
@@ -15,7 +15,11 @@
             </div>
             
             <div class="item-centers">
-              <p class="values flex-box flex-between"><span v-for="it in item.platformValueList" :key="it.name">{{it.name}} {{it.value || '-'}}</span></p>
+              <p class="values flex-box flex-between">
+                <span v-for="(it, index) in item.platformValueList" :key="it.name" v-if="index < 2">
+                  {{it.name}} {{it.value || '-'}}
+                </span>
+              </p>
               <p class="texts">{{item.platformNotice}}</p>
             </div>
           </div>
@@ -24,7 +28,7 @@
           </router-link>
         </li>
       </ul>
-      <DataEmpty v-else />
+      <DataEmpty v-if="flag && platformList.length == 0"/>
       <!-- <div class="submit-button">
         <router-link to="" class="to-link" >查看详细报告</router-link>
       </div> -->
@@ -66,6 +70,8 @@ export default class Main extends Vue {
   @Prop({ type: Number, default: ''}) endTime!: number
 
   platformList = []
+  flag = false
+
 
   get title() {
     return this.name ? `${this.name}平台热度` : '平台热度'
@@ -103,8 +109,10 @@ export default class Main extends Vue {
           coverImg: imgFixed(it.platformLogo, 60, 60)
         }
       })
+      this.flag = true
     } catch (ex) {
       toast(ex)
+      this.flag = true
     }
   }
   // 去原生app评台详情页

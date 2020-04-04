@@ -3,8 +3,13 @@
     <span class="reBack" @click="goBack"></span>
     <h1 class="title van-ellipsis" v-show="titleShow || hasTitle">{{title}}</h1>
     <div class="tool" v-if="sidebar">
-      <i class="ico-pk" v-if="sidebar.rivalIds" title="竞品分析"></i>
-      <i class="ico-digg" v-if="sidebar.diggType && sidebar.diggId" title="关注"></i>
+      <i class="ico-pk" v-if="sidebar.rivalIds" title="竞品分析" @click="goRivalAnalysis"></i>
+      <i
+        :class="['ico-digg',digg ? 'ico-diggon' : '' ]"
+        v-if="sidebar.diggType && sidebar.diggId"
+        @click="diggThis"
+        title="关注"
+      ></i>
     </div>
     <svg width="30px" height="30px" version="1.1" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -17,10 +22,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import { setNavBarStatus, handleGoBack } from '@/util/native'
 import { SentimentBarItem } from './types'
 import { isJyApp } from '@/fn/ua'
+import { hasDigg, diggSubject } from './data'
+import { handleSetRival } from '@/util/native'
+import { devLog, devInfo } from '@/util/dev'
 
 @Component({})
 export default class SentimentBar extends Vue {
@@ -29,21 +37,63 @@ export default class SentimentBar extends Vue {
    */
   @Prop({ type: String }) title!: string // 基本属性
   @Prop({ type: String, default: '#F2F3F6' }) bgColor?: string // 主要是通过颜色来设置 app 项部时间区的背景色
-  @Prop({ type: Object }) sidebar?: SentimentBarItem // 基本属性
+  @Prop({ type: Object }) sidebar!: SentimentBarItem // 基本属性
   @Prop({ type: Boolean, default: false }) titleShow?: boolean // 初始时是否显示标题 例如详情页默认不显示标题
 
-  hasTitle: boolean = false
+  hasTitle: boolean = false // 滚动后显示标题
+  digg: boolean = false // 是否被用户关注了
 
-  mounted() {
+  created() {
     if (isJyApp()) {
       // 在 app 里执行隐藏native 导航
       this.hideNavBarStatus()
     }
+    this.isDiggThis()
     window.addEventListener('scroll', this.getScroll)
   }
 
   destroyed() {
     window.removeEventListener('scroll', this.getScroll)
+  }
+
+  // 是否关注过本体
+  async isDiggThis() {
+    if (this.sidebar) {
+      const res: any = await hasDigg({
+        businessType: Number(this.sidebar.diggType) || 0,
+        businessId: this.sidebar.diggId || ''
+      })
+      if (res.code === 0) {
+        // 1=已关注 其他=未关注
+        this.digg = res.data === 1 ? true : false
+      }
+    }
+  }
+
+  // 关注
+  async diggThis() {
+    if (this.sidebar && this.sidebar.diggType && this.sidebar.diggId) {
+      const res: any = await diggSubject({
+        businessType: Number(this.sidebar.diggType) || 0,
+        businessId: this.sidebar.diggId || '',
+        diggType: this.digg ? 2 : 1
+      })
+      if (res.code === 0) {
+        this.digg = !this.digg
+      }
+    }
+  }
+
+  // 跳设置竞品
+  async setRival(item: any) {
+    const obj = {
+      callBackName: 'handleSetRivalCallBack',
+      params: item
+    }
+    const result: any = await handleSetRival(obj)
+    const codeJson = JSON.parse(result)
+
+    devLog('设置竞品', result)
   }
 
   // 监听滚动显示顶部导航的标题
@@ -77,11 +127,14 @@ export default class SentimentBar extends Vue {
   }
 
   // 去 Pk 页
-  // goRivalAnalysis() {
-  //   if (this.sidebar && this.sidebar.rivalIds) {
-  //     this.$router.push(this.sidebar.rivalIds)
-  //   }
-  // }
+  goRivalAnalysis() {
+    if (this.sidebar && this.sidebar.rivalIds) {
+      const isAppLink = typeof this.sidebar.rivalIds.name === 'string'
+      isAppLink
+        ? this.$router.push(this.sidebar.rivalIds)
+        : this.setRival(this.sidebar.rivalIds)
+    }
+  }
 }
 </script>
 
@@ -100,6 +153,7 @@ export default class SentimentBar extends Vue {
     position: absolute;
     left: 0;
     top: 88px;
+    pointer-events: none;
   }
 }
 .tool {
@@ -117,6 +171,9 @@ export default class SentimentBar extends Vue {
   }
   .ico-digg {
     background-image: url('../../../assets/sentiment/bar-digg.png');
+  }
+  .ico-diggon {
+    background-image: url('../../../assets/sentiment/bar-diggon.png');
   }
   .ico-pk {
     background-image: url('../../../assets/sentiment/bar-pk.png');

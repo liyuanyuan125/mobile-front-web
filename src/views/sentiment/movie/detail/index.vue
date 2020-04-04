@@ -253,7 +253,7 @@ export default class MoviePage extends ViewBase {
   wantSeeTrend = {
     dailyGainList: [
       {
-        date: 1584622361149,
+        date: 1584624361149,
         eventList: [
           {
             eventName: '花木兰首映获好评',
@@ -271,7 +271,7 @@ export default class MoviePage extends ViewBase {
         value: 1300
       },
       {
-        date: 1584622361149,
+        date: 1584623361149,
         eventList: [
           {
             eventName: '花木兰首映获好评',
@@ -293,7 +293,7 @@ export default class MoviePage extends ViewBase {
         value: 32132
       },
       {
-        date: 1584622361149,
+        date: 1582322361149,
         eventList: [
           {
             eventName: '花木兰首映获好评',
@@ -319,7 +319,7 @@ export default class MoviePage extends ViewBase {
         value: 323132
       },
       {
-        date: 1584622361149,
+        date: 1523622361149,
         eventList: [
           {
             eventName: '花木兰首映获好评',
@@ -345,7 +345,7 @@ export default class MoviePage extends ViewBase {
         value: 12313
       },
       {
-        date: 1584622361149,
+        date: 1584624361149,
         eventList: [
           {
             eventName: '花木兰首映获好评',
@@ -373,7 +373,7 @@ export default class MoviePage extends ViewBase {
     ],
     totalGainList: [
       {
-        date: 1583979088061,
+        date: 1583953088061,
         eventList: [
           {
             eventName: '花木兰首映获好评',
@@ -391,7 +391,7 @@ export default class MoviePage extends ViewBase {
         value: 32311323
       },
       {
-        date: 1583979088061,
+        date: 1583249088061,
         eventList: [
           {
             eventName: '花木兰首映获好评',
@@ -409,7 +409,7 @@ export default class MoviePage extends ViewBase {
         value: 32311323
       },
       {
-        date: 1583979088061,
+        date: 1583249088061,
         eventList: [
           {
             eventName: '花木兰首映获好评',
@@ -419,7 +419,7 @@ export default class MoviePage extends ViewBase {
         value: 32311323
       },
       {
-        date: 1583979088061,
+        date: 1583479088061,
         eventList: [
           {
             eventName: '花木兰首映获好评',
@@ -441,7 +441,7 @@ export default class MoviePage extends ViewBase {
         value: 32311323
       },
       {
-        date: 1583979088061,
+        date: 1583439088061,
         eventList: [
           {
             eventName: '花木兰首映获好评',
@@ -497,11 +497,18 @@ export default class MoviePage extends ViewBase {
       for (const el of res) {
         ids.push(el.rivalId)
       }
-    }
-    this.sidebar.rivalIds = {
-      name: 'sentimentmovierivalanalysis',
-      query: {
-        ids: ids.join(',')
+      // 有竞品数据跳竞品报告页
+      this.sidebar.rivalIds = {
+        name: 'sentimentmovierivalanalysis',
+        query: {
+          ids: ids.join(',')
+        }
+      }
+    } else {
+      // 无竞品的时候，跳设置竞品页
+      this.sidebar.rivalIds = {
+        businessType: 3,
+        businessObjectIdList: this.movieId
       }
     }
   }

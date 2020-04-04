@@ -16,7 +16,7 @@ export interface PraiseItem {
  * @param query  object
  */
 export async function getMovieDetailById(movieId: string) {
-    const res = await get('/mock/400/yuqing/movie/detail', { movieId })
+    const res = await get('/yuqing/movie/detail', { movieId })
     return res
 }
 
@@ -49,7 +49,7 @@ export async function getEventListByIdAndType(query: EventItem) {
  * 获取竞品报告详情页
  */
 export async function getMovieRivalList(movieIdList: string) {
-    const res = await get('/mock/400/yuqing/movie/rivalreport', { movieIdList })
+    const res = await get('/yuqing/movie/rivalreport', { movieIdList })
     return res
 }
 
@@ -57,7 +57,7 @@ export async function getMovieRivalList(movieIdList: string) {
  * 竞品报告详情页 - 口碑评论对比
  */
 export async function getRivalPraise(query: PraiseItem) {
-    const res = await get('/mock/400/yuqing/movie/getRivalPraise', query)
+    const res = await get('/yuqing/movie/getRivalPraise', query)
     return res
 }
 
@@ -65,7 +65,7 @@ export async function getRivalPraise(query: PraiseItem) {
  * 竞品报告详情页 - 获取想看趋势
  */
 export async function getRivalWantSeeTrend(query: PraiseItem) {
-    const res = await get('/mock/400/yuqing/movie/getRivalWantSee', query)
+    const res = await get('/yuqing/movie/getRivalWantSee', query)
     return res
 }
 
@@ -73,7 +73,7 @@ export async function getRivalWantSeeTrend(query: PraiseItem) {
  * 竞品报告详情页 - 平台指数趋势
  */
 export async function getRivalPlatformTrend(query: PraiseItem) {
-    const res = await get('/mock/400/yuqing/movie/getRivalExponent', query)
+    const res = await get('/yuqing/movie/getRivalExponent', query)
     return res
 }
 

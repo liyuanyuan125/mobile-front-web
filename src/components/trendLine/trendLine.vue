@@ -48,9 +48,7 @@ export default class TrendLine extends Vue {
         data: it.list
       }
     })
-    const xDates = (this.lineData.xDate || []).map((ite: any) =>
-      moment(ite).format('MM-DD')
-    )
+    const xDates = this.lineData.xDate.map((ite: any) => moment(ite).format('MM-DD'))
 
     const options: any = {
       title: {

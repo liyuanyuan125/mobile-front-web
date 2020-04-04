@@ -37,12 +37,12 @@
               <li>
                 <p class='hot1'>昨日热度</p>
                 <p class='hot2'>{{item.yesterHeatCount == '' ? '-' : item.yesterHeatCount}}</p>
-                <p :class="Number(item.chgyesterHeatTrend) > 0 ?'red':'blue'">{{item.yesterHeatTrend}}</p>
+                <p :class="Number(item.chgyesterHeatTrend) == 0 ? '' : (Number(item.chgyesterHeatTrend) > 0 ?'red':'blue')">{{item.yesterHeatTrend}}</p>
               </li>
               <li>
                 <p class='hot1'>全网粉丝数</p>
                 <p class='hot2'>{{item.interFansCount == '' ? '-' : item.interFansCount}}</p>
-                <p :class="Number(item.chginterFansTrend) > 0?'red':'blue'">{{item.interFansTrend}}</p>
+                <p :class="Number(item.chginterFansTrend) == 0 ? '' : (Number(item.chginterFansTrend) > 0?'red':'blue')">{{item.interFansTrend}}</p>
               </li>
             </ul>
           </div>
@@ -54,7 +54,8 @@
       </li>
     </ul>
     <div class="submit-button" v-if='pkUserListData.length > 0'>
-      <router-link :to="{ name:'sentimentkolproducts', params: { ids: this.pkIdList.join(',') } }" class="to-link" >查看详细报告</router-link>
+      <!-- 查看详细报告 -->
+      <router-link :to="{ name:'sentimentkolproducts', query: { ids: this.pkIdList.join(',') } }" class="to-link" >查看详细报告</router-link>
     </div>
     <dataEmpty v-if='pkUserListData.length == 0' />
   </div>
@@ -87,17 +88,17 @@ export default class Main extends Vue {
   created() {
     this.pkDate = this.pkUserList[0]
     this.coverImg = imgFixed(this.pkUserList[0].rivalCover, 200, 200 , 4)
-    this.pkUserListData = (this.pkUserList.slice(1) || []).map((it: any) => {
+    this.pkUserListData = (this.pkUserList.slice(1, 3) || []).map((it: any) => {
       return {
         ...it,
         coverImg: imgFixed(it.rivalCover, 200, 260 , 4),
         eventCreatTimeDate: it.eventCreatTime == null ? '' : moment(it.eventCreatTime).format(format),
-        yesterHeatTrend: it.yesterHeatTrend == 0 ? '相同' : (it.yesterHeatTrend > 0 ?
+        yesterHeatTrend: (it.yesterHeatTrend == 0 || it.yesterHeatTrend == null) ? '-' : (it.yesterHeatTrend > 0 ?
         '高' + String(roleNumber(it.yesterHeatTrend)) : '低' + String(roleNumber(it.yesterHeatTrend)).substr(1)),
-        interFansTrend: it.interFansTrend == 0 ? '相同' : (it.interFansTrend > 0 ?
+        interFansTrend: (it.interFansTrend == 0 || it.interFansTrend == null) ? '-' : (it.interFansTrend > 0 ?
         '高' + String(roleNumber(it.interFansTrend)) : '低' + String(roleNumber(it.interFansTrend)).substr(1)),
-        chgyesterHeatTrend: it.yesterHeatTrend,
-        chginterFansTrend: it.interFansTrend,
+        chgyesterHeatTrend: it.yesterHeatTrend == null ? 0 : it.yesterHeatTrend,
+        chginterFansTrend: it.interFansTrend == null ? 0 : it.interFansTrend,
       }
     })
   }
@@ -231,7 +232,7 @@ export default class Main extends Vue {
       float: right;
       font-size: 22px;
       font-weight: 300;
-      color: rgba(48, 48, 48, 1);
+      color: rgba(48, 48, 48, 0.5);
     }
   }
 }

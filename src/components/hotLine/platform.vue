@@ -1,11 +1,14 @@
 <template>
   <div>
-    <ModuleHeader title="平台热度"  class="formatmodule" :link="link" />
+    <ModuleHeader title="平台热度" class="formatmodule" v-if="dataList.length < 2"/>
+    <ModuleHeader title="平台热度"  class="formatmodule" :link="link" v-else/>
+    
     <ul class="platform-item">
       <li
         class="flex-box flex-between"
-        v-for="item in dataList"
+        v-for="(item, index) in dataList"
         :key="item.platformId"
+        v-if="index < 3"
         @click="goPlatformDetail(item)"
       >
         <div class="flex-box">
@@ -17,7 +20,9 @@
           
           <div class="item-centers">
             <p class="values flex-box flex-between">
-              <span v-for="it in item.platformValueList" :key="it.name">{{it.name}} {{it.value || '-'}}</span>
+              <span v-for="(it, index) in item.platformValueList" :key="it.name" v-if="index < 2">
+                {{it.name}} {{it.value || '-'}}
+              </span>
             </p>
             <p class="texts">{{item.platformNotice}}</p>
           </div>

@@ -115,10 +115,10 @@ export default new Router({
     },
     // 品牌舆情
     {
-      path: '/sentiment/brand/:id',
+      path: '/sentiment/brand/:id(\\d+)',
       name: 'sentiment-brand',
       component: () => import('./views/sentiment/brand/detail.vue'),
-      props: idProps
+      props: idProps,
     },
     // 品牌舆情 - 用户分析二级详情页
     {
@@ -129,7 +129,7 @@ export default new Router({
     },
     // 品牌舆情 - 竞品分析二级详情页
     {
-      path: '/sentiment/brand/rivalAnalysis/:ids',
+      path: '/sentiment/brand/rivalAnalysis',
       name: 'sentimentbrand-analyze',
       component: () => import('./views/sentiment/brand/rivalAnalysis/index.vue'),
     },
@@ -150,7 +150,7 @@ export default new Router({
     // kol舆情
     // 艺人详情
     {
-      path: '/sentiment/actor/:actorId',
+      path: '/sentiment/actor/:actorId(\\d+)',
       name: 'sentimentactor',
       component: () => import('./views/sentiment/actor/detail/index.vue')
     },
@@ -161,13 +161,13 @@ export default new Router({
     },
     // kol舆情用户分析
     {
-      path: '/sentiment/actor/userAnalysis/:actorId',
+      path: '/sentiment/actor/userAnalysis/:actorId(\\d+)',
       name: 'sentimentactoruser',
       component: () => import('./views/sentiment/actor/userAnalysis/user.vue')
     },
     // kol舆情竞品分析
     {
-      path: '/sentiment/actor/rivalAnalysis/:ids',
+      path: '/sentiment/actor/rivalAnalysis',
       name: 'sentimentkolproducts',
       component: () => import('./views/sentiment/actor/rivalAnalysis/products.vue')
     },

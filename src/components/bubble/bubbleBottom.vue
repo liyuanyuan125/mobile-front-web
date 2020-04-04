@@ -69,6 +69,9 @@ export default class Bubble extends Vue {
       .title {
         opacity: 0.7;
       }
+      .iconfont {
+        font-size: 24px;
+      }
     }
     .bubbleBottom-loop(6);
     .bubble-info-bottom-big {

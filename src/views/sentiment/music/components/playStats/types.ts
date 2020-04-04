@@ -39,7 +39,8 @@ export interface PlayEvent {
 
 export interface PlayForm {
   date: number
-  playCount: string
+  playCount?: string  // 单曲才存在，播放量
+  saleCount?: string  // 专辑才存在，销售量
   markName?: string
   platformList: NameValue[]
 }
@@ -59,3 +60,10 @@ export interface PlayItem {
   label: string
   view: PlayView
 }
+
+export interface PlayQuery {
+  startTime: number
+  endTime: number
+}
+
+export type PlayFetch = (query: PlayQuery) => PlayView | PlayItem[]

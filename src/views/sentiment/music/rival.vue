@@ -1,9 +1,12 @@
 <template>
-  <main class="main-page">
+  <main
+    class="main-page"
+    :class="isAlbum ? 'main-page-album' : 'main-page-song'"
+  >
     <SentimentBar title="竞品分析详细报告" titleShow/>
 
     <RivalList
-      type="5"
+      :type="isAlbum ? '6' : '5'"
       :rivalList="rivalList"
       class="rival-list"
     />
@@ -19,7 +22,7 @@
       />
     </section>
 
-    <section class="pane pane-heat" id="hot">
+    <section class="pane pane-heat" id="hot" v-if="!isAlbum">
       <ModuleHeader title="热度分析"/>
       <HeatContrast
         lineTitle="综合热度对比"
@@ -35,12 +38,12 @@
       />
     </section>
 
-    <section class="pane pane-play">
+    <!-- <section class="pane pane-play">
       <ModuleHeader title="播放量对比"/>
       <PlayStats :view="playStatsList" class="play-stats"/>
-    </section>
+    </section> -->
 
-    <section class="pane pane-rank">
+    <section class="pane pane-rank" v-if="!isAlbum">
       <ModuleHeader title="账单表现对比"/>
       <Table
         :data="rankTable.data"
@@ -51,10 +54,7 @@
     </section>
 
     <section class="pane pane-praise" id="praise">
-      <MarketContrast
-        :fetch="praiseFetch"
-        :query="praiseQuery"
-      />
+      <MarketContrast :fetch="praiseFetch"/>
     </section>
 
     <section class="pane pane-user" id="user">
@@ -66,10 +66,7 @@
 
       <ModuleHeader title="性别分布" tag="h4" class="vs-header"/>
 
-      <VsList
-        :data="sexData"
-        class="vs-chart"
-      />
+      <VsList :data="sexData" class="vs-chart"/>
 
       <div class="van-hairline--top"></div>
 
@@ -97,9 +94,8 @@ import PlayStats, { PlayItem } from './components/playStats'
 import MarketContrast from '@/views/common/marketContrast/index.vue'
 import Age from '@/views/common/ageDistribution/index.vue'
 import VsList, { VsItem } from '@/components/vsList'
-import AreaTable from '@/views/common/table/table.vue'
 import MultiTable, { MultiTableItem } from '@/components/multiTable'
-import { getRivalReport, getRivalHeat, getRivalPlay, getRivalPraise } from './data'
+import { getBasic, getRivalHeat, getRivalPlay, getRivalPraise } from './rivalData'
 import { lastDays } from '@/util/timeSpan'
 
 @Component({
@@ -114,12 +110,16 @@ import { lastDays } from '@/util/timeSpan'
     MarketContrast,
     Age,
     VsList,
-    AreaTable,
     MultiTable,
   }
 })
 export default class extends ViewBase {
-  @Prop({ type: String }) ids!: string
+  @Prop({ type: Boolean, default: false }) isAlbum!: boolean
+
+  get ids() {
+    const { ids = '' } = this.$route.query
+    return ids as string
+  }
 
   rivalList: any[] = []
 
@@ -132,14 +132,31 @@ export default class extends ViewBase {
 
   basisDataList: any[] = []
 
-  basicColumns: TableColumn[] = [
-    { name: 'rivalName', title: '单曲', width: '8.5em', align: 'left' },
-    { name: 'releaseDate', title: '发行时间', width: '7em' },
-    { name: 'companyName', title: '唱片公司', width: '6em' },
-    { name: 'playCount', title: '累计播放量', width: '6em' },
-    { name: 'interactCount', title: '累计互动量', width: '6em' },
-    { name: 'favorable', title: '好看度', width: '4em' },
-  ]
+  get basicColumns() {
+    const isAlbum = this.isAlbum
+    const list: TableColumn[] = [
+      { name: 'rivalName', title: isAlbum ? '专辑名称' : '单曲', width: '8.5em', align: 'left' },
+      { name: 'releaseDate', title: '发行时间', width: '7em' },
+      { name: 'companyName', title: '唱片公司', width: '6em' },
+    ]
+    if (isAlbum) {
+      list.push(
+        { name: 'totalSaleCount', title: '累计销售量', width: '6em' },
+        { name: 'totalInteractCount', title: '累计互动量', width: '6em' },
+        { name: 'favorable', title: '好看度', width: '4em' },
+        { name: 'musicCount', title: '专辑内歌曲量', width: '7em' },
+        { name: 'musicPlayCount', title: '歌曲累计播放量', width: '8em' },
+        { name: 'musicInteractCount', title: '歌曲累计互动量', width: '8em' },
+      )
+    } else {
+      list.push(
+        { name: 'playCount', title: '累计播放量', width: '6em' },
+        { name: 'interactCount', title: '累计互动量', width: '6em' },
+        { name: 'favorable', title: '好看度', width: '4em' },
+      )
+    }
+    return list
+  }
 
   // 热度分析数据
   heatContrastData: any = null
@@ -147,10 +164,6 @@ export default class extends ViewBase {
   playStatsList: PlayItem[] = []
 
   rankTable: any = null
-
-  praiseFetch = getRivalPraise
-
-  praiseQuery = { songIdList: this.ids }
 
   // 年龄分布数据
   ageRangeList = []
@@ -169,47 +182,47 @@ export default class extends ViewBase {
     { name: 'top5', title: 'TOP5', html: true },
   ]
 
+  praiseFetch(query: any) {
+    return getRivalPraise(this.ids, query, this.isAlbum)
+  }
+
   created() {
     this.init()
   }
 
   async init() {
-    this.getBasic()
-    this.getHeat()
+    try {
+      this.getBasic()
+      this.getHeat()
+    } catch (ex) {
+      this.handleError(ex)
+    }
   }
 
   async getBasic() {
-    try {
-      const {
-        rivalList = [],
-        basisDataList = [],
-        rankTable = {},
-        ageRangeList = [],
-        sexData = {},
-        areaList = []
-      } = await getRivalReport(this.ids)
-      this.rivalList = rivalList
-      this.basisDataList = basisDataList
-      this.rankTable = rankTable
-      this.ageRangeList = ageRangeList
-      this.sexData = sexData
-      this.areaList = areaList
-    } catch (ex) {
-      this.handleError(ex)
-    }
+    const {
+      rivalList,
+      basisDataList,
+      rankTable,
+      ageRangeList,
+      sexData,
+      areaList
+    } = await getBasic(this.ids, this.isAlbum) as any
+    this.rivalList = rivalList
+    this.basisDataList = basisDataList
+    this.rankTable = rankTable
+    this.ageRangeList = ageRangeList
+    this.sexData = sexData
+    this.areaList = areaList
   }
 
   async getHeat() {
-    try {
-      const heatContrastData = await getRivalHeat({
-        songIdList: this.ids,
-        // startTime: 20200212,
-        // endTime: 20200330,
-      })
-      this.heatContrastData = heatContrastData
-    } catch (ex) {
-      this.handleError(ex)
-    }
+    const heatContrastData = await getRivalHeat({
+      songIdList: this.ids,
+      startTime: 20200212,
+      endTime: 20200330,
+    })
+    this.heatContrastData = heatContrastData
   }
 
   async getPlay() {
@@ -241,6 +254,7 @@ export default class extends ViewBase {
 }
 
 .tab-nav {
+  top: 88px;
   /deep/ .van-tabs__nav {
     padding-left: 90px;
     padding-right: 90px;

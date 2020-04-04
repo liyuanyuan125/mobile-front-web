@@ -1,5 +1,17 @@
 import { get, post, put, del } from '@/fn/ajaxFix'
 
+export interface IdTime {
+  songId: number
+  startTime: number
+  endTime: number
+}
+
+export interface IdListTime {
+  songIdList: string
+  startTime: number
+  endTime: number
+}
+
 /**
  * 1.单曲详情页
  * https://yapi.aiads-dev.com/project/404/interface/api/10878
@@ -14,17 +26,17 @@ export function getDetail(id: number) {
  * https://yapi.aiads-dev.com/project/404/interface/api/11173
  * @param query 查询
  */
-export function getHotAnalysis(query: any) {
+export function getHeatAnalysis(query: IdTime) {
   return get('/yuqing/music/song/heat/analysis', query)
 }
 
 /**
  * 1.2单曲详情页-获取竞品对手
  * https://yapi.aiads-dev.com/project/404/interface/api/11228
- * @param query 查询
+ * @param id 单曲 id
  */
-export function getSimilarList(query: any) {
-  return get('/yuqing/music/song/rival/list', query)
+export function getRivalList(id: number) {
+  return get('/yuqing/music/song/rival/list', { songId: id })
 }
 
 /**
@@ -32,7 +44,7 @@ export function getSimilarList(query: any) {
  * https://yapi.aiads-dev.com/project/404/interface/api/11283
  * @param query 查询
  */
-export function getPlayAnalysis(query: any) {
+export function getPlayAnalysis(query: IdTime) {
   return get('/yuqing/music/song/play/analysis', query)
 }
 
@@ -59,7 +71,7 @@ export function getRivalReport(ids: string) {
  * https://yapi.aiads-dev.com/project/404/interface/api/11618
  * @param query 查询参数
  */
-export function getRivalHeat(query: any) {
+export function getRivalHeat(query: IdListTime) {
   return get('/yuqing/music/song/rival/heat/analysis', query)
 }
 
@@ -68,7 +80,7 @@ export function getRivalHeat(query: any) {
  * https://yapi.aiads-dev.com/project/404/interface/api/11623
  * @param query 查询参数
  */
-export function getRivalPlay(query: any) {
+export function getRivalPlay(query: IdListTime) {
   return get('/yuqing/music/song/rival/play/analysis', query)
 }
 
@@ -77,7 +89,7 @@ export function getRivalPlay(query: any) {
  * https://yapi.aiads-dev.com/project/404/interface/api/11628
  * @param query 查询参数
  */
-export function getRivalPraise(query: any) {
+export function getRivalPraise(query: IdListTime) {
   return get('/yuqing/music/song/rival/praise', query)
 }
 

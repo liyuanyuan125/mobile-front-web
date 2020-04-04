@@ -1,4 +1,4 @@
-import { getUserAnalysisById } from '@/api/movie'
+import { getUserAnalysisById } from '@/api/tv'
 import { toast } from '@/util/toast'
 
 /**
@@ -12,24 +12,6 @@ export const userAnalysisData = async (tvId: string) => {
             const data = res.data
             if (data.ageRangeList && data.ageRangeList.length) {
                 for (const it of data.ageRangeList) {
-                    it.value = (it.value / 100).toFixed(1)
-                }
-            }
-            if (data.userRegionList && data.userRegionList.length) {
-                let inx: number = 0
-                for (const it of data.userRegionList) {
-                    inx += 1
-                    it.value = (it.value / 100).toFixed(1)
-                    it.name = inx + '.' + it.name
-                }
-            }
-            if (data.consumePrefer && data.consumePrefer.length) {
-                for (const it of data.consumePrefer) {
-                    it.value = (it.value / 100).toFixed(1)
-                }
-            }
-            if (data.moviePrefer && data.moviePrefer.length) {
-                for (const it of data.moviePrefer) {
                     it.value = (it.value / 100).toFixed(1)
                 }
             }

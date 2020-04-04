@@ -6,27 +6,32 @@
       <dl>
         <dd v-for="(item,index) in list" :key="item.rivalId + index">
           <div class="rivalbox">
-            <img :src="item.rivalCover.url" :alt="item.rivalName" class="img" v-if="item.coverImg" />
-            <img src="@/assets/moviedefault.png" :alt="baseInfo.movieNameCn" class="img" v-else />
+            <img :src="item.coverImg" :alt="item.rivalName" class="img" />
             <h4 class="van-ellipsis">{{item.rivalName}}</h4>
             <div class="params">
               <div class="flex">
                 <p class="tit">热度</p>
-                <strong style="font-family: DIN Alternate;">{{item.heatCount}}</strong>
+                <strong
+                  style="font-family: DIN Alternate;"
+                >{{item.heatCount ? item.heatCount : '-'}}</strong>
                 <p
                   class="trend"
                   v-if="item.heatTrend"
                   :style="{color:item.heatTrend > 0 ? '#FF6262': '#88AAF6'}"
                 >{{item.heatTrend > 0 ? '高'+item.heatTrendShow : '低' + item.heatTrendShow}}</p>
+                <p class="trend" v-else>-</p>
               </div>
               <div class="flex">
                 <p class="tit">新增物料</p>
-                <strong style="font-family: DIN Alternate;">{{item.materialsAdd}}</strong>
+                <strong
+                  style="font-family: DIN Alternate;"
+                >{{item.materialsAdd ? item.materialsAdd : '-'}}</strong>
                 <p
                   class="trend"
                   v-if="item.materialsTrend"
                   :style="{color:item.materialsTrend > 0 ? '#FF6262': '#88AAF6'}"
                 >{{item.materialsTrend > 0 ? '高' + item.materialsTrendShow : '低' + item.materialsTrendShow}}</p>
+                <p class="trend" v-else>-</p>
               </div>
             </div>
             <div class="eventbox" v-if="item.eventName">
@@ -63,10 +68,10 @@ export default class RivalAnalysis extends ViewBase {
   @Prop({ type: Array }) rivalList!: any[]
 
   get list() {
-    const list = this.rivalList
-    for (const item of this.rivalList) {
+    const list = this.rivalList || []
+    for (const item of list) {
       item.eventCreatTime = moment(item.eventCreatTime).format('YYYY-MM-DD')
-      item.coverImg = imgFixed(item.rivalCover, 200, 260)
+      item.coverImg = imgFixed(item.rivalCover, 200, 260, 4)
       item.heatTrendShow = roleNumber(Math.abs(item.heatTrend))
       item.materialsTrendShow = roleNumber(Math.abs(item.materialsTrend))
     }
@@ -75,6 +80,7 @@ export default class RivalAnalysis extends ViewBase {
 
   get rivalIds() {
     const rivalIds: string[] = []
+    const list = this.rivalList || []
     for (const item of this.rivalList) {
       rivalIds.push(item.rivalId)
     }
@@ -118,6 +124,8 @@ export default class RivalAnalysis extends ViewBase {
   min-height: 260px;
   padding-left: 240px;
   .img {
+    background: url('../../../../../assets/moviedefault.png') no-repeat center;
+    background-size: cover;
     position: absolute;
     left: 0;
     top: 0;

@@ -54,16 +54,17 @@ export default class TabNav extends Vue {
       behavior: actions => {
         const canSmoothScroll = 'scrollBehavior' in document.body.style
         const box = this.$refs.box as HTMLElement
+        const boxTop = parseInt(getComputedStyle(box).top, 10)
         const boxHeight = box.offsetHeight
         actions.forEach(({ el, top, left }) => {
           if (el.scroll && canSmoothScroll) {
             el.scroll({
-              top: top - boxHeight,
+              top: top - boxTop - boxHeight,
               left,
               behavior: 'smooth'
             })
           } else {
-            el.scrollTop = top
+            el.scrollTop = top - boxTop
             el.scrollLeft = left
           }
         })

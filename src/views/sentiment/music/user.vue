@@ -5,17 +5,17 @@
     <TabNav class="tab-nav"/>
 
     <UserPortrait
-      :sexData="userAnalysis.sexData"
-      :ageData="userAnalysis.ageData"
+      :sexData="portrait.sexData"
+      :ageData="portrait.ageData"
       class="user-portrait"
-      v-if="userAnalysis"
+      v-if="portrait"
     />
 
     <UserArea
-      :data="userRegionList"
-      :moreLink="`/sentiment/common/userRegion?src=5&id=${id}&type=1`"
+      :data="area"
+      :moreLink="`/sentiment/common/userRegion?src=${isAlbum ? 6 : 5}&id=${id}&type=1`"
       class="user-area"
-      v-if="userRegionList"
+      v-if="area"
     />
   </main>
 </template>
@@ -25,16 +25,14 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import TabNav from '@/components/tabNav'
-import ModuleHeader from '@/components/moduleHeader'
-import { getUserAnalysis } from './data'
 import UserPortrait, { VerticalBarItem, NameValue } from '@/views/common/userPortrait'
 import UserArea, { ChinaMapItem } from '@/views/common/userArea'
+import { getBasic } from './userData'
 
 @Component({
   components: {
     SentimentBar,
     TabNav,
-    ModuleHeader,
     UserPortrait,
     UserArea,
   }
@@ -42,29 +40,28 @@ import UserArea, { ChinaMapItem } from '@/views/common/userArea'
 export default class extends ViewBase {
   @Prop({ type: Number }) id!: number
 
-  userAnalysis: any = null
+  @Prop({ type: Boolean, default: false }) isAlbum!: boolean
 
-  userRegionList: any = null
+  portrait: any = null
+
+  area: any = null
 
   created() {
     this.init()
   }
 
   async init() {
-    this.getBasic()
-  }
-
-  async getBasic() {
     try {
-      const {
-        userAnalysis = {},
-        userRegionList = [],
-      } = await getUserAnalysis(this.id)
-      this.userAnalysis = userAnalysis
-      this.userRegionList = userRegionList
+      this.getBasic()
     } catch (ex) {
       this.handleError(ex)
     }
+  }
+
+  async getBasic() {
+    const { portrait, area } = await getBasic(this.id, this.isAlbum)
+    this.portrait = portrait
+    this.area = area
   }
 }
 </script>

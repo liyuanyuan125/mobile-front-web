@@ -43,7 +43,7 @@
     </section>
 
     <ModuleHeader
-      title="分日播放量"
+      :title="isAlbum ? '分日销量' : '分日播放量'"
       tag="h4"
       class="daily-header"
     />
@@ -61,7 +61,7 @@
         <table class="daily-table">
           <thead>
             <th class="col-date">日期</th>
-            <th class="col-total">当日销量</th>
+            <th class="col-count">当日{{isAlbum ? '销量' : '播放量'}}</th>
             <th
               v-for="name in dailyFormNames"
               :key="name"
@@ -71,12 +71,12 @@
           <tbody>
             <tr v-for="item in dailyFormList" :key="item.date">
               <td class="col-date" v-html="item.dateText"></td>
-              <td class="col-total">{{item.playCount}}</td>
+              <td class="col-count">{{item.count}}</td>
               <td
                 v-for="sub in item.platformList"
                 :key="sub.name"
                 class="col-cell"
-              >{{sub.value || '--'}}</td>
+              >{{sub.value || placeholder}}</td>
             </tr>
           </tbody>
         </table>
@@ -87,7 +87,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import ModuleHeader from '@/components/moduleHeader'
 import { RawLocation } from 'vue-router'
 import { Tabs, Tab, Progress } from 'vant'
@@ -96,7 +96,7 @@ import Select from '@/components/select'
 import MultiLine, { MultiLineItem, MultiLineEvents } from '@/components/multiLine'
 import { toMoment } from '@/util/dealData'
 
-import { PlayItem, PlayView } from './types'
+import { PlayFetch, PlayItem, PlayView } from './types'
 
 const weekDays = [ '日', '一', '二', '三', '四', '五', '六' ]
 
@@ -111,24 +111,24 @@ const weekDays = [ '日', '一', '二', '三', '四', '五', '六' ]
   }
 })
 export default class PlayStats extends Vue {
-  /** 数据 */
-  @Prop({ type: [ Array, Object ], default: () => [] }) view!: PlayView | PlayItem[]
+  @Prop({ type: Function, required: true }) fetch!: PlayFetch
+
+  @Prop({ type: Boolean, default: false }) isAlbum!: boolean
 
   /** 日期范围列表，数字代表最近几天 */
   @Prop({ type: Array, default: () => [ 7, 15, 30, 60, 90 ] }) days!: number[]
+
+  @Prop({ type: String, default: '--' }) placeholder!: string
 
   day = 7
 
   viewIndex = 0
 
+  viewList: PlayItem[] = []
+
   get dayList() {
     const list = this.days.map(value => ({ name: `最近${value}天`, value }))
     return list
-  }
-
-  get viewList() {
-    const view = this.view
-    return Array.isArray(view) ? view : [ { label: '', view } ]
   }
 
   get platformList() {
@@ -192,6 +192,7 @@ export default class PlayStats extends Vue {
       const mark = item.markName ? `<em>${item.markName}</em>` : ''
       return {
         ...item,
+        count: (this.isAlbum ? item.saleCount : item.playCount) || this.placeholder,
         dateText: `<i>${ymd}</i><br>周${day}${mark}`
       }
     })
@@ -205,6 +206,23 @@ export default class PlayStats extends Vue {
     }
     const names = list[0].platformList.map(it => it.name)
     return names
+  }
+
+  mounted() {
+    this.fetchData()
+  }
+
+  async fetchData() {
+    const [ startTime, endTime ] = lastDays(this.day)
+    const query = { startTime, endTime }
+    const view = await this.fetch(query)
+    const list = Array.isArray(view) ? view : [ { label: '', view } ]
+    this.viewList = list
+  }
+
+  @Watch('day')
+  watchDay() {
+    this.fetchData()
   }
 }
 </script>
@@ -256,6 +274,10 @@ export default class PlayStats extends Vue {
   padding: 30px;
   background-color: rgba(242, 243, 246, .5);
   border-radius: 10px;
+  margin-top: 10px;
+}
+
+.play-nav ~ .total-stats {
   margin-top: 40px;
 }
 
@@ -346,7 +368,7 @@ export default class PlayStats extends Vue {
       color: #ff6262;
     }
   }
-  .col-total {
+  .col-count {
     width: 150px;
   }
   .col-cell {

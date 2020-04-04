@@ -1,4 +1,10 @@
-import { getTVDetailById, getEventListByIdAndType, getRivalListById } from '@/api/tv'
+import {
+    getTVDetailById,
+    getEventListByIdAndType,
+    getRivalListById,
+    getTVHeatAnalysis,
+    getTVPlayCount
+} from '@/api/tv'
 import { toast } from '@/util/toast'
 
 /**
@@ -19,6 +25,41 @@ export const getTvDetail = async (tvId: string) => {
     }
 }
 
+/**
+ * 获取电影详情页-热度分析
+ */
+export const getTvHeat = async (query: any) => {
+    try {
+        const res: any = await getTVHeatAnalysis(query)
+        if (res && res.code === 0) {
+            return res.data
+        } else {
+            toast(res.msg)
+        }
+    } catch (ex) {
+        // toast(ex)
+        // 注意这里重新 throw
+        throw ex
+    }
+}
+
+/**
+ * 获取电影详情页-播放量监控
+ */
+export const getTvPlay = async (query: any) => {
+    try {
+        const res: any = await getTVPlayCount(query)
+        if (res && res.code === 0) {
+            return res.data
+        } else {
+            toast(res.msg)
+        }
+    } catch (ex) {
+        // toast(ex)
+        // 注意这里重新 throw
+        throw ex
+    }
+}
 
 /**
  * 获取电影营销事件列表

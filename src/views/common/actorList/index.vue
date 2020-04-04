@@ -10,8 +10,7 @@
           @click="goActorDetail(item.actorId)"
         >
           <i class="img">
-            <img :src="item.coverImg" :alt="item.actorName" v-if="item.coverImg" />
-            <img src="@/assets/actordefault.png" :alt="item.actorName" v-else />
+            <img :src="item.coverImg" :alt="item.actorName" />
           </i>
           <h5 class="van-ellipsis">{{item.actorName}}</h5>
           <p>{{item.character}}</p>
@@ -45,7 +44,7 @@ export default class ActorList extends Vue {
     const list = this.actorList
     if (list && list.length) {
       for (const it of list) {
-        it.coverImg = imgFixed(it.actorCover, 150, 210)
+        it.coverImg = imgFixed(it.actorCover, 150, 210, 4)
       }
     }
     return list
@@ -93,6 +92,8 @@ export default class ActorList extends Vue {
   }
 
   .img {
+    background: url('../../../assets/actordefault.png') no-repeat center;
+    background-size: cover;
     width: 150px;
     height: 210px;
     display: block;

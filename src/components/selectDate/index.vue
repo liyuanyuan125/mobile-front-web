@@ -104,6 +104,7 @@ export default class SelectDate extends Vue {
     background: transparent;
     font-size: 26px;
     color: rgba(48, 48, 48, 0.6);
+    appearance: none;
   }
 }
 </style>

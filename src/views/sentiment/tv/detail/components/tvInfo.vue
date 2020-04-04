@@ -3,11 +3,14 @@
   <div class="viewpage">
     <div class="movieinfo">
       <div class="moviebox">
-        <img :src="movieCover" :alt="baseInfo.tvName" class="img" v-if="movieCover" />
-        <img src="@/assets/moviedefault.png" :alt="baseInfo.tvName" class="img" v-else />
+        <img :src="movieCover" :alt="baseInfo.tvName" class="img" />
         <h3 class="van-ellipsis">{{baseInfo.tvName}}</h3>
         <p>{{baseInfo.episodes}}{{!baseInfo.episodes ? '' : ' / '}}{{baseInfo.duration}}{{!baseInfo.duration ? '' : ' / '}}{{baseInfo.genreName}}</p>
         <p v-if="baseInfo.releaseDate">{{baseInfo.releaseDate}}</p>
+        <p v-if="platformList.length">
+          播放平台：
+          <img v-for="(img,i) in platformList" :key="img.url+i" :src="img.logoUrl" />
+        </p>
       </div>
     </div>
     <div class="bubble">
@@ -71,6 +74,18 @@ export default class BaseInfoArea extends ViewBase {
       : ''
     return url
   }
+
+  // 播放平台
+  get platformList() {
+    const list = this.baseInfo.platformLogoList || []
+    const platList = []
+    if (list.length) {
+      for (const it of list) {
+        it.logoUrl = it.url ? imgFixed(it.url, 40, 40, 4) : ''
+      }
+    }
+    return list
+  }
 }
 </script>
 
@@ -94,6 +109,8 @@ export default class BaseInfoArea extends ViewBase {
     color: #303030;
 
     .img {
+      background: url('.././../../../../assets/moviedefault.png') no-repeat center;
+      background-size: cover;
       position: absolute;
       left: 0;
       top: 0;

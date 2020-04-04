@@ -14,13 +14,14 @@
         class="wantchart"
         :formatterHtml="formatterHtml"
       />
+      <dataEmpty v-else />
     </div>
     <div v-if="platName.length" class="formlist">
       <dl>
         <dt>
           <ul>
             <li>日期</li>
-            <li>{{platName[0]}}</li>
+            <li v-for="(name,ind) in platName" :key="name + ind">{{name}}</li>
           </ul>
         </dt>
         <dd v-for="(it,i) in platData" :key="it.date + i">
@@ -32,7 +33,10 @@
                 <i v-if="it.markName">{{it.markName}}</i>
               </span>
             </li>
-            <li>{{it.value}}</li>
+            <li
+              v-for="(plat,index) in it.value"
+              :key="plat.platformName + index"
+            >{{plat.platformValue}}</li>
           </ul>
         </dd>
         <dd>
@@ -51,12 +55,14 @@ import { devLog, devInfo } from '@/util/dev'
 import LineGrap from '@/components/lineGraph'
 import { roleNumber } from '@/fn/validateRules'
 import moment from 'moment'
+import dataEmpty from '@/views/common/dataEmpty/index.vue'
 import { openAppLink, AppLink } from '@/util/native'
 
 @Component({
   components: {
     SelectDate,
-    LineGrap
+    LineGrap,
+    dataEmpty
   }
 })
 export default class PlayTrend extends ViewBase {
@@ -92,7 +98,7 @@ export default class PlayTrend extends ViewBase {
         dataList.push({
           date: moment(it.date).format('YYYY-MM-DD'),
           day: '周' + this.weekDays[moment(it.date).day()],
-          value: it.platformList[0].platformValue,
+          value: it.platformList,
           markName: it.markName
         })
       }
@@ -144,8 +150,8 @@ export default class PlayTrend extends ViewBase {
 
   @Watch('dates', { deep: true })
   watchDays(val: any) {
-    // console.log('获取日期选择组件选中的时间', val, this.dates)
-    // this.dates = val
+    this.dates = val
+    this.$emit('returnDate', val)
   }
 }
 </script>
@@ -194,12 +200,14 @@ export default class PlayTrend extends ViewBase {
   }
   li {
     height: 110px;
-    width: 25%;
     flex: 1;
     align-items: flex-start;
     justify-content: center;
     display: flex;
     flex-direction: column;
+    &:first-child {
+      flex: 1.5;
+    }
     .date {
       display: block;
       font-size: 24px;

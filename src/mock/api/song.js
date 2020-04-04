@@ -21,7 +21,7 @@ mockGet('/yuqing/music/song/detail', ({ songId }) => {
       favorable: 'B+',
     },
 
-    // 弹框简洁
+    // 弹框简介
     basisDataList: [
       { name: '单曲名称1', value: 'Last Dance' },
       { name: '单曲名称2', value: '挪威的森林2' },
@@ -254,7 +254,7 @@ mockGet('/yuqing/music/song/rival/list', () => {
       interactCount: '1.3亿',
       interactTrend: 0,
       eventName: '英首相与女友订婚',
-      eventCreateTime: 1583909626668,
+      eventCreatTime: 1583909626668,
     },
     {
       rivalName: 'Tomorrow',

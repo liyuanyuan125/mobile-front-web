@@ -229,24 +229,45 @@ export default new Router({
 
     // ===*** 单曲
     {
-      path: '/sentiment/song/:id',
+      path: '/sentiment/song/:id(\\d+)',
       name: 'sentiment-song',
-      component: () => import('./views/sentiment/song/index.vue'),
+      component: () => import('./views/sentiment/music/detail.vue'),
       props: idProps
     },
     // 单曲 - 用户分析二级页
     {
-      path: '/sentiment/song/:id/user',
+      path: '/sentiment/song/:id(\\d+)/user',
       name: 'sentiment-song-user',
-      component: () => import('./views/sentiment/song/user.vue'),
+      component: () => import('./views/sentiment/music/user.vue'),
       props: idProps
     },
     // 单曲 - 竞品分析二级页
     {
-      path: '/sentiment/song/rival/:ids',
+      path: '/sentiment/song/rivalAnalysis',
       name: 'sentiment-song-rival',
-      component: () => import('./views/sentiment/song/rival.vue'),
-      props: paramTypes({ ids: String })
+      component: () => import('./views/sentiment/music/rival.vue'),
+    },
+
+    // ===*** 专辑
+    {
+      path: '/sentiment/album/:id(\\d+)',
+      name: 'sentiment-album',
+      component: () => import('./views/sentiment/music/detail.vue'),
+      props: paramTypes({ id: Number, isAlbum: true })
+    },
+    // 专辑 - 用户分析二级页
+    {
+      path: '/sentiment/album/:id(\\d+)/user',
+      name: 'sentiment-album-user',
+      component: () => import('./views/sentiment/music/user.vue'),
+      props: paramTypes({ id: Number, isAlbum: true })
+    },
+    // 专辑 - 竞品分析二级页
+    {
+      path: '/sentiment/album/rivalAnalysis',
+      name: 'sentiment-album-rival',
+      component: () => import('./views/sentiment/music/rival.vue'),
+      props: paramTypes({ isAlbum: true })
     },
 
     // demo

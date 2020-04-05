@@ -11,8 +11,9 @@
       />
     </div>
     <PlayTrend
-      :dataTrend="playTrend"
-      v-if="playTrend.dailyFormList"
+      :fetch="playTrendFetch"
+      :query="tvId"
+      v-if="tvId"
       :link="getApplink('tvPlayCountDetail')"
     />
     <PraiseComment
@@ -128,7 +129,6 @@ export default class TVPage extends ViewBase {
     if (this.tvId) {
       await this.getTVInfo()
       await this.getHeat90()
-      await this.getPlayTrend()
       await this.getEventList()
       await this.getRivalList()
     }
@@ -143,16 +143,6 @@ export default class TVPage extends ViewBase {
     this.actorList = res.actorList ? res.actorList : []
     this.produceList = res.produceList ? res.produceList : []
     document.title = res.tvInfo.tvName
-  }
-  // api获取播放量监控
-  async getPlayTrend() {
-    const [startTime, endTime] = lastDays(7)
-    const res: any = await getTvPlay({
-      tvId: this.tvId,
-      startTime,
-      endTime
-    })
-    this.playTrend = res
   }
 
   // api获取最近90天的热度
@@ -199,6 +189,12 @@ export default class TVPage extends ViewBase {
         businessObjectIdList: this.tvId
       }
     }
+  }
+
+  // api获取播放量监控
+  playTrendFetch = async (query: any) => {
+    const res: any = await getTvPlay(query)
+    return res
   }
 
   // 监测热度分析的日期选择

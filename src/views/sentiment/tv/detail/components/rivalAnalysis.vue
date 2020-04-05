@@ -4,7 +4,7 @@
     <ModuleHeader title="同档期剧集分析" />
     <div v-if="list.length">
       <dl>
-        <dd v-for="(item,index) in list" :key="item.rivalId + index">
+        <dd v-for="(item,index) in list.slice(0,3)" :key="item.rivalId + index">
           <div class="rivalbox">
             <img :src="item.coverImg" :alt="item.rivalName" class="img" />
             <h4 class="van-ellipsis">{{item.rivalName}}</h4>
@@ -14,24 +14,28 @@
                 <strong
                   style="font-family: DIN Alternate;"
                 >{{item.heatCount ? item.heatCount : '-'}}</strong>
-                <p
-                  class="trend"
-                  v-if="item.heatTrend"
-                  :style="{color:item.heatTrend > 0 ? '#FF6262': '#88AAF6'}"
-                >{{item.heatTrend > 0 ? '高'+item.heatTrendShow : '低' + item.heatTrendShow}}</p>
-                <p class="trend" v-else>-</p>
+                <div v-if="index > 0">
+                  <p
+                    class="trend"
+                    v-if="item.heatTrend"
+                    :style="{color:item.heatTrend > 0 ? '#FF6262': '#88AAF6'}"
+                  >{{item.heatTrend > 0 ? '高'+item.heatTrendShow : '低' + item.heatTrendShow}}</p>
+                  <p class="trend" v-else>-</p>
+                </div>
               </div>
               <div class="flex">
                 <p class="tit">新增物料</p>
                 <strong
                   style="font-family: DIN Alternate;"
                 >{{item.materialsAdd ? item.materialsAdd : '-'}}</strong>
-                <p
-                  class="trend"
-                  v-if="item.materialsTrend"
-                  :style="{color:item.materialsTrend > 0 ? '#FF6262': '#88AAF6'}"
-                >{{item.materialsTrend > 0 ? '高' + item.materialsTrendShow : '低' + item.materialsTrendShow}}</p>
-                <p class="trend" v-else>-</p>
+                <div v-if="index > 0">
+                  <p
+                    class="trend"
+                    v-if="item.materialsTrend"
+                    :style="{color:item.materialsTrend > 0 ? '#FF6262': '#88AAF6'}"
+                  >{{item.materialsTrend > 0 ? '高' + item.materialsTrendShow : '低' + item.materialsTrendShow}}</p>
+                  <p class="trend" v-else>-</p>
+                </div>
               </div>
             </div>
             <div class="eventbox" v-if="item.eventName">
@@ -97,9 +101,9 @@ export default class RivalAnalysis extends ViewBase {
     padding: 30px 30px 0;
   }
   dd {
-    margin-top: 40px;
+    margin-top: 45px;
     &:first-child {
-      margin-top: 10px;
+      margin-top: 15px;
     }
   }
   .golink {

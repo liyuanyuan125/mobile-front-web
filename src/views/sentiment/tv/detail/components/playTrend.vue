@@ -8,11 +8,12 @@
       </div>
     </div>
     <div>
-      <LineGrap
+      <trendLines
         :lineData="lineDatas"
         v-if="lineDatas.xDate"
         class="wantchart"
-        :formatterHtml="formatterHtml"
+        :colors="colors"
+        :isGrad="true"
       />
       <dataEmpty v-else />
     </div>
@@ -52,34 +53,62 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import SelectDate from '@/components/selectDate'
 import { devLog, devInfo } from '@/util/dev'
-import LineGrap from '@/components/lineGraph'
+import trendLines from '@/components/trendLine'
 import { roleNumber } from '@/fn/validateRules'
 import moment from 'moment'
 import dataEmpty from '@/views/common/dataEmpty/index.vue'
 import { openAppLink, AppLink } from '@/util/native'
+import { lastDays } from '@/util/timeSpan'
 
 @Component({
   components: {
     SelectDate,
-    LineGrap,
+    trendLines,
     dataEmpty
   }
 })
 export default class PlayTrend extends ViewBase {
-  @Prop({ type: Object }) dataTrend!: any
+  @Prop({ type: Function, required: true })
+  fetch!: (query?: any) => Promise<any>
+  @Prop({ type: String }) query!: string
   @Prop({ type: Object }) link!: AppLink
 
   lineDatas: any = {}
-  dates: any = {}
+  dates = {
+    startTime: lastDays(7)[0],
+    endTime: lastDays(7)[1]
+  }
+  colors: any[] = [
+    '#88AAF6',
+    '#79DDC5',
+    // '#8DC3FF',
+    '#5B72FF',
+    '#9577FF',
+    '#DD77FF',
+    '#FF777B',
+    '#FFC077'
+  ]
   weekDays = ['日', '一', '二', '三', '四', '五', '六']
+  response: any = {}
 
-  created() {
-    this.formatDatas(this.dataTrend.playDataList[0])
+  // 接口获取数据
+  async apiGetData() {
+    try {
+      const res: any = await this.fetch({
+        tvId: this.query,
+        ...this.dates
+      })
+      //   console.log('data', data)
+      this.response = res
+      this.formatDatas(this.response.playDataList)
+    } catch (ex) {
+      // toast(ex)
+    }
   }
 
   // 获取平台名称
   get platName() {
-    const list = this.dataTrend.dailyFormList
+    const list = this.response.dailyFormList
     const nameList = []
     if (list && list.length) {
       for (const it of list[0].platformList) {
@@ -91,7 +120,7 @@ export default class PlayTrend extends ViewBase {
 
   // 处平理数据
   get platData() {
-    const list = this.dataTrend.dailyFormList
+    const list = this.response.dailyFormList
     const dataList = []
     if (list && list.length) {
       for (const it of list) {
@@ -107,40 +136,21 @@ export default class PlayTrend extends ViewBase {
   }
 
   // 处理数据
-  formatDatas(data: any) {
-    const list: any[] = data.dataList
-    const xDate = (list || []).map((it: any) => it.date)
-    const yDate = (list || []).map((it: any) => it.value)
-
+  formatDatas(dataObj: any[]) {
+    let xDate: any = []
+    const yDate = (dataObj || []).map((it: any) => {
+      const { platformName, dataList } = it
+      xDate = (dataList || []).map((ite: any) => ite.date)
+      return {
+        name: platformName,
+        list: (dataList || []).map((ite: any) => ite.value)
+      }
+    })
     this.lineDatas = {
+      title: '',
       xDate,
-      yDate: [
-        {
-          data: yDate,
-          name: data.platformName
-        }
-      ]
+      yDate
     }
-  }
-
-  // 处理chart 浮层 tooltip
-  formatterHtml = (params: any, time: any) => {
-    const day = this.weekDays[moment(time).day()]
-    const date = moment(time).format('YYYY-MM-DD')
-    const name = this.dataTrend.playDataList[0].platformName
-    return `
-           <div style="border:2px solid rgba(48,48,48,.1);border-radius:6px; padding:7px 10px;background-color:#fff">
-             <p style="color:#47403B;font-size:13px;line-height:16px">${date} 周${day}</p>
-             <div style="color:#303030;font-size:13px;line-height:16px;margin-top:8px;white-space:nowrap">
-              <span style="display:inline-block;margin-right:3px;border-radius:12px;
-              width:7px;height:7px;background-color:#88AAF6;"></span>
-              ${name}
-              <span style="color:#88AAF6;font-weight:bold; margin-left:35px">
-                ${roleNumber(Math.abs(params.data))}
-              </span>
-             </div>
-           </div>
-          `
   }
 
   // applink 跳转
@@ -150,8 +160,7 @@ export default class PlayTrend extends ViewBase {
 
   @Watch('dates', { deep: true })
   watchDays(val: any) {
-    this.dates = val
-    this.$emit('returnDate', val)
+    this.apiGetData()
   }
 }
 </script>

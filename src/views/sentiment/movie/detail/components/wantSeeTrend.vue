@@ -15,11 +15,12 @@
     <div>
       <LineGrap
         :lineData="lineDatas"
-        v-if="lineDatas.xDate.length"
+        v-if="lineDatas.xDate&&lineDatas.xDate.length"
         :key="lineDatas.title"
         class="wantchart"
         :formatterHtml="formatterHtml"
       />
+      <dataEmpty v-else />
     </div>
   </div>
 </template>
@@ -33,32 +34,55 @@ import { devLog, devInfo } from '@/util/dev'
 import LineGrap from '@/components/lineGraph'
 import moment from 'moment'
 import { roleNumber } from '@/fn/validateRules'
+import dataEmpty from '@/views/common/dataEmpty/index.vue'
 
 @Component({
   components: {
     SelectDate,
-    LineGrap
+    LineGrap,
+    dataEmpty
   }
 })
 export default class WantSeeTrend extends ViewBase {
-  @Prop({ type: Object }) dataTrend!: any
+  @Prop({ type: Function, required: true })
+  fetch!: (query?: any) => Promise<any>
+  @Prop({ type: String }) query!: string
 
   lineDatas: any = {}
   city: any = {
-    areaId: 'quanguo',
+    code: 'quanguo',
     areaName: '全国',
-    selectType: 1
+    type: 1
   }
   dates: any = {}
+  dataTrend: any = {}
 
-  created() {
-    this.formatDatas(this.dataTrend.dailyGainList)
+  // 接口获取数据
+  async apiGetData() {
+    try {
+      const res: any = await this.fetch({
+        movieId: this.query,
+        ...this.city,
+        ...this.dates
+      })
+      // console.log('data', res)
+      this.dataTrend = res
+      this.formatDatas(this.dataTrend.dailyGainList)
+    } catch (ex) {
+      // toast(ex)
+    }
   }
 
+  // 监控日期变化
   @Watch('dates', { deep: true })
   watchDays(val: any) {
-    // console.log('获取日期选择组件选中的时间', val, this.dates)
-    // this.dates = val
+    this.apiGetData()
+  }
+
+  // 监控城市变化
+  @Watch('city', { deep: true })
+  watchCity(val: any) {
+    this.apiGetData()
   }
 
   // 处理数据
@@ -87,7 +111,11 @@ export default class WantSeeTrend extends ViewBase {
     const result: any = await handleCitySelect(obj)
     const codeJson = JSON.parse(result)
     if (codeJson) {
-      this.city = codeJson.data
+      this.city = {
+        code: codeJson.data.areaId,
+        areaName: codeJson.data.areaName,
+        type: codeJson.data.selectType
+      }
     }
   }
 
@@ -115,6 +143,7 @@ export default class WantSeeTrend extends ViewBase {
   border-top: 20px solid rgba(216, 216, 216, 0.2);
   .titbox {
     display: flex;
+    padding-bottom: 30px;
     h4 {
       white-space: nowrap;
       font-size: 40px;

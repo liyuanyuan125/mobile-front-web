@@ -71,24 +71,23 @@ import { roleNumber } from '@/fn/validateRules'
 export default class RivalAnalysis extends ViewBase {
   @Prop({ type: Array }) rivalList!: any[]
 
-  get list() {
-    const list = this.rivalList || []
-    for (const item of list) {
-      item.eventCreatTime = moment(item.eventCreatTime).format('YYYY-MM-DD')
-      item.coverImg = imgFixed(item.rivalCover, 200, 260, 4)
-      item.heatTrendShow = roleNumber(Math.abs(item.heatTrend))
-      item.materialsTrendShow = roleNumber(Math.abs(item.materialsTrend))
-    }
-    return list
-  }
+  rivalIds: any = []
 
-  get rivalIds() {
-    const rivalIds: string[] = []
-    const list = this.rivalList || []
-    for (const item of this.rivalList) {
-      rivalIds.push(item.rivalId)
+  get list() {
+    const list = this.rivalList
+    const ids: any[] = []
+    if (list && list.length) {
+      for (const item of this.rivalList) {
+        item.eventCreatTime = moment(item.eventCreatTime).format('YYYY-MM-DD')
+        item.coverImg = imgFixed(item.rivalCover, 200, 260, 4)
+        item.heatTrendShow = roleNumber(Math.abs(item.heatTrend))
+        item.materialsTrendShow = roleNumber(Math.abs(item.materialsTrend))
+      }
+      this.rivalIds = ids.slice(0, 3).join(',')
+      return list
+    } else {
+      return []
     }
-    return rivalIds.join(',')
   }
 }
 </script>

@@ -30,7 +30,17 @@ export async function getMovieHeatAnalysis(query: any) {
 }
 
 /**
- * 详情页获取竞品分析
+ * 获取电影详情页 - 获取想看趋势
+ * https://yapi.aiads-dev.com/project/400/interface/api/10958
+ * @param query  object
+ */
+export async function getMovieWantSee(query: any) {
+    const res = await get('/yuqing/movie/wantsee', query)
+    return res
+}
+
+/**
+ * 获取电影详情页 - 获取竞品分析
  */
 export async function getRivalListById(movieId: string) {
     const res = await get('/yuqing/movie/rivalAnalysis', { movieId })
@@ -38,10 +48,10 @@ export async function getRivalListById(movieId: string) {
 }
 
 /**
- * 详情页获取营销事件
+ * 获取电影详情页 - 获取营销事件
  */
 export async function getEventListByIdAndType(query: EventItem) {
-    const res = await get('/mock/416/yuqing/common/eventAnalysis', query)
+    const res = await get('/yuqing/common/eventAnalysis', query)
     return res
 }
 
@@ -81,7 +91,7 @@ export async function getRivalPlatformTrend(query: PraiseItem) {
  * 获取用户分析
  */
 export async function getUserAnalysisById(movieId: string) {
-    const res = await get('/mock/400/yuqing/movie/useranalysis', { movieId })
+    const res = await get('/yuqing/movie/useranalysis', { movieId })
     return res
 }
 

@@ -21,7 +21,7 @@
       <annularChart :data="workList" :width="annularWid"></annularChart>
     </div>
     <ProgressList :progressData="userRegionList" title="活跃地区" />
-    <ProgressList :progressData="consumePrefer" title="消费偏好" />
+    <!-- <ProgressList :progressData="consumePrefer" title="消费偏好" /> -->
     <ProgressList :progressData="moviePrefer" title="观影偏好" />
   </div>
 </template>

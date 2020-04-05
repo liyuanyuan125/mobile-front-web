@@ -197,13 +197,6 @@ export default class TVPage extends ViewBase {
     return res
   }
 
-  // 监测热度分析的日期选择
-  @Watch('day', { deep: true })
-  watchDay() {
-    this.platformParams
-    // this.getHeatAnalysis()
-  }
-
   /**
    * 获取 applink
    * 业务类型 businessType 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑

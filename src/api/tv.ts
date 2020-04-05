@@ -13,6 +13,7 @@ export interface PraiseItem {
 }
 /**
  * 获取电视剧详情页
+ * https://yapi.aiads-dev.com/project/402/interface/api/10858
  * @param query  object
  */
 export async function getTVDetailById(tvId: string) {
@@ -22,6 +23,7 @@ export async function getTVDetailById(tvId: string) {
 
 /**
  * 获取电视剧详情页 - 获取热度分析
+ * https://yapi.aiads-dev.com/project/402/interface/api/11178
  * @param query  object
  */
 export async function getTVHeatAnalysis(query: any) {
@@ -50,7 +52,7 @@ export async function getRivalListById(tvId: string) {
  * 获取电视剧详情页 - 营销事件
  */
 export async function getEventListByIdAndType(query: EventItem) {
-    const res = await get('/mock/416/yuqing/common/eventAnalysis', query)
+    const res = await get('/yuqing/common/eventAnalysis', query)
     return res
 }
 

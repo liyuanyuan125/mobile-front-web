@@ -4,10 +4,9 @@
     <ModuleHeader title="同档期影片分析" />
     <div v-if="list.length">
       <dl>
-        <dd v-for="(item,index) in list" :key="item.rivalId + index">
+        <dd v-for="(item,index) in list.slice(0,3)" :key="item.rivalId + index">
           <div class="rivalbox">
-            <img :src="item.coverImg" :alt="item.rivalName" class="img" v-if="item.coverImg" />
-            <img src="@/assets/moviedefault.png" :alt="baseInfo.movieNameCn" class="img" v-else />
+            <img :src="item.coverImg" :alt="item.rivalName" class="img" />
             <h4 class="van-ellipsis">{{item.rivalName}}</h4>
             <div class="params">
               <div class="flex">
@@ -15,24 +14,28 @@
                 <strong
                   style="font-family: DIN Alternate;"
                 >{{item.heatCount ? item.heatCount : '-'}}</strong>
-                <p
-                  class="trend"
-                  v-if="item.heatTrend"
-                  :style="{color:item.heatTrend > 0 ? '#FF6262': '#88AAF6'}"
-                >{{item.heatTrend > 0 ? '高'+item.heatTrendShow : '低' + item.heatTrendShow}}</p>
-                <p v-else class="trend">-</p>
+                <div v-if="index > 0">
+                  <p
+                    class="trend"
+                    v-if="item.heatTrend"
+                    :style="{color:item.heatTrend > 0 ? '#FF6262': '#88AAF6'}"
+                  >{{item.heatTrend > 0 ? '高'+item.heatTrendShow : '低' + item.heatTrendShow}}</p>
+                  <p v-else class="trend">-</p>
+                </div>
               </div>
               <div class="flex">
                 <p class="tit">新增物料</p>
                 <strong
                   style="font-family: DIN Alternate;"
                 >{{item.materialsAdd ? item.materialsAdd : '-'}}</strong>
-                <p
-                  class="trend"
-                  v-if="item.materialsTrend"
-                  :style="{color:item.materialsTrend > 0 ? '#FF6262': '#88AAF6'}"
-                >{{item.materialsTrend > 0 ? '高' + item.materialsTrendShow : '低' + item.materialsTrendShow}}</p>
-                <p class="trend" v-else>-</p>
+                <div v-if="index > 0">
+                  <p
+                    class="trend"
+                    v-if="item.materialsTrend"
+                    :style="{color:item.materialsTrend > 0 ? '#FF6262': '#88AAF6'}"
+                  >{{item.materialsTrend > 0 ? '高' + item.materialsTrendShow : '低' + item.materialsTrendShow}}</p>
+                  <p class="trend" v-else>-</p>
+                </div>
               </div>
             </div>
             <div class="eventbox" v-if="item.eventName">
@@ -81,7 +84,7 @@ export default class RivalAnalysis extends ViewBase {
         item.heatTrendShow = roleNumber(Math.abs(item.heatTrend))
         item.materialsTrendShow = roleNumber(Math.abs(item.materialsTrend))
       }
-      this.rivalIds = ids.join(',')
+      this.rivalIds = ids.slice(0, 3).join(',')
       return list
     } else {
       return []
@@ -125,6 +128,8 @@ export default class RivalAnalysis extends ViewBase {
   min-height: 260px;
   padding-left: 240px;
   .img {
+    background: url('../../../../../assets/moviedefault.png') no-repeat center;
+    background-size: cover;
     position: absolute;
     left: 0;
     top: 0;

@@ -179,17 +179,24 @@ export default class TVPage extends ViewBase {
   // api获取竞品对手
   async getRivalList() {
     const res: any = await getRivalList(this.tvId)
-    this.rivalAnalysis = res
+    this.rivalAnalysis = res || []
     const ids = []
-    if (res && res.length) {
+    if (res && this.rivalAnalysis) {
       for (const el of res) {
         ids.push(el.rivalId)
       }
-    }
-    this.sidebar.rivalIds = {
-      name: 'sentimentmovierivalanalysis',
-      query: {
-        ids: ids.join(',')
+      // 有竞品数据跳竞品报告页
+      this.sidebar.rivalIds = {
+        name: 'sentimenttvrivalanalysis',
+        query: {
+          ids: ids.join(',')
+        }
+      }
+    } else {
+      // 无竞品的时候，跳设置竞品页
+      this.sidebar.rivalIds = {
+        businessType: 4,
+        businessObjectIdList: this.tvId
       }
     }
   }

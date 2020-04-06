@@ -299,6 +299,16 @@ export default class PlayTrend extends ViewBase {
   td {
     font-size: 26px;
   }
+  .date {
+    display: block;
+    font-size: 24px;
+  }
+  .week {
+    display: block;
+    i {
+      color: #ff6262;
+    }
+  }
 }
 
 .daily-form-more {

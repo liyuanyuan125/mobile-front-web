@@ -9,7 +9,7 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import echarts from 'echarts'
 import { cssifyObject } from 'css-in-js-utils'
 import moment from 'moment'
-import { thousand } from '@/fn/validateRules'
+import { thousand, roleNumber } from '@/fn/validateRules'
 
 @Component
 export default class TrendLine extends Vue {
@@ -122,7 +122,7 @@ export default class TrendLine extends Vue {
               <p class="tooltip-item">
                 <i class="tooltip-dot" style="background-color: ${it.color}"></i>
                 <span class="tooltip-name">${it.seriesName}</span>
-                <span class="tooltip-value" style="color: ${it.color}">${thousand(
+                <span class="tooltip-value" style="color: ${it.color}">${roleNumber(
               it.value
             )}</span>
               </p>

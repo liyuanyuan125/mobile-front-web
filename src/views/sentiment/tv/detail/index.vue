@@ -142,7 +142,7 @@ export default class TVPage extends ViewBase {
     this.userAnalysis = res.userAnalysis
     this.actorList = res.actorList ? res.actorList : []
     this.produceList = res.produceList ? res.produceList : []
-    document.title = res.tvInfo.tvName
+    // document.title = res.tvInfo.tvName
   }
 
   // api获取最近90天的热度

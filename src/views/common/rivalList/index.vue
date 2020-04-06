@@ -75,7 +75,7 @@ export default class RivalList extends Vue {
       params: {
         businessType: this.type,
         businessObjectIdList: this.rivalIds.join(','),
-        isOpenNewPage: false // 是否新打开页面，默认是 true
+        isOpenNewPage: 'false' // 是否新打开页面，默认是 true
       }
     }
     const result: any = await handleSetRival(obj)

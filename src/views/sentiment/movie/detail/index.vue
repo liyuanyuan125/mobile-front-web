@@ -132,12 +132,10 @@ export default class MoviePage extends ViewBase {
   async created() {
     this.movieId = this.$route.params.movieId
     this.sidebar.diggId = this.movieId
-    if (this.movieId) {
-      await this.getMovieInfo()
-      await this.getEventList()
-      await this.getRivalList()
-      await this.getHeatAnalysis()
-    }
+    await this.getMovieInfo()
+    await this.getEventList()
+    await this.getRivalList()
+    await this.getHeatAnalysis()
   }
 
   // api获取电影详情页
@@ -150,7 +148,7 @@ export default class MoviePage extends ViewBase {
     this.userAnalysis = res.userAnalysis
     this.actorList = res.actorList ? res.actorList : []
     this.produceList = res.produceList ? res.produceList : []
-    document.title = res.movieInfo.movieNameCn
+    // document.title = res.movieInfo.movieNameCn || '电影详情'
   }
 
   // api获取热度分析

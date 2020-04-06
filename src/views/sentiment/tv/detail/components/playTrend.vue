@@ -17,33 +17,32 @@
       />
       <dataEmpty v-else />
     </div>
-    <div v-if="platName.length" class="formlist">
-      <dl>
-        <dt>
-          <ul>
-            <li>日期</li>
-            <li v-for="(name,ind) in platName" :key="name + ind">{{name}}</li>
-          </ul>
-        </dt>
-        <dd v-for="(it,i) in platData" :key="it.date + i">
-          <ul>
-            <li>
-              <span class="date">{{it.date}}</span>
-              <span class="week">
-                {{it.day}}
-                <i v-if="it.markName">{{it.markName}}</i>
-              </span>
-            </li>
-            <li
-              v-for="(plat,index) in it.value"
-              :key="plat.platformName + index"
-            >{{plat.platformValue}}</li>
-          </ul>
-        </dd>
-        <dd>
-          <div class="playmore" @click="goLink">查看全部日期</div>
-        </dd>
-      </dl>
+    <div class="daily-form">
+      <div class="daily-table-wrap">
+        <table class="daily-table">
+          <thead>
+            <th class="col-date">日期</th>
+            <th v-for="(name,ind) in platName" :key="name + ind" class="col-cell">{{name}}</th>
+          </thead>
+          <tbody>
+            <tr v-for="(it,i) in platData" :key="it.date + i">
+              <td class="col-date">
+                <span class="date">{{it.date}}</span>
+                <span class="week">
+                  {{it.day}}
+                  <i v-if="it.markName">{{it.markName}}</i>
+                </span>
+              </td>
+              <td
+                v-for="(plat,index) in it.value"
+                :key="plat.platformName + index"
+                class="col-cell"
+              >{{plat.platformValue || '-'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <a class="daily-form-more" @click="goLink">查看全部日期1</a>
     </div>
   </div>
 </template>
@@ -188,57 +187,127 @@ export default class PlayTrend extends ViewBase {
   border-bottom: none;
 }
 
-.formlist {
-  border: 1px solid rgba(242, 243, 246, 0.5);
-  background: #f2f3f6;
+// .formlist {
+//   border: 1px solid rgba(242, 243, 246, 0.5);
+//   background: #f2f3f6;
+//   border-radius: 10px;
+//   overflow: hidden;
+//   margin-top: 50px;
+//   dt {
+//     font-size: 26px;
+//     padding: 0 30px;
+//   }
+//   dd {
+//     padding: 0 30px;
+//     &:nth-child(even) {
+//       background: #fff;
+//     }
+//   }
+//   ul {
+//     display: flex;
+//   }
+//   li {
+//     height: 110px;
+//     flex: 1;
+//     align-items: flex-start;
+//     justify-content: center;
+//     display: flex;
+//     flex-direction: column;
+//     &:first-child {
+//       flex: 1.5;
+//     }
+//     .date {
+//       display: block;
+//       font-size: 24px;
+//     }
+//     .week {
+//       display: block;
+//       i {
+//         color: #ff6262;
+//       }
+//     }
+//   }
+//   dd li {
+//     padding-top: 18px;
+//     padding-bottom: 18px;
+//     font-size: 26px;
+//     line-height: 36px;
+//   }
+// }
+// .playmore {
+//   line-height: 110px;
+//   text-align: center;
+//   font-size: 28px;
+//   color: #88aaf6;
+// }
+
+.daily-form {
+  margin-top: 60px;
+  background: rgba(242, 243, 246, 0.5);
   border-radius: 10px;
-  overflow: hidden;
-  margin-top: 50px;
-  dt {
-    font-size: 26px;
-    padding: 0 30px;
-  }
-  dd {
-    padding: 0 30px;
-    &:nth-child(even) {
-      background: #fff;
-    }
-  }
-  ul {
-    display: flex;
-  }
-  li {
-    height: 110px;
-    flex: 1;
-    align-items: flex-start;
-    justify-content: center;
-    display: flex;
-    flex-direction: column;
-    &:first-child {
-      flex: 1.5;
-    }
-    .date {
-      display: block;
+  border: 2px solid rgba(242, 243, 246, 1);
+}
+
+.daily-table-wrap {
+  overflow-y: auto;
+}
+
+.daily-table {
+  width: 100%;
+  table-layout: fixed;
+
+  .col-date {
+    width: 210px;
+    text-align: left;
+    padding-left: 30px;
+    /deep/ i {
       font-size: 24px;
     }
-    .week {
-      display: block;
-      i {
-        color: #ff6262;
-      }
+    /deep/ em {
+      margin-left: 3px;
+      color: #ff6262;
     }
   }
-  dd li {
-    padding-top: 18px;
-    padding-bottom: 18px;
+  .col-count {
+    width: 150px;
+  }
+  .col-cell {
+    width: 180px;
+  }
+
+  tr {
+    &:nth-child(2n + 1) {
+      background-color: #fff;
+    }
+  }
+
+  th,
+  td {
+    padding: 40px 0;
+    text-align: right;
+    &:last-child {
+      width: 180px + 64;
+      padding-right: 64px;
+    }
+  }
+
+  th {
+    font-size: 24px;
+    font-weight: 400;
+  }
+
+  td {
     font-size: 26px;
-    line-height: 36px;
   }
 }
-.playmore {
+
+.daily-form-more {
+  display: block;
+  height: 110px;
   line-height: 110px;
   text-align: center;
   font-size: 28px;
+  font-weight: 500;
   color: #88aaf6;
 }
 </style>

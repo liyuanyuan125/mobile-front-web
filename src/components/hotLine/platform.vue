@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ModuleHeader title="平台热度" class="formatmodule" v-if="dataList.length < 2"/>
+    <ModuleHeader title="平台热度" class="formatmodule" v-if="dataList.length < 3"/>
     <ModuleHeader title="平台热度"  class="formatmodule" :link="link" v-else/>
     
     <ul class="platform-item">
@@ -58,7 +58,7 @@ export default class Main extends Vue {
        coverImg: imgFixed(it.platformLogo, 60, 60)
      }
     })
-    return list
+    return list.slice(0, 2)
   }
 
   link: any = {

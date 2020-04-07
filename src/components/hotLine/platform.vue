@@ -58,7 +58,7 @@ export default class Main extends Vue {
        coverImg: imgFixed(it.platformLogo, 60, 60)
      }
     })
-    return list.slice(0, 2)
+    return list
   }
 
   link: any = {

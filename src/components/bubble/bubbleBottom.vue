@@ -8,7 +8,7 @@
             <span class="title" v-if="!item.renderTitle">{{ item.title || '' }}</span>
             <render-title v-else :render="item.renderTitle" :index="index"></render-title>
           </template>
-          <span>{{item.value != -1 ? item.value : ''}}</span>
+          <span>{{item.value == undefined ? '': item.value}}<span v-if="item.unit" class="bubble-unit">{{item.unit}}</span></span>
           <span v-if="item.trend" :style="item.styles">
             <i 
               v-if="item.trend != '-'"
@@ -78,6 +78,9 @@ export default class Bubble extends Vue {
       width: 220px;
       height: 220px;
       transform: translateX(-11px);
+    }
+    .bubble-unit {
+      font-size: 30px;
     }
     .normal {
       font-size: 13px;

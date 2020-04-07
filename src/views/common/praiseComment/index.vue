@@ -1,6 +1,6 @@
 <template>
   <div class="options-page">
-    <ModuleHeader title="口碑评论" :link="link" />
+    <ModuleHeader v-if="appraiseList.length > 0" title="口碑评论" :link="link" />
     <div class="options-top" v-if="appraiseList.length > 0">
       <div class="options-left">
         <span class="hot" @click="showNote">

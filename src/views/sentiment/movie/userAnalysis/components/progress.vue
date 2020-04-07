@@ -2,13 +2,16 @@
   <!--影片用户分析受众下的观影偏好 -->
   <div class="progressbox">
     <moduleHeaer :title="title" />
-    <div class="contrast-progress" v-for="(item,index) in progressData" :key="item.name + index">
-      <span class="proleft van-ellipsis">{{item.name}}</span>
-      <div class="progress">
-        <Progress :percentage="item.value" color="#7CA4FF" stroke-width="10" />
+    <div v-if="progressData.length">
+      <div class="contrast-progress" v-for="(item,index) in progressData" :key="item.name + index">
+        <span class="proleft van-ellipsis">{{item.name}}</span>
+        <div class="progress">
+          <Progress :percentage="item.value" color="#7CA4FF" stroke-width="10" />
+        </div>
+        <div class="proright" style="fontFamily:'DIN Alternate'">{{item.value}}%</div>
       </div>
-      <div class="proright" style="fontFamily:'DIN Alternate'">{{item.value}}%</div>
     </div>
+    <dataEmpty v-else />
   </div>
 </template>
 
@@ -17,11 +20,13 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import { Progress } from 'vant'
 import moduleHeaer from '@/components/moduleHeader'
+import dataEmpty from '@/views/common/dataEmpty/index.vue'
 
 @Component({
   components: {
     Progress,
-    moduleHeaer
+    moduleHeaer,
+    dataEmpty
   }
 })
 export default class ProgressList extends ViewBase {

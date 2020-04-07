@@ -4,29 +4,38 @@
     <ModuleHeader title="同档期剧集分析" />
     <div v-if="list.length">
       <dl>
-        <dd v-for="(item,index) in list" :key="item.rivalId + index">
+        <dd v-for="(item,index) in list.slice(0,3)" :key="item.rivalId + index">
           <div class="rivalbox">
-            <img :src="item.rivalCover.url" :alt="item.rivalName" class="img" v-if="item.coverImg" />
-            <img src="@/assets/moviedefault.png" :alt="baseInfo.movieNameCn" class="img" v-else />
+            <img :src="item.coverImg" :alt="item.rivalName" class="img" />
             <h4 class="van-ellipsis">{{item.rivalName}}</h4>
             <div class="params">
               <div class="flex">
                 <p class="tit">热度</p>
-                <strong style="font-family: DIN Alternate;">{{item.heatCount}}</strong>
-                <p
-                  class="trend"
-                  v-if="item.heatTrend"
-                  :style="{color:item.heatTrend > 0 ? '#FF6262': '#88AAF6'}"
-                >{{item.heatTrend > 0 ? '高'+item.heatTrendShow : '低' + item.heatTrendShow}}</p>
+                <strong
+                  style="font-family: DIN Alternate;"
+                >{{item.heatCount ? item.heatCount : '-'}}</strong>
+                <div v-if="index > 0">
+                  <p
+                    class="trend"
+                    v-if="item.heatTrend"
+                    :style="{color:item.heatTrend > 0 ? '#FF6262': '#88AAF6'}"
+                  >{{item.heatTrend > 0 ? '高'+item.heatTrendShow : '低' + item.heatTrendShow}}</p>
+                  <p class="trend" v-else>-</p>
+                </div>
               </div>
               <div class="flex">
                 <p class="tit">新增物料</p>
-                <strong style="font-family: DIN Alternate;">{{item.materialsAdd}}</strong>
-                <p
-                  class="trend"
-                  v-if="item.materialsTrend"
-                  :style="{color:item.materialsTrend > 0 ? '#FF6262': '#88AAF6'}"
-                >{{item.materialsTrend > 0 ? '高' + item.materialsTrendShow : '低' + item.materialsTrendShow}}</p>
+                <strong
+                  style="font-family: DIN Alternate;"
+                >{{item.materialsAdd ? item.materialsAdd : '-'}}</strong>
+                <div v-if="index > 0">
+                  <p
+                    class="trend"
+                    v-if="item.materialsTrend"
+                    :style="{color:item.materialsTrend > 0 ? '#FF6262': '#88AAF6'}"
+                  >{{item.materialsTrend > 0 ? '高' + item.materialsTrendShow : '低' + item.materialsTrendShow}}</p>
+                  <p class="trend" v-else>-</p>
+                </div>
               </div>
             </div>
             <div class="eventbox" v-if="item.eventName">
@@ -62,23 +71,23 @@ import { roleNumber } from '@/fn/validateRules'
 export default class RivalAnalysis extends ViewBase {
   @Prop({ type: Array }) rivalList!: any[]
 
+  rivalIds: any = []
+
   get list() {
     const list = this.rivalList
-    for (const item of this.rivalList) {
-      item.eventCreatTime = moment(item.eventCreatTime).format('YYYY-MM-DD')
-      item.coverImg = imgFixed(item.rivalCover, 200, 260)
-      item.heatTrendShow = roleNumber(Math.abs(item.heatTrend))
-      item.materialsTrendShow = roleNumber(Math.abs(item.materialsTrend))
+    const ids: any[] = []
+    if (list && list.length) {
+      for (const item of this.rivalList) {
+        item.eventCreatTime = moment(item.eventCreatTime).format('YYYY-MM-DD')
+        item.coverImg = imgFixed(item.rivalCover, 200, 260, 4)
+        item.heatTrendShow = roleNumber(Math.abs(item.heatTrend))
+        item.materialsTrendShow = roleNumber(Math.abs(item.materialsTrend))
+      }
+      this.rivalIds = ids.slice(0, 3).join(',')
+      return list
+    } else {
+      return []
     }
-    return list
-  }
-
-  get rivalIds() {
-    const rivalIds: string[] = []
-    for (const item of this.rivalList) {
-      rivalIds.push(item.rivalId)
-    }
-    return rivalIds.join(',')
   }
 }
 </script>
@@ -91,9 +100,9 @@ export default class RivalAnalysis extends ViewBase {
     padding: 30px 30px 0;
   }
   dd {
-    margin-top: 40px;
+    margin-top: 45px;
     &:first-child {
-      margin-top: 10px;
+      margin-top: 15px;
     }
   }
   .golink {
@@ -118,6 +127,8 @@ export default class RivalAnalysis extends ViewBase {
   min-height: 260px;
   padding-left: 240px;
   .img {
+    background: url('../../../../../assets/moviedefault.png') no-repeat center;
+    background-size: cover;
     position: absolute;
     left: 0;
     top: 0;

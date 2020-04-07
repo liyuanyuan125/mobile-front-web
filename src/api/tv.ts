@@ -13,19 +13,30 @@ export interface PraiseItem {
 }
 /**
  * 获取电视剧详情页
+ * https://yapi.aiads-dev.com/project/402/interface/api/10858
  * @param query  object
  */
 export async function getTVDetailById(tvId: string) {
-    const res = await get('/mock/402/yuqing/tv/detail', { tvId })
+    const res = await get('/yuqing/tv/detail', { tvId })
     return res
 }
 
 /**
  * 获取电视剧详情页 - 获取热度分析
+ * https://yapi.aiads-dev.com/project/402/interface/api/11178
  * @param query  object
  */
-export async function getMovieHeatAnalysis(query: any) {
-    const res = await get('/yuqing/movie/heatAanlysis', query)
+export async function getTVHeatAnalysis(query: any) {
+    const res = await get('/yuqing/tv/heatAnalysis', query)
+    return res
+}
+
+/**
+ * 获取电视剧详情页 - 播放量监控
+ * @param query  object
+ */
+export async function getTVPlayCount(query: any) {
+    const res = await get('/yuqing/tv/getPlayCount', query)
     return res
 }
 
@@ -33,7 +44,7 @@ export async function getMovieHeatAnalysis(query: any) {
  * 获取电视剧详情页 - 竞品分析
  */
 export async function getRivalListById(tvId: string) {
-    const res = await get('/mock/402/yuqing/tv/rivalAnalysis', { tvId })
+    const res = await get('/yuqing/tv/rivalAnalysis', { tvId })
     return res
 }
 
@@ -41,7 +52,7 @@ export async function getRivalListById(tvId: string) {
  * 获取电视剧详情页 - 营销事件
  */
 export async function getEventListByIdAndType(query: EventItem) {
-    const res = await get('/mock/416/yuqing/common/eventAnalysis', query)
+    const res = await get('/yuqing/common/eventAnalysis', query)
     return res
 }
 
@@ -73,7 +84,7 @@ export async function getRivalPlatformTrend(query: PraiseItem) {
  * 获取用户分析
  */
 export async function getUserAnalysisById(tvId: string) {
-    const res = await get('/mock/402/yuqing/tv/getUserAnalysis', { tvId })
+    const res = await get('/yuqing/tv/getUserAnalysis', { tvId })
     return res
 }
 

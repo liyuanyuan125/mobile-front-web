@@ -7,18 +7,13 @@
         <SelectDate v-model="dates" />
       </div>
     </div>
-    <div class="tabbox">
-      <ul>
-        <li
-          v-for="item in tabList"
-          :class="tabIndex===item.id ? 'cur' : ''"
-          :key="item.key"
-          @click="changeTab(item.id)"
-        >{{item.name}}</li>
-      </ul>
-    </div>
     <div>
-      <trendLines :lineData="lineDatas" :colors="colors" v-if="lineDatas.xDate" />
+      <trendLines
+        :lineData="lineDatas"
+        :colors="colors"
+        v-if="lineDatas.xDate && lineDatas.xDate.length"
+      />
+      <dataEmpty v-else />
     </div>
   </div>
 </template>
@@ -31,11 +26,13 @@ import { devLog, devInfo } from '@/util/dev'
 import trendLines from '@/components/trendLine'
 import { toast } from '@/util/toast'
 import moment from 'moment'
+import dataEmpty from '@/views/common/dataEmpty/index.vue'
 
 @Component({
   components: {
     trendLines,
-    SelectDate
+    SelectDate,
+    dataEmpty
   }
 })
 export default class WantSeeTrend extends ViewBase {
@@ -45,18 +42,6 @@ export default class WantSeeTrend extends ViewBase {
   /* 查询条件 */
   @Prop({ type: String }) query!: string
 
-  tabList: any = [
-    {
-      id: 1,
-      key: 'totalDataList',
-      name: '累计'
-    },
-    {
-      id: 2,
-      key: 'newDataList',
-      name: '新增'
-    }
-  ]
   colors: any[] = [
     '#79DDC5',
     '#8DC3FF',
@@ -66,7 +51,6 @@ export default class WantSeeTrend extends ViewBase {
     '#FF777B',
     '#FFC077'
   ]
-  tabIndex: number = 1
   lineDatas: any = {}
   dates: any = {}
   response: any = {
@@ -84,26 +68,24 @@ export default class WantSeeTrend extends ViewBase {
     this.uplist()
   }
 
-  @Watch('tabIndex', { deep: true })
-  watchTabIndex(val: number) {
-    if (val === 1) {
-      this.formatDatas(this.response.totalDataList)
-    } else if (val === 2) {
-      this.formatDatas(this.response.newDataList)
-    }
-  }
-
   // 综合热度数据处理 title，xdata，ydata
   formatDatas(dataObj: any[]) {
     let xDate: any = []
+    let dateList: any[] = []
+    let dates: any[] = []
     const yDate = (dataObj || []).map((it: any) => {
       const { rivalName, data } = it
-      xDate = (data || []).map((ite: any) => ite.date)
+      // 获取所有日期
+      dateList = dateList.concat(data)
+      // 解析出所有日期
+      dates = dateList.map((ite: any) => ite.date)
       return {
         name: rivalName,
         list: (data || []).map((ite: any) => ite.value)
       }
     })
+    // 去重
+    xDate = this.unique(dates)
     this.lineDatas = {
       title: '',
       xDate,
@@ -111,11 +93,9 @@ export default class WantSeeTrend extends ViewBase {
     }
   }
 
-  // tab 切换
-  changeTab(id: number) {
-    if (this.tabIndex !== id) {
-      this.tabIndex = id
-    }
+  // es6 去重
+  unique(arr: any) {
+    return Array.from(new Set(arr))
   }
 
   async uplist() {
@@ -123,10 +103,12 @@ export default class WantSeeTrend extends ViewBase {
       const { data } = await this.fetch({
         movieIdList: this.query,
         ...this.dates
+        // startTime: 20200301,
+        // endTime: 20200331
       })
       //   console.log('data', data)
       this.response = data
-      this.formatDatas(this.response.totalDataList)
+      this.formatDatas(this.response.newDataList)
     } catch (ex) {
       toast(ex)
     }

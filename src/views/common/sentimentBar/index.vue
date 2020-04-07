@@ -60,7 +60,7 @@ export default class SentimentBar extends Vue {
   async isDiggThis() {
     if (this.sidebar) {
       const res: any = await hasDigg({
-        businessType: this.sidebar.diggType || 0,
+        businessType: Number(this.sidebar.diggType) || 0,
         businessId: this.sidebar.diggId || ''
       })
       if (res.code === 0) {
@@ -74,7 +74,7 @@ export default class SentimentBar extends Vue {
   async diggThis() {
     if (this.sidebar && this.sidebar.diggType && this.sidebar.diggId) {
       const res: any = await diggSubject({
-        businessType: this.sidebar.diggType || 0,
+        businessType: Number(this.sidebar.diggType) || 0,
         businessId: this.sidebar.diggId || '',
         diggType: this.digg ? 2 : 1
       })
@@ -82,18 +82,6 @@ export default class SentimentBar extends Vue {
         this.digg = !this.digg
       }
     }
-  }
-
-  // 跳设置竞品
-  async setRival(item: any) {
-    const obj = {
-      callBackName: 'handleSetRivalCallBack',
-      params: item
-    }
-    const result: any = await handleSetRival(obj)
-    const codeJson = JSON.parse(result)
-
-    devLog('设置竞品', result)
   }
 
   // 监听滚动显示顶部导航的标题
@@ -104,6 +92,7 @@ export default class SentimentBar extends Vue {
       document.body.scrollTop
     this.hasTitle = topNum > 0 ? true : false
   }
+
   // 返回上一页
   async goBack() {
     const objectData = {
@@ -124,6 +113,18 @@ export default class SentimentBar extends Vue {
     }
     const obj = { params: objectData }
     await setNavBarStatus(obj)
+  }
+
+  // 跳设置竞品
+  async setRival(item: any) {
+    const obj = {
+      callBackName: 'handleSetRivalCallBack',
+      params: Object.assign({}, item, { isOpenNewPage: 'true' })
+    }
+    const result: any = await handleSetRival(obj)
+    const codeJson = JSON.parse(result)
+
+    devLog('设置竞品', result)
   }
 
   // 去 Pk 页

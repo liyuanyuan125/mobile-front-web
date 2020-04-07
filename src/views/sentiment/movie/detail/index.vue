@@ -4,14 +4,13 @@
     <BaseInfoArea :baseInfo="movieInfo" :overView="movieOverView" />
     <TabNav :list="tabList" class="formattab" />
     <div class="hotanalysis" id="hot">
-      <selectTime ref="refsTime" v-model="day" class="select-time" />
       <heatLineCom
         :overAllList="overAllHeat"
         :platformList="platformHeat"
         :params="platformParams"
       />
     </div>
-    <WantSeeTrend :dataTrend="wantSeeTrend" />
+    <WantSeeTrend :fetch="wantSeeTrendFetch" :query="movieId" />
     <BoxOffice :boxoffice="boxOffice" :link="getApplink('movieBoxOffice')" id="boxoffice" />
     <PraiseComment
       :favorable="movieInfo.favorable"
@@ -36,7 +35,13 @@
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
-import { getMovieDetail, getEventList, getRivalList, getMovieHeat } from './data'
+import {
+  getMovieDetail,
+  getEventList,
+  getRivalList,
+  getMovieHeat,
+  getMovieWantSeeTrend
+} from './data'
 import moment from 'moment'
 import { lastDays } from '@/util/timeSpan'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
@@ -84,6 +89,10 @@ export default class MoviePage extends ViewBase {
   movieInfo: any = {}
   // 电影数据概览
   movieOverView: any = {}
+  // 综合热度
+  overAllHeat = []
+  // 平台热度
+  platformHeat = []
   // 电影票房
   boxOffice: any = {}
   // 口碑
@@ -109,11 +118,8 @@ export default class MoviePage extends ViewBase {
     { name: 'actor', label: '资料' }
   ]
   // 热度分析+平台信息
-  day = 7
-  overAllHeatList: any = []
-  platformHeatList: any = []
   get platformParams() {
-    const [startTime, endTime] = lastDays(this.day)
+    const [startTime, endTime] = lastDays(90)
     return {
       type: 3, // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
       id: this.movieId, // 详情页id
@@ -122,347 +128,16 @@ export default class MoviePage extends ViewBase {
       endTime
     }
   }
-  overAllHeat = [
-    {
-      date: 1583978358078,
-      value: 123,
-      eventList: [
-        {
-          eventName: '意大利紧急求助中国',
-          eventId: '123232'
-        },
-        {
-          eventName: '意大利紧急求助中国',
-          eventId: '123232'
-        },
-        {
-          eventName: '意大利紧急求助中国',
-          eventId: '123232'
-        },
-        {
-          eventName: '意大利紧急求助中国',
-          eventId: '123232'
-        },
-        {
-          eventName: '意大利紧急求助中国',
-          eventId: '123232'
-        }
-      ]
-    },
-    {
-      date: 1583978358078,
-      value: 323,
-      eventList: [
-        {
-          eventName: '意大利紧急求助中国',
-          eventId: '123232'
-        },
-        {
-          eventName: '意大利紧急求助中国',
-          eventId: '123232'
-        },
-        {
-          eventName: '意大利紧急求助中国',
-          eventId: '123232'
-        }
-      ]
-    }
-  ]
-  platformHeat = [
-    {
-      platformName: '新浪',
-      platformValueList: [
-        {
-          name: '微博数',
-          value: '9,876'
-        },
-        {
-          name: '互动量',
-          value: '9,876.5万'
-        }
-      ],
-      platformLogo: {
-        source: 'jydata',
-        url:
-          'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-      },
-      platformId: '1',
-      platformNotice: '媒体一 媒体二 媒体三'
-    },
-    {
-      platformName: '新浪',
-      platformValueList: [
-        {
-          name: '微博数',
-          value: '9,876'
-        },
-        {
-          name: '互动量',
-          value: '9,876.5万'
-        }
-      ],
-      platformLogo: {
-        source: 'jydata',
-        url:
-          'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-      },
-      platformId: '2',
-      platformNotice: '媒体一 媒体二 媒体三'
-    },
-    {
-      platformName: '新浪',
-      platformValueList: [
-        {
-          name: '微博数',
-          value: '9,876'
-        },
-        {
-          name: '互动量',
-          value: '9,876.5万'
-        }
-      ],
-      platformLogo: {
-        source: 'jydata',
-        url:
-          'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-      },
-      platformId: '3',
-      platformNotice: '媒体一 媒体二 媒体三'
-    },
-    {
-      platformName: '新浪',
-      platformValueList: [
-        {
-          name: '微博数',
-          value: '9,876'
-        },
-        {
-          name: '互动量',
-          value: '9,876.5万'
-        }
-      ],
-      platformLogo: {
-        source: 'jydata',
-        url:
-          'https://aiads-file.oss-cn-beijing.aliyuncs.com/IMAGE/ICON/aiqiyishipin.png'
-      },
-      platformId: '4',
-      platformNotice: '媒体一 媒体二 媒体三'
-    }
-  ]
-  wantSeeTrend = {
-    dailyGainList: [
-      {
-        date: 1584624361149,
-        eventList: [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          }
-        ],
-        value: 1300
-      },
-      {
-        date: 1584623361149,
-        eventList: [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          }
-        ],
-        value: 32132
-      },
-      {
-        date: 1582322361149,
-        eventList: [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          }
-        ],
-        value: 323132
-      },
-      {
-        date: 1523622361149,
-        eventList: [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          }
-        ],
-        value: 12313
-      },
-      {
-        date: 1584624361149,
-        eventList: [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '231332'
-          }
-        ],
-        value: 320
-      }
-    ],
-    totalGainList: [
-      {
-        date: 1583953088061,
-        eventList: [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          }
-        ],
-        value: 32311323
-      },
-      {
-        date: 1583249088061,
-        eventList: [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          }
-        ],
-        value: 32311323
-      },
-      {
-        date: 1583249088061,
-        eventList: [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          }
-        ],
-        value: 32311323
-      },
-      {
-        date: 1583479088061,
-        eventList: [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          },
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          }
-        ],
-        value: 32311323
-      },
-      {
-        date: 1583439088061,
-        eventList: [
-          {
-            eventName: '花木兰首映获好评',
-            eventId: '132323'
-          }
-        ],
-        value: 32311323
-      }
-    ]
-  }
 
   async created() {
     this.movieId = this.$route.params.movieId
     this.sidebar.diggId = this.movieId
-    if (this.movieId) {
-      await this.getMovieInfo()
-      await this.getEventList()
-      await this.getRivalList()
-      await this.getHeatAnalysis()
-    }
+    await this.getMovieInfo()
+    await this.getEventList()
+    await this.getRivalList()
+    await this.getHeatAnalysis()
   }
+
   // api获取电影详情页
   async getMovieInfo() {
     const res: any = await getMovieDetail(this.movieId)
@@ -473,13 +148,27 @@ export default class MoviePage extends ViewBase {
     this.userAnalysis = res.userAnalysis
     this.actorList = res.actorList ? res.actorList : []
     this.produceList = res.produceList ? res.produceList : []
-    document.title = res.movieInfo.movieNameCn
+    // document.title = res.movieInfo.movieNameCn || '电影详情'
   }
+
   // api获取热度分析
   async getHeatAnalysis() {
-    const res: any = await getMovieHeat(this.platformParams)
-    // console.log('params', res)
+    const [startTime, endTime] = lastDays(90)
+    const res: any = await getMovieHeat({
+      movieId: this.movieId,
+      startTime,
+      endTime
+    })
+    this.overAllHeat = res.overAllHeatList
+    this.platformHeat = res.platformHeatList
   }
+
+  // api获取想看趋势
+  wantSeeTrendFetch = async (query: any) => {
+    const res: any = await getMovieWantSeeTrend(query)
+    return res
+  }
+
   // api获取营销事件
   async getEventList() {
     const res: any = await getEventList({
@@ -488,6 +177,7 @@ export default class MoviePage extends ViewBase {
     })
     this.eventList = res
   }
+
   // api获取竞品对手
   async getRivalList() {
     const res: any = await getRivalList(this.movieId)
@@ -511,12 +201,6 @@ export default class MoviePage extends ViewBase {
         businessObjectIdList: this.movieId
       }
     }
-  }
-  // 监测热度分析的日期选择
-  @Watch('day', { deep: true })
-  watchDay() {
-    this.platformParams
-    this.getHeatAnalysis()
   }
 
   /**

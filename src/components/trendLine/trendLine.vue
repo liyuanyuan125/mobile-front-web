@@ -9,7 +9,7 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import echarts from 'echarts'
 import { cssifyObject } from 'css-in-js-utils'
 import moment from 'moment'
-import { thousand } from '@/fn/validateRules'
+import { thousand, roleNumber } from '@/fn/validateRules'
 
 @Component
 export default class TrendLine extends Vue {
@@ -21,6 +21,8 @@ export default class TrendLine extends Vue {
   @Prop({ type: String, default: '#f7a345' }) dotColor!: string
   /** tooltip 文本色 */
   @Prop({ type: String, default: '#8f8f8f' }) textColor!: string
+  // 曲线上是有否有渐变
+  @Prop({ type: Boolean, default: false }) isGrad!: boolean
 
   unit: string = '' // Y轴单位
 
@@ -32,7 +34,9 @@ export default class TrendLine extends Vue {
     const chartEl = this.$refs.refChart as HTMLDivElement
     echarts.dispose(chartEl)
     const myChart = echarts.init(chartEl)
+    let index = -1
     const seriesItems = (this.lineData.yDate || []).map((it: any) => {
+      index += 1
       const maxVal = String(Math.max(...it.list))
       const len = maxVal.length
       if (len >= 5 && len < 9) {
@@ -45,9 +49,25 @@ export default class TrendLine extends Vue {
         symbolSize: 6,
         smooth: true, // 平滑
         name: it.name,
-        data: it.list
+        data: it.list,
+        areaStyle: this.isGrad
+          ? {
+              // 渐变色
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                  offset: 0,
+                  color: this.colors[index]
+                },
+                {
+                  offset: 1,
+                  color: 'rgba(255,255,255, 0)'
+                }
+              ])
+            }
+          : null
       }
     })
+    // 处理 x 轴日期显示
     const xDates = this.lineData.xDate.map((ite: any) => moment(ite).format('MM-DD'))
 
     const options: any = {
@@ -102,7 +122,7 @@ export default class TrendLine extends Vue {
               <p class="tooltip-item">
                 <i class="tooltip-dot" style="background-color: ${it.color}"></i>
                 <span class="tooltip-name">${it.seriesName}</span>
-                <span class="tooltip-value" style="color: ${it.color}">${thousand(
+                <span class="tooltip-value" style="color: ${it.color}">${roleNumber(
               it.value
             )}</span>
               </p>

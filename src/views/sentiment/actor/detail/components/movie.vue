@@ -140,7 +140,7 @@ export default class Main extends Vue {
       .icon-arrow {
         display: inline-block;
         position: absolute;
-        top: 21%;
+        top: 23%;
         right: 15%;
       }
     }

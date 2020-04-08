@@ -119,7 +119,7 @@ export default class SentimentBar extends Vue {
   async setRival(item: any) {
     const obj = {
       callBackName: 'handleSetRivalCallBack',
-      params: Object.assign({}, item, { isOpenNewPage: 'true' })
+      params: Object.assign({}, item, { isOpenNewPage: true })
     }
     const result: any = await handleSetRival(obj)
     const codeJson = JSON.parse(result)

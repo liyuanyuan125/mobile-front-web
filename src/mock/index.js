@@ -1,8 +1,8 @@
 if (process.env.NODE_ENV === 'development') {
   const Mock = require('mockjs2')
 
-  require('./api/song')
-  require('./api/album')
+  // require('./api/song')
+  // require('./api/album')
 
   Mock.setup({
     timeout: 800

@@ -15,14 +15,14 @@
         <div class="options-right">
           <div
             class="options-progress"
-            v-for="(it, index) in appraiseList"
+            v-for="(it, index) in (appraiseList.length > 0 ? appraiseList : noappraiseList)"
             :key="it.raiseName + index"
           >
             <span>{{it.raiseName}}</span>
             <div class="progress">
-              <Progress :percentage="it.raisePercent" color="#88aaf6" stroke-width="5" />
+              <Progress :percentage="it.raisePercent || 0" color="#88aaf6" stroke-width="5" />
             </div>
-            <div class="progress-text">{{it.raisePercent}}%</div>
+            <div class="progress-text">{{it.raisePercent || '-'}}%</div>
           </div>
         </div>
       </div>
@@ -92,7 +92,9 @@ export default class PraiseComment extends Vue {
   @Prop({ type: Object }) link!: AppLink
 
   praiseList: any[] = []
-
+  noappraiseList = [{raiseName: '正面评价', raisePercent: 0},
+  {raiseName: '中性评价', raisePercent: 0},
+  {raiseName: '负面评价', raisePercent: 0}]
   get appraiseList() {
     const list = this.publicPraise.appraiseList || []
     if (list && list.length) {

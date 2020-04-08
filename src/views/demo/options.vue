@@ -60,6 +60,7 @@ export default class DemoPage extends Vue {
         hotWordList: [
         ],
         badWordList: [
+            1
         ]
     }
 

@@ -2,7 +2,7 @@
   <div >
     <!-- 宽高不填写默认是 width='375' height='300' -->
       <sexChart  :data='data1'></sexChart>
-      <annularChart :width='370' :data='data2'></annularChart>
+      <annularChart :width='370'  :data='data2'></annularChart>
       <pointChart  :data='data3'></pointChart>
   </div>
 </template>
@@ -24,8 +24,8 @@ import pointChart from '@/components/cakeChart/pointChart.vue'
 export default class Apply extends Vue {
 
   data1: any = {
-    data: [{value: 310, name: '女性'},
-      {value: 1335, name: '男性'}
+    data: [{value: 18934, name: '女性'},
+      {value: 3578, name: '男性'}
       ],
     title: '性别占比',
     emphasisShow: true
@@ -37,7 +37,7 @@ export default class Apply extends Vue {
       {value: 310, name: '抖音'},
       {value: 234, name: '网易云音乐'},
       {value: 135, name: 'QQ音乐'},
-      {value: 1548, name: '腾讯视频'}],
+      {value: 1548, name: '腾讯的视频'}],
     color: '', // 修改颜色
     title: '粉丝平台分布',
     sesnsitivity: '敏感度高'

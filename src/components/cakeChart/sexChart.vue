@@ -48,9 +48,17 @@ export default class ChinaMap extends Vue {
           value: it.value
         }
       }
-    sexData = [man, woman]
   })
+  if ((man.value + woman.value) / 100 != 100) {
+    if (woman.value / 100 < 100) {
+            man.value = (100 - woman.value / 100) * 100
+        } else {
+          woman.value = 10000
+          man.value = 0
+        }
+    }
 
+  sexData = [man, woman]
   const data: any = {
       optionName: [],
       optionData: [],
@@ -73,7 +81,7 @@ export default class ChinaMap extends Vue {
     data.optionName.unshift(it.name)
     const obj = {
       name: it.name,
-      value: Number((Number(it.value + '') / max)) * 100
+      value: Number((Number(it.value + '') / 100).toFixed(1))
     }
     data.optionData.unshift(obj)
   })

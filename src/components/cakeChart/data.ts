@@ -212,7 +212,7 @@ export function getRingOption(data: any) {
         {
             name: '',
             type: 'pie',
-            radius: ['40%', '60%'],
+            radius: ['35%', '50%'],
             center: ['50%', '50%'],
 
             data: data.data,
@@ -233,12 +233,12 @@ export function getRingOption(data: any) {
                             color: '#333',
                             fontSize: 12,
                             lineHeight: 2,
-                            padding: [25, 0, 90, 10]
+                            padding: [25, 25, 90, 10]
                         },
                         b: {
                             fontSize: 12,
                             lineHeight: 2,
-                            padding: [-20, 0, 0, -35]
+                            padding: [-20, 0, 0, -65]
                         }
                     }
                 },

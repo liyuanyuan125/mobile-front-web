@@ -23,7 +23,7 @@
                 <div class='name'>
                   {{item.musicName}}
                 </div>
-                <div class='type'>{{item.genres == '' ? '-' : item.genres}}</div>
+                <div class='type'>{{(item.genres == '' || item.genres == null) ? '-' : item.genres}}</div>
             </div>
        </div>
     </div>

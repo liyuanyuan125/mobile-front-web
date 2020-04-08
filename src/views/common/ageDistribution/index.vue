@@ -12,7 +12,7 @@
     <div class="contrast-bottom">
       <div v-for="(it, index) in ageList" :key="index">
         <div v-if="indexs == index">
-          <div v-if="it.rivalList && it.rivalList.length > 0">
+          <div v-if="it.rivalList && (it.rivalList || []).length > 0">
             <div class="contrast-progress" v-for="(item, ins) in it.rivalList" :key="ins">
               <span>{{item.rivalName}}</span>
               <div class="progress">

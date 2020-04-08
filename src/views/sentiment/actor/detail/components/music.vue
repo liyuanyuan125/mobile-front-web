@@ -23,7 +23,7 @@
                 <div class='name'>
                   {{item.musicName}}
                 </div>
-                <div class='type'>{{item.genres == '' ? '-' : item.genres}}</div>
+                <div class='type'>{{(item.genres == '' || item.genres == null) ? '-' : item.genres}}</div>
             </div>
        </div>
     </div>
@@ -136,8 +136,8 @@ export default class Main extends Vue {
       .icon-arrow {
         display: inline-block;
         position: absolute;
-        top: 21%;
-        right: 25%;
+        top: 23%;
+        right: 27%;
       }
     }
     .p1-3 {

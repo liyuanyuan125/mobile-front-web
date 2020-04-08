@@ -75,7 +75,7 @@ export default class RivalList extends Vue {
       params: {
         businessType: this.type,
         businessObjectIdList: this.rivalIds.join(','),
-        isOpenNewPage: 'false' // 是否新打开页面，默认是 true
+        isOpenNewPage: false // 是否新打开页面，默认是 true
       }
     }
     const result: any = await handleSetRival(obj)
@@ -109,7 +109,7 @@ export default class RivalList extends Vue {
         type = 'movie'
         break
       case '4':
-        type = 'movie'
+        type = 'movie tv'
         break
       case '5':
         type = 'song'
@@ -192,6 +192,11 @@ export default class RivalList extends Vue {
       left: 50%;
       transform: translate(-50%, -50%) rotate(45deg);
     }
+  }
+}
+dl.tv {
+  dd .img {
+    background-image: url('../../../assets/tvdefault.png');
   }
 }
 dl.actor {

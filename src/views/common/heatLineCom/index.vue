@@ -73,7 +73,7 @@ export default class Main extends Vue {
       yDate: [
         {
           data: yDate,
-          name: '热点值'
+          name: '热度值'
         }
       ]
     }

@@ -17,7 +17,7 @@ export interface BubbleBottomItem {
   /** 气泡名称 */
   title: string
   /** 气泡数值 */
-  value: string | number
+  value: string
   /** 数值升降 */
   trend?: string | number | undefined
   /** 是否展示下降 */
@@ -26,4 +26,5 @@ export interface BubbleBottomItem {
   rotate?: boolean
   width?: string
   big?: boolean
+  unit?: string
 }

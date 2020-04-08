@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ModuleHeader title="平台热度" class="formatmodule" v-if="dataList.length < 2"/>
+    <ModuleHeader title="平台热度" class="formatmodule" v-if="dataList.length < 3"/>
     <ModuleHeader title="平台热度"  class="formatmodule" :link="link" v-else/>
     
     <ul class="platform-item">

@@ -71,7 +71,7 @@ export default class CanvasPage extends Vue {
   // showdown: 是否展示下降数据，例如排名需要展示下降数据；不设置则 <= 0 都显示 '-'
   // renderTitle: 自定义title，可增加icon及功能
   bubbleData: any = [
-    {type: '1', value: '235,454', trend: '123', renderTitle: (h: any) => {
+    {type: '1', value: '123,234', trend: '234', renderTitle: (h: any) => {
       return h(Title, {
         props: {
           title: '近90天累计互动'
@@ -80,9 +80,9 @@ export default class CanvasPage extends Vue {
           click: this.demo
       }})
     }},
-    {type: '2', title: '90天累计互动', value: '1,423', trend: '-356', big: true},
-    {type: '3', title: '昨日销量排名', value: '234,234', trend: '-356', showdown: true},
-    {type: '4', title: '好感度', value: 'B+'}
+    {type: '2', title: '90天累计互动', value: '9,999.9万', trend: '345345', big: true},
+    {type: '3', title: '昨日销量排名', value: '8,233', trend: '-453545', showdown: true},
+    {type: '4', title: '好感度', value: 'A-'}
   ]
 
   demo() {

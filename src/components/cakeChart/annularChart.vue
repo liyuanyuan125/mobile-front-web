@@ -35,7 +35,7 @@ export default class ChinaMap extends Vue {
   // 组件宽度
   sizeWidth: number = this.getSize(this.width)
   // 指示线的长度
-  length2: number = document.documentElement.clientWidth * 0.18
+  length2: number = document.documentElement.clientWidth * 0.2
 
   @Watch('width')
   setSize() {
@@ -52,7 +52,7 @@ export default class ChinaMap extends Vue {
         } else {
             this.sizeWidth = width
         }
-        this.length2 =  this.sizeWidth * 0.18
+        this.length2 =  this.sizeWidth * 0.2
         return this.sizeWidth
   }
   getcherts() {

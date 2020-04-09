@@ -81,7 +81,7 @@
           </tbody>
         </table>
       </div>
-      <a class="daily-form-more" @click="openAppLink(moreDateLink)">查看全部日期</a>
+      <a class="daily-form-more" @click="handleFormMore">查看全部日期</a>
     </section>
   </section>
 </template>
@@ -222,6 +222,10 @@ export default class PlayStats extends Vue {
     const view = await this.fetch(query)
     const list = Array.isArray(view) ? view : [ { label: '', view } ]
     this.viewList = list
+  }
+
+  handleFormMore() {
+    openAppLink(this.moreDateLink)
   }
 
   @Watch('day')

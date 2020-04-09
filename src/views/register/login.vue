@@ -34,10 +34,14 @@ export default class Login extends Vue {
   password: string = ''
 
   async goLogin() {
-    const res = await post('/auth/login', {
-      account: this.account,
-      password: this.password
-    })
+    const res = await post(
+      '/auth/login',
+      {
+        account: this.account,
+        password: this.password
+      },
+      { headers: { 'X-PS-PackageName': 'com.jydata.monitor.advertiser' } }
+    )
     if (res.code === 0) {
       toast('登录成功')
     } else {

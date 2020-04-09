@@ -77,7 +77,7 @@ export default class WantSeeTrend extends ViewBase {
     const lastDate: any[] = []
     const nowDate = moment(new Date()).format('YYYY-MM-DD 00:00:00')
     const now = new Date(nowDate).getTime()
-    for (var i = 0; i < this.count; i++) {
+    for (let i = 0; i < this.count; i++) {
       lastDate.unshift(now - i * 24 * 60 * 60 * 1000)
     }
     // 处理数据

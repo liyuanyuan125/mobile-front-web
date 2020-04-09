@@ -81,7 +81,7 @@
           </tbody>
         </table>
       </div>
-      <a class="daily-form-more">查看全部日期</a>
+      <a class="daily-form-more" @click="openAppLink(moreDateLink)">查看全部日期</a>
     </section>
   </section>
 </template>
@@ -91,12 +91,13 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import ModuleHeader from '@/components/moduleHeader'
 import { RawLocation } from 'vue-router'
 import { Tabs, Tab, Progress } from 'vant'
-import { lastDays } from '@/util/timeSpan'
+import { lastDays, lastDayList } from '@/util/timeSpan'
 import Select from '@/components/select'
 import MultiLine, { MultiLineItem, MultiLineEvents } from '@/components/multiLine'
-import { toMoment } from '@/util/dealData'
-
+import { toMoment, intDate } from '@/util/dealData'
 import { PlayFetch, PlayItem, PlayView } from './types'
+import { dealDailyData, dealDailyEvents } from './data'
+import { openAppLink, AppLink } from '@/util/native'
 
 const weekDays = [ '日', '一', '二', '三', '四', '五', '六' ]
 
@@ -120,11 +121,18 @@ export default class PlayStats extends Vue {
 
   @Prop({ type: String, default: '--' }) placeholder!: string
 
+  @Prop({ type: Object }) moreDateLink!: AppLink
+
   day = 7
 
   viewIndex = 0
 
   viewList: PlayItem[] = []
+
+  get currentView() {
+    const viewItem = this.viewList[this.viewIndex]
+    return viewItem && viewItem.view
+  }
 
   get dayList() {
     const list = this.days.map(value => ({ name: `最近${value}天`, value }))
@@ -132,59 +140,55 @@ export default class PlayStats extends Vue {
   }
 
   get platformList() {
-    const viewItem = this.viewList[this.viewIndex]
-    if (viewItem == null) {
+    const currentView = this.currentView
+    if (currentView == null) {
       return []
     }
-    const list = viewItem.view.platformList.map(item => ({
+    const list = currentView.platformList.map(item => ({
       ...item,
       percent: item.value / 100
     }))
     return list
   }
 
-  dailyColors = [
-    '#ff6262',
-    '#ff9833',
-    '#ffce59',
-    '#88aaf6',
-    '#4cc8d0',
-  ]
-
   get dailyNames() {
-    return [ '12-02', '12-03', '12-04', '12-05', '12-06', '12-07' ]
+    const list = lastDayList(this.day)
+    const result = list.map(it => intDate(it, 'MM-DD') as string)
+    return result
   }
 
-  // TODO:
   get dailyData() {
-    const list: MultiLineItem[] = [
-      { name: '网易云音乐', data: [ 7500, 7800, 6800, 5800, 3800, 8888 ], color: '#ff6262' },
-      { name: 'QQ音乐', data: [ 6500, 8800, 3800, 4800, 6800, 2888 ], color: '#ff9833' },
-      { name: '酷我音乐', data: [ 1500, 9800, 2800, 3800, 9800, 3888 ], color: '#ffce59' },
-    ]
+    const currentView = this.currentView
+    if (currentView == null) {
+      return []
+    }
+    const platList = currentView.dailyPlatformList || []
+    const list = dealDailyData(this.day, platList)
     return list
   }
 
   get dailyEvents() {
-    const events: MultiLineEvents = {
-      '12-03': {
-        id: 'xxxx',
-        name: '最适合跨年看得电影，曝终胜多负少是反倒伤',
-        click: ({ id }) => {
-          // console.log(`----> event ${id}`)
-          // debugger
-        }
-      }
+    const currentView = this.currentView
+    if (currentView == null) {
+      return {}
     }
-    return events
+    const eventList = currentView.dailyEventList || []
+    const list = dealDailyEvents(eventList, ({ id, name }) => {
+      this.$router.push({
+        name: 'sentimenteventmarketing',
+        params: { eventId: id },
+        query: { title: name },
+      })
+    })
+    return list
   }
 
   get dailyFormList() {
-    const viewItem = this.viewList[this.viewIndex]
-    if (viewItem == null) {
+    const currentView = this.currentView
+    if (currentView == null) {
       return []
     }
-    const list = viewItem.view.dailyFormList.map(item => {
+    const list = currentView.dailyFormList.map(item => {
       const m = toMoment(item.date)
       const ymd = m.format('YYYY-MM-DD')
       const wi = m.day()

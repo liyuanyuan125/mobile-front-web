@@ -30,7 +30,10 @@ export default class MultiLine extends Vue {
 
   @Prop({
     type: Function,
-    default: ({ list }: any) => list[0].name
+    default: ({ list }: any) => {
+      const { name, data } = list[0]
+      return data && data.tooltipTitle || name || ''
+    }
   })
   tooltipFormatTitle!: MultiLineTooltipFormatTitle
 
@@ -44,7 +47,13 @@ export default class MultiLine extends Vue {
 
   get chartData() {
     const series = this.data.map(({ name, data, color }) => {
-      const line: any = { name, type: 'line', smooth: this.smooth, data }
+      const line: any = {
+        name,
+        type: 'line',
+        smooth: this.smooth,
+        data,
+        connectNulls: true
+      }
       color && (line.itemStyle = { color })
       return line
     })
@@ -58,7 +67,7 @@ export default class MultiLine extends Vue {
           const nameColor = this.tooltipNameColor
           const listHtml = list.map(({ seriesName, name, value, color }) => {
             const valueColor = color || nameColor
-            const valueShow = toThousands(value)
+            const valueShow = value != null ? toThousands(value) : '无数据'
             const itemHtml = `
               <p class="tooltip-item">
                 <i class="tooltip-dot" style="background-color: ${color}"></i>
@@ -96,7 +105,8 @@ export default class MultiLine extends Vue {
         data: this.names,
         axisLabel: {
           color: this.axisLabelColor,
-          interval: 0,
+          // 切换的时候无法工作
+          // interval: dataCount < 8 ? 0 : 'auto',
         },
         axisTick: false,
         axisLine: {

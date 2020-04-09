@@ -52,6 +52,8 @@ const colors = ['#88AAF6', '#4CC8D0', '#C965DD']
 export default class Main extends Vue {
   /** 热度分析对比 */
   @Prop({ type: Array, default: () => []}) overAllHeat: any
+  /** 选择日期天数 */
+  @Prop({ type: Number, default: 7}) day!: number
   /** 热度分析对比title */
   @Prop({ type: String, default: '综合热度分析'}) lineTitle!: string
   /** 线条颜色配置 */

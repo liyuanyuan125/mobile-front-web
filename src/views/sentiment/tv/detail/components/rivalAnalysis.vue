@@ -74,7 +74,7 @@ export default class RivalAnalysis extends ViewBase {
   rivalIds: any = []
 
   get list() {
-    const list = this.rivalList
+    const list = this.rivalList || []
     const ids: any[] = []
     if (list && list.length) {
       for (const item of this.rivalList) {
@@ -82,6 +82,7 @@ export default class RivalAnalysis extends ViewBase {
         item.coverImg = imgFixed(item.rivalCover, 200, 260, 4)
         item.heatTrendShow = roleNumber(Math.abs(item.heatTrend))
         item.materialsTrendShow = roleNumber(Math.abs(item.materialsTrend))
+        ids.push(item.rivalId)
       }
       this.rivalIds = ids.slice(0, 3).join(',')
       return list

@@ -60,23 +60,23 @@ export async function getEventListByIdAndType(query: EventItem) {
  * 获取竞品报告详情页
  */
 export async function getRivalReport(tvIdList: string) {
-    const res = await get('/mock/402/yuqing/tv/rivalreport', { tvIdList })
+    const res = await get('/yuqing/tv/rivalreport', { tvIdList })
     return res
 }
 
 /**
  * 竞品报告详情页 - 口碑评论对比
  */
-export async function getRivalPraise(query: PraiseItem) {
-    const res = await get('/mock/400/yuqing/movie/getRivalPraise', query)
+export async function getRivalPraise(query: any) {
+    const res = await get('/yuqing/tv/getRivalPraise', query)
     return res
 }
 
 /**
  * 竞品报告详情页 - 获取指数趋势
  */
-export async function getRivalPlatformTrend(query: PraiseItem) {
-    const res = await get('/mock/402/yuqing/tv/getRivalExponent', query)
+export async function getRivalPlatformTrend(query: any) {
+    const res = await get('/yuqing/tv/getRivalExponent', query)
     return res
 }
 

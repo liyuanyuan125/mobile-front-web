@@ -76,7 +76,8 @@ export default class LineGrap extends Vue {
         symbolSize: 7,
         smooth: true, // 平滑
         name: it.name,
-        data: it.data
+        data: it.data,
+        connectNulls: true // 是否连接空数据。
       }
     })
 

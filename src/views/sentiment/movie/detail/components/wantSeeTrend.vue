@@ -120,16 +120,25 @@ export default class WantSeeTrend extends ViewBase {
   }
 
   // 处理chart 浮层 tooltip
-  formatterHtml = (params: any, time: any) => {
+  formatterHtml = (params: any, time: any, eventList: any) => {
     const weekDays = ['日', '一', '二', '三', '四', '五', '六']
     const day = weekDays[moment(time).day()]
     const date = moment(time).format('YYYY-MM-DD')
+    const eventHTML = []
+    for (const event of eventList) {
+      eventHTML.push(
+        `<a class="van-ellipsis" href="/sentiment/eventMarketing/${event.eventId}?title=${event.eventName}">
+        ${event.eventName}</a>`
+      )
+    }
+    const eventLast = eventList.length
+      ? `<div class="event">${eventHTML.join('')}</div>`
+      : ''
     return `
            <div class="tiptool">
-             <p  class="name">
-             <i class="dot"></i>
-             ${date} 周${day} 日增${roleNumber(Math.abs(params.data))}人想看</p>
-             <div class="event">最适合跨年看得电影，曝终极预告片</div>
+             <p class="name"><i class="dot"></i>${date} 周${day} </p>
+             <p class="count">日增${roleNumber(Math.abs(params.data))}人想看</p>
+             ${eventLast}
            </div>
           `
   }
@@ -229,26 +238,38 @@ export default class WantSeeTrend extends ViewBase {
     color: #47403b;
     font-size: 22px;
     line-height: 31px;
+    position: relative;
+    padding-left: 26px;
+  }
+  .count {
+    color: #47403b;
+    font-size: 22px;
+    line-height: 31px;
+    padding-left: 26px;
+    margin-top: 3px;
   }
   .dot {
     background: #88aaf6;
-    display: inline-block;
+    position: absolute;
     width: 14px;
     height: 14px;
     border-radius: 50%;
-    margin-right: 10px;
-    vertical-align: middle;
-    position: relative;
-    margin-top: -5px;
+    left: 0;
+    top: 8px;
   }
   .event {
     font-size: 22px;
     color: #88aaf6;
     line-height: 37px;
     padding-left: 26px;
-    margin-top: 10px;
-    white-space: nowrap;
-    text-decoration: underline;
+    max-width: 400px;
+
+    a {
+      display: block;
+      color: #88aaf6;
+      text-decoration: underline;
+      margin-top: 3px;
+    }
   }
 }
 </style>

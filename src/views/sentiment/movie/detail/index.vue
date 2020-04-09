@@ -133,9 +133,9 @@ export default class MoviePage extends ViewBase {
     this.movieId = this.$route.params.movieId
     this.sidebar.diggId = this.movieId
     await this.getMovieInfo()
+    await this.getHeatAnalysis()
     await this.getEventList()
     await this.getRivalList()
-    await this.getHeatAnalysis()
   }
 
   // api获取电影详情页

@@ -1,8 +1,5 @@
 <template>
-  <div :class="['topbar',barColor]" :style="styleline">
-    <span class="reBack" @click="goBack"></span>
-    <h1 class="title">{{title}}</h1>
-  </div>
+  <div></div>
 </template>
 
 <script lang="ts">
@@ -13,12 +10,22 @@ import { handleGoBack } from '@/util/native'
 export default class TopBar extends Vue {
   /**
    * 属性示例
+   * -10000 未登录
+   * 10404  页面不存在
+   * 10405  页面被禁用
+   * 10403  无权限
    */
-  @Prop({ type: String, default: '' }) title!: string
-  @Prop({ type: String, default: 'transparent' }) bgColor!: string
-  @Prop({ type: String, default: '' }) styleline!: any // 自定义样式
-  @Prop({ type: String, default: 'white' }) barColor: any // 黑或白
+  @Prop({ type: String, default: '' }) code!: string
 
+  created() {
+    switch (this.code) {
+      case '10404':
+        break
+      case '10405':
+        break
+      default:
+    }
+  }
   // barColor:string = 'white'
   async goBack() {
     const objectData = {

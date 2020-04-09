@@ -141,6 +141,9 @@ const albumBasic = async (id: number) => {
   } = commonBasic(data)
 
   const result = {
+    // 是否为数字专辑
+    isDigital: info.hasDigital || false,
+
     // 基础信息
     basic: {
       cover: dot(info, 'coverUrl.url') || '',
@@ -152,7 +155,6 @@ const albumBasic = async (id: number) => {
       rankingId: info.rankingId || 0,
       // 比单曲多出的字段
       price: info.albumPrice || '',
-      hasDigital: info.hasDigital || false,
     },
 
     // 基础信息弹出窗

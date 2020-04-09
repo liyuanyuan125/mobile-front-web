@@ -15,7 +15,7 @@
     <div class="portrait">
       <moduleHeader title="受众画像" />
       <SexVs :data="vsData" class="genderbox" />
-      <AgeDistribution :ageRangeList="ageRangeList" v-if="ageRangeList.length" class="agebox" />
+      <AgeDistribution :ageRangeList="ageRangeList" class="agebox" />
     </div>
   </div>
 </template>

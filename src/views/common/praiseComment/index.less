@@ -65,6 +65,11 @@
   .hot-box {
     display: flex;
     margin: 20px 0;
+    .hot-none:empty::before {
+      content: '-';
+      color: rgba(48,48,48,.4);
+      padding-left: 17px;
+    }
     .hot-box-left {
       font-size: 30px;
       color: #000;
@@ -77,13 +82,11 @@
     .hot-box-right {
       font-size: 28px;
       color: #303030;
-      text-align: right;
       white-space: nowrap;
       flex: 1;
       // display: flex;
       >div{
         width: 410px;
-        text-align: right;
       }
       span {
         color: rgba(48,48,48,.4);

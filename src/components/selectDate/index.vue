@@ -26,9 +26,11 @@ export default class SelectDate extends Vue {
     { key: 'last_90_day', text: '最近90天' }
   ]
   created() {
+    const time: any = this.beginDate(this.days)
     this.$emit('input', {
-      startTime: this.beginDate(this.days),
-      endTime: this.endDate()
+      startTime: time.date,
+      endTime: this.endDate(),
+      count: time.count
     })
   }
 
@@ -36,25 +38,40 @@ export default class SelectDate extends Vue {
   beginDate(val: string) {
     switch (val) {
       case 'last_7_day':
-        return moment(new Date())
-          .add(-7, 'days')
-          .format(this.timeFormat)
+        return {
+          date: moment(new Date())
+            .add(-7, 'days')
+            .format(this.timeFormat),
+          count: 7
+        }
       case 'last_15_day':
-        return moment(new Date())
-          .add(-15, 'days')
-          .format(this.timeFormat)
+        return {
+          date: moment(new Date())
+            .add(-15, 'days')
+            .format(this.timeFormat),
+          count: 15
+        }
       case 'last_30_day':
-        return moment(new Date())
-          .add(-30, 'days')
-          .format(this.timeFormat)
+        return {
+          date: moment(new Date())
+            .add(-30, 'days')
+            .format(this.timeFormat),
+          count: 30
+        }
       case 'last_60_day':
-        return moment(new Date())
-          .add(-60, 'days')
-          .format(this.timeFormat)
+        return {
+          date: moment(new Date())
+            .add(-60, 'days')
+            .format(this.timeFormat),
+          count: 60
+        }
       case 'last_90_day':
-        return moment(new Date())
-          .add(-90, 'days')
-          .format(this.timeFormat)
+        return {
+          date: moment(new Date())
+            .add(-90, 'days')
+            .format(this.timeFormat),
+          count: 90
+        }
     }
   }
   endDate() {
@@ -63,9 +80,11 @@ export default class SelectDate extends Vue {
 
   @Watch('value')
   watchdays(val: any) {
+    const time: any = this.beginDate(val)
     this.$emit('input', {
-      startTime: this.beginDate(val),
-      endTime: this.endDate()
+      startTime: time.date,
+      endTime: this.endDate(),
+      count: time.count
     })
   }
 }

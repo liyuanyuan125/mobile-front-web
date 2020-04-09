@@ -2,8 +2,8 @@
   <div class="options-page">
     <ModuleHeader
       title="口碑评论"
-      :link="appraiseList.length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0 ? link : false" />
-    <div v-if="appraiseList.length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0">
+      :link="favorable || appraiseList.length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0 ? link : false" />
+    <div v-if="favorable || appraiseList.length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0">
       <div class="options-top">
         <div class="options-left">
           <span class="hot" @click="showNote">

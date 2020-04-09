@@ -314,11 +314,12 @@ export default class Main extends Vue {
 <style lang='less' scoped>
 .page {
   background-color: #f2f3f6;
-  overflow: hidden;
+  // overflow: hidden;
 }
 .item-hots {
   padding-bottom: 57px;
   background: #fff;
+  overflow: hidden;
 }
 
 .tab-nav {

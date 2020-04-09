@@ -50,6 +50,7 @@ export default class TrendLine extends Vue {
         smooth: true, // 平滑
         name: it.name,
         data: it.list,
+        connectNulls: true, // 是否连接空数据。
         areaStyle: this.isGrad
           ? {
               // 渐变色

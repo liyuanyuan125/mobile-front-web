@@ -10,7 +10,7 @@
       >{{it}}</span>
     </div>
     <div class="contrast-bottom">
-      <div v-if="optionsMessage.length > 0">
+      <div v-if="(optionsMessage || []).length > 0">
         <div class="contrast-progress" v-for="(item, ins) in optionsMessage" :key="ins">
           <span>{{item.rivalName}}</span>
           <div class="progress">

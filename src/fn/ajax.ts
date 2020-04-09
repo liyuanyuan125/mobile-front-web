@@ -58,6 +58,7 @@ const xhr = async (options: any) => {
     'X-PS-SendTS': resultJSON.data.timeStamp,
     'X-PS-Check': resultJSON.data.checkValue,
     'X-PS-CID': random('h5'),
+    'X-PS-PackageName': 'com.jydata.monitor.advertiser'
   }
 }
 

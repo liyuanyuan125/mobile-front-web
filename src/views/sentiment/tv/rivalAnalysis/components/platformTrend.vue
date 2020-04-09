@@ -7,19 +7,22 @@
         <SelectDate v-model="dates" />
       </div>
     </div>
-    <div class="tabbox">
-      <Button
-        class="chg"
-        v-for="(item) in tabList"
-        :key="item.key + item.name"
-        :class="{'chgbgc': tabIndex === item.key}"
-        type="primary"
-        @click="changeTab(item.key)"
-      >{{item.name}}</Button>
+    <div v-if="response.length">
+      <div class="tabbox">
+        <Button
+          class="chg"
+          v-for="(item) in tabList"
+          :key="item.key + item.name"
+          :class="{'chgbgc': tabIndex === item.key}"
+          type="primary"
+          @click="changeTab(item.key)"
+        >{{item.name}}</Button>
+      </div>
+      <div>
+        <trendLines :lineData="lineDatas" :colors="colors" v-if="lineDatas.xDate" />
+      </div>
     </div>
-    <div>
-      <echartLines :lineData="lineDatas" :colors="colors" v-if="lineDatas.xDate" />
-    </div>
+    <dataEmpty v-else />
   </div>
 </template>
 
@@ -28,16 +31,18 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import SelectDate from '@/components/selectDate'
 import { devLog, devInfo } from '@/util/dev'
-import echartLines from '@/components/hotLines'
+import trendLines from '@/components/trendLine'
 import { toast } from '@/util/toast'
 import moment from 'moment'
 import { Button } from 'vant'
+import dataEmpty from '@/views/common/dataEmpty/index.vue'
 
 @Component({
   components: {
     Button,
-    echartLines,
-    SelectDate
+    trendLines,
+    SelectDate,
+    dataEmpty
   }
 })
 export default class PlatformTrend extends ViewBase {

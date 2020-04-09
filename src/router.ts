@@ -81,6 +81,11 @@ export default new Router({
       name: 'application',
       component: () => import('./views/register/index.vue')
     },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('./views/register/login.vue')
+    },
     // 影片资料页
     {
       path: '/movie/detail/:movieId',

@@ -1,64 +1,66 @@
 <template>
   <div class="options-page">
-    <ModuleHeader v-if="appraiseList.length > 0" title="口碑评论" :link="link" />
-    <div class="options-top" v-if="appraiseList.length > 0">
-      <div class="options-left">
-        <span class="hot" @click="showNote">
-          好感度
-          <Icon name="question-o" size="16" color="#303030" />
-        </span>
-        <div class="hot-degrees">{{favorable? favorable : '-'}}</div>
-      </div>
-      <div class="options-right">
-        <div
-          class="options-progress"
-          v-for="(it, index) in appraiseList"
-          :key="it.raiseName + index"
-        >
-          <span>{{it.raiseName}}</span>
-          <div class="progress">
-            <Progress :percentage="it.raisePercent" color="#88aaf6" stroke-width="5" />
-          </div>
-          <div class="progress-text">{{it.raisePercent}}%</div>
+    <ModuleHeader
+      title="口碑评论"
+      :link="appraiseList.length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0 ? link : false" />
+    <div v-if="appraiseList.length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0">
+      <div class="options-top">
+        <div class="options-left">
+          <span class="hot" @click="showNote">
+            好感度
+            <Icon name="question-o" size="16" color="#303030" />
+          </span>
+          <div class="hot-degrees">{{favorable? favorable : '-'}}</div>
         </div>
-      </div>
-    </div>
-    <dataEmpty v-else />
-    <div
-      class="options-bottom"
-      v-if="(publicPraise.hotWordList || []).length || (publicPraise.badWordList || []).length"
-    >
-      <div class="hot-box" v-if="(publicPraise.hotWordList || []).length">
-        <div class="hot-box-left">
-          <p>
-            <i class="ico-hot"></i>全网热词
-          </p>
-        </div>
-        <div class="hot-box-right">
-          <div>
-            <span
-              v-for="(it,index) in (publicPraise.hotWordList || []).slice(0,4)"
-              :key="it+index"
-              class="van-ellipsis"
-              @click="wordLink(it,0)"
-            >{{it}}</span>
+        <div class="options-right">
+          <div
+            class="options-progress"
+            v-for="(it, index) in (appraiseList.length > 0 ? appraiseList : noappraiseList)"
+            :key="it.raiseName + index"
+          >
+            <span>{{it.raiseName}}</span>
+            <div class="progress">
+              <Progress :percentage="it.raisePercent || 0" color="#88aaf6" stroke-width="5" />
+            </div>
+            <div class="progress-text">{{it.raisePercent || '-'}}%</div>
           </div>
         </div>
       </div>
-      <div class="hot-box" v-if="(publicPraise.hotWordList || []).length">
-        <div class="hot-box-left">
-          <p>
-            <i class="ico-bad"></i>负面热词
-          </p>
+      <div
+        class="options-bottom"
+      >
+        <div class="hot-box">
+          <div class="hot-box-left">
+            <p>
+              <i class="ico-hot"></i>全网热词
+            </p>
+          </div>
+          <div class="hot-box-right">
+            <div class="hot-none">
+              <span
+                v-for="(it,index) in (publicPraise.hotWordList || []).slice(0,4)"
+                :key="it+index"
+                class="van-ellipsis"
+                @click="wordLink(it,0)"
+              >{{it}}</span>
+            </div>
+          </div>
         </div>
-        <div class="hot-box-right">
-          <div>
-            <span
-              v-for="(it,index) in (publicPraise.badWordList || []).slice(0,4)"
-              :key="it + index"
-              class="van-ellipsis"
-              @click="wordLink(it,3)"
-            >{{it}}</span>
+        <div class="hot-box">
+          <div class="hot-box-left">
+            <p>
+              <i class="ico-bad"></i>负面热词
+            </p>
+          </div>
+          <div class="hot-box-right">
+            <div class="hot-none">
+              <span
+                v-for="(it,index) in (publicPraise.badWordList || []).slice(0,4)"
+                :key="it + index"
+                class="van-ellipsis"
+                @click="wordLink(it,3)"
+              >{{it}}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -90,7 +92,9 @@ export default class PraiseComment extends Vue {
   @Prop({ type: Object }) link!: AppLink
 
   praiseList: any[] = []
-
+  noappraiseList = [{raiseName: '正面评价', raisePercent: 0},
+  {raiseName: '中性评价', raisePercent: 0},
+  {raiseName: '负面评价', raisePercent: 0}]
   get appraiseList() {
     const list = this.publicPraise.appraiseList || []
     if (list && list.length) {

@@ -5,6 +5,6 @@ import { get, post, put, del } from '@/fn/ajaxFix'
  * @param query  object
  */
 export async function getEventNetworkDetailById(eventId: string) {
-    const res = await get('/mock/408/yuqing/event/network/detail', { eventId })
+    const res = await get('/yuqing/event/network/detail', { eventId })
     return res
 }

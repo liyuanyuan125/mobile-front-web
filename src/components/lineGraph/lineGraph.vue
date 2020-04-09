@@ -22,7 +22,11 @@ export default class LineGrap extends Vue {
   /** tooltip 文本色 */
   @Prop({ type: String, default: '#8f8f8f' }) textColor!: string
   /** 自定义 tooltip框 内容 */
-  @Prop({ type: Function }) formatterHtml!: (params: any, query: any) => Promise<string>
+  @Prop({ type: Function }) formatterHtml!: (
+    params: any,
+    query: any,
+    eventList?: any
+  ) => Promise<string>
 
   maxData: any = 0 // 算出最大值的位置
   unit: string = '' // Y轴单位
@@ -120,7 +124,12 @@ export default class LineGrap extends Vue {
         },
         // 跳转链接事件详情页url暂定处理
         formatter: (params: any) => {
-          return this.formatterHtml(params[0], this.lineData.xDate[params[0].dataIndex])
+          const index = params[0].dataIndex
+          return this.formatterHtml(
+            params[0],
+            this.lineData.xDate[index],
+            this.lineData.eventList[index] || []
+          )
         }
       },
       grid: {

@@ -134,7 +134,7 @@ export default class Main extends Vue {
 }
 .bubble {
   padding: 0 30px;
-  margin-top: -43px;
+  margin-top: -35px;
   position: relative;
   z-index: 12;
   height: 400px;

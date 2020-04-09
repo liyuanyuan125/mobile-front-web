@@ -4,7 +4,7 @@
     <brandInfoArea :brandInfo="brandInfo" :bubbleData="bubbleData"/>
     <TabNav
       :list="navList"
-      class="formattab"
+      class="tab-nav"
     />
     <section class="brand-hot bg_fff" id="hot">
       <selectTime v-model="day" class="select-time"/>
@@ -20,6 +20,7 @@
       :link="getApplink('praiseHotWordsList')"
       v-if="publicPraise.appraiseList"
       id="praise"
+      class="praise"
     />
     <UserPortrait 
       :ageRangeList="userAnalysis.ageRangeList" 
@@ -78,12 +79,6 @@ export default class BrandPage extends ViewBase {
     { name: 'event', label: '事件' },
     { name: 'part', label: '竞品' },
   ]
-  // 头部
-  sidebar = {
-    diggType: 'movie',
-    diggId: '100038',
-    rivalIds: '1,2,4'
-  }
 
   // 气泡
   bubbleData: any = {}
@@ -113,6 +108,32 @@ export default class BrandPage extends ViewBase {
   brandEventList: any = {}
   // 竞品分析
   rivalList = []
+  rivalIds = []
+
+  // 头部
+  get sidebar() {
+    let rivalObj = {}
+    // 有竞品数据跳竞品报告页
+    if (this.rivalIds.length) {
+      rivalObj = {
+        name: 'sentimentbrand-analyze',
+        query: {
+          ids: this.rivalIds.join(',')
+        }
+      }
+    } else {
+      // 无竞品的时候，跳设置竞品页
+      rivalObj = {
+        businessType: 1,
+        businessObjectIdList: this.id
+      }
+    }
+   return {
+    diggType: 1, // 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
+    diggId: this.id,
+    rivalIds: rivalObj
+   }
+  }
 
   mounted() {
     this.brandDetail() // 品牌详情页
@@ -149,7 +170,7 @@ export default class BrandPage extends ViewBase {
       } } = await getList({
         brandId: this.id,
         startTime,
-        endTime
+        endTime,
       })
       this.overAllHeatList = overAllHeatList || []
       this.platformHeatList = platformHeatList || []
@@ -176,6 +197,7 @@ export default class BrandPage extends ViewBase {
         brandId: this.id
       })
       this.rivalList = data || []
+      this.rivalIds = (data || []).map((it: any) => it.rivalId)
     } catch (ex) {
       toast(ex)
     }
@@ -217,19 +239,30 @@ export default class BrandPage extends ViewBase {
 @import './less/com.less';
 .content {
   background: #f2f3f6;
+  // overflow: hidden;
 }
 .select-time {
   padding: 60px 30px 30px;
 }
-
-/deep/ nav.formattab {
+.praise {
+  overflow: hidden;
+}
+/deep/ .tab-nav {
   margin-top: 0;
-  top: 88px;
+  top: 100px;
   z-index: 11;
+  /deep/ .van-tab {
+    flex-basis: 20% !important;
+  }
 }
-/deep/ nav.formattab .van-tab {
-  flex-basis: 20% !important;
-}
+// /deep/ nav.formattab {
+//   margin-top: 0;
+//   top: 88px;
+//   z-index: 11;
+// }
+// /deep/ nav.formattab .van-tab {
+//   flex-basis: 20% !important;
+// }
 .bg_fff {
   background: #fff;
 }

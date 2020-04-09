@@ -38,7 +38,11 @@ export default class Login extends Vue {
       account: this.account,
       password: this.password
     })
-    return res
+    if (res.code === 0) {
+      toast('登录成功')
+    } else {
+      toast(`登录失败:${res.msg}`, 5000)
+    }
   }
 }
 </script>

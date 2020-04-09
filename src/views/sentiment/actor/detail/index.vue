@@ -422,6 +422,7 @@ export default class KolPage extends ViewBase {
     }
     .icon-arrow {
       padding-left: 10px;
+      padding-top: 6px;
     }
   }
 }

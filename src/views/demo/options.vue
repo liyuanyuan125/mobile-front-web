@@ -1,7 +1,7 @@
 <template>
   <div class="demo-page">
     <MarketContrast :fetch="fetch" :query="query" />
-    <MarketComment  :href="href" :publicPraise='publicPraise' :hotQuery="hotQuery" />
+    <MarketComment  :href="href" link="123" :publicPraise='publicPraise' :hotQuery="hotQuery" />
     <AgeDistribution :href="href" :ageRangeList='ageRangeList' />
   </div>
 </template>
@@ -10,13 +10,16 @@
 import { Component, Vue } from 'vue-property-decorator'
 // 口碑评论对比
 import MarketContrast from '@/views/common/marketContrast/index.vue'
+import MarketComment from '@/views/common/praiseComment/index.vue'
+
 // 年龄分布
 import AgeDistribution from '@/views/common/ageDistribution/index.vue'
 
 @Component({
   components: {
     MarketContrast,
-    AgeDistribution
+    AgeDistribution,
+    MarketComment
   }
 })
 export default class DemoPage extends Vue {
@@ -53,24 +56,11 @@ export default class DemoPage extends Vue {
     // 口碑评论 数据
     publicPraise = {
         appraiseList: [
-            {
-                raisePercent: 60,
-                raiseName: '正面评价'
-            },
-            {
-                raisePercent: 60,
-                raiseName: '负面评价'
-            },
-            {
-                raisePercent: 60,
-                raiseName: '中性评价'
-            }
         ],
         hotWordList: [
-            1, 3, 4, 5
         ],
         badWordList: [
-            1, 2, 3, 4
+            1
         ]
     }
 

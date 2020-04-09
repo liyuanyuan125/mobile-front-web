@@ -68,6 +68,7 @@ export default class Select extends Vue {
     line-height: 56px;
     background: transparent;
     font-size: 26px;
+    appearance: none;
     color: rgba(48, 48, 48, 0.6);
   }
 }

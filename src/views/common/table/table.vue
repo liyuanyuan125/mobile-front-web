@@ -22,7 +22,7 @@
             <ul class='table-item-ul'>
               <li v-for='(itemlist, index ) in item.dataList.slice(0, 5)' :key='index'>
                 <div v-if='itemlist.name != ""' class='top'>{{itemlist.name}}</div>
-                <div v-if='itemlist.name != ""' class='bottom'>{{(itemlist.value/100).toFixed(1)}}%</div>
+                <div v-if='itemlist.name != ""' class='bottom'>{{(itemlist.value == 0 || itemlist.value == null) ? '-' : ((itemlist.value/100).toFixed(1) + '%')}}</div>
                 <!-- <div v-if='itemlist.name == ""'>--</div> -->
               </li>
               <li>-</li>
@@ -149,6 +149,9 @@ export default class KolPage extends ViewBase {
       color: rgba(48, 48, 48, 1);
       text-align: center;
       line-height: 110px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .table-item-ul {
       width: 83.34%;

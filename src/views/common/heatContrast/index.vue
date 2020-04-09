@@ -53,7 +53,7 @@ export default class Main extends Vue {
   /** 热度分析对比 */
   @Prop({ type: Array, default: () => []}) overAllHeat: any
   /** 选择日期天数 */
-  @Prop({ type: Number, default: 7}) day!: number
+  @Prop({ type: Number, default: 7}) daysNum!: number
   /** 热度分析对比title */
   @Prop({ type: String, default: '综合热度分析'}) lineTitle!: string
   /** 线条颜色配置 */
@@ -67,33 +67,50 @@ export default class Main extends Vue {
 
   tabIndex: any = null
   xDate: any = []
+
+  // 选择天数遍历出对应的日期集合
+  get selectDaysList() {
+    const dateAry = [] // 对应日期 X轴
+    const yDate = [] // 对应的值 Y轴
+    for ( let i = 1; i <= this.daysNum; i++) {
+      dateAry.push(moment().subtract(i, 'days').format('YYYY-MM-DD'))
+    }
+    return dateAry.reverse()
+  }
+
   get interactData() {
     return this.changeListData()
   }
 
   get lineData() {
-    // overAllHeat 逻辑从新处理 传递是数组
     if (this.overAllHeat.length == 0) {
       return {}
     } else {
-      // yyDate 处理tooltip 日期展示
-      const yyDate: any = (this.overAllHeat[0].data || []).map((it: any) => moment(it.date).format('YYYY-MM-DD'))
-      this.xDate = (this.overAllHeat[0].data || []).map((it: any) => moment(it.date).format('MM-DD'))
       const yDate = (this.overAllHeat || []).map((it: any) => {
         const {rivalName, data} = it
+        const obj: any = {};
+        (data || []).map((item: any) => {
+          const forDate = moment(item.date).format('YYYY-MM-DD')
+          obj[forDate] = item.value
+        })
+
+        // yDate数据重新处理
+        const yDateval: any[] = []
+        this.selectDaysList.map((t: any) => {
+          yDateval.push(obj[t] || null) // date匹配后台给的value值，无则为null
+        })
+
         return {
           name: rivalName,
-          list: (data || []).map((ite: any) => ite.value)
+          list: yDateval
         }
       })
       return {
         title: this.lineTitle,
-        xDate: this.xDate,
-        yDate,
-        yyDate,
+        xDate: this.selectDaysList, // X轴日期
+        yDate, // Y轴数据
       }
     }
-
   }
 
   mounted() {
@@ -103,27 +120,32 @@ export default class Main extends Vue {
   // 处理公共逻辑
   changeListData() {
     const list = this.tabIndex == 0 ? this.interactList : this.materialList
-    // 处理 xDate 和 yyDate日期处理
-    let yyDate: any[] = []
-    let xDate: any[] = []
     const result = list.map((item: any) => {
       const {platformName, dataList} = item
-      const yDate = dataList.map((it: any, index: number) => {
-        if (index == 0) {
-          yyDate = it.data.map((ite: any) => moment(ite.date).format('YYYY-MM-DD'))
-          xDate = it.data.map((ite: any) => moment(ite.date).format('MM-DD'))
-        }
+      const yDate = (dataList || []).map((it: any) => {
+        const {rivalName, data} = it
+        const obj: any = {};
+        (data || []).map((t: any) => {
+          const forDate = moment(t.date).format('YYYY-MM-DD')
+          obj[forDate] = t.value
+        })
+
+        // yDate数据重新处理
+        const yDateval: any[] = []
+        this.selectDaysList.map((t: any) => {
+          yDateval.push(obj[t] || null) // date匹配后台给的value值，无则为null
+        })
+
         return {
-          name: it.rivalName,
-          list: it.data.map((ite: any) => ite.value)
+          name: rivalName,
+          list: yDateval
         }
       })
 
       return {
         title: platformName,
-        xDate,
+        xDate: this.selectDaysList, // X轴日期
         yDate,
-        yyDate
       }
     })
 

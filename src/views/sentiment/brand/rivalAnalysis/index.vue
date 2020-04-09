@@ -18,7 +18,7 @@
         :interactList="interactList"
         :materialList="materialList"
         :tabs="tabs"
-        :days="day"
+        :daysNum="day"
       />
     </section>
     <section class="market-model" id="praise">

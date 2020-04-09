@@ -39,7 +39,8 @@ export default class Main extends Vue {
         symbolSize: 6,
         smooth: true, // 平滑
         name: it.name,
-        data: it.list
+        data: it.list,
+        connectNulls: true,
       }
     })
 
@@ -74,7 +75,7 @@ export default class Main extends Vue {
         // 分为两个模块来展示html
         formatter: (params: any) => {
           const dataIndex = (params[0].dataIndex)
-          const titleDate = this.lineData.yyDate[dataIndex]
+          const titleDate = this.lineData.xDate[dataIndex]
           const listHtml = (params || []).map(({seriesName, name, value, color }: any) => {
             const itemHtml = `
               <p class="tooltip-item">
@@ -105,7 +106,7 @@ export default class Main extends Vue {
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: this.lineData.xDate,
+        data: (this.lineData.xDate || []).map((t: any) => moment(t).format('MM-DD')),
         axisLabel: {
           color: '#8f8f8f',
           fontSize: 11

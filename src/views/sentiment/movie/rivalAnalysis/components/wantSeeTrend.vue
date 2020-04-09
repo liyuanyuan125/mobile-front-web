@@ -11,7 +11,7 @@
       <trendLines
         :lineData="lineDatas"
         :colors="colors"
-        v-if="lineDatas.xDate && lineDatas.xDate.length"
+        v-if="lineDatas.yDate && lineDatas.yDate.length"
       />
       <dataEmpty v-else />
     </div>
@@ -57,9 +57,11 @@ export default class WantSeeTrend extends ViewBase {
     totalDataList: [],
     newDataList: []
   }
+  count: number = 7
 
   @Watch('dates', { deep: true })
   watchDays(val: any) {
+    this.count = val.count
     this.uplist()
   }
 
@@ -70,32 +72,33 @@ export default class WantSeeTrend extends ViewBase {
 
   // 综合热度数据处理 title，xdata，ydata
   formatDatas(dataObj: any[]) {
-    let xDate: any = []
-    let dateList: any[] = []
-    let dates: any[] = []
-    const yDate = (dataObj || []).map((it: any) => {
+    // this.formatData(dataObj,this.count)
+    // 处理日期
+    const lastDate: any[] = []
+    const nowDate = moment(new Date()).format('YYYY-MM-DD 00:00:00')
+    const now = new Date(nowDate).getTime()
+    for (var i = 0; i < this.count; i++) {
+      lastDate.unshift(now - i * 24 * 60 * 60 * 1000)
+    }
+    // 处理数据
+    const lastValue = (dataObj || []).map((it: any) => {
       const { rivalName, data } = it
-      // 获取所有日期
-      dateList = dateList.concat(data)
-      // 解析出所有日期
-      dates = dateList.map((ite: any) => ite.date)
+      const yVal = new Array(this.count).fill(null)
+      data.map((ite: any) => {
+        const mapIndex = lastDate.indexOf(ite.date)
+        yVal[mapIndex] = ite.value
+      })
       return {
         name: rivalName,
-        list: (data || []).map((ite: any) => ite.value)
+        list: yVal
       }
     })
-    // 去重
-    xDate = this.unique(dates)
+
     this.lineDatas = {
       title: '',
-      xDate,
-      yDate
+      xDate: lastDate,
+      yDate: lastValue
     }
-  }
-
-  // es6 去重
-  unique(arr: any) {
-    return Array.from(new Set(arr))
   }
 
   async uplist() {
@@ -103,10 +106,7 @@ export default class WantSeeTrend extends ViewBase {
       const { data } = await this.fetch({
         movieIdList: this.query,
         ...this.dates
-        // startTime: 20200301,
-        // endTime: 20200331
       })
-      //   console.log('data', data)
       this.response = data
       this.formatDatas(this.response.newDataList)
     } catch (ex) {

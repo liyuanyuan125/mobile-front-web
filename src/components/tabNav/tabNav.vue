@@ -4,6 +4,7 @@
     :class="{
       'tab-nav-normal': normal,
       'tab-nav-hide-header': hideHeader,
+      [`tab-nav-count-${list.length}`]: true
     }"
     ref="box"
   >
@@ -113,7 +114,7 @@ export default class TabNav extends Vue {
     font-size: 30px;
     font-weight: 500;
     padding: 10px 0 6px 0;
-    flex-basis: 16.667% !important;
+    flex-basis: 16.66666% !important;
   }
 
   /deep/ .van-tab--active {
@@ -166,6 +167,12 @@ export default class TabNav extends Vue {
     top: -5px;
     height: 5px;
     background: #fff;
+  }
+}
+
+.tab-nav-count-5 {
+  /deep/ .van-tab {
+    flex-basis: 20% !important;
   }
 }
 </style>

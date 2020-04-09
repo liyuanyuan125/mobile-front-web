@@ -299,38 +299,41 @@ mockGet('/yuqing/music/song/play/analysis', () => {
       ],
       dailyPlatformList: [
         {
-          platformName: '新浪',
+          platformName: '网易云音乐',
           dataList: [
-            { date: 1581782400000, value: 123231 },
-            { date: 1582041600000, value: 823231 },
-            { date: 1582300800000, value: 323231 },
+            { date: 1585756800000, value: 123231 },
+            { date: 1586016000000, value: 823231 },
+            { date: 1586275200000, value: 323231 },
+            { date: 1585324800000, value: 923231 },
           ]
         },
         {
-          platformName: '网易',
+          platformName: 'QQ音乐',
           dataList: [
-            { date: 1581782400000, value: 323231 },
-            { date: 1582041600000, value: 223231 },
-            { date: 1582300800000, value: 823231 },
+            { date: 1585756800000, value: 323231 },
+            { date: 1586016000000, value: 223231 },
+            { date: 1586275200000, value: 823231 },
+            { date: 1585324800000, value: 623231 },
           ]
         },
         {
-          platformName: '搜狗',
+          platformName: '酷我音乐',
           dataList: [
-            { date: 1581782400000, value: 823231 },
-            { date: 1582041600000, value: 123231 },
-            { date: 1582300800000, value: 923231 },
+            { date: 1585756800000, value: 823231 },
+            { date: 1586016000000, value: 123231 },
+            { date: 1586275200000, value: 923231 },
+            { date: 1585324800000, value: 223231 },
           ]
         },
       ],
       dailyEventList: [
-        { date: 1581782400000, eventName: '1事件名事件名事件名事件名事件名', eventId: 1 },
-        { date: 1582041600000, eventName: '2事件名事件名事件名事件名事件名', eventId: 2 },
-        { date: 1582300800000, eventName: '3事件名事件名事件名事件名事件名', eventId: 3 },
+        { date: 1585756800000, eventName: '1事件名事件名事件名事件名事件名', eventId: 1 },
+        { date: 1586016000000, eventName: '2事件名事件名事件名事件名事件名', eventId: 2 },
+        { date: 1586275200000, eventName: '3事件名事件名事件名事件名事件名', eventId: 3 },
       ],
       dailyFormList: [
         {
-          date: 1581782400000,
+          date: 1585756800000,
           playCount: '276.9万',
           markName: '上线首日',
           platformList: [
@@ -340,7 +343,7 @@ mockGet('/yuqing/music/song/play/analysis', () => {
           ]
         },
         {
-          date: 1582041600000,
+          date: 1586016000000,
           playCount: '176.9万',
           platformList: [
             { name: '网易云音乐', value: '88.8万' },
@@ -349,7 +352,7 @@ mockGet('/yuqing/music/song/play/analysis', () => {
           ]
         },
         {
-          date: 1582300800000,
+          date: 1586275200000,
           playCount: '188.9万',
           platformList: [
             { name: '网易云音乐', value: '99.8万' },
@@ -367,34 +370,34 @@ mockGet('/yuqing/music/song/play/analysis', () => {
       ],
       dailyPlatformList: [
         {
-          platformName: '新浪',
+          platformName: '网易云音乐',
           dataList: [
-            { date: 1581782400000, value: 123231 },
-            { date: 1582041600000, value: 823231 },
-            { date: 1582300800000, value: 323231 },
+            { date: 1585756800000, value: 123231 },
+            { date: 1586016000000, value: 823231 },
+            { date: 1586275200000, value: 323231 },
           ]
         },
         {
-          platformName: '网易',
+          platformName: 'QQ音乐',
           dataList: [
-            { date: 1581782400000, value: 323231 },
-            { date: 1582041600000, value: 223231 },
-            { date: 1582300800000, value: 823231 },
+            { date: 1585756800000, value: 323231 },
+            { date: 1586016000000, value: 223231 },
+            { date: 1586275200000, value: 823231 },
           ]
         },
         {
-          platformName: '搜狗',
+          platformName: '酷我音乐',
           dataList: [
-            { date: 1581782400000, value: 823231 },
-            { date: 1582041600000, value: 123231 },
-            { date: 1582300800000, value: 923231 },
+            { date: 1585756800000, value: 823231 },
+            { date: 1586016000000, value: 123231 },
+            { date: 1586275200000, value: 923231 },
           ]
         },
       ],
       dailyEventList: [
-        { date: 1581782400000, eventName: '1事件名事件名事件名事件名事件名', eventId: 1 },
-        { date: 1582041600000, eventName: '2事件名事件名事件名事件名事件名', eventId: 2 },
-        { date: 1582300800000, eventName: '3事件名事件名事件名事件名事件名', eventId: 3 },
+        { date: 1585756800000, eventName: '1事件名事件名事件名事件名事件名', eventId: 1 },
+        { date: 1586016000000, eventName: '2事件名事件名事件名事件名事件名', eventId: 2 },
+        { date: 1586275200000, eventName: '3事件名事件名事件名事件名事件名', eventId: 3 },
       ],
       dailyFormList: [
         {
@@ -408,7 +411,7 @@ mockGet('/yuqing/music/song/play/analysis', () => {
           ]
         },
         {
-          date: 1582041600000,
+          date: 1586016000000,
           playCount: '388.8万',
           platformList: [
             { name: '网易云音乐', value: '288.8万' },
@@ -844,9 +847,9 @@ mockGet('/yuqing/music/song/rival/play/analysis', () => {
         rivalName: '挪威的森林',
         playCountShow: '2,432.4万',
         dataList: [
-          { date: 1581782400000, value: 18888 },
-          { date: 1582041600000, value: 28888 },
-          { date: 1582300800000, value: 38888 },
+          { date: 1585756800000, value: 18888 },
+          { date: 1586016000000, value: 28888 },
+          { date: 1586275200000, value: 38888 },
         ],
         dateShowList: [
           { date: '2020-02-16', value: '18,888' },
@@ -859,9 +862,9 @@ mockGet('/yuqing/music/song/rival/play/analysis', () => {
         rivalName: '学猫叫',
         playCountShow: '8,432.4万',
         dataList: [
-          { date: 1581782400000, value: 18888 },
-          { date: 1582041600000, value: 38888 },
-          { date: 1582300800000, value: 58888 },
+          { date: 1585756800000, value: 18888 },
+          { date: 1586016000000, value: 38888 },
+          { date: 1586275200000, value: 58888 },
         ],
         dateShowList: [
           { date: '2020-02-16', value: '18,888' },
@@ -874,9 +877,9 @@ mockGet('/yuqing/music/song/rival/play/analysis', () => {
         rivalName: '学猫叫',
         playCountShow: '8,432.4万',
         dataList: [
-          { date: 1581782400000, value: 18888 },
-          { date: 1582041600000, value: 88888 },
-          { date: 1582300800000, value: 98888 },
+          { date: 1585756800000, value: 18888 },
+          { date: 1586016000000, value: 88888 },
+          { date: 1586275200000, value: 98888 },
         ],
         dateShowList: [
           { date: '2020-02-16', value: '18,888' },
@@ -907,7 +910,7 @@ mockGet('/yuqing/music/song/rival/play/analysis', () => {
           ]
         },
         {
-          date: 1582041600000,
+          date: 1586016000000,
           playCount: '388.8万',
           platformList: [
             { name: '网易云音乐', value: '288.8万' },

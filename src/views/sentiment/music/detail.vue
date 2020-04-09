@@ -13,8 +13,8 @@
 
     <section class="header">
       <figure class="header-fig">
-        <img :src="basic.cover">
-        <div class="header-price">{{basic.price}}</div>
+        <img :src="basic.cover" v-if="basic.cover">
+        <div class="header-price" v-if="basic.price">{{basic.price}}</div>
       </figure>
       <div class="header-main">
         <h1 class="header-title">{{basic.name}}</h1>
@@ -63,14 +63,19 @@
       />
     </section>
 
-    <section class="pane" id="play">
+    <section class="pane" id="play" v-if="!isAlbum || isDigital">
       <ModuleHeader :title="isAlbum ? '销量分析' : '播放量分析'"/>
-      <PlayStats :fetch="playFetch" :isAlbum="isAlbum" class="play-stats"/>
+      <PlayStats
+        :fetch="playFetch"
+        :isAlbum="isAlbum"
+        :moreDateLink="detailPage(isAlbum ? 'albumSaleCountDetail' : 'songPlayCountDetail')"
+        class="play-stats"
+      />
     </section>
 
     <section class="pane" id="song" v-if="isAlbum">
       <ModuleHeader title="歌曲热度"/>
-      <div class="song-wrap" ref="songWrap">
+      <div class="song-wrap" ref="songWrap" v-if="songList && songList.length > 0">
         <ul class="song-list" ref="songList">
           <li class="song-head">
             <span class="song-heat">热度值</span>
@@ -95,8 +100,10 @@
       <a
         class="song-more"
         @click="handleSongMore"
-        v-if="songList.length > 5"
+        v-if="songList && songList.length > 5"
       >{{ songUnfold ? '收起更多' : '展开更多' }}</a>
+
+      <DataEmpty v-if="songList && songList.length == 0"/>
     </section>
 
     <section class="pane" v-if="!isAlbum">
@@ -251,6 +258,7 @@
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
+import { Swipe, SwipeItem, Popup, Cell, CellGroup } from 'vant'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import TabNav, { TabNavItem } from '@/components/tabNav'
 import ModuleHeader from '@/components/moduleHeader'
@@ -261,7 +269,7 @@ import PraiseComment from '@/views/common/praiseComment/index.vue'
 import UserPortrait from '@/views/common/user/userPortrait.vue'
 import EventList from '@/views/common/eventList/event.vue'
 import AnnularChart from '@/components/cakeChart/annularChart.vue'
-import { Swipe, SwipeItem, Popup, Cell, CellGroup } from 'vant'
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
 import { lastDays } from '@/util/timeSpan'
 import {
   basicEmpty,
@@ -271,6 +279,8 @@ import {
   getEventList,
   getRivalList,
 } from './detailData'
+
+const removeFalsy = (list: any[]) => list.filter(it => !!it)
 
 @Component({
   components: {
@@ -289,6 +299,7 @@ import {
     Popup,
     Cell,
     CellGroup,
+    DataEmpty,
   }
 })
 export default class extends ViewBase {
@@ -298,14 +309,14 @@ export default class extends ViewBase {
 
   get navList(): TabNavItem[] {
     const list = this.isAlbum
-    ? [
-      { name: 'play', label: '销量' },
+    ? removeFalsy([
+      this.isDigital && { name: 'play', label: '销量' },
       { name: 'song', label: '歌曲' },
       { name: 'praise', label: '口碑' },
       { name: 'user', label: '用户' },
       { name: 'event', label: '事件' },
       { name: 'rival', label: '竞品' },
-    ]
+    ])
     : [
       { name: 'hot', label: '热度' },
       { name: 'praise', label: '口碑' },
@@ -315,6 +326,8 @@ export default class extends ViewBase {
     ]
     return list
   }
+
+  isDigital = false
 
   basic: any = basicEmpty()
 
@@ -341,7 +354,7 @@ export default class extends ViewBase {
     }
   }
 
-  songList: any[] = []
+  songList: any[] | null = null
 
   songUnfold = false
 
@@ -369,6 +382,13 @@ export default class extends ViewBase {
     return ids.join(',')
   }
 
+  detailPage(page: string) {
+    return {
+      page,
+      [this.isAlbum ? 'albumId' : 'songId']: this.id
+    }
+  }
+
   businessPage(page: string) {
     return {
       page,
@@ -394,6 +414,9 @@ export default class extends ViewBase {
 
   async getBasic() {
     const {
+      // 是否为数字专辑
+      isDigital = false,
+
       // 基础信息
       basic,
       // 基础信息弹出窗
@@ -418,6 +441,7 @@ export default class extends ViewBase {
       // 音乐人分析
       singerList,
     } = await getBasic(this.id, this.isAlbum) as any
+    this.isDigital = isDigital
     this.basic = basic
     this.popupData = popupData
     this.bubbleData = bubbleData
@@ -492,10 +516,6 @@ export default class extends ViewBase {
 }
 
 .main-page-album {
-  /deep/ .tab-nav .van-tab {
-    flex-basis: 16.666% !important;
-  }
-
   .header-fig {
     top: 33px;
     width: 210px;
@@ -585,6 +605,8 @@ export default class extends ViewBase {
   img {
     max-width: 100%;
     max-height: 100%;
+    object-fit: contain;
+    background-color: #fff;
   }
 }
 
@@ -695,9 +717,6 @@ export default class extends ViewBase {
 
 .tab-nav {
   top: 100px;
-  /deep/ .van-tab {
-    flex-basis: 20% !important;
-  }
 }
 
 .pane {

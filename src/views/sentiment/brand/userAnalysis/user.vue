@@ -111,10 +111,10 @@ export default class Main extends Vue {
     return {
       name: 'sentimentuserregion',
       query: {
-        src: 1,
+        src: 1, // 品牌
         id: this.id,
         type: 1,
-        objType: 1
+        objType: 1 // 用户地域分布
       }
     }
   }

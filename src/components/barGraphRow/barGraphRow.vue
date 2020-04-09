@@ -1,7 +1,7 @@
 <template>
   <div class="content-wrap" :style="{height:canvasHei}">
     <div class="chart-default" v-if="!dataOption"></div>
-    <div ref="refChart" v-if="dataOption" class="chart-wrap" :style="{height:canvasHei}"></div>
+    <div ref="refChart" v-if="dataOption" class="chart-wrap"></div>
   </div>
 </template>
 
@@ -40,9 +40,11 @@ export default class BarGraphRow extends ViewBase {
   updateCharts(dataOption: any) {
     const chartEl = this.$refs.refChart as HTMLDivElement
     chartEl.innerHTML = ''
+    chartEl.style.height = this.canvasHei
     echarts.dispose(chartEl)
     const myChart = echarts.init(chartEl)
     myChart.clear()
+    myChart.resize()
     const option: any = {
       xAxis: {
         type: 'value',

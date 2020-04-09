@@ -61,9 +61,6 @@ export default class Main extends Vue {
   initChart() {
     const chartEl = this.$refs.refChart as any
     const myChart = echarts.init(chartEl)
-    // myChart.on('click', (params: any) => {
-    //   console.log(params)
-    // })
 
     const linearGradient = {
       normal: {
@@ -96,6 +93,7 @@ export default class Main extends Vue {
     }
 
     const options: any = {
+      connectNulls: true, // 是否连接空数据
       title: {
         text: this.lineData.title,
         left: 12,

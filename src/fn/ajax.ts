@@ -57,8 +57,7 @@ const xhr = async (options: any) => {
     'X-PS-Platform': 'h5',
     'X-PS-SendTS': resultJSON.data.timeStamp,
     'X-PS-Check': resultJSON.data.checkValue,
-    'X-PS-CID': random('h5'),
-    'X-PS-PackageName': 'com.jydata.monitor.advertiser'
+    'X-PS-CID': random('h5')
   }
 }
 
@@ -84,7 +83,6 @@ const request = async (url: string, opts: object) => {
     lastHeader = Object.assign({}, config.headers, xhrClient)
   }
   finalConfig = Object.assign({}, config, { headers: lastHeader })
-
   let res: any
   try {
     res = await axios(finalConfig)

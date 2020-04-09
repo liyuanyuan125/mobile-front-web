@@ -121,7 +121,6 @@ export default class WantSeeTrend extends ViewBase {
 
   // 处理chart 浮层 tooltip
   formatterHtml = (params: any, time: any, eventList: any) => {
-    console.log('this.dataTrend.dailyGainList', eventList)
     const weekDays = ['日', '一', '二', '三', '四', '五', '六']
     const day = weekDays[moment(time).day()]
     const date = moment(time).format('YYYY-MM-DD')

@@ -125,7 +125,6 @@ export default class LineGrap extends Vue {
         // 跳转链接事件详情页url暂定处理
         formatter: (params: any) => {
           const index = params[0].dataIndex
-          console.log('this.lineData.eventList[index]', index, this.lineData.eventList)
           return this.formatterHtml(
             params[0],
             this.lineData.xDate[index],

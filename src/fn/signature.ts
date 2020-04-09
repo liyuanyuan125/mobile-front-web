@@ -14,6 +14,6 @@ export default (options: any) => {
         'X-PS-SendTS': timeStamp,
         'X-PS-Check': signature,
         'X-PS-CID': random('h5'),
-        'X-PS-PackageName': 'com.jydata.monitor.advertiser'
+
     }
 }

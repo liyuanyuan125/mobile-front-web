@@ -11,7 +11,7 @@ export interface ImgObj {
  * @param type 裁切类型3=缩放4=裁切
  */
 export function imgFixed(imgUrl: ImgObj, width?: number, height?: number, type?: number) {
-    if (!imgUrl.url) {
+    if (imgUrl == null || !imgUrl.url) {
         return ''
     }
     if (imgUrl.source === 'jydata') {

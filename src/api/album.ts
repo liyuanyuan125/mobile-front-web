@@ -12,6 +12,11 @@ export interface IdListTime {
   endTime: number
 }
 
+export interface IdListDays {
+  albumIdList: string
+  days: number
+}
+
 /**
  * 1.专辑详情页
  * https://yapi.aiads-dev.com/project/404/interface/api/10908
@@ -64,6 +69,15 @@ export function getRivalReport(ids: string) {
  */
 export function getRivalSale(query: IdListTime) {
   return get('/yuqing/music/album/rival/analysis/sale', query)
+}
+
+/**
+ * 2.4.1竞品分析报告详情-获取销量对比-对齐发行时间
+ * https://yapi.aiads-dev.com/project/404/interface/api/11648
+ * @param query 查询参数
+ */
+export function getRivalSaleAlign(query: IdListDays) {
+  return get('/yuqing/music/album/rival/analysis/sale/align-release', query)
 }
 
 /**

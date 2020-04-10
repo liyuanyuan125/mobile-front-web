@@ -8,8 +8,10 @@ import {
 import {
   getRivalReport as albumGetReport,
   getRivalSale as albumGetSale,
+  getRivalSaleAlign as albumGetSaleAlign,
   getRivalPraise as albumGetPraise,
   IdListTime as AlbumIdListTime,
+  IdListDays as AlbumIdListDays,
 } from '@/api/album'
 import { dot } from '@jydata/fe-util'
 import { TableColumn } from '@/components/table'
@@ -215,9 +217,16 @@ const albumPlay = async (query: AlbumIdListTime) => {
   return dealPlayView(data, true)
 }
 
+const albumPlayAlign = async (query: AlbumIdListDays) => {
+  const { data } = await albumGetSaleAlign(query)
+  return dealPlayView(data, true)
+}
+
 export async function getPlay(ids: string, query: any, isAlbum: boolean) {
   const result = isAlbum
-    ? await albumPlay({ albumIdList: ids, ...query })
+    ? query.days
+    ? await albumPlayAlign({ albumIdList: ids, ...query })
+    : await albumPlay({ albumIdList: ids, ...query })
     : await songPlay({ songIdList: ids, ...query })
   return result
 }

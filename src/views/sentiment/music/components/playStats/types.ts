@@ -10,7 +10,7 @@ export interface PlayPlatform extends NameValue {
 }
 
 export interface DateValue {
-  date: number
+  date: number | string
   value: number
 }
 
@@ -46,9 +46,11 @@ export interface PlayItem {
   view: PlayView
 }
 
-export interface PlayQuery {
+export type PlayQuery = {
   startTime: number
   endTime: number
+} | {
+  days: number
 }
 
 export type PlayFetch = (query: PlayQuery) => PlayView | PlayItem[]

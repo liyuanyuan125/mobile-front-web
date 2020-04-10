@@ -1,5 +1,9 @@
 <template>
   <section class="play-stats">
+    <div class="align-control" v-if="showAlign">
+      <label>对齐</label>
+    </div>
+
     <Select v-model="day" :list="dayList" class="day-list"/>
 
     <Tabs
@@ -49,6 +53,20 @@
       v-if="chartTitle"
     />
 
+    <ul class="group-list" v-if="groupNames.length > 1">
+      <li
+        v-for="(name, index) in groupNames"
+        :key="name"
+        class="group-item"
+      >
+        <Button
+          :type="index == groupIndex ? 'info' : 'default'"
+          class="group-button"
+          @click="groupIndex = index"
+        >{{name}}</Button>
+      </li>
+    </ul>
+
     <MultiLine
       :names="dailyNames"
       :data="dailyData"
@@ -77,7 +95,7 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import ModuleHeader from '@/components/moduleHeader'
 import { RawLocation } from 'vue-router'
-import { Tabs, Tab, Progress } from 'vant'
+import { Tabs, Tab, Progress, Button } from 'vant'
 import { lastDays, lastDayList } from '@/util/timeSpan'
 import Select from '@/components/select'
 import MultiLine, { MultiLineItem, MultiLineEvents } from '@/components/multiLine'
@@ -88,14 +106,13 @@ import { openAppLink, AppLink } from '@/util/native'
 import Table from '@/components/table'
 import { isEmpty } from 'lodash'
 
-const weekDays = [ '日', '一', '二', '三', '四', '五', '六' ]
-
 @Component({
   components: {
     ModuleHeader,
     Tabs,
     Tab,
     Progress,
+    Button,
     Select,
     MultiLine,
     Table,
@@ -112,6 +129,12 @@ export default class PlayStats extends Vue {
   @Prop({ type: String }) chartTitle!: string
 
   @Prop({ type: Object }) moreDateLink!: AppLink
+
+  /** 自动着色模式 */
+  @Prop({ type: Boolean, default: false }) autoColor!: boolean
+
+  /** 销售对比：显示对齐发行时间 */
+  @Prop({ type: Boolean, default: false }) showAlign!: boolean
 
   day = 7
 
@@ -143,17 +166,19 @@ export default class PlayStats extends Vue {
     return list
   }
 
-  get categoryNames() {
+  get groupNames() {
     const currentView = this.currentView
-    if (currentView == null) {
+    if (currentView == null || isEmpty(currentView.dataGroup)) {
       return []
     }
+    const names = currentView.dataGroup.map(it => it.name)
+    return names
   }
 
   get dailyNames() {
     const list = lastDayList(this.day)
-    const result = list.map(it => intDate(it, 'MM-DD') as string)
-    return result
+    const names = list.map(it => intDate(it, 'MM-DD') as string)
+    return names
   }
 
   get dailyData() {
@@ -162,7 +187,7 @@ export default class PlayStats extends Vue {
       return []
     }
     const { chart } = currentView.dataGroup[this.groupIndex]
-    const list = dealDailyData(this.day, chart)
+    const list = dealDailyData(this.day, chart, this.autoColor)
     return list
   }
 
@@ -322,6 +347,35 @@ export default class PlayStats extends Vue {
 
 .daily-header {
   margin-top: 40px;
+}
+
+.group-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 30px -9px 0;
+  ~ .daily-chart {
+    margin-top: 10px;
+  }
+}
+
+.group-item {
+  width: 25%;
+  padding: 10px;
+}
+
+.group-button {
+  width: 100%;
+  height: 60px;
+  padding: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 26px;
+  border-radius: 30px;
+  /deep/ &.van-button--info {
+    border-color: #88aaf6;
+    background-color: #88aaf6;
+  }
 }
 
 .daily-chart {

@@ -12,14 +12,21 @@ const colorMap: any = {
   other: '#4cc8d0',
 }
 
-export function dealDailyData(day: number, list: PlayData[]) {
+const colorList = [
+  '#88aaf6',
+  '#4cc8d0',
+  '#c76dd9',
+]
+const colorCount = colorList.length
+
+export function dealDailyData(day: number, list: PlayData[], autoColor: boolean) {
   const dayList = lastDayList(day)
   const dateNames = dayList.map(it => ({
     ymd: formatValidDate(it),
     ymdw: formatValidDate(it, { withWeek: true }),
   }))
 
-  const result = list.map(({ name, dataList }) => {
+  const result = list.map(({ name, dataList }, index) => {
     const dateList = (dataList || []).map(it => ({
       ...it,
       ymd: formatValidDate(it.date),
@@ -34,7 +41,7 @@ export function dealDailyData(day: number, list: PlayData[]) {
           tooltipTitle: ymdw,
         }
       }),
-      color: colorMap[name] || colorMap.other
+      color: autoColor ? colorList[index % colorCount] : (colorMap[name] || colorMap.other)
     }
     return item
   })

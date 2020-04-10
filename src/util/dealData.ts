@@ -240,9 +240,9 @@ export function readableNumber(number: number | string, placeholder = '-') {
     return placeholder
   }
 
-  // 产品需求：亿保留 2 位，万保留 1 位
+  // 产品需求：https://zentao.aiads.com/index.php?m=story&f=view&storyID=619
   return number >= YI
-    ? (+number / YI).toFixed(2) + '亿'
+    ? (+number / YI).toFixed(1) + '亿'
     : number >= WAN
     ? (+number / WAN).toFixed(1) + '万'
     : toThousands(number)

@@ -1,4 +1,4 @@
-import { PlayData, PlayEvent, PlayForm } from './types'
+import { PlayData, PlayEvent } from './types'
 import { formatValidDate } from '@/util/dealData'
 import { arrayMap } from '@jydata/fe-util'
 import { MultiLineItem, MultiLineEvents, MultiLineEventHandler } from '@/components/multiLine'

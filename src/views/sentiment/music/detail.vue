@@ -224,7 +224,7 @@
                   class="rival-stats-item"
                 >
                   <i class="rival-stats-type">{{stats.type}}</i>
-                  <em class="rival-count">{{stats.count}}</em>
+                  <em class="rival-count">{{stats.count || '-'}}</em>
                   <span
                     class="rival-trend"
                     :class="{

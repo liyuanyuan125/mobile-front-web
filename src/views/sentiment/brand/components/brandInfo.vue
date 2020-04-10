@@ -137,7 +137,7 @@ export default class Main extends Vue {
   margin-top: -35px;
   position: relative;
   z-index: 12;
-  height: 400px;
+  height: 410px;
   overflow: hidden;
 }
 </style>

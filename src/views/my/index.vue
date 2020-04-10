@@ -3,8 +3,8 @@
     <SentimentBar title="我的服务" :bgColor="'#88AAF6'" :titleShow="true" />
     <div class="user">
       <p class="img">
-        <img :src="userAvatar" alt="我开通的服务" v-if="userAvatar" />
-        <img src="@/assets/default.png" alt="我开通的服务" v-else />
+        <img :src="services.userAvatar" alt="我开通的服务" />
+        <!-- <img src="@/assets/default.png" alt="我开通的服务" v-else /> -->
       </p>
       <p class="stars">
         <span
@@ -13,11 +13,11 @@
           :class="item === 1 ? 'on' : ''"
         ></span>
       </p>
-      <p class="count">目前有{{serviceCount}}项服务</p>
+      <p class="count">目前有{{services.serveCount}}项服务</p>
     </div>
     <dl class="serlist">
       <dd
-        v-for="(item,index) in serviceList"
+        v-for="(item,index) in services.serveList"
         :key="item.serveName + index"
         class="van-hairline--bottom"
       >
@@ -48,9 +48,7 @@ import { imgFixed } from '@/fn/imgProxy'
 })
 export default class MyService extends ViewBase {
   myService: any[] = [] // 处理已开通服务的星星数
-  serviceCount: number = 0 // 已开通服务数
-  userAvatar: any = {} // 用户 Logo
-  serviceList: any[] = []
+  services: any[] = []
 
   created() {
     this.getMyService()
@@ -65,10 +63,10 @@ export default class MyService extends ViewBase {
   // api 获取我的服务
   async getMyService() {
     const res: any = await myService({})
-    this.serviceCount = res.serveCount
+    this.services = res
     this.formatStar(res.serveCount)
-    this.userAvatar = imgFixed(res.companyLogo, 120, 120, 4)
-    this.serviceList = res.serveList
+    // this.userAvatar = res.userAvatar
+    // this.serviceList = res.serveList
   }
 }
 </script>

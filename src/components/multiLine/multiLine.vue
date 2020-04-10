@@ -67,7 +67,7 @@ export default class MultiLine extends Vue {
           const nameColor = this.tooltipNameColor
           const listHtml = list.map(({ seriesName, name, value, color }) => {
             const valueColor = color || nameColor
-            const valueShow = value != null ? toThousands(value) : '无数据'
+            const valueShow = value != null ? toThousands(value) : '暂无数据'
             const itemHtml = `
               <p class="tooltip-item">
                 <i class="tooltip-dot" style="background-color: ${color}"></i>

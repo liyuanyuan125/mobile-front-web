@@ -50,7 +50,7 @@
     </section>
 
     <section class="pane pane-rank" v-if="!isAlbum">
-      <ModuleHeader title="账单表现对比"/>
+      <ModuleHeader title="榜单表现对比"/>
       <Table
         :data="rankTable.data"
         :columns="rankTable.columns"

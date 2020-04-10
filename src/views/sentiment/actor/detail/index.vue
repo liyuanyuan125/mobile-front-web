@@ -207,6 +207,12 @@ export default class KolPage extends ViewBase {
             title: this.title
           }
         }
+      case 'actorWorksAnalysis':
+        return {
+          page,
+          businessType: 2,
+          actorId: this.$route.params.actorId
+        }
       default:
         return {
           page,

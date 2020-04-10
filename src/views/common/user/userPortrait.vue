@@ -5,7 +5,7 @@
       <van-col span="10">
         <BarGraph :dataOption="genderListData" :colorList="colorList" />
       </van-col>
-      <van-col span="13" style='padding-left: 2.2%;'>
+      <van-col span="13">
         <barGraphRow :dataOption="ageRangeListData" :itemlist="itemlist" />
       </van-col>
     </van-row>

@@ -51,6 +51,7 @@ export default class MultiTable extends Vue {
     padding: 0 25px;
     border-radius: 30px;
     margin: 0 20px 20px 0;
+    font-size: 26px;
   }
 
   /deep/ .van-button--primary {

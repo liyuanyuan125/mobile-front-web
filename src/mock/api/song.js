@@ -293,75 +293,75 @@ mockGet('/yuqing/music/song/rival/list', () => {
 mockGet('/yuqing/music/song/play/analysis', () => {
   return {
     songMusicView: {
-      platformList: [
-        { name: '网易云音乐', value: 6880, countShow: '7.59亿' },
-        { name: 'QQ音乐', value: 3888, countShow: '4.8亿' },
-        { name: '酷我音乐', value: 2888, countShow: '3.8亿' },
-      ],
-      dailyPlatformList: [
-        {
-          platformName: '网易云音乐',
-          dataList: [
-            { date: 1585756800000, value: 888123231 },
-            { date: 1586016000000, value: 588823231 },
-            { date: 1586275200000, value: 288323231 },
-            { date: 1585324800000, value: 388923231 },
-          ]
-        },
-        {
-          platformName: 'QQ音乐',
-          dataList: [
-            { date: 1585756800000, value: 888323231 },
-            { date: 1586016000000, value: 588223231 },
-            { date: 1586275200000, value: 388823231 },
-            { date: 1585324800000, value: 988623231 },
-          ]
-        },
-        {
-          platformName: '酷我音乐',
-          dataList: [
-            { date: 1585756800000, value: 188823231 },
-            { date: 1586016000000, value: 588123231 },
-            { date: 1586275200000, value: 388923231 },
-            { date: 1585324800000, value: 288223231 },
-          ]
-        },
-      ],
+      // platformList: [
+      //   { name: '网易云音乐', value: 6880, countShow: '7.59亿' },
+      //   { name: 'QQ音乐', value: 3888, countShow: '4.8亿' },
+      //   { name: '酷我音乐', value: 2888, countShow: '3.8亿' },
+      // ],
+      // dailyPlatformList: [
+      //   {
+      //     platformName: '网易云音乐',
+      //     dataList: [
+      //       { date: 1585756800000, value: 888123231 },
+      //       { date: 1586016000000, value: 588823231 },
+      //       { date: 1586275200000, value: 288323231 },
+      //       { date: 1585324800000, value: 388923231 },
+      //     ]
+      //   },
+      //   {
+      //     platformName: 'QQ音乐',
+      //     dataList: [
+      //       { date: 1585756800000, value: 888323231 },
+      //       { date: 1586016000000, value: 588223231 },
+      //       { date: 1586275200000, value: 388823231 },
+      //       { date: 1585324800000, value: 988623231 },
+      //     ]
+      //   },
+      //   {
+      //     platformName: '酷我音乐',
+      //     dataList: [
+      //       { date: 1585756800000, value: 188823231 },
+      //       { date: 1586016000000, value: 588123231 },
+      //       { date: 1586275200000, value: 388923231 },
+      //       { date: 1585324800000, value: 288223231 },
+      //     ]
+      //   },
+      // ],
       dailyEventList: [
         { date: 1585756800000, eventName: '1事件名事件名事件名事件名事件名', eventId: 1 },
         { date: 1586016000000, eventName: '2事件名事件名事件名事件名事件名', eventId: 2 },
         { date: 1586275200000, eventName: '3事件名事件名事件名事件名事件名', eventId: 3 },
       ],
-      dailyFormList: [
-        {
-          date: 1585756800000,
-          playCount: '276.9万',
-          markName: '上线首日',
-          platformList: [
-            { name: '网易云音乐', value: '188.8万' },
-            { name: 'QQ音乐', value: '88.8万' },
-            { name: '酷我音乐', value: '' },
-          ]
-        },
-        {
-          date: 1586016000000,
-          playCount: '176.9万',
-          platformList: [
-            { name: '网易云音乐', value: '88.8万' },
-            { name: 'QQ音乐', value: '38.8万' },
-            { name: '酷我音乐', value: '20.8万' },
-          ]
-        },
-        {
-          date: 1586275200000,
-          playCount: '188.9万',
-          platformList: [
-            { name: '网易云音乐', value: '99.8万' },
-            { name: 'QQ音乐', value: '66.8万' },
-            { name: '酷我音乐', value: '' },
-          ]
-        },
-      ]
+      // dailyFormList: [
+      //   {
+      //     date: 1585756800000,
+      //     playCount: '276.9万',
+      //     markName: '上线首日',
+      //     platformList: [
+      //       { name: '网易云音乐', value: '188.8万' },
+      //       { name: 'QQ音乐', value: '88.8万' },
+      //       { name: '酷我音乐', value: '' },
+      //     ]
+      //   },
+      //   {
+      //     date: 1586016000000,
+      //     playCount: '176.9万',
+      //     platformList: [
+      //       { name: '网易云音乐', value: '88.8万' },
+      //       { name: 'QQ音乐', value: '38.8万' },
+      //       { name: '酷我音乐', value: '20.8万' },
+      //     ]
+      //   },
+      //   {
+      //     date: 1586275200000,
+      //     playCount: '188.9万',
+      //     platformList: [
+      //       { name: '网易云音乐', value: '99.8万' },
+      //       { name: 'QQ音乐', value: '66.8万' },
+      //       { name: '酷我音乐', value: '' },
+      //     ]
+      //   },
+      // ]
     },
     videoView: {
       platformList: [

@@ -8,7 +8,7 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import echarts from 'echarts'
 import { cssifyObject } from 'css-in-js-utils'
-import {readableNumber} from '@/util/dealData'
+import {readableNumber, readableThousands, toThousands} from '@/util/dealData'
 import moment from 'moment'
 const format = 'YYYY-MM-DD'
 
@@ -169,7 +169,7 @@ export default class Main extends Vue {
           const cloneData = moment(this.lineData.xDate[dataIndex]).format('YYYY-MM-DD')
           const html = `
            <div style="${nameStyle}" >
-             <p>${cloneData} ${seriesName} ${readableNumber(value)}</p>
+             <p>${cloneData} ${seriesName} ${toThousands(value)}</p>
              <div>
              ${eventHtml.join('')}
              </div>

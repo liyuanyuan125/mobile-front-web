@@ -9,6 +9,7 @@ const toIntDate = (m: moment.Moment) => parseInt(m.format('YYYYMMDD'), 10)
 export function lastDays(num: number) {
   const result = [
     toIntDate(moment().subtract(num, 'days')),
+    // 后台接口需要今天的日期
     toIntDate(moment())
   ]
   return result
@@ -20,7 +21,8 @@ export function lastDays(num: number) {
  */
 export function lastDayList(num: number) {
   const result = []
-  for (let i = num - 1; i >= 0; i--) {
+  // 不显示今天的日期
+  for (let i = num; i > 0; i--) {
     const date = toIntDate(moment().subtract(i, 'days'))
     result.push(date)
   }

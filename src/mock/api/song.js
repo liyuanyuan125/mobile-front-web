@@ -665,7 +665,7 @@ mockGet('/yuqing/music/song/rival/report', () => {
         {
           rivalName: 'Last Dance',
           dataList: [
-            { name: '深圳', value: 3120 },
+            { name: '深圳名字很长很长', value: 3128 },
             { name: '广州', value: 6880 },
             { name: '上海', value: 2880 },
             { name: '北京', value: 1880 },

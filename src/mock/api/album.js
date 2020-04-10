@@ -1,4 +1,5 @@
 import { mockGet, mockPost, mockPut, mockDel } from '../util'
+import rivalPlayData from './rivalPlayData'
 
 /**
  * 1.专辑详情页
@@ -587,14 +588,13 @@ mockGet('/yuqing/music/album/rival/analysis', () => {
   }
 })
 
-// /**
-//  * 2.4.1竞品分析报告详情-获取销量对比
-//  * https://yapi.aiads-dev.com/project/404/interface/api/11608
-//  */
-// mockGet('/yuqing/music/song/rival/play/analysis', () => {
-//   return {
-//   }
-// })
+/**
+ * 2.4.1竞品分析报告详情-获取销量对比
+ * https://yapi.aiads-dev.com/project/404/interface/api/11608
+ */
+mockGet('/yuqing/music/album/rival/analysis/sale', () => {
+  return rivalPlayData()
+})
 
 /**
  * 2.4.2竞品分析报告详情-获取口碑评论对比

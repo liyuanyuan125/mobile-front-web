@@ -15,7 +15,7 @@
       />
     </Tabs>
 
-    <section class="total-stats">
+    <section class="total-stats" v-if="platformList">
       <ModuleHeader
         title="累计分布"
         tag="h4"
@@ -43,9 +43,10 @@
     </section>
 
     <ModuleHeader
-      :title="isAlbum ? '分日销量' : '分日播放量'"
+      :title="chartTitle"
       tag="h4"
       class="daily-header"
+      v-if="chartTitle"
     />
 
     <MultiLine
@@ -57,31 +58,17 @@
     />
 
     <section class="daily-form">
-      <div class="daily-table-wrap">
-        <table class="daily-table">
-          <thead>
-            <th class="col-date">日期</th>
-            <th class="col-count">当日{{isAlbum ? '销量' : '播放量'}}</th>
-            <th
-              v-for="name in dailyFormNames"
-              :key="name"
-              class="col-cell"
-            >{{name}}</th>
-          </thead>
-          <tbody>
-            <tr v-for="item in dailyFormList" :key="item.date">
-              <td class="col-date" v-html="item.dateText"></td>
-              <td class="col-count">{{item.count}}</td>
-              <td
-                v-for="sub in item.platformList"
-                :key="sub.name"
-                class="col-cell"
-              >{{sub.value || placeholder}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <a class="daily-form-more" @click="handleFormMore">查看全部日期</a>
+      <Table
+        :data="table.data"
+        :columns="table.columns"
+        class="daily-table-wrap"
+        v-if="table"
+      />
+      <a
+        class="daily-form-more"
+        @click="handleFormMore"
+        v-if="moreDateLink"
+      >查看全部日期</a>
     </section>
   </section>
 </template>
@@ -98,6 +85,8 @@ import { toMoment, intDate } from '@/util/dealData'
 import { PlayFetch, PlayItem, PlayView } from './types'
 import { dealDailyData, dealDailyEvents } from './data'
 import { openAppLink, AppLink } from '@/util/native'
+import Table from '@/components/table'
+import { isEmpty } from 'lodash'
 
 const weekDays = [ '日', '一', '二', '三', '四', '五', '六' ]
 
@@ -109,6 +98,7 @@ const weekDays = [ '日', '一', '二', '三', '四', '五', '六' ]
     Progress,
     Select,
     MultiLine,
+    Table,
   }
 })
 export default class PlayStats extends Vue {
@@ -119,7 +109,7 @@ export default class PlayStats extends Vue {
   /** 日期范围列表，数字代表最近几天 */
   @Prop({ type: Array, default: () => [ 7, 15, 30, 60, 90 ] }) days!: number[]
 
-  @Prop({ type: String, default: '--' }) placeholder!: string
+  @Prop({ type: String }) chartTitle!: string
 
   @Prop({ type: Object }) moreDateLink!: AppLink
 
@@ -128,6 +118,8 @@ export default class PlayStats extends Vue {
   viewIndex = 0
 
   viewList: PlayItem[] = []
+
+  groupIndex = 0
 
   get currentView() {
     const viewItem = this.viewList[this.viewIndex]
@@ -141,14 +133,21 @@ export default class PlayStats extends Vue {
 
   get platformList() {
     const currentView = this.currentView
-    if (currentView == null) {
-      return []
+    if (currentView == null || currentView.platformList == null) {
+      return null
     }
     const list = currentView.platformList.map(item => ({
       ...item,
       percent: item.value / 100
     }))
     return list
+  }
+
+  get categoryNames() {
+    const currentView = this.currentView
+    if (currentView == null) {
+      return []
+    }
   }
 
   get dailyNames() {
@@ -159,11 +158,11 @@ export default class PlayStats extends Vue {
 
   get dailyData() {
     const currentView = this.currentView
-    if (currentView == null) {
+    if (currentView == null || isEmpty(currentView.dataGroup)) {
       return []
     }
-    const platList = currentView.dailyPlatformList || []
-    const list = dealDailyData(this.day, platList)
+    const { chart } = currentView.dataGroup[this.groupIndex]
+    const list = dealDailyData(this.day, chart)
     return list
   }
 
@@ -172,7 +171,7 @@ export default class PlayStats extends Vue {
     if (currentView == null) {
       return {}
     }
-    const eventList = currentView.dailyEventList || []
+    const eventList = currentView.eventList || []
     const list = dealDailyEvents(eventList, ({ id, name }) => {
       this.$router.push({
         name: 'sentimenteventmarketing',
@@ -183,33 +182,13 @@ export default class PlayStats extends Vue {
     return list
   }
 
-  get dailyFormList() {
+  get table() {
     const currentView = this.currentView
-    if (currentView == null) {
-      return []
+    if (currentView == null || isEmpty(currentView.dataGroup)) {
+      return null
     }
-    const list = currentView.dailyFormList.map(item => {
-      const m = toMoment(item.date)
-      const ymd = m.format('YYYY-MM-DD')
-      const wi = m.day()
-      const day = weekDays[wi]
-      const mark = item.markName ? `<em>${item.markName}</em>` : ''
-      return {
-        ...item,
-        count: (this.isAlbum ? item.saleCount : item.playCount) || this.placeholder,
-        dateText: `<i>${ymd}</i><br>周${day}${mark}`
-      }
-    })
-    return list
-  }
-
-  get dailyFormNames() {
-    const list = this.dailyFormList
-    if (list.length == 0) {
-      return []
-    }
-    const names = list[0].platformList.map(it => it.name)
-    return names
+    const { table } = currentView.dataGroup[this.groupIndex]
+    return table
   }
 
   mounted() {
@@ -358,54 +337,25 @@ export default class PlayStats extends Vue {
 
 .daily-table-wrap {
   overflow-y: auto;
-}
-
-.daily-table {
-  width: 100%;
-  table-layout: fixed;
-
-  .col-date {
-    width: 210px;
-    text-align: left;
-    padding-left: 30px;
-    /deep/ i {
-      font-size: 24px;
-    }
-    /deep/ em {
-      margin-left: 3px;
-      color: #ff6262;
+  /deep/ thead {
+    th {
+      background-color: #f9f9fa;
     }
   }
-  .col-count {
-    width: 150px;
-  }
-  .col-cell {
-    width: 180px;
-  }
-
-  tr {
+  /deep/ tr {
+    &:nth-child(2n) {
+      background-color: #f9f9fa;
+    }
     &:nth-child(2n + 1) {
       background-color: #fff;
     }
-  }
-
-  th,
-  td {
-    padding: 40px 0;
-    text-align: right;
-    &:last-child {
-      width: 180px + 64;
-      padding-right: 64px;
+    i {
+      font-size: 24px;
     }
-  }
-
-  th {
-    font-size: 24px;
-    font-weight: 400;
-  }
-
-  td {
-    font-size: 26px;
+    em {
+      margin-left: 3px;
+      color: #ff6262;
+    }
   }
 }
 

@@ -1,4 +1,4 @@
-import { PlayDailyPlatform, PlayEvent, PlayForm } from './types'
+import { PlayData, PlayEvent } from './types'
 import { formatValidDate } from '@/util/dealData'
 import { arrayMap } from '@jydata/fe-util'
 import { MultiLineItem, MultiLineEvents, MultiLineEventHandler } from '@/components/multiLine'
@@ -12,14 +12,14 @@ const colorMap: any = {
   other: '#4cc8d0',
 }
 
-export function dealDailyData(day: number, list: PlayDailyPlatform[]) {
+export function dealDailyData(day: number, list: PlayData[]) {
   const dayList = lastDayList(day)
   const dateNames = dayList.map(it => ({
     ymd: formatValidDate(it),
     ymdw: formatValidDate(it, { withWeek: true }),
   }))
 
-  const result = list.map(({ platformName: name, dataList }) => {
+  const result = list.map(({ name, dataList }) => {
     const dateList = (dataList || []).map(it => ({
       ...it,
       ymd: formatValidDate(it.date),
@@ -43,13 +43,13 @@ export function dealDailyData(day: number, list: PlayDailyPlatform[]) {
 
 export function dealDailyEvents(list: PlayEvent[], clickHandler: MultiLineEventHandler) {
   const result = (list || [])
-  .map(({ eventId: id, eventName: name, date }) => ({
-    id: String(id),
+  .map(({ id, name, date }) => ({
+    id,
     name,
     md: formatValidDate(date, { format: 'MM-DD' }),
   }))
   .reduce((map, { id, name, md }) => {
-    map[md] = { id, name, click: clickHandler }
+    map[md] = { id: id as string, name, click: clickHandler }
     return map
   }, {} as MultiLineEvents)
   return result

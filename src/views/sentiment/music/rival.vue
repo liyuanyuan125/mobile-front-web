@@ -38,10 +38,14 @@
       />
     </section>
 
-    <!-- <section class="pane pane-play">
-      <ModuleHeader title="播放量对比"/>
-      <PlayStats :view="playStatsList" class="play-stats"/>
-    </section> -->
+    <section class="pane pane-play" id="play">
+      <ModuleHeader :title="isAlbum ? '销量对比' : '播放量对比'"/>
+      <PlayStats
+        :fetch="playFetch"
+        :isAlbum="isAlbum"
+        class="play-stats"
+      />
+    </section>
 
     <section class="pane pane-rank" v-if="!isAlbum">
       <ModuleHeader title="账单表现对比"/>
@@ -90,12 +94,12 @@ import TabNav, { TabNavItem } from '@/components/tabNav'
 import ModuleHeader from '@/components/moduleHeader'
 import Table, { TableColumn } from '@/components/table'
 import HeatContrast from '@/views/common/heatContrast/index.vue'
-import PlayStats, { PlayItem } from './components/playStats'
+import PlayStats, { PlayQuery } from './components/playStats'
 import MarketContrast from '@/views/common/marketContrast/index.vue'
 import Age from '@/views/common/ageDistribution/index.vue'
 import VsList, { VsItem } from '@/components/vsList'
 import MultiTable, { MultiTableItem } from '@/components/multiTable'
-import { getBasic, getRivalHeat, getRivalPlay, getRivalPraise } from './rivalData'
+import { getBasic, getHeat, getPlay, getPraise } from './rivalData'
 import { lastDays } from '@/util/timeSpan'
 
 @Component({
@@ -123,12 +127,17 @@ export default class extends ViewBase {
 
   rivalList: any[] = []
 
-  navList: TabNavItem[] = [
-    { name: 'basic', label: '基础数据' },
-    { name: 'hot', label: '热度' },
-    { name: 'praise', label: '口碑' },
-    { name: 'user', label: '用户' },
-  ]
+  get navList(): TabNavItem[] {
+    const list = [
+      { name: 'basic', label: '基础数据' },
+      this.isAlbum
+        ? { name: 'play', label: '销量' }
+        : { name: 'hot', label: '热度' },
+      { name: 'praise', label: '口碑' },
+      { name: 'user', label: '用户' },
+    ]
+    return list
+  }
 
   basisDataList: any[] = []
 
@@ -161,8 +170,6 @@ export default class extends ViewBase {
   // 热度分析数据
   heatContrastData: any = null
 
-  playStatsList: PlayItem[] = []
-
   rankTable: any = null
 
   // 年龄分布数据
@@ -181,10 +188,6 @@ export default class extends ViewBase {
     { name: 'top4', title: 'TOP4', html: true },
     { name: 'top5', title: 'TOP5', html: true },
   ]
-
-  praiseFetch(query: any) {
-    return getRivalPraise(this.ids, query, this.isAlbum)
-  }
 
   created() {
     this.init()
@@ -217,7 +220,7 @@ export default class extends ViewBase {
   }
 
   async getHeat() {
-    const heatContrastData = await getRivalHeat({
+    const heatContrastData = await getHeat({
       songIdList: this.ids,
       startTime: 20200212,
       endTime: 20200330,
@@ -225,24 +228,17 @@ export default class extends ViewBase {
     this.heatContrastData = heatContrastData
   }
 
-  async getPlay() {
+  async playFetch(query: PlayQuery) {
     try {
-      const [ startTime, endTime ] = lastDays(7)
-      const {
-        rivalPlay,
-        videoView
-      } = await getRivalPlay({
-        songIdList: this.ids,
-        startTime,
-        endTime
-      })
-      const playStatsList = []
-      rivalPlay && playStatsList.push({ label: '单曲', view: rivalPlay })
-      videoView && playStatsList.push({ label: '视频', view: videoView })
-      this.playStatsList = playStatsList
+      const data = await getPlay(this.ids, query, this.isAlbum)
+      return data
     } catch (ex) {
       this.handleError(ex)
     }
+  }
+
+  praiseFetch(query: any) {
+    return getPraise(this.ids, query, this.isAlbum)
   }
 }
 </script>

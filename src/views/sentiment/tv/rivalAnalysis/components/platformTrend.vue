@@ -90,7 +90,7 @@ export default class PlatformTrend extends ViewBase {
     let xDate: any[] = []
     const yDate = (dataObj || []).map((it: any) => {
       const { rivalName, data } = it
-      xDate = (data || []).map((ite: any) => moment(ite.date).format('MM-DD'))
+      xDate = (data || []).map((ite: any) => ite.date)
       return {
         name: rivalName,
         list: (data || []).map((ite: any) => ite.value)

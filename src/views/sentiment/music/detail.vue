@@ -168,14 +168,17 @@
       />
     </section>
 
-    <section class="pane">
+    <section class="pane" v-if="singerList && singerList.length > 0">
       <ModuleHeader title="音乐人分析"/>
-      <Swipe class="singer-swipe" v-if="singerList">
+      <Swipe class="singer-swipe">
         <SwipeItem
           v-for="it in singerList"
           :key="it.singerId"
         >
-          <div class="singer-card">
+          <router-link
+            :to="{ name: 'sentimentactor', params: { actorId: it.singerId } }"
+            class="singer-card"
+          >
             <img :src="it.avatar" class="singer-avatar">
             <div class="singer-main">
               <h4 class="singer-name">{{it.singerName}}</h4>
@@ -183,12 +186,15 @@
                 <span class="singer-count">昨日热度 <em>{{it.heatCount}}</em></span>
                 <span
                   class="singer-trend"
-                  :class="it.heatTrend < 0 ? 'singer-down' : ''"
-                  v-if="it.heatTrend != 0"
-                >{{ Math.abs(it.heatTrend) }}</span>
+                  :class="{
+                    'singer-up': it.heatTrend > 0,
+                    'singer-down': it.heatTrend < 0,
+                  }"
+                  v-if="it.heatCount"
+                >{{ it.heatTrendText }}</span>
               </div>
             </div>
-          </div>
+          </router-link>
         </SwipeItem>
       </Swipe>
     </section>
@@ -209,8 +215,8 @@
               <img :src="it.cover">
             </figure>
             <div class="rival-main">
-              <h4 class="rival-name">{{it.name}}</h4>
-              <div class="rival-author">{{it.author}}</div>
+              <h4 class="rival-name van-ellipsis">{{it.name}}</h4>
+              <div class="rival-author van-ellipsis">{{it.author}}</div>
               <ul class="rival-stats">
                 <li
                   v-for="stats in it.statsList"
@@ -225,6 +231,7 @@
                       'rival-up': stats.trend > 0,
                       'rival-down': stats.trend < 0,
                     }"
+                    v-if="stats.trend"
                   >
                     <i class="rival-symbol" v-if="stats.trend">{{stats.trend > 0 ? '高' : '低'}}</i>
                     <em>{{stats.trendText}}</em>
@@ -948,6 +955,20 @@ export default class extends ViewBase {
   margin-top: 20px;
 }
 
+.singer-count {
+  display: inline-flex;
+  align-items: center;
+  em {
+    margin-left: 10px;
+    &:empty {
+      display: inline-block;
+      width: 16px;
+      height: 4px;
+      background-color: #ff6262;
+    }
+  }
+}
+
 .singer-trend {
   position: relative;
   top: -3px;
@@ -955,6 +976,18 @@ export default class extends ViewBase {
   font-size: 26px;
   font-family: DINAlternate-Bold, DINAlternate, serif;
   font-weight: bold;
+  &:empty {
+    display: inline-block;
+    top: 18px;
+    width: 16px;
+    height: 4px;
+    background-color: #ff6262;
+    vertical-align: top;
+  }
+}
+
+.singer-up,
+.singer-down {
   color: #ff6262;
   &::before {
     content: '';
@@ -993,6 +1026,7 @@ export default class extends ViewBase {
   display: flex;
   top: 4px;
   width: 200px;
+  min-width: 200px;
   height: 200px;
   border-radius: 10px;
   border: 1px solid #d8d8d8;
@@ -1009,6 +1043,7 @@ export default class extends ViewBase {
   flex: 1;
   margin-left: 40px;
   color: #303030;
+  overflow: hidden;
 }
 
 .rival-name {

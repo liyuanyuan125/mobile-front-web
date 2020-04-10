@@ -104,8 +104,8 @@ mockGet('/yuqing/music/song/detail', ({ songId }) => {
           url: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/movie/images/2019/10/31/562EDE9160B003AFECEB.jpg',
           source: 'piaoshen',
         },
-        heatCount: '1.2万',
-        heatTrend: 132
+        heatCount: '',
+        heatTrend: 0
       },
       {
         singerName: '汪汪汪',
@@ -115,7 +115,7 @@ mockGet('/yuqing/music/song/detail', ({ songId }) => {
           source: 'piaoshen',
         },
         heatCount: '1.2万',
-        heatTrend: -132
+        heatTrend: -1328888
       },
       {
         singerName: '分公司大股东',
@@ -243,7 +243,7 @@ mockGet('/yuqing/music/song/heat/analysis', () => {
 mockGet('/yuqing/music/song/rival/list', () => {
   return [
     {
-      rivalName: '向死而生',
+      rivalName: '向死而生名字很长名字很长名字很长名字很长',
       rivalId: 123,
       rivalDesc: '伍佰',
       rivalCover: {
@@ -251,7 +251,7 @@ mockGet('/yuqing/music/song/rival/list', () => {
         url: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/movie/images/2019/11/25/E3FEEC10AEB32F1C71A3.jpg'
       },
       playingCount: '1,313',
-      playingTrend: 1318,
+      playingTrend: 0,
       interactCount: '1.3亿',
       interactTrend: 0,
       eventName: '英首相与女友订婚',
@@ -266,9 +266,9 @@ mockGet('/yuqing/music/song/rival/list', () => {
         url: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/movie/images/2019/11/25/E3FEEC10AEB32F1C71A3.jpg'
       },
       playingCount: '1,313',
-      playingTrend: 88131,
+      playingTrend: 88888131,
       interactCount: '8.3亿',
-      interactTrend: -8880,
+      interactTrend: -8888888880,
     },
     {
       rivalName: '翻山越岭来看你',
@@ -279,9 +279,9 @@ mockGet('/yuqing/music/song/rival/list', () => {
         url: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/movie/images/2019/11/25/E3FEEC10AEB32F1C71A3.jpg'
       },
       playingCount: '1,313',
-      playingTrend: 0,
+      playingTrend: 8888,
       interactCount: '3.3亿',
-      interactTrend: 0,
+      interactTrend: -88,
     },
   ]
 })

@@ -14,11 +14,12 @@ import {
   IdTime as AlbumIdTime,
 } from '@/api/album'
 import { dot, arrayMap } from '@jydata/fe-util'
-import { readableThousands, formatValidDate } from '@/util/dealData'
+import { readableNumber, formatValidDate } from '@/util/dealData'
 import { PlayView } from './components/playStats'
 import { TableColumn } from '@/components/table'
 import { uniq, flatMap } from 'lodash'
 import { toMoment } from '@/util/dealData'
+import { imgFixed } from '@/fn/imgProxy'
 
 const commonBasic = (data: any) => {
   const publicPraise = data.publicPraise || {}
@@ -39,7 +40,8 @@ const commonBasic = (data: any) => {
 
     singerList: (singerList as any[]).map(it => ({
       ...it,
-      avatar: dot(it, 'singerCover.url') || ''
+      avatar: imgFixed(it.singerCover, 150, 150, 4),
+      heatTrendText: readableNumber(Math.abs(it.heatTrend), '')
     })),
   }
 
@@ -359,14 +361,14 @@ const dealRival = (
     id: it.rivalId,
     name: it.rivalName || '',
     author: it.rivalDesc || '',
-    cover: dot(it, 'rivalCover.url') || '',
+    cover: imgFixed(it.rivalCover, 200, 200, 4),
     statsList: statsConfig.map(({ type, name }) => {
       const trend = it[name + 'Trend']
       return {
         type,
         count: it[name + 'Count'],
         trend,
-        trendText: readableThousands(trend)
+        trendText: readableNumber(Math.abs(trend))
       }
     }),
     eventName: it.eventName,

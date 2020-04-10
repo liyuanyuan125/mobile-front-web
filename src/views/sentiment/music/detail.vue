@@ -184,11 +184,8 @@
                 <span
                   class="singer-trend"
                   :class="it.heatTrend < 0 ? 'singer-down' : ''"
-                  v-if="it.heatTrend"
-                >
-                  <i class="singer-symbol">{{it.heatTrend > 0 ? '↑' : '↓'}}</i>
-                  <em>{{it.heatTrend}}</em>
-                </span>
+                  v-if="it.heatTrend != 0"
+                >{{ Math.abs(it.heatTrend) }}</span>
               </div>
             </div>
           </div>
@@ -959,11 +956,24 @@ export default class extends ViewBase {
   font-family: DINAlternate-Bold, DINAlternate, serif;
   font-weight: bold;
   color: #ff6262;
-  vertical-align: top;
+  &::before {
+    content: '';
+    display: inline-block;
+    position: relative;
+    top: 15px;
+    width: 24px;
+    height: 36px;
+    background: url(./assets/arrowup.svg) no-repeat;
+    background-size: contain;
+  }
 }
 
 .singer-down {
   color: #88aaf6;
+  &::before {
+    top: 16px;
+    background-image: url(./assets/arrowdown.svg);
+  }
 }
 
 .rival-list {

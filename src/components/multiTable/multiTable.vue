@@ -38,7 +38,7 @@ export default class MultiTable extends Vue {
 
   @Prop({ type: Array, default: () => [] }) columns!: TableColumn[]
 
-  @Prop({ type: String, default: '--' }) placeholder!: string
+  @Prop({ type: String, default: '-' }) placeholder!: string
 
   currentIndex = 0
 }

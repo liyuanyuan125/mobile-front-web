@@ -48,7 +48,7 @@ mockGet('/yuqing/music/song/detail', ({ songId }) => {
     songOverView: {
       interactCount: '1,213.4万',
       interactTrend: -12,
-      playCount: '1,213',
+      playCount: '',
       playTrend: 32,
       heatCount: '3,321',
       heatTrend: 0,

@@ -81,25 +81,25 @@ const songBasic = async (id: number) => {
       {
         type: 1,
         title: '累计播放量',
-        value: overview.playCount || 0,
+        value: overview.playCount || '暂无数据',
         trend: overview.playTrend || 0,
       },
       {
         type: 2,
         title: '累计互动量',
-        value: overview.interactCount || 0,
+        value: overview.interactCount || '暂无数据',
         trend: overview.interactTrend || 0,
       },
       {
         type: 3,
         title: '综合热度',
-        value: overview.heatCount || 0,
+        value: overview.heatCount || '暂无数据',
         trend: overview.heatTrend || 0,
       },
       {
         type: 4,
         title: '好感度',
-        value: info.favorable || '',
+        value: info.favorable || '暂无数据',
       },
     ],
 
@@ -144,9 +144,11 @@ const albumBasic = async (id: number) => {
     singerList,
   } = commonBasic(data)
 
+  const isDigital = info.hasDigital || false
+
   const result = {
     // 是否为数字专辑
-    isDigital: info.hasDigital || false,
+    isDigital,
 
     // 基础信息
     basic: {
@@ -168,26 +170,26 @@ const albumBasic = async (id: number) => {
     bubbleData: [
       {
         type: 1,
-        title: '累计销售量',
-        value: overview.saleCount || 0,
-        trend: overview.saleTrend || 0,
+        title: isDigital ? '累计销售量' : '歌曲播放量',
+        value: (isDigital ? overview.playCount : overview.saleCount) || '暂无数据',
+        trend: (isDigital ? overview.playTrend : overview.saleTrend) || 0,
       },
       {
         type: 2,
-        title: '累计互动量',
-        value: overview.interactCount || 0,
+        title: isDigital ? '累计互动数' : '累计互动量',
+        value: overview.interactCount || '暂无数据',
         trend: overview.interactTrend || 0,
       },
       {
         type: 3,
-        title: '昨日销量排名',
-        value: overview.yesterdaySaleRank || 0,
-        trend: overview.yesterdaySaleTrend || 0,
+        title: isDigital ? '昨日销量排名' : '最高单曲播放',
+        value: (isDigital ? overview.yesterdaySaleRank : overview.singlePlayCount) || '暂无数据',
+        trend: (isDigital ? overview.yesterdaySaleTrend : overview.singlePlayTrend)  || 0,
       },
       {
         type: 4,
         title: '好感度',
-        value: info.favorable || '',
+        value: info.favorable || '暂无数据',
       },
     ],
 

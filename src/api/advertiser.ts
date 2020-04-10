@@ -131,6 +131,6 @@ export async function submitDLSmsCode(query: any) {
  * 获取我的服务
  */
 export async function getMyService(query: any) {
-    const res = await get('/mock/420/yuqing/user/serveList', query)
+    const res = await get('/yuqing/user/serveList', query)
     return res
 }

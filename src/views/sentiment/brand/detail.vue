@@ -88,6 +88,7 @@ export default class BrandPage extends ViewBase {
   day = 7
   overAllHeatList: any = []
   platformHeatList: any = []
+
   get platformParams() {
     const [ startTime, endTime ] = lastDays(this.day)
     return {

@@ -12,4 +12,6 @@ export interface TableColumn {
   width?: number | string
   /** 是否为 html 渲染模式 */
   html?: boolean
+  /** 文字行控制 */
+  lines?: 1 | 2 | 3
 }

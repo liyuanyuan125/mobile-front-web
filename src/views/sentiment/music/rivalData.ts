@@ -54,7 +54,10 @@ const commonBasic = (data: any) => {
           title,
           data: (list as any[] || []).map(({ rivalName, dataList }) => {
             const dlist = (dataList as any[] || [])
-              .map(({ name, value }) => `${name}<br><i>${value / 100}%</i>`)
+              .map(({ name, value }) => `
+                <div class="van-ellipsis">${name}</div>
+                <i>${(value / 100).toFixed(1)}%</i>
+              `.trim())
             const ditem = {
               name: rivalName,
               top1: dlist[0],

@@ -183,7 +183,7 @@ export default class extends ViewBase {
   areaList = []
 
   areaColumns: TableColumn[] = [
-    { name: 'name', title: '单曲', align: 'left' },
+    { name: 'name', title: '单曲', align: 'left', lines: 2 },
     { name: 'top1', title: 'TOP1', html: true },
     { name: 'top2', title: 'TOP2', html: true },
     { name: 'top3', title: 'TOP3', html: true },

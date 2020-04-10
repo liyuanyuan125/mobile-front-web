@@ -13,7 +13,7 @@ import {
   getRivalList as albumGetRivalList,
   IdTime as AlbumIdTime,
 } from '@/api/album'
-import { dot, arrayMap } from '@jydata/fe-util'
+import { arrayMap } from '@jydata/fe-util'
 import { readableNumber, formatValidDate } from '@/util/dealData'
 import { PlayView } from './components/playStats'
 import { TableColumn } from '@/components/table'
@@ -41,7 +41,7 @@ const commonBasic = (data: any) => {
     singerList: (singerList as any[]).map(it => ({
       ...it,
       avatar: imgFixed(it.singerCover, 150, 150, 4),
-      heatTrendText: readableNumber(Math.abs(it.heatTrend), '')
+      heatTrendText: it.heatTrend && readableNumber(Math.abs(it.heatTrend), '') || ''
     })),
   }
 
@@ -66,7 +66,7 @@ const songBasic = async (id: number) => {
   const result = {
     // 基础信息
     basic: {
-      cover: dot(info, 'songCover.url') || '',
+      cover: imgFixed(info.songCover, 200, 200, 4),
       name: info.songName || '',
       singer: info.songSinger || '',
       release: `单曲 / ${releaseDate} / ${platform}`,
@@ -154,7 +154,7 @@ const albumBasic = async (id: number) => {
 
     // 基础信息
     basic: {
-      cover: dot(info, 'coverUrl.url') || '',
+      cover: imgFixed(info.coverUrl, 210, 210, 4),
       name: info.albumName || '',
       singer: info.albumSinger || '',
       release: `专辑 / ${releaseDate} / ${platform}`,

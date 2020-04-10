@@ -64,9 +64,9 @@ mockGet('/yuqing/music/album/detail', ({ songId }) => {
       {
         musicId: 1,
         musicName: 'Yummy',
-        heatCount: '123,235',
+        heatCount: null,
         playCount: '888,222',
-        commentCount: '688,000',
+        commentCount: 0,
       },
       {
         musicId: 2,

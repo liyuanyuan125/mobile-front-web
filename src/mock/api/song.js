@@ -252,7 +252,7 @@ mockGet('/yuqing/music/song/rival/list', () => {
       },
       playingCount: '1,313',
       playingTrend: 0,
-      interactCount: '1.3亿',
+      interactCount: '',
       interactTrend: 0,
       eventName: '英首相与女友订婚',
       eventCreatTime: 1583909626668,
@@ -265,9 +265,9 @@ mockGet('/yuqing/music/song/rival/list', () => {
         source: 'piaoshen',
         url: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/movie/images/2019/11/25/E3FEEC10AEB32F1C71A3.jpg'
       },
-      playingCount: '1,313',
+      playingCount: null,
       playingTrend: 88888131,
-      interactCount: '8.3亿',
+      interactCount: null,
       interactTrend: -8888888880,
     },
     {

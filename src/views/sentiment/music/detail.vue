@@ -93,8 +93,8 @@
               v-html="song.name"
             >
             </router-link>
-            <span class="song-heat">{{song.heatCount}}</span>
-            <span class="song-comment">{{song.commentCount}}</span>
+            <span class="song-heat">{{song.heatCount || '-'}}</span>
+            <span class="song-comment">{{song.commentCount || '-'}}</span>
           </li>
         </ul>
       </div>
@@ -224,7 +224,7 @@
                   class="rival-stats-item"
                 >
                   <i class="rival-stats-type">{{stats.type}}</i>
-                  <em class="rival-count">{{stats.count}}</em>
+                  <em class="rival-count">{{stats.count || '-'}}</em>
                   <span
                     class="rival-trend"
                     :class="{
@@ -497,6 +497,7 @@ export default class extends ViewBase {
     if (this.songInitHeight == 0) {
       const height = this.songInitHeight = wrap.offsetHeight
       wrap.style.height = `${height}px`
+      wrap.style.maxHeight = 'none'
     }
     this.$nextTick(() => {
       const list = this.$refs.songList as HTMLDivElement
@@ -748,7 +749,7 @@ export default class extends ViewBase {
 
 .song-wrap {
   margin-top: 45px;
-  height: 390px;
+  max-height: 390px;
   overflow: hidden;
   transition: height 300ms;
 }

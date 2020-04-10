@@ -41,7 +41,7 @@ const commonBasic = (data: any) => {
     singerList: (singerList as any[]).map(it => ({
       ...it,
       avatar: imgFixed(it.singerCover, 150, 150, 4),
-      heatTrendText: readableNumber(Math.abs(it.heatTrend), '')
+      heatTrendText: it.heatTrend && readableNumber(Math.abs(it.heatTrend), '') || ''
     })),
   }
 

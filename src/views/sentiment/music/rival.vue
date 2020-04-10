@@ -43,6 +43,7 @@
       <PlayStats
         :fetch="playFetch"
         :isAlbum="isAlbum"
+        :alignMode="isAlbum"
         autoColor
         class="play-stats"
       />

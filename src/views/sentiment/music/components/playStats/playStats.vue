@@ -1,5 +1,13 @@
 <template>
-  <section class="play-stats">
+  <section
+    class="play-stats"
+    :class="{ 'play-stats-align': alignMode }"
+  >
+    <div class="align-control" v-if="alignMode">
+      <label>对齐发行时间</label>
+      <van-switch v-model="isAlign" class="align-switch"/>
+    </div>
+
     <Select v-model="day" :list="dayList" class="day-list"/>
 
     <Tabs
@@ -49,6 +57,20 @@
       v-if="chartTitle"
     />
 
+    <ul class="group-list" v-if="groupNames.length > 1">
+      <li
+        v-for="(name, index) in groupNames"
+        :key="name"
+        class="group-item"
+      >
+        <Button
+          :type="index == groupIndex ? 'info' : 'default'"
+          class="group-button"
+          @click="groupIndex = index"
+        >{{name}}</Button>
+      </li>
+    </ul>
+
     <MultiLine
       :names="dailyNames"
       :data="dailyData"
@@ -77,18 +99,16 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import ModuleHeader from '@/components/moduleHeader'
 import { RawLocation } from 'vue-router'
-import { Tabs, Tab, Progress } from 'vant'
+import { Tabs, Tab, Progress, Button, Switch } from 'vant'
 import { lastDays, lastDayList } from '@/util/timeSpan'
 import Select from '@/components/select'
 import MultiLine, { MultiLineItem, MultiLineEvents } from '@/components/multiLine'
 import { toMoment, intDate } from '@/util/dealData'
 import { PlayFetch, PlayItem, PlayView } from './types'
-import { dealDailyData, dealDailyEvents } from './data'
+import { releaseDayList, dealDailyData, dealDailyEvents } from './data'
 import { openAppLink, AppLink } from '@/util/native'
 import Table from '@/components/table'
 import { isEmpty } from 'lodash'
-
-const weekDays = [ '日', '一', '二', '三', '四', '五', '六' ]
 
 @Component({
   components: {
@@ -96,6 +116,8 @@ const weekDays = [ '日', '一', '二', '三', '四', '五', '六' ]
     Tabs,
     Tab,
     Progress,
+    Button,
+    [Switch.name]: Switch,
     Select,
     MultiLine,
     Table,
@@ -113,6 +135,12 @@ export default class PlayStats extends Vue {
 
   @Prop({ type: Object }) moreDateLink!: AppLink
 
+  /** 自动着色模式 */
+  @Prop({ type: Boolean, default: false }) autoColor!: boolean
+
+  /** 销售对比：显示对齐发行时间 */
+  @Prop({ type: Boolean, default: false }) alignMode!: boolean
+
   day = 7
 
   viewIndex = 0
@@ -121,13 +149,19 @@ export default class PlayStats extends Vue {
 
   groupIndex = 0
 
+  isAlign = false
+
   get currentView() {
     const viewItem = this.viewList[this.viewIndex]
     return viewItem && viewItem.view
   }
 
   get dayList() {
-    const list = this.days.map(value => ({ name: `最近${value}天`, value }))
+    const alignMode = this.alignMode
+    const list = this.days.map(value => ({
+      name: alignMode ? `发行${value}天` : `最近${value}天`,
+      value
+    }))
     return list
   }
 
@@ -138,22 +172,25 @@ export default class PlayStats extends Vue {
     }
     const list = currentView.platformList.map(item => ({
       ...item,
-      percent: item.value / 100
+      percent: +((item.value || 0) / 100).toFixed(1)
     }))
     return list
   }
 
-  get categoryNames() {
+  get groupNames() {
     const currentView = this.currentView
-    if (currentView == null) {
+    if (currentView == null || isEmpty(currentView.dataGroup)) {
       return []
     }
+    const names = currentView.dataGroup.map(it => it.name)
+    return names
   }
 
   get dailyNames() {
-    const list = lastDayList(this.day)
-    const result = list.map(it => intDate(it, 'MM-DD') as string)
-    return result
+    const names = this.isAlign
+      ? releaseDayList(this.day)
+      : (list => list.map(it => intDate(it, 'MM-DD') as string))(lastDayList(this.day))
+    return names
   }
 
   get dailyData() {
@@ -162,7 +199,7 @@ export default class PlayStats extends Vue {
       return []
     }
     const { chart } = currentView.dataGroup[this.groupIndex]
-    const list = dealDailyData(this.day, chart)
+    const list = dealDailyData(this.day, chart, this.autoColor, this.isAlign)
     return list
   }
 
@@ -196,8 +233,9 @@ export default class PlayStats extends Vue {
   }
 
   async fetchData() {
-    const [ startTime, endTime ] = lastDays(this.day)
-    const query = { startTime, endTime }
+    const query = this.isAlign
+      ? { days: this.day }
+      : (([ startTime, endTime ]) => ({ startTime, endTime }))(lastDays(this.day))
     const view = await this.fetch(query)
     const list = Array.isArray(view) ? view : [ { label: '', view } ]
     this.viewList = list
@@ -211,13 +249,41 @@ export default class PlayStats extends Vue {
   watchDay() {
     this.fetchData()
   }
+
+  @Watch('isAlign')
+  watchIsAlign() {
+    this.fetchData()
+  }
 }
 </script>
 
 <style lang="less" scoped>
+@color: #88aaf6;
+
 .play-stats {
   position: relative;
   padding: 90px 0 20px;
+}
+
+.play-stats-align {
+  .day-list {
+    top: 78px;
+  }
+}
+
+.align-control {
+  font-size: 34px;
+  line-height: 34px;
+  label {
+    vertical-align: top;
+    margin-right: 14px;
+  }
+}
+
+.align-switch {
+  /deep/ &.van-switch--on {
+    background-color: @color;
+  }
 }
 
 .day-list {
@@ -252,7 +318,7 @@ export default class PlayStats extends Vue {
 
   /deep/ .van-tab.van-tab--active {
     color: #fff;
-    background-color: #88aaf6;
+    background-color: @color;
     font-weight: 400;
   }
 }
@@ -324,6 +390,35 @@ export default class PlayStats extends Vue {
   margin-top: 40px;
 }
 
+.group-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 30px -9px 0;
+  ~ .daily-chart {
+    margin-top: 10px;
+  }
+}
+
+.group-item {
+  width: 25%;
+  padding: 10px;
+}
+
+.group-button {
+  width: 100%;
+  height: 60px;
+  padding: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 26px;
+  border-radius: 30px;
+  /deep/ &.van-button--info {
+    border-color: @color;
+    background-color: @color;
+  }
+}
+
 .daily-chart {
   margin-top: 52px;
 }
@@ -366,6 +461,6 @@ export default class PlayStats extends Vue {
   text-align: center;
   font-size: 28px;
   font-weight: 500;
-  color: #88aaf6;
+  color: @color;
 }
 </style>

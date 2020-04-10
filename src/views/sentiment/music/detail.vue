@@ -725,6 +725,9 @@ export default class extends ViewBase {
   min-height: 200px;
   background-color: #fff;
   margin-bottom: 20px;
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .pane-hot {

@@ -43,6 +43,8 @@
       <PlayStats
         :fetch="playFetch"
         :isAlbum="isAlbum"
+        :alignMode="isAlbum"
+        autoColor
         class="play-stats"
       />
     </section>
@@ -245,7 +247,7 @@ export default class extends ViewBase {
 
 <style lang="less" scoped>
 .main-page {
-  padding: 1px 0 8px;
+  padding-top: 1px;
   background-color: #f2f3f6;
 }
 
@@ -264,6 +266,9 @@ export default class extends ViewBase {
   padding: 50px 30px 30px;
   background-color: #fff;
   margin-bottom: 20px;
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .pane-heat {

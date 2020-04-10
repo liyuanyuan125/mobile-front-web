@@ -1,19 +1,19 @@
 // 数据结构：https://yapi.aiads-dev.com/project/404/interface/api/11608
-export default function(isVideo = false) {
+export default function(change = false) {
   return [
     {
       platformName: '全部',
       rivalName: '挪威的森林',
       playCountShow: '12,432.4万',
       dataList: [
-        { date: 1585756800000, value: isVideo ? 58888 : 118888 },
-        { date: 1586016000000, value: isVideo ? 68888 : 128888 },
-        { date: 1586275200000, value: isVideo ? 78888 : 138888 },
+        { date: 1585756800000, value: change ? 58888 : 118888 },
+        { date: 1586016000000, value: change ? 68888 : 128888 },
+        { date: 1586275200000, value: change ? 78888 : 138888 },
       ],
       dateShowList: [
-        { date: '2020-04-02', value: isVideo ? '58,888' : '118,888' },
-        { date: '2020-04-05', value: isVideo ? '68,888' : '128,888' },
-        { date: '2020-04-08', value: isVideo ? '78,888' : '138,888' },
+        { date: '2020-04-02', value: change ? '58,888' : '118,888' },
+        { date: '2020-04-05', value: change ? '68,888' : '128,888' },
+        { date: '2020-04-08', value: change ? '78,888' : '138,888' },
       ]
     },
     {
@@ -21,14 +21,14 @@ export default function(isVideo = false) {
       rivalName: '学猫叫',
       playCountShow: '23,432.4万',
       dataList: [
-        { date: 1585756800000, value: isVideo ? 18888 : 138888 },
-        { date: 1586016000000, value: isVideo ? 38888 : 148888 },
-        { date: 1586275200000, value: isVideo ? 88888 : 158888 },
+        { date: 1585756800000, value: change ? 18888 : 138888 },
+        { date: 1586016000000, value: change ? 38888 : 148888 },
+        { date: 1586275200000, value: change ? 88888 : 158888 },
       ],
       dateShowList: [
-        { date: '2020-04-02', value: isVideo ? '18,888' : '138,888' },
-        { date: '2020-04-05', value: isVideo ? '38,888' : '148,888' },
-        { date: '2020-04-08', value: isVideo ? '88,888' : '158,888' },
+        { date: '2020-04-02', value: change ? '18,888' : '138,888' },
+        { date: '2020-04-05', value: change ? '38,888' : '148,888' },
+        { date: '2020-04-08', value: change ? '88,888' : '158,888' },
       ]
     },
     {
@@ -36,14 +36,14 @@ export default function(isVideo = false) {
       rivalName: '爱我别走',
       playCountShow: '38,432.4万',
       dataList: [
-        { date: 1585756800000, value: isVideo ? 108888 : 168888 },
-        { date: 1586016000000, value: isVideo ? 118888 : 178888 },
-        { date: 1586275200000, value: isVideo ? 128888 : 188888 },
+        { date: 1585756800000, value: change ? 108888 : 168888 },
+        { date: 1586016000000, value: change ? 118888 : 178888 },
+        { date: 1586275200000, value: change ? 128888 : 188888 },
       ],
       dateShowList: [
-        { date: '2020-04-02', value: isVideo ? '108,888' : '138,888' },
-        { date: '2020-04-05', value: isVideo ? '118,888' : '148,888' },
-        { date: '2020-04-08', value: isVideo ? '128,888' : '158,888' },
+        { date: '2020-04-02', value: change ? '108,888' : '138,888' },
+        { date: '2020-04-05', value: change ? '118,888' : '148,888' },
+        { date: '2020-04-08', value: change ? '128,888' : '158,888' },
       ]
     },
     {

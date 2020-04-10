@@ -12,29 +12,49 @@ const colorMap: any = {
   other: '#4cc8d0',
 }
 
-export function dealDailyData(day: number, list: PlayData[]) {
-  const dayList = lastDayList(day)
+const colorList = [
+  '#88aaf6',
+  '#4cc8d0',
+  '#c76dd9',
+]
+const colorCount = colorList.length
+
+export function releaseDayList(day: number) {
+  const result = []
+  for (let i = 0; i < day; i++) {
+    result.push(`发行${i == 0 ? '首' : i + 1}日`)
+  }
+  return result
+}
+
+export function dealDailyData(
+  day: number,
+  list: PlayData[],
+  autoColor: boolean,
+  isAlign: boolean
+) {
+  const dayList: any[] = isAlign ? releaseDayList(day) : lastDayList(day)
   const dateNames = dayList.map(it => ({
-    ymd: formatValidDate(it),
-    ymdw: formatValidDate(it, { withWeek: true }),
+    key: isAlign ? it : formatValidDate(it),
+    title: isAlign ? it : formatValidDate(it, { withWeek: true }),
   }))
 
-  const result = list.map(({ name, dataList }) => {
+  const result = list.map(({ name, dataList }, index) => {
     const dateList = (dataList || []).map(it => ({
       ...it,
-      ymd: formatValidDate(it.date),
+      key: isAlign ? it.date : formatValidDate(it.date),
     }))
-    const dateMap = arrayMap(dateList, 'ymd')
+    const dateMap = arrayMap(dateList, 'key')
     const item: MultiLineItem = {
       name,
-      data: dateNames.map(({ ymd, ymdw }) => {
-        const { value = null } = dateMap[ymd] || {}
+      data: dateNames.map(({ key, title }) => {
+        const { value = null } = dateMap[key] || {}
         return {
           value,
-          tooltipTitle: ymdw,
+          tooltipTitle: title,
         }
       }),
-      color: colorMap[name] || colorMap.other
+      color: autoColor ? colorList[index % colorCount] : (colorMap[name] || colorMap.other)
     }
     return item
   })

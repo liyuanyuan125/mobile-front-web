@@ -67,7 +67,7 @@ const request = async (url: string, opts: object) => {
   const isAbs = isAbsoluteUrl(url)
   const config: any = {
     // baseURL: isAbs ? '' : ajaxBaseUrl,
-    baseURL: url.indexOf('mock') > -1 ? 'https://yapi.aiads-dev.com' : '//api.aiads-dev.com',
+    baseURL: url.indexOf('mock') > -1 ? 'https://yapi.aiads-dev.com' : 'https://api.aiads-dev.com',
     url,
     withCredentials: true,
     ...opts,

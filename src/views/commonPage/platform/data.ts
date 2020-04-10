@@ -23,7 +23,7 @@ export async function actorPlatList(query: any) {
  * @param query  object
  */
 export async function songPlatList(query: any) {
-  const res = await get('/yuqing/song/platform/heat', query)
+  const res = await get('/yuqing/music/song/platform/heat', query)
   return res
 }
 

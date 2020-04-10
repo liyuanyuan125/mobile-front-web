@@ -84,6 +84,7 @@ export default class Main extends Vue {
         smooth: true, // 平滑
         name: it.name,
         data: it.data,
+        connectNulls: true, // 是否连接空数据
       }
     })
 
@@ -93,7 +94,6 @@ export default class Main extends Vue {
     }
 
     const options: any = {
-      connectNulls: true, // 是否连接空数据
       title: {
         text: this.lineData.title,
         left: 12,

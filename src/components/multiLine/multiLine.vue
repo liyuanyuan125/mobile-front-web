@@ -13,7 +13,7 @@ import 'echarts/lib/component/tooltip'
 
 import { MultiLineItem, MultiLineTooltipFormatTitle, MultiLineEvents } from './types'
 import { cssifyObject } from 'css-in-js-utils'
-import { toThousands } from '@/util/dealData'
+import { readableNumber } from '@/util/dealData'
 
 @Component({
   components: {
@@ -67,7 +67,7 @@ export default class MultiLine extends Vue {
           const nameColor = this.tooltipNameColor
           const listHtml = list.map(({ seriesName, name, value, color }) => {
             const valueColor = color || nameColor
-            const valueShow = value != null ? toThousands(value) : '无数据'
+            const valueShow = value != null ? readableNumber(value) : '暂无数据'
             const itemHtml = `
               <p class="tooltip-item">
                 <i class="tooltip-dot" style="background-color: ${color}"></i>

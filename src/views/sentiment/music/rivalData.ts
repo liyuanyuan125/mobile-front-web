@@ -1,17 +1,20 @@
 import {
-  getRivalReport as songGetRivalReport,
-  getRivalHeat as songGetRivalHeat,
-  getRivalPlay as songGetRivalPlay,
-  getRivalPraise as songGetRivalPraise,
+  getRivalReport as songGetReport,
+  getRivalHeat as songGetHeat,
+  getRivalPlay as songGetPlay,
+  getRivalPraise as songGetPraise,
   IdListTime as SongIdListTime,
 } from '@/api/song'
 import {
-  getRivalReport as albumGetRivalReport,
-  getRivalPraise as albumGetRivalPraise,
+  getRivalReport as albumGetReport,
+  getRivalSale as albumGetSale,
+  getRivalPraise as albumGetPraise,
   IdListTime as AlbumIdListTime,
 } from '@/api/album'
 import { dot } from '@jydata/fe-util'
 import { TableColumn } from '@/components/table'
+import { groupBy, flatMap, uniq } from 'lodash'
+import { PlayView } from './components/playStats'
 
 const toPercent = (list: any[], percentKey = 'value') => {
   const result = (list || []).map(it => ({ ...it, [percentKey]: it[percentKey] / 100 }))
@@ -71,7 +74,7 @@ const commonBasic = (data: any) => {
 }
 
 const songBasic = async (ids: string) => {
-  const { data } = await songGetRivalReport(ids)
+  const { data } = await songGetReport(ids)
 
   const result = {
     ...commonBasic(data),
@@ -115,7 +118,7 @@ const songBasic = async (ids: string) => {
 }
 
 const albumBasic = async (ids: string) => {
-  const { data } = await albumGetRivalReport(ids)
+  const { data } = await albumGetReport(ids)
 
   const result = {
     ...commonBasic(data),
@@ -131,8 +134,8 @@ export async function getBasic(ids: string, isAlbum: boolean) {
   return result
 }
 
-export async function getRivalHeat(query: SongIdListTime) {
-  const { data } = await songGetRivalHeat(query)
+export async function getHeat(query: SongIdListTime) {
+  const { data } = await songGetHeat(query)
   const overAllHeat = data.overAllHeat || []
   const interactList = dot(data, 'platform.interactList') || []
   const materialList = dot(data, 'platform.materialList') || []
@@ -144,18 +147,85 @@ export async function getRivalHeat(query: SongIdListTime) {
   return result
 }
 
-export async function getRivalPlay(query: SongIdListTime) {
-  const { data } = await songGetRivalPlay(query)
-  const result = {
-    ...data
+interface RivalView {
+  platformName: string
+  rivalName: string
+  playCountShow: string
+  dataList: Array<{ date: number, value: number }>
+  dateShowList: Array<{ date: string, value: string }>
+}
+
+// 从所有 view 的 dateShowList 字段中，聚合出所有的日期
+const dateShowDates = (view: RivalView[]) => {
+  const result = flatMap(view, 'dateShowList').map(({ date }) => date as string)
+  return uniq(result)
+}
+
+const dealPlayView = (view: RivalView[], isAlbum = false): PlayView => {
+  const group = groupBy(view, 'platformName')
+
+  const dataGroup = Object.entries(group).map(([ name, list ]) => {
+    const chart = list.map(({ rivalName, dataList }) => ({
+      name: rivalName,
+      dataList: dataList || []
+    }))
+
+    const tableData = list.map(({ rivalName, playCountShow, dateShowList }) => ({
+      name: rivalName,
+      count: playCountShow,
+      ...(dateShowList || []).reduce((map, { date, value }) => {
+        map[date] = value
+        return map
+      }, {} as any)
+    }))
+
+    const dates = dateShowDates(view)
+    const dynamicColumns = dates.map(date => ({ name: date, title: date, width: '8em' }))
+    const tableColumns: TableColumn[] = [
+      { name: 'name', title: isAlbum ? '专辑名称' : '单曲名称', align: 'left', width: '8em' },
+      { name: 'count', title: isAlbum ? '累计销量' : '累计播放', width: '7em' },
+      ...dynamicColumns,
+    ]
+
+    return {
+      name,
+      chart,
+      table: {
+        data: tableData,
+        columns: tableColumns
+      }
+    }
+  })
+
+  return {
+    dataGroup
   }
+}
+
+const songPlay = async (query: SongIdListTime) => {
+  const { data: { rivalPlay, videoView } } = await songGetPlay(query)
+  const result = []
+  rivalPlay && result.push({ label: '单曲', view: dealPlayView(rivalPlay) })
+  videoView && result.push({ label: '视频', view: dealPlayView(videoView) })
   return result
 }
 
-export async function getRivalPraise(ids: string, query: any, isAlbum: boolean) {
+const albumPlay = async (query: AlbumIdListTime) => {
+  const { data } = await albumGetSale(query)
+  return dealPlayView(data, true)
+}
+
+export async function getPlay(ids: string, query: any, isAlbum: boolean) {
+  const result = isAlbum
+    ? await albumPlay({ albumIdList: ids, ...query })
+    : await songPlay({ songIdList: ids, ...query })
+  return result
+}
+
+export async function getPraise(ids: string, query: any, isAlbum: boolean) {
   const ret = isAlbum
-    ? await albumGetRivalPraise({ albumIdList: ids, ...query })
-    : await songGetRivalPraise({ songIdList: ids, ...query })
+    ? await albumGetPraise({ albumIdList: ids, ...query })
+    : await songGetPraise({ songIdList: ids, ...query })
   const data = ret.data || {}
   ret.data = {
     goodList: toPercent(data.goodList, 'percent'),

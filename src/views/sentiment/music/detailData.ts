@@ -13,8 +13,12 @@ import {
   getRivalList as albumGetRivalList,
   IdTime as AlbumIdTime,
 } from '@/api/album'
-import { dot } from '@jydata/fe-util'
+import { dot, arrayMap } from '@jydata/fe-util'
 import { readableThousands, formatValidDate } from '@/util/dealData'
+import { PlayView } from './components/playStats'
+import { TableColumn } from '@/components/table'
+import { uniq, flatMap } from 'lodash'
+import { toMoment } from '@/util/dealData'
 
 const commonBasic = (data: any) => {
   const publicPraise = data.publicPraise || {}
@@ -238,17 +242,95 @@ export async function getHeatAnalysis(query: SongIdTime) {
   return data
 }
 
+interface PlayForm {
+  date: number
+  playCount?: string  // 单曲才存在，播放量
+  saleCount?: string  // 专辑才存在，销售量
+  markName?: string
+  platformList: Array<{
+    name: string
+    value: number
+  }>
+}
+
+interface PlayDailyPlatform {
+  platformName: string
+  dataList: Array<{
+    date: number
+    value: number
+  }>
+}
+
+interface PlayDailyEvent {
+  eventId: number
+  eventName: string
+  date: number
+}
+
+// 从所有 formList 的 platformList 字段中，聚合出所有的平台名称
+const platformNames = (formList: PlayForm[]) => {
+  const result = flatMap(formList, 'platformList').map(({ name }) => name as string)
+  return uniq(result)
+}
+
+const weekDays = [ '日', '一', '二', '三', '四', '五', '六' ]
+
+const dealPlayView = (view: any, isAlbum = false) => {
+  const formList: PlayForm[] = view.dailyFormList || []
+  const fixedColumns: TableColumn[] = [
+    { name: 'date', title: '日期', align: 'left', width: '9em', html: true },
+    { name: 'count', title: `当日${isAlbum ? '销量' : '播放量'}`, align: 'right', width: '7em' },
+  ]
+  const names = platformNames(formList)
+  const dynamicColumns: TableColumn[] = names.map(name => {
+    return { name, title: name, align: 'right', width: '8em' }
+  })
+  const columns = fixedColumns.concat(dynamicColumns)
+  const tableData = formList.map(item => {
+    const m = toMoment(item.date)
+    const ymd = m.format('YYYY-MM-DD')
+    const wi = m.day()
+    const day = weekDays[wi]
+    const mark = item.markName ? `<em>${item.markName}</em>` : ''
+    const platformMap = arrayMap(item.platformList, 'name', it => it.value || '-')
+    const row = {
+      date: `<i>${ymd}</i><br>周${day}${mark}`,
+      count: (isAlbum ? item.saleCount : item.playCount) || '-',
+      ...platformMap,
+    }
+    return row
+  })
+
+  const result: PlayView = {
+    // 确保字段是空数组，从而显示出相应的模块
+    platformList: view.platformList || [],
+    dataGroup: [{
+      name: '',
+      chart: (view.dailyPlatformList as PlayDailyPlatform[] || [])
+        .map(({ platformName: name, dataList }) => ({ name, dataList })),
+      table: {
+        data: tableData,
+        columns
+      }
+    }],
+    eventList: (view.dailyEventList as PlayDailyEvent[] || [])
+      .map(({ eventId: id, eventName: name, date }) => ({ id, name, date })),
+  }
+
+  return result
+}
+
 const songPlay = async (query: SongIdTime) => {
   const { data: { songMusicView, videoView } } = await songPlayAnalysis(query)
   const result = []
-  songMusicView && result.push({ label: '单曲', view: songMusicView })
-  videoView && result.push({ label: '视频', view: videoView })
+  songMusicView && result.push({ label: '单曲', view: dealPlayView(songMusicView) })
+  videoView && result.push({ label: '视频', view: dealPlayView(videoView) })
   return result
 }
 
 const albumPlay = async (query: AlbumIdTime) => {
   const { data } = await albumSaleAnalysis(query)
-  return data
+  return dealPlayView(data, true)
 }
 
 export async function getPlayAnalysis(id: number, query: any, isAlbum: boolean) {

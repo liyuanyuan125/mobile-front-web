@@ -1,4 +1,5 @@
 import { mockGet, mockPost, mockPut, mockDel } from '../util'
+import rivalPlayData from './rivalPlayData'
 
 /**
  * 1.单曲详情页
@@ -841,94 +842,8 @@ mockGet('/yuqing/music/song/rival/heat/analysis', () => {
  */
 mockGet('/yuqing/music/song/rival/play/analysis', () => {
   return {
-    rivalPlay: [
-      {
-        platformName: '网易云音乐',
-        rivalName: '挪威的森林',
-        playCountShow: '2,432.4万',
-        dataList: [
-          { date: 1585756800000, value: 18888 },
-          { date: 1586016000000, value: 28888 },
-          { date: 1586275200000, value: 38888 },
-        ],
-        dateShowList: [
-          { date: '2020-02-16', value: '18,888' },
-          { date: '2020-02-19', value: '28,888' },
-          { date: '2020-02-22', value: '38,888' },
-        ]
-      },
-      {
-        platformName: 'QQ音乐',
-        rivalName: '学猫叫',
-        playCountShow: '8,432.4万',
-        dataList: [
-          { date: 1585756800000, value: 18888 },
-          { date: 1586016000000, value: 38888 },
-          { date: 1586275200000, value: 58888 },
-        ],
-        dateShowList: [
-          { date: '2020-02-16', value: '18,888' },
-          { date: '2020-02-19', value: '38,888' },
-          { date: '2020-02-22', value: '58,888' },
-        ]
-      },
-      {
-        platformName: '酷我',
-        rivalName: '学猫叫',
-        playCountShow: '8,432.4万',
-        dataList: [
-          { date: 1585756800000, value: 18888 },
-          { date: 1586016000000, value: 88888 },
-          { date: 1586275200000, value: 98888 },
-        ],
-        dateShowList: [
-          { date: '2020-02-16', value: '18,888' },
-          { date: '2020-02-19', value: '88,888' },
-          { date: '2020-02-22', value: '98,888' },
-        ]
-      },
-    ],
-    videoView: {
-      platformList: [
-        { name: '网易云音乐', value: 1880, countShow: '2.59亿' },
-        { name: 'QQ音乐', value: 9888, countShow: '3.8亿' },
-        { name: '酷我音乐', value: 3888, countShow: '8.8亿' },
-      ],
-      dailyPlay: {
-        eventName: '',
-        eventId: '',
-      },
-      dailyFormList: [
-        {
-          date: 1581955200000,
-          playCount: '876.9万',
-          markName: '上线首日',
-          platformList: [
-            { name: '网易云音乐', value: '688.8万' },
-            { name: 'QQ音乐', value: '66.8万' },
-            { name: '酷我音乐', value: '' },
-          ]
-        },
-        {
-          date: 1586016000000,
-          playCount: '388.8万',
-          platformList: [
-            { name: '网易云音乐', value: '288.8万' },
-            { name: 'QQ音乐', value: '138.8万' },
-            { name: '酷我音乐', value: '20.8万' },
-          ]
-        },
-        {
-          date: 1582128000000,
-          playCount: '666.9万',
-          platformList: [
-            { name: '网易云音乐', value: '199.8万' },
-            { name: 'QQ音乐', value: '166.8万' },
-            { name: '酷我音乐', value: '20万' },
-          ]
-        },
-      ]
-    }
+    rivalPlay: rivalPlayData(),
+    videoView: rivalPlayData(true),
   }
 })
 

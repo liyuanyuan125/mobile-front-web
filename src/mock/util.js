@@ -13,7 +13,7 @@ const builder = (data, code = 200, msg = '') => {
 
 const mockRequest = (method, regexpOrString, api = null) => {
   const regexp = typeof regexpOrString === 'string'
-    ? new RegExp(regexpOrString, 'i')
+    ? new RegExp(`${regexpOrString}[^/]*$`, 'i')
     : regexpOrString
   Mock.mock(regexp, method, options => {
     const params = method == 'get'

@@ -22,6 +22,7 @@
           <span
             v-for="(it,index) in item.interactiveList.slice(0,3)"
             :key="it.interactiveUrl.url + index"
+            :style="{display:it.interactiveValue ? '' :'none' }"
             class="counts flex-box"
           >
             <span v-if="it.interactiveValue">

@@ -68,6 +68,7 @@
       <PlayStats
         :fetch="playFetch"
         :isAlbum="isAlbum"
+        :chartTitle="isAlbum ? '分日销量' : '分日播放量'"
         :moreDateLink="detailPage(isAlbum ? 'albumSaleCountDetail' : 'songPlayCountDetail')"
         class="play-stats"
       />

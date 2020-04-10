@@ -12,10 +12,9 @@
      <div class="heat">
        <platForm 
          :platformList="platformList" 
-         v-if="platformList.length" 
          :params="params" 
          class="platfrom"/>
-       <DataEmpty v-else/>
+       <!-- <DataEmpty v-else/> v-if="platformList.length"  -->
      </div>
      
    </div>
@@ -87,6 +86,6 @@ export default class Main extends Vue {
   padding: 0 30px;
 }
 .platfrom {
-  border-top: solid 1px #d8d8d8;
+  border-top: solid 1px rgba(216, 216, 216, 0.5);
 }
 </style>

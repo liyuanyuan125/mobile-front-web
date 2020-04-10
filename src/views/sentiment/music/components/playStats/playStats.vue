@@ -172,7 +172,7 @@ export default class PlayStats extends Vue {
     }
     const list = currentView.platformList.map(item => ({
       ...item,
-      percent: item.value / 100
+      percent: +((item.value || 0) / 100).toFixed(1)
     }))
     return list
   }

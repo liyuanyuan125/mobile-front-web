@@ -56,7 +56,7 @@ const commonBasic = (data: any) => {
             const dlist = (dataList as any[] || [])
               .map(({ name, value }) => `
                 <div class="van-ellipsis">${name}</div>
-                <i>${(value / 100).toFixed(1)}%</i>
+                <i>${value != null ? (value / 100).toFixed(1) + '%' : '-'}</i>
               `.trim())
             const ditem = {
               name: rivalName,

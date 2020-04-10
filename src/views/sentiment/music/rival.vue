@@ -146,7 +146,7 @@ export default class extends ViewBase {
   get basicColumns() {
     const isAlbum = this.isAlbum
     const list: TableColumn[] = [
-      { name: 'rivalName', title: isAlbum ? '专辑名称' : '单曲', width: '8.5em', align: 'left' },
+      { name: 'rivalName', title: isAlbum ? '专辑名称' : '单曲', width: '8.5em', align: 'left', lines: 2 },
       { name: 'releaseDate', title: '发行时间', width: '7em' },
       { name: 'companyName', title: '唱片公司', width: '6em' },
     ]
@@ -154,7 +154,7 @@ export default class extends ViewBase {
       list.push(
         { name: 'totalSaleCount', title: '累计销售量', width: '6em' },
         { name: 'totalInteractCount', title: '累计互动量', width: '6em' },
-        { name: 'favorable', title: '好看度', width: '4em' },
+        { name: 'favorable', title: '好感度', width: '4em' },
         { name: 'musicCount', title: '专辑内歌曲量', width: '7em' },
         { name: 'musicPlayCount', title: '歌曲累计播放量', width: '8em' },
         { name: 'musicInteractCount', title: '歌曲累计互动量', width: '8em' },
@@ -163,7 +163,7 @@ export default class extends ViewBase {
       list.push(
         { name: 'playCount', title: '累计播放量', width: '6em' },
         { name: 'interactCount', title: '累计互动量', width: '6em' },
-        { name: 'favorable', title: '好看度', width: '4em' },
+        { name: 'favorable', title: '好感度', width: '4em' },
       )
     }
     return list

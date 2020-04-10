@@ -43,6 +43,7 @@ export default class UserPortrait extends ViewBase {
   // genderListData: any = null
 
   arr: any = []
+  raitList: any = []
 
   get itemlist() {
     const inx = this.ageRangeList ? this.ageRangeList.length : 0
@@ -92,10 +93,18 @@ export default class UserPortrait extends ViewBase {
   get genderListData() {
     const xData: any[] = []
     const yData: any[] = []
+    // const rait: any = []
     let genderList: any = {}
-    const rait = this.genderList
-    if (rait && rait.length) {
-      for (const item of this.genderList) {
+    if (this.genderList[0].name == '女') {
+      this.raitList = [
+        this.genderList[1],
+        this.genderList[0]
+      ]
+    } else {
+      this.raitList = this.genderList
+    }
+    if (this.raitList && this.raitList.length) {
+      for (const item of this.raitList) {
         xData.push(item.name)
         yData.push((item.value / 100).toFixed(1))
       }

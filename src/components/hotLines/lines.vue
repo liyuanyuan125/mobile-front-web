@@ -80,7 +80,7 @@ export default class Main extends Vue {
             const itemHtml = `
               <p class="tooltip-item">
                 <i class="tooltip-dot" style="background-color: ${color}"></i>
-                <span class="tooltip-name" >${seriesName}</span>
+                <span class="tooltip-name van-ellipsis" >${seriesName}</span>
                 <span class="tooltip-value">${readableNumber(value)}</span>
               </p>
             `
@@ -183,8 +183,7 @@ export default class Main extends Vue {
   font-size: 22px;
   color: #303030;
   display: block;
-  margin-right: 15px;
-  min-width: 70px;
+  width: 160px;
 }
 /deep/ .tooltip-value {
   color: #303030;

@@ -372,7 +372,8 @@ export default class extends ViewBase {
   platformParams(name: any) {
     const [startTime, endTime] = lastDays(this.heatDay)
     return {
-      type: this.isAlbum ? 5 : 4, // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
+      // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
+      type: this.isAlbum ? 6 : 5,
       id: this.id, // 详情页id
       name,
       startTime,

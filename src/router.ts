@@ -324,6 +324,11 @@ export default new Router({
       path: '/demo/options',
       name: 'demo-options',
       component: () => import('./views/demo/options.vue')
+    },
+    {
+      path: '/demo/tableForFixed',
+      name: 'demo-tableForFixed',
+      component: () => import('./views/demo/tableForFixed.vue')
     }
   ],
   scrollBehavior(to, from, savedPosition) {

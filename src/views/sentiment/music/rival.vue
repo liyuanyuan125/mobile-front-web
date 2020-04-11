@@ -31,7 +31,7 @@
         :interactList="heatContrastData.interactList"
         :materialList="heatContrastData.materialList"
         :tabs="[
-          { key: 0, text: '新增微博数' },
+          { key: 0, text: '新增物料数' },
           { key: 1, text: '新增互动数' },
         ]"
         v-if="heatContrastData"

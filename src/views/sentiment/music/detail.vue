@@ -1021,7 +1021,7 @@ export default class extends ViewBase {
       display: inline-block;
       width: 16px;
       height: 4px;
-      background-color: #ff6262;
+      background-color: #47403b;
     }
   }
 }

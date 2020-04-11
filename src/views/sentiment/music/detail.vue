@@ -8,7 +8,7 @@
         diggType: isAlbum ? 'album' : 'song',
         diggId: id,
       }"
-      titleShow
+      :title="basic.name"
     />
 
     <section class="header">

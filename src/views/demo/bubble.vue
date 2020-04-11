@@ -80,7 +80,7 @@ export default class CanvasPage extends Vue {
           click: this.demo
       }})
     }},
-    {type: '2', title: '90天累计互动', value: '9,999.9万', trend: '345345', big: true},
+    {type: '2', title: '90天累计互动', value: '9,999.9万', trend: '349995345', big: true},
     {type: '3', title: '昨日销量排名', value: '8,233', trend: '-453545', showdown: true},
     {type: '4', title: '好感度', value: 'A-'}
   ]

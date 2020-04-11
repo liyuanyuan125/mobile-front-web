@@ -15,7 +15,7 @@ import {
 } from '@/api/album'
 import { arrayMap } from '@jydata/fe-util'
 import { readableNumber, formatValidDate } from '@/util/dealData'
-import { PlayView } from './components/playStats'
+import { PlayView, PlayQuery } from './components/playStats'
 import { TableColumn } from '@/components/table'
 import { uniq, flatMap, compact, isEmpty } from 'lodash'
 import { toMoment } from '@/util/dealData'
@@ -246,7 +246,7 @@ export async function getBasic(id: number, isAlbum: boolean) {
   return result
 }
 
-// 单曲：热度分析 TODO:
+// 单曲：热度分析
 export async function getHeatAnalysis(query: SongIdTime) {
   const { data } = await songGetHeatAnalysis(query)
   return data
@@ -344,10 +344,14 @@ const albumPlay = async (query: AlbumIdTime) => {
   return dealPlayView(data, true)
 }
 
-export async function getPlayAnalysis(id: number, query: any, isAlbum: boolean) {
+export async function getPlayAnalysis(
+  id: number,
+  { startTime, endTime }: PlayQuery,
+  isAlbum: boolean
+) {
   const result = isAlbum
-    ? await albumPlay({ albumId: id, ...query })
-    : await songPlay({ songId: id, ...query })
+    ? await albumPlay({ albumId: id, startTime, endTime })
+    : await songPlay({ songId: id, startTime, endTime })
   return result
 }
 

@@ -610,7 +610,7 @@ mockGet('/yuqing/music/album/rival/analysis/sale', () => {
   //     ]
   //   },
   // ]
-  // return rivalPlayData()
+  return rivalPlayData()
 })
 
 /**

@@ -67,12 +67,15 @@
       class="tab-nav"
     />
 
-    <section class="pane pane-hot" id="hot" v-if="!isAlbum">
-      <ModuleHeader title="热度分析"/>
+    <section class="pane pane-heat" id="heat" v-if="!isAlbum">
+      <SelectTime v-model="heatDay" class="select-time"/>
+      <ModuleHeader title="综合热度" tag="h4" class="heat-header"/>
       <HeatLineCom
         :overAllList="overAllHeatList"
         :platformList="platformHeatList"
-        :params="params"
+        :params="platformParams(basic.name)"
+        lineTitle=""
+        class="heat-line-com"
       />
     </section>
 
@@ -283,6 +286,7 @@ import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import TabNav, { TabNavItem } from '@/components/tabNav'
 import ModuleHeader from '@/components/moduleHeader'
 import { BubbleBottom } from '@/components/bubble'
+import { selectTime as SelectTime } from '@/components/hotLine'
 import HeatLineCom from '@/views/common/heatLineCom/index.vue'
 import PlayStats, { PlayQuery } from './components/playStats'
 import PraiseComment from '@/views/common/praiseComment/index.vue'
@@ -308,6 +312,7 @@ const removeFalsy = (list: any[]) => list.filter(it => !!it)
     TabNav,
     ModuleHeader,
     BubbleBottom,
+    SelectTime,
     HeatLineCom,
     PlayStats,
     AnnularChart,
@@ -338,7 +343,7 @@ export default class extends ViewBase {
       { name: 'rival', label: '竞品' },
     ])
     : [
-      { name: 'hot', label: '热度' },
+      { name: 'heat', label: '热度' },
       { name: 'praise', label: '口碑' },
       { name: 'user', label: '用户' },
       { name: 'event', label: '事件' },
@@ -358,19 +363,20 @@ export default class extends ViewBase {
   bubbleData: any[] = []
 
   // 热度分析+平台信息
+  heatDay = 7
+
   overAllHeatList: any = []
 
   platformHeatList: any = []
 
-  get params() {
-    // 1 品牌 2 艺人 3 电影 4 音乐-单曲 5 音乐-专辑  6 剧集
-    const type = this.isAlbum ? 5 : 4
+  platformParams(name: any) {
+    const [startTime, endTime] = lastDays(this.heatDay)
     return {
-      type,
+      type: this.isAlbum ? 5 : 4, // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
       id: this.id, // 详情页id
-      name: '奔驰',
-      startTime: 20200304, // this.startTime,
-      endTime: 20200310 // this.endTime
+      name,
+      startTime,
+      endTime
     }
   }
 
@@ -480,7 +486,7 @@ export default class extends ViewBase {
 
   // 单曲：热度分析 TODO:
   async getHeat() {
-    const [ startTime, endTime ] = lastDays(7)
+    const [ startTime, endTime ] = lastDays(this.heatDay)
     const {
       overAllHeatList = [],
       platformHeatList = []
@@ -531,6 +537,11 @@ export default class extends ViewBase {
   @Watch('id')
   watchId() {
     this.init()
+  }
+
+  @Watch('heatDay')
+  watchHeatDay() {
+    this.getHeat()
   }
 }
 </script>
@@ -768,11 +779,18 @@ export default class extends ViewBase {
   }
 }
 
-.pane-hot {
+.pane-heat {
   padding-left: 0;
   padding-right: 0;
-  /deep/ .module-header {
-    padding: 0 0 20px 30px;
+  .select-time {
+    padding: 0 30px;
+  }
+  .heat-header {
+    padding: 0 30px;
+    margin: 20px 0 0;
+    /deep/ .module-title {
+      font-size: 34px;
+    }
   }
 }
 

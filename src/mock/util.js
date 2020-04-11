@@ -1,5 +1,5 @@
 import Mock from 'mockjs2'
-import queryString from 'query-string'
+import urlParse from 'url-parse'
 
 const builder = (data, code = 200, msg = '') => {
   const resp = {
@@ -15,15 +15,17 @@ const mockRequest = (method, regexpOrString, api = null) => {
   const regexp = typeof regexpOrString === 'string'
     ? new RegExp(`${regexpOrString}[^/]*$`, 'i')
     : regexpOrString
-  Mock.mock(regexp, method, options => {
-    const params = method == 'get'
-      ? (() => {
-        // TODO: 通过 parseUrl 取出的值，都是字符串类型
-        const { query } = queryString.parseUrl(options.url)
-        delete query._
-        return query
-      })()
-      : JSON.parse(options.body || '{}')
+  Mock.mock(regexp, method, ({ type, url, body,  }) => {
+    const { pathname, query } = urlParse(url, true)
+    // TODO: 通过 urlParse 取出的 query 中的值，都是字符串类型
+    delete query._
+    const params = method == 'get' ? query : JSON.parse(body || '{}')
+    console.log(
+      `%c=> ${type} %c${pathname}`,
+      `color: #ee0`,
+      `color: #f0f`,
+      params
+    )
     try {
       const result = api ? api(params || {}) : {}
       return builder(result || {})

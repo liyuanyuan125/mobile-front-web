@@ -61,6 +61,7 @@
         "ts-import-plugin": "^1.6.1",
         "ts-jest": "^23.0.0",
         "typescript": "^3.7.2",
+        "url-parse": "^1.4.7",
         "vconsole": "^3.3.4",
         "vue-template-compiler": "^2.6.10"
     },

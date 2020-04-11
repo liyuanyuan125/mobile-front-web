@@ -195,7 +195,7 @@ const dealPlayView = (view: RivalView[], isAlbum = false): PlayView => {
     const dates = dateShowDates(view)
     const dynamicColumns = dates.map(date => ({ name: date, title: date, width: '8em' }))
     const tableColumns: TableColumn[] = [
-      { name: 'name', title: isAlbum ? '专辑名称' : '单曲名称', align: 'left', width: '8em' },
+      { name: 'name', title: isAlbum ? '专辑名称' : '单曲名称', align: 'left', width: '8em', lines: 2 },
       { name: 'count', title: isAlbum ? '累计销量' : '累计播放', width: '7em' },
       ...dynamicColumns,
     ]

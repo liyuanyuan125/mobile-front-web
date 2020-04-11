@@ -23,6 +23,8 @@
       />
     </Tabs>
 
+    <DataEmpty v-if="allEmpty"/>
+
     <section class="total-stats" v-if="platformList">
       <ModuleHeader
         title="累计分布"
@@ -36,7 +38,7 @@
           class="total-item"
         >
           <i class="total-no">{{index + 1}}</i>
-          <em class="total-name">{{name}}</em>
+          <div class="total-name van-multi-ellipsis--l2">{{name}}</div>
           <Progress
             :percentage="percent"
             :show-pivot="false"
@@ -54,7 +56,7 @@
       :title="chartTitle"
       tag="h4"
       class="daily-header"
-      v-if="chartTitle"
+      v-if="chartTitle && dailyData"
     />
 
     <ul class="group-list" v-if="groupNames.length > 1">
@@ -77,14 +79,17 @@
       :events="dailyEvents"
       smooth
       class="daily-chart"
+      v-if="dailyData"
     />
 
-    <section class="daily-form">
+    <section
+      class="daily-form"
+      v-if="table"
+    >
       <Table
         :data="table.data"
         :columns="table.columns"
         class="daily-table-wrap"
-        v-if="table"
       />
       <a
         class="daily-form-more"
@@ -108,6 +113,7 @@ import { PlayFetch, PlayItem, PlayView } from './types'
 import { releaseDayList, dealDailyData, dealDailyEvents } from './data'
 import { openAppLink, AppLink } from '@/util/native'
 import Table from '@/components/table'
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
 import { isEmpty } from 'lodash'
 
 @Component({
@@ -121,6 +127,7 @@ import { isEmpty } from 'lodash'
     Select,
     MultiLine,
     Table,
+    DataEmpty,
   }
 })
 export default class PlayStats extends Vue {
@@ -165,12 +172,18 @@ export default class PlayStats extends Vue {
     return list
   }
 
+  get allEmpty() {
+    return this.platformList == null
+      && this.dailyData == null
+      && this.table == null
+  }
+
   get platformList() {
     const currentView = this.currentView
-    if (currentView == null || currentView.platformList == null) {
+    if (currentView == null || isEmpty(currentView.platformList)) {
       return null
     }
-    const list = currentView.platformList.map(item => ({
+    const list = currentView.platformList!.map(item => ({
       ...item,
       percent: +((item.value || 0) / 100).toFixed(1)
     }))
@@ -196,9 +209,12 @@ export default class PlayStats extends Vue {
   get dailyData() {
     const currentView = this.currentView
     if (currentView == null || isEmpty(currentView.dataGroup)) {
-      return []
+      return null
     }
     const { chart } = currentView.dataGroup[this.groupIndex]
+    if (isEmpty(chart)) {
+      return null
+    }
     const list = dealDailyData(this.day, chart, this.autoColor, this.isAlign)
     return list
   }
@@ -225,6 +241,9 @@ export default class PlayStats extends Vue {
       return null
     }
     const { table } = currentView.dataGroup[this.groupIndex]
+    if (isEmpty(table.data)) {
+      return null
+    }
     return table
   }
 
@@ -365,19 +384,20 @@ export default class PlayStats extends Vue {
 }
 
 .total-name {
-  flex: 1;
+  width: 140px;
   margin-left: 18px;
 }
 
 .total-progress {
-  width: 216px;
+  width: 200px;
   height: 10px;
   margin-left: 28px;
 }
 
 .total-show {
-  margin-left: 28px;
+  width: 120px;
   font-size: 24px;
+  text-align: right;
 }
 
 .total-percent {

@@ -15,7 +15,7 @@ import {
 } from '@/api/album'
 import { dot } from '@jydata/fe-util'
 import { TableColumn } from '@/components/table'
-import { groupBy, flatMap, uniq } from 'lodash'
+import { keyBy, groupBy, flatMap, uniq } from 'lodash'
 import { PlayView } from './components/playStats'
 
 const toPercent = (list: any[], percentKey = 'value') => {
@@ -36,11 +36,16 @@ const commonBasic = (data: any) => {
     ageRangeList,
 
     sexData: ((list: any[]) => {
-      const ret = list.map(({ rivalName, dataList }) => ({
-        name: rivalName,
-        rate1: dataList[0].value / 100,
-        rate2: dataList[1].value / 100,
-      }))
+      const ret = list.map(({ rivalName, dataList }) => {
+        const dataMap = keyBy(dataList, 'name')
+        const man = dataMap.男
+        const woman = dataMap.女
+        return {
+          name: rivalName,
+          rate1: man ? +(man.value / 100).toFixed(1) : 0,
+          rate2: woman ? +(woman.value / 100).toFixed(1) : 0,
+        }
+      })
       return ret
     })(data.genderList || []),
 
@@ -54,7 +59,10 @@ const commonBasic = (data: any) => {
           title,
           data: (list as any[] || []).map(({ rivalName, dataList }) => {
             const dlist = (dataList as any[] || [])
-              .map(({ name, value }) => `${name}<br><i>${value / 100}%</i>`)
+              .map(({ name, value }) => `
+                <div class="van-ellipsis">${name}</div>
+                <i>${value != null ? (value / 100).toFixed(1) + '%' : '-'}</i>
+              `.trim())
             const ditem = {
               name: rivalName,
               top1: dlist[0],

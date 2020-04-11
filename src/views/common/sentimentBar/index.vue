@@ -149,7 +149,7 @@ export default class SentimentBar extends Vue {
   width: 100%;
   top: 0;
   left: 0;
-  z-index: 8888;
+  z-index: 1888;
   svg {
     position: absolute;
     left: 0;

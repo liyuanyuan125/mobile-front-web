@@ -13,12 +13,13 @@ import {
   getRivalList as albumGetRivalList,
   IdTime as AlbumIdTime,
 } from '@/api/album'
-import { dot, arrayMap } from '@jydata/fe-util'
-import { readableThousands, formatValidDate } from '@/util/dealData'
+import { arrayMap } from '@jydata/fe-util'
+import { readableNumber, formatValidDate } from '@/util/dealData'
 import { PlayView } from './components/playStats'
 import { TableColumn } from '@/components/table'
-import { uniq, flatMap } from 'lodash'
+import { uniq, flatMap, compact, isEmpty } from 'lodash'
 import { toMoment } from '@/util/dealData'
+import { imgFixed } from '@/fn/imgProxy'
 
 const commonBasic = (data: any) => {
   const publicPraise = data.publicPraise || {}
@@ -39,7 +40,8 @@ const commonBasic = (data: any) => {
 
     singerList: (singerList as any[]).map(it => ({
       ...it,
-      avatar: dot(it, 'singerCover.url') || ''
+      avatar: imgFixed(it.singerCover, 150, 150, 4),
+      heatTrendText: it.heatTrend && readableNumber(Math.abs(it.heatTrend), '') || ''
     })),
   }
 
@@ -64,10 +66,10 @@ const songBasic = async (id: number) => {
   const result = {
     // 基础信息
     basic: {
-      cover: dot(info, 'songCover.url') || '',
+      cover: imgFixed(info.songCover, 200, 200, 4),
       name: info.songName || '',
       singer: info.songSinger || '',
-      release: `单曲 / ${releaseDate} / ${platform}`,
+      release: compact(['单曲', releaseDate, platform]).join(' / '),
       rankingNum: info.rankingNum || '',
       rankingName: info.rankingName || '',
       rankingId: info.rankingId || 0,
@@ -81,25 +83,25 @@ const songBasic = async (id: number) => {
       {
         type: 1,
         title: '累计播放量',
-        value: overview.playCount || 0,
+        value: overview.playCount || '暂无数据',
         trend: overview.playTrend || 0,
       },
       {
         type: 2,
         title: '累计互动量',
-        value: overview.interactCount || 0,
+        value: overview.interactCount || '暂无数据',
         trend: overview.interactTrend || 0,
       },
       {
         type: 3,
         title: '综合热度',
-        value: overview.heatCount || 0,
+        value: overview.heatCount || '暂无数据',
         trend: overview.heatTrend || 0,
       },
       {
         type: 4,
         title: '好感度',
-        value: info.favorable || '',
+        value: info.favorable || '暂无数据',
       },
     ],
 
@@ -111,9 +113,11 @@ const songBasic = async (id: number) => {
     },
 
     // 单曲：上榜数量分布
-    annularData: {
-      data: platformList
-    },
+    rankAnnularData: isEmpty(platformList)
+      ? null
+      : { data: platformList },
+
+    rankAnnularEmpty: isEmpty(platformList),
 
     // 口碑评论
     praiseData: {
@@ -144,16 +148,18 @@ const albumBasic = async (id: number) => {
     singerList,
   } = commonBasic(data)
 
+  const isDigital = info.hasDigital || false
+
   const result = {
     // 是否为数字专辑
-    isDigital: info.hasDigital || false,
+    isDigital,
 
     // 基础信息
     basic: {
-      cover: dot(info, 'coverUrl.url') || '',
+      cover: imgFixed(info.coverUrl, 210, 210, 4),
       name: info.albumName || '',
       singer: info.albumSinger || '',
-      release: `专辑 / ${releaseDate} / ${platform}`,
+      release: compact(['专辑', releaseDate, platform]).join(' / '),
       rankingNum: info.rankingNum || '',
       rankingName: info.rankingName || '',
       rankingId: info.rankingId || 0,
@@ -168,26 +174,26 @@ const albumBasic = async (id: number) => {
     bubbleData: [
       {
         type: 1,
-        title: '累计销售量',
-        value: overview.saleCount || 0,
-        trend: overview.saleTrend || 0,
+        title: isDigital ? '累计销售量' : '歌曲播放量',
+        value: (isDigital ? overview.playCount : overview.saleCount) || '暂无数据',
+        trend: (isDigital ? overview.playTrend : overview.saleTrend) || 0,
       },
       {
         type: 2,
-        title: '累计互动量',
-        value: overview.interactCount || 0,
+        title: isDigital ? '累计互动数' : '累计互动量',
+        value: overview.interactCount || '暂无数据',
         trend: overview.interactTrend || 0,
       },
       {
         type: 3,
-        title: '昨日销量排名',
-        value: overview.yesterdaySaleRank || 0,
-        trend: overview.yesterdaySaleTrend || 0,
+        title: isDigital ? '昨日销量排名' : '最高单曲播放',
+        value: (isDigital ? overview.yesterdaySaleRank : overview.singlePlayCount) || '暂无数据',
+        trend: (isDigital ? overview.yesterdaySaleTrend : overview.singlePlayTrend)  || 0,
       },
       {
         type: 4,
         title: '好感度',
-        value: info.favorable || '',
+        value: info.favorable || '暂无数据',
       },
     ],
 
@@ -286,7 +292,8 @@ const dealPlayView = (view: any, isAlbum = false) => {
     return { name, title: name, align: 'right', width: '8em' }
   })
   const columns = fixedColumns.concat(dynamicColumns)
-  const tableData = formList.map(item => {
+  // 产品需求：只取前三条
+  const tableData = formList.slice(0, 3).map(item => {
     const m = toMoment(item.date)
     const ymd = m.format('YYYY-MM-DD')
     const wi = m.day()
@@ -357,14 +364,14 @@ const dealRival = (
     id: it.rivalId,
     name: it.rivalName || '',
     author: it.rivalDesc || '',
-    cover: dot(it, 'rivalCover.url') || '',
+    cover: imgFixed(it.rivalCover, 200, 200, 4),
     statsList: statsConfig.map(({ type, name }) => {
       const trend = it[name + 'Trend']
       return {
         type,
         count: it[name + 'Count'],
         trend,
-        trendText: readableThousands(trend)
+        trendText: readableNumber(Math.abs(trend))
       }
     }),
     eventName: it.eventName,

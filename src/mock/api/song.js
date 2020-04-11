@@ -8,12 +8,12 @@ import rivalPlayData from './rivalPlayData'
 mockGet('/yuqing/music/song/detail', ({ songId }) => {
   return {
     songInfo: {
-      songName: '向死而生',
-      songSinger: 'Lana Del Rey / Lana Del Rey',
+      songName: '向死而生很长很长很长很长很长很长很长很长很长很长很长很长',
+      songSinger: 'Lana Del Rey / Lana Del Rey很长很长很长很长很长很长很长很长很长很长',
       releaseDate: '2020-02-22发行',
       releasePlatform: '多平台',
       rankingNum: '热搜NO.8',
-      rankingName: '#Lana Delrey',
+      rankingName: '比伯结婚视频很长很长很长很长很长',
       rankingId: 1221,
       songCover: {
         url: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/news/images/2019/08/07/122067D54C1C0413C52E.jpg',
@@ -48,7 +48,7 @@ mockGet('/yuqing/music/song/detail', ({ songId }) => {
     songOverView: {
       interactCount: '1,213.4万',
       interactTrend: -12,
-      playCount: '1,213',
+      playCount: '',
       playTrend: 32,
       heatCount: '3,321',
       heatTrend: 0,
@@ -56,16 +56,17 @@ mockGet('/yuqing/music/song/detail', ({ songId }) => {
 
     // 榜单表现
     rankAnalysis: {
-      rankCount: '2,311',
-      rankBest: 'NO.32',
-      rankType: '流行 最热',
-      platformList: [
-        { name: '抖音', value: 1080 },
-        { name: '酷我音乐', value: 1840 },
-        { name: '搜狗音乐', value: 2020 },
-        { name: '网易云音乐', value: 2620 },
-        { name: 'QQ音乐', value: 3850 },
-      ]
+      rankCount: '2,588',
+      rankBest: 'NO.38',
+      rankType: '流行 飙升',
+      // rankType: '水电费沙发 沙发斯蒂芬 斯蒂芬 斯蒂芬',
+      // platformList: [
+      //   { name: '抖音', value: 1080 },
+      //   { name: '酷我音乐', value: 1840 },
+      //   { name: '搜狗音乐', value: 2020 },
+      //   { name: '网易云音乐', value: 2620 },
+      //   { name: 'QQ音乐', value: 3850 },
+      // ]
     },
 
     // 口碑
@@ -82,8 +83,8 @@ mockGet('/yuqing/music/song/detail', ({ songId }) => {
     // 用户分析
     userAnalysis: {
       genderList: [
-        { name: '男', value: 3220 },
-        { name: '女', value: 6880 },
+        { name: '男', value: 9990 },
+        { name: '女', value: 10 },
       ],
       ageRangeList: [
         { name: '≤19岁', value: 880 },
@@ -104,8 +105,8 @@ mockGet('/yuqing/music/song/detail', ({ songId }) => {
           url: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/movie/images/2019/10/31/562EDE9160B003AFECEB.jpg',
           source: 'piaoshen',
         },
-        heatCount: '1.2万',
-        heatTrend: 132
+        heatCount: '',
+        heatTrend: 0
       },
       {
         singerName: '汪汪汪',
@@ -115,7 +116,7 @@ mockGet('/yuqing/music/song/detail', ({ songId }) => {
           source: 'piaoshen',
         },
         heatCount: '1.2万',
-        heatTrend: -132
+        heatTrend: -1328888
       },
       {
         singerName: '分公司大股东',
@@ -243,7 +244,7 @@ mockGet('/yuqing/music/song/heat/analysis', () => {
 mockGet('/yuqing/music/song/rival/list', () => {
   return [
     {
-      rivalName: '向死而生',
+      rivalName: '向死而生名字很长名字很长名字很长名字很长',
       rivalId: 123,
       rivalDesc: '伍佰',
       rivalCover: {
@@ -251,8 +252,8 @@ mockGet('/yuqing/music/song/rival/list', () => {
         url: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/movie/images/2019/11/25/E3FEEC10AEB32F1C71A3.jpg'
       },
       playingCount: '1,313',
-      playingTrend: 1318,
-      interactCount: '1.3亿',
+      playingTrend: 0,
+      interactCount: '',
       interactTrend: 0,
       eventName: '英首相与女友订婚',
       eventCreatTime: 1583909626668,
@@ -265,10 +266,10 @@ mockGet('/yuqing/music/song/rival/list', () => {
         source: 'piaoshen',
         url: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/movie/images/2019/11/25/E3FEEC10AEB32F1C71A3.jpg'
       },
-      playingCount: '1,313',
-      playingTrend: 88131,
-      interactCount: '8.3亿',
-      interactTrend: -8880,
+      playingCount: null,
+      playingTrend: 88888131,
+      interactCount: null,
+      interactTrend: -8888888880,
     },
     {
       rivalName: '翻山越岭来看你',
@@ -279,9 +280,9 @@ mockGet('/yuqing/music/song/rival/list', () => {
         url: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/movie/images/2019/11/25/E3FEEC10AEB32F1C71A3.jpg'
       },
       playingCount: '1,313',
-      playingTrend: 0,
+      playingTrend: 8888,
       interactCount: '3.3亿',
-      interactTrend: 0,
+      interactTrend: -88,
     },
   ]
 })
@@ -294,36 +295,36 @@ mockGet('/yuqing/music/song/play/analysis', () => {
   return {
     songMusicView: {
       platformList: [
-        { name: '网易云音乐', value: 6880, countShow: '7.59亿' },
-        { name: 'QQ音乐', value: 3888, countShow: '4.8亿' },
+        { name: '网易云音乐名字很长名字很长名字很长', value: 6888, countShow: '8887.8万' },
+        { name: 'QQ音乐名字很长名字很长名字很长名字很长', value: 3888, countShow: '4.8亿' },
         { name: '酷我音乐', value: 2888, countShow: '3.8亿' },
       ],
       dailyPlatformList: [
         {
           platformName: '网易云音乐',
           dataList: [
-            { date: 1585756800000, value: 123231 },
-            { date: 1586016000000, value: 823231 },
-            { date: 1586275200000, value: 323231 },
-            { date: 1585324800000, value: 923231 },
+            { date: 1585756800000, value: 888123231 },
+            { date: 1586016000000, value: 588823231 },
+            { date: 1586275200000, value: 288323231 },
+            { date: 1585324800000, value: 388923231 },
           ]
         },
         {
           platformName: 'QQ音乐',
           dataList: [
-            { date: 1585756800000, value: 323231 },
-            { date: 1586016000000, value: 223231 },
-            { date: 1586275200000, value: 823231 },
-            { date: 1585324800000, value: 623231 },
+            { date: 1585756800000, value: 888323231 },
+            { date: 1586016000000, value: 588223231 },
+            { date: 1586275200000, value: 388823231 },
+            { date: 1585324800000, value: 988623231 },
           ]
         },
         {
           platformName: '酷我音乐',
           dataList: [
-            { date: 1585756800000, value: 823231 },
-            { date: 1586016000000, value: 123231 },
-            { date: 1586275200000, value: 923231 },
-            { date: 1585324800000, value: 223231 },
+            { date: 1585756800000, value: 188823231 },
+            { date: 1586016000000, value: 588123231 },
+            { date: 1586275200000, value: 388923231 },
+            { date: 1585324800000, value: 288223231 },
           ]
         },
       ],
@@ -355,6 +356,15 @@ mockGet('/yuqing/music/song/play/analysis', () => {
         {
           date: 1586275200000,
           playCount: '188.9万',
+          platformList: [
+            { name: '网易云音乐', value: '99.8万' },
+            { name: 'QQ音乐', value: '66.8万' },
+            { name: '酷我音乐', value: '' },
+          ]
+        },
+        {
+          date: 1585324800000,
+          playCount: '188.8万',
           platformList: [
             { name: '网易云音乐', value: '99.8万' },
             { name: 'QQ音乐', value: '66.8万' },
@@ -527,14 +537,14 @@ mockGet('/yuqing/music/song/rival/report', () => {
       },
       {
         rivalName: '学猫叫',
-        releaseDate: '2019-02-22',
-        companyName: '滚石音乐',
-        playCount: '99,888',
-        interactCount: '2.6万',
-        favorable: 'A+',
+        // releaseDate: '2019-02-22',
+        // companyName: '滚石音乐',
+        // playCount: '99,888',
+        // interactCount: '2.6万',
+        // favorable: 'A+',
       },
       {
-        rivalName: '想见你想见你想见你',
+        rivalName: '想见你想见你想见你想见你想见你想见你',
         releaseDate: '2020-02-22',
         companyName: '滚石音乐',
         playCount: '66,883',
@@ -546,9 +556,9 @@ mockGet('/yuqing/music/song/rival/report', () => {
     rankAnalysis: [
       {
         rivalName: '挪威的森林',
-        rankCount: '2,311',
-        rankBest: 'NO.32',
-        rankType: '流行 最热',
+        rankCount: '',
+        rankBest: '',
+        rankType: '',
         platformList: [
           { platformName: '抖音', platformNotice: '上榜数/最高排名', platformValue: '3/NO.2' },
           { platformName: '酷我音乐', platformNotice: '上榜数/最高排名', platformValue: '8/NO.23' },
@@ -640,22 +650,22 @@ mockGet('/yuqing/music/song/rival/report', () => {
       {
         rivalName: 'Last Dance',
         dataList: [
-          { name: '男', value: 3120 },
-          { name: '女', value: 6880 },
+          { name: '男', value: 9990 },
+          { name: '女', value: 10 },
         ]
       },
       {
         rivalName: '挪威的森林',
         dataList: [
-          { name: '男', value: 5220 },
-          { name: '女', value: 4780 },
+          { name: '男1', value: 5220 },
+          { name: '女1', value: 4780 },
         ]
       },
       {
         rivalName: '想见你想见你想见你',
         dataList: [
           { name: '男', value: 8220 },
-          { name: '女', value: 1780 },
+          { name: '女2', value: 1780 },
         ]
       },
     ],
@@ -665,11 +675,11 @@ mockGet('/yuqing/music/song/rival/report', () => {
         {
           rivalName: 'Last Dance',
           dataList: [
-            { name: '深圳', value: 3120 },
+            { name: '深圳名字很长很长', value: 3128 },
             { name: '广州', value: 6880 },
-            { name: '上海', value: 2880 },
-            { name: '北京', value: 1880 },
-            { name: '杭州', value: 280 },
+            { name: '上海', value: null },
+            { name: '北京', value: 0 },
+            // { name: '杭州', value: 280 },
           ]
         },
         {
@@ -818,14 +828,14 @@ mockGet('/yuqing/music/song/rival/heat/analysis', () => {
       },
       {
         rivalName: '学猫叫',
-        releaseDate: '2019-02-22',
-        companyName: '滚石音乐',
-        playCount: '99,888',
-        interactCount: '2.6万',
-        favorable: 'A+',
+        // releaseDate: '2019-02-22',
+        // companyName: '滚石音乐',
+        // playCount: '99,888',
+        // interactCount: '2.6万',
+        // favorable: 'A+',
       },
       {
-        rivalName: '想见你想见你想见你',
+        rivalName: '想见你想见你想见你想见你想见你想见你',
         releaseDate: '2020-02-22',
         companyName: '滚石音乐',
         playCount: '66,883',

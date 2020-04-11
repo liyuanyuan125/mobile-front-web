@@ -25,11 +25,13 @@
           >
             <div
               class="cell-inner"
+              :class="col.lineClass"
               v-html="item[col.name] || htmlPlaceholder"
               v-if="col.html"
             ></div>
             <div
               class="cell-inner"
+              :class="col.lineClass"
               v-else
             >{{item[col.name] || placeholder}}</div>
           </td>
@@ -44,13 +46,19 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 
 import { TableColumn } from './types'
 
+const lineClassList = [
+  'van-ellipsis',
+  'van-multi-ellipsis--l2',
+  'van-multi-ellipsis--l3',
+]
+
 @Component
 export default class Table extends Vue {
   @Prop({ type: Array, default: () => [] }) data!: any[]
 
   @Prop({ type: Array, default: () => [] }) columns!: TableColumn[]
 
-  @Prop({ type: String, default: '--' }) placeholder!: string
+  @Prop({ type: String, default: '-' }) placeholder!: string
 
   @Prop({ type: Boolean, default: false }) showBorder!: boolean
 
@@ -62,6 +70,7 @@ export default class Table extends Vue {
       ...item,
       width: typeof item.width == 'number' ? `${item.width}px` : (item.width || 'auto'),
       className: `col-${item.name} col-align-${item.align || 'center'}`,
+      lineClass: typeof item.lines === 'number' && lineClassList[item.lines - 1] || ''
     }))
     return result
   }
@@ -104,7 +113,7 @@ export default class Table extends Vue {
 
   th,
   td {
-    padding: 28px 0;
+    padding: 28px 4px;
     line-height: 1.3;
   }
 

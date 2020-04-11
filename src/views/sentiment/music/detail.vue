@@ -17,10 +17,23 @@
         <div class="header-price" v-if="basic.price">{{basic.price}}</div>
       </figure>
       <div class="header-main">
-        <h1 class="header-title">{{basic.name}}</h1>
-        <div class="header-singer">{{basic.singer}}</div>
-        <div class="header-release" @click="popupShow = true">{{basic.release}}</div>
-        <div class="header-ranking">{{basic.rankingNum}} <a>{{basic.rankingName}}</a></div>
+        <h1 class="header-title van-ellipsis">{{basic.name}}</h1>
+        <div class="header-singer van-ellipsis">{{basic.singer}}</div>
+        <div class="header-release" @click="popupShow = true">
+          <div class="header-release-in van-ellipsis">{{basic.release}}</div>
+        </div>
+        <div class="header-ranking">
+          <em>{{basic.rankingNum}}</em>
+          <router-link
+            :to="{
+              name: 'sentimenteventmarketing',
+              params: { eventId: basic.rankingId },
+              query: { title: basic.rankingName },
+            }"
+            class="header-event van-ellipsis"
+            v-if="basic.rankingId"
+          >#{{basic.rankingName}}</router-link>
+        </div>
       </div>
     </section>
 
@@ -93,8 +106,8 @@
               v-html="song.name"
             >
             </router-link>
-            <span class="song-heat">{{song.heatCount}}</span>
-            <span class="song-comment">{{song.commentCount}}</span>
+            <span class="song-heat">{{song.heatCount || '-'}}</span>
+            <span class="song-comment">{{song.commentCount || '-'}}</span>
           </li>
         </ul>
       </div>
@@ -114,15 +127,15 @@
       />
       <ul class="rank-list" v-if="rankAnalysis">
         <li class="rank-item">
-          <em>{{rankAnalysis.rankCount}}</em>
+          <em class="van-multi-ellipsis--l2">{{rankAnalysis.rankCount || '-'}}</em>
           <i>上榜数量</i>
         </li>
         <li class="rank-item rank-item-best">
-          <em>{{rankAnalysis.rankBest}}</em>
+          <em class="van-multi-ellipsis--l2">{{rankAnalysis.rankBest || '-'}}</em>
           <i>最佳排名</i>
         </li>
         <li class="rank-item">
-          <em>{{rankAnalysis.rankType}}</em>
+          <em class="van-multi-ellipsis--l2">{{rankAnalysis.rankType || '-'}}</em>
           <i>榜单类型</i>
         </li>
       </ul>
@@ -130,11 +143,13 @@
       <ModuleHeader title="上榜数量分布" tag="h4" class="rank-header"/>
 
       <AnnularChart
-        :data="annularData"
+        :data="rankAnnularData"
         :width="345"
         class="rank-chart"
-        v-if="annularData"
+        v-if="rankAnnularData"
       />
+
+      <DataEmpty text="抱歉，这首歌曲未能上榜" v-if="rankAnnularEmpty"/>
     </section>
 
     <section class="pane praise-pane" id="praise">
@@ -168,14 +183,17 @@
       />
     </section>
 
-    <section class="pane">
+    <section class="pane" v-if="singerList && singerList.length > 0">
       <ModuleHeader title="音乐人分析"/>
-      <Swipe class="singer-swipe" v-if="singerList">
+      <Swipe class="singer-swipe">
         <SwipeItem
           v-for="it in singerList"
           :key="it.singerId"
         >
-          <div class="singer-card">
+          <router-link
+            :to="{ name: 'sentimentactor', params: { actorId: it.singerId } }"
+            class="singer-card"
+          >
             <img :src="it.avatar" class="singer-avatar">
             <div class="singer-main">
               <h4 class="singer-name">{{it.singerName}}</h4>
@@ -183,21 +201,21 @@
                 <span class="singer-count">昨日热度 <em>{{it.heatCount}}</em></span>
                 <span
                   class="singer-trend"
-                  :class="it.heatTrend < 0 ? 'singer-down' : ''"
-                  v-if="it.heatTrend"
-                >
-                  <i class="singer-symbol">{{it.heatTrend > 0 ? '↑' : '↓'}}</i>
-                  <em>{{it.heatTrend}}</em>
-                </span>
+                  :class="{
+                    'singer-up': it.heatTrend > 0,
+                    'singer-down': it.heatTrend < 0,
+                  }"
+                  v-if="it.heatCount"
+                >{{ it.heatTrendText }}</span>
               </div>
             </div>
-          </div>
+          </router-link>
         </SwipeItem>
       </Swipe>
     </section>
 
     <section class="pane" id="rival">
-      <ModuleHeader title="相似歌曲"/>
+      <ModuleHeader :title="isAlbum ? '竞品分析' : '相似歌曲'"/>
       <ul class="rival-list">
         <li
           v-for="it in rivalList"
@@ -212,8 +230,8 @@
               <img :src="it.cover">
             </figure>
             <div class="rival-main">
-              <h4 class="rival-name">{{it.name}}</h4>
-              <div class="rival-author">{{it.author}}</div>
+              <h4 class="rival-name van-ellipsis">{{it.name}}</h4>
+              <div class="rival-author van-ellipsis">{{it.author}}</div>
               <ul class="rival-stats">
                 <li
                   v-for="stats in it.statsList"
@@ -221,13 +239,14 @@
                   class="rival-stats-item"
                 >
                   <i class="rival-stats-type">{{stats.type}}</i>
-                  <em class="rival-count">{{stats.count}}</em>
+                  <em class="rival-count">{{stats.count || '-'}}</em>
                   <span
                     class="rival-trend"
                     :class="{
                       'rival-up': stats.trend > 0,
                       'rival-down': stats.trend < 0,
                     }"
+                    v-if="stats.trend"
                   >
                     <i class="rival-symbol" v-if="stats.trend">{{stats.trend > 0 ? '高' : '低'}}</i>
                     <em>{{stats.trendText}}</em>
@@ -235,7 +254,7 @@
                 </li>
               </ul>
               <div class="rival-event" v-if="it.eventName">
-                <div class="rival-event-name">{{it.eventName}}</div>
+                <div class="rival-event-name van-ellipsis">{{it.eventName}}</div>
                 <div class="rival-event-date">{{it.eventDate}}</div>
               </div>
             </div>
@@ -363,7 +382,9 @@ export default class extends ViewBase {
 
   rankAnalysis: any = null
 
-  annularData: any = null
+  rankAnnularData: any = null
+
+  rankAnnularEmpty = false
 
   praiseData: any = null
 
@@ -431,7 +452,9 @@ export default class extends ViewBase {
       // 单曲：榜单表现
       rankAnalysis,
       // 单曲：上榜数量分布
-      annularData,
+      rankAnnularData,
+      // 单曲：上榜数量分布是否为空
+      rankAnnularEmpty,
 
       // 口碑评论
       praiseData,
@@ -448,7 +471,8 @@ export default class extends ViewBase {
     this.bubbleData = bubbleData
     this.songList = songList
     this.rankAnalysis = rankAnalysis
-    this.annularData = annularData
+    this.rankAnnularData = rankAnnularData
+    this.rankAnnularEmpty = rankAnnularEmpty
     this.praiseData = praiseData
     this.userAnalysis = userAnalysis
     this.singerList = singerList
@@ -493,6 +517,7 @@ export default class extends ViewBase {
     if (this.songInitHeight == 0) {
       const height = this.songInitHeight = wrap.offsetHeight
       wrap.style.height = `${height}px`
+      wrap.style.maxHeight = 'none'
     }
     this.$nextTick(() => {
       const list = this.$refs.songList as HTMLDivElement
@@ -612,6 +637,7 @@ export default class extends ViewBase {
 }
 
 .header-main {
+  width: 420px;
   margin-left: 30px;
 }
 
@@ -631,6 +657,7 @@ export default class extends ViewBase {
 }
 
 .header-release {
+  display: flex;
   &::after {
     content: '';
     display: inline-block;
@@ -640,6 +667,17 @@ export default class extends ViewBase {
     background-size: 30px 30px;
     vertical-align: top;
   }
+}
+
+.header-ranking {
+  display: flex;
+}
+
+.header-event {
+  flex: 1;
+  color: #88aaf6;
+  text-decoration: underline;
+  margin-left: 11px;
 }
 
 .popup-props {
@@ -744,7 +782,7 @@ export default class extends ViewBase {
 
 .song-wrap {
   margin-top: 45px;
-  height: 390px;
+  max-height: 390px;
   overflow: hidden;
   transition: height 300ms;
 }
@@ -806,21 +844,20 @@ export default class extends ViewBase {
   flex: 1;
   text-align: center;
 
-  em, i {
-    display: block;
-  }
   em {
     font-size: 40px;
     font-family: DINAlternate-Bold, DINAlternate, serif;
     font-weight: 600;
-    line-height: 50px;
+    line-height: 40px;
+    padding: 0 8px;
   }
   i {
+    display: block;
     font-size: 24px;
     font-family: PingFangSC-Light, PingFang SC, serif;
     font-weight: 300;
     color: rgba(48, 48, 48, .6);
-    line-height: 26px;
+    line-height: 38px;
   }
 
   &:last-child {
@@ -951,6 +988,20 @@ export default class extends ViewBase {
   margin-top: 20px;
 }
 
+.singer-count {
+  display: inline-flex;
+  align-items: center;
+  em {
+    margin-left: 10px;
+    &:empty {
+      display: inline-block;
+      width: 16px;
+      height: 4px;
+      background-color: #ff6262;
+    }
+  }
+}
+
 .singer-trend {
   position: relative;
   top: -3px;
@@ -958,12 +1009,37 @@ export default class extends ViewBase {
   font-size: 26px;
   font-family: DINAlternate-Bold, DINAlternate, serif;
   font-weight: bold;
+  &:empty {
+    display: inline-block;
+    top: 18px;
+    width: 16px;
+    height: 4px;
+    background-color: #ff6262;
+    vertical-align: top;
+  }
+}
+
+.singer-up,
+.singer-down {
   color: #ff6262;
-  vertical-align: top;
+  &::before {
+    content: '';
+    display: inline-block;
+    position: relative;
+    top: 15px;
+    width: 24px;
+    height: 36px;
+    background: url(./assets/arrowup.svg) no-repeat;
+    background-size: contain;
+  }
 }
 
 .singer-down {
   color: #88aaf6;
+  &::before {
+    top: 16px;
+    background-image: url(./assets/arrowdown.svg);
+  }
 }
 
 .rival-list {
@@ -983,6 +1059,7 @@ export default class extends ViewBase {
   display: flex;
   top: 4px;
   width: 200px;
+  min-width: 200px;
   height: 200px;
   border-radius: 10px;
   border: 1px solid #d8d8d8;
@@ -999,6 +1076,7 @@ export default class extends ViewBase {
   flex: 1;
   margin-left: 40px;
   color: #303030;
+  overflow: hidden;
 }
 
 .rival-name {

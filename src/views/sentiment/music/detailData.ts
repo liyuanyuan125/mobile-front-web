@@ -112,6 +112,10 @@ const songBasic = async (id: number) => {
       rankType: rankAnalysis.rankType || '',
     },
 
+    // rankAnalysisEmpty: (({ rankCount, rankBest, rankType }) => {
+    //   return isEmpty(rankCount) && isEmpty(rankBest) && isEmpty(rankType)
+    // })(rankAnalysis),
+
     // 单曲：上榜数量分布
     rankAnnularData: isEmpty(platformList)
       ? null

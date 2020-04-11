@@ -60,13 +60,13 @@ mockGet('/yuqing/music/song/detail', ({ songId }) => {
       rankBest: 'NO.38',
       rankType: '流行 飙升',
       // rankType: '水电费沙发 沙发斯蒂芬 斯蒂芬 斯蒂芬',
-      // platformList: [
-      //   { name: '抖音', value: 1080 },
-      //   { name: '酷我音乐', value: 1840 },
-      //   { name: '搜狗音乐', value: 2020 },
-      //   { name: '网易云音乐', value: 2620 },
-      //   { name: 'QQ音乐', value: 3850 },
-      // ]
+      platformList: [
+        { name: '抖音', value: 1080 },
+        { name: '酷我音乐', value: 1840 },
+        { name: '搜狗音乐', value: 2020 },
+        { name: '网易云音乐', value: 2620 },
+        { name: 'QQ音乐', value: 3850 },
+      ]
     },
 
     // 口碑

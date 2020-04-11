@@ -65,7 +65,8 @@ export default class MultiLine extends Vue {
           const title = this.tooltipFormatTitle({ list })
           const titleColor = this.tooltipTitleColor
           const nameColor = this.tooltipNameColor
-          const listHtml = list.map(({ seriesName, name, value, color }) => {
+          const listHtml = list.sort((a, b) => b.value - a.value)
+          .map(({ seriesName, name, value, color }) => {
             const valueColor = color || nameColor
             const valueShow = value != null ? readableNumber(value) : '-'
             const itemHtml = `
@@ -76,7 +77,8 @@ export default class MultiLine extends Vue {
               </div>
             `
             return itemHtml.trim()
-          }).join('')
+          })
+          .join('')
           const ename = list[0].name
           const event = this.events[ename]
           const eventHtml = event

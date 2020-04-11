@@ -207,10 +207,7 @@ export default class PlayStats extends Vue {
   }
 
   get dailyNames() {
-    const names = this.isAlign
-      ? releaseDayList(this.day)
-      : (list => list.map(it => intDate(it, 'MM-DD') as string))(lastDayList(this.day))
-    return names
+    return this.getDayList('MM-DD')
   }
 
   get dailyData() {
@@ -254,14 +251,27 @@ export default class PlayStats extends Vue {
     return table
   }
 
+  getDayList(format = 'YYYY-MM-DD') {
+    const day = this.day
+    const names = this.isAlign
+      ? releaseDayList(day)
+      : lastDayList(day).map(it => String(intDate(it, format)))
+    return names
+  }
+
   mounted() {
     this.fetchData()
   }
 
   async fetchData() {
-    const query = this.isAlign
-      ? { days: this.day }
-      : (([ startTime, endTime ]) => ({ startTime, endTime }))(lastDays(this.day))
+    const [ startTime, endTime ] = lastDays(this.day)
+    const query = {
+      startTime,
+      endTime,
+      days: this.day,
+      isAlign: this.isAlign,
+      dayNames: this.getDayList(),
+    }
     const view = await this.fetch(query)
     const list = Array.isArray(view) ? view : [ { label: '', view } ]
     this.viewList = list

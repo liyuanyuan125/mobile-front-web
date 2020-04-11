@@ -46,11 +46,12 @@ export interface PlayItem {
   view: PlayView
 }
 
-export type PlayQuery = {
+export interface PlayQuery {
   startTime: number
   endTime: number
-} | {
   days: number
+  isAlign: boolean
+  dayNames: string[]
 }
 
 export type PlayFetch = (query: PlayQuery) => PlayView | PlayItem[]

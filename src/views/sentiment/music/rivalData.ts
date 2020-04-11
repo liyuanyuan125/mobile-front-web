@@ -42,8 +42,8 @@ const commonBasic = (data: any) => {
         const woman = dataMap.女
         return {
           name: rivalName,
-          rate1: man ? +(man.value / 100).toFixed(1) : 0,
-          rate2: woman ? +(woman.value / 100).toFixed(1) : 0,
+          rate1: man && +(man.value / 100).toFixed(1),
+          rate2: woman && +(woman.value / 100).toFixed(1),
         }
       })
       return ret

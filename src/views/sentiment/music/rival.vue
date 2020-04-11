@@ -66,23 +66,33 @@
     <section class="pane pane-user" id="user">
       <ModuleHeader title="用户对比"/>
 
-      <Age :ageRangeList="ageRangeList" class="age-range"/>
-
-      <div class="van-hairline--top"></div>
-
-      <ModuleHeader title="性别分布" tag="h4" class="vs-header"/>
-
-      <VsList :data="sexData" class="vs-chart"/>
-
-      <div class="van-hairline--top"></div>
-
-      <ModuleHeader title="用户地域分布对比" tag="h4" class="area-header"/>
-
-      <MultiTable
-        :list="areaList"
-        :columns="areaColumns"
-        class="area-table"
+      <Age
+        :ageRangeList="ageRangeList"
+        class="age-range"
+        v-if="!ageRangeEmpty"
       />
+
+      <template v-if="!sexEmpty">
+        <div class="van-hairline--top" v-if="!ageRangeEmpty"></div>
+
+        <ModuleHeader title="性别分布" tag="h4" class="vs-header"/>
+
+        <VsList :data="sexData" class="vs-chart"/>
+      </template>
+
+      <template v-if="!areaEmpty">
+        <div class="van-hairline--top" v-if="!ageRangeEmpty || !sexEmpty"></div>
+
+        <ModuleHeader title="用户地域分布对比" tag="h4" class="area-header"/>
+
+        <MultiTable
+          :list="areaList"
+          :columns="areaColumns"
+          class="area-table"
+        />
+      </template>
+
+      <DataEmpty v-if="ageRangeEmpty && sexEmpty && areaEmpty"/>
     </section>
   </main>
 </template>
@@ -103,6 +113,8 @@ import VsList, { VsItem } from '@/components/vsList'
 import MultiTable, { MultiTableItem } from '@/components/multiTable'
 import { getBasic, getHeat, getPlay, getPraise } from './rivalData'
 import { lastDays } from '@/util/timeSpan'
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
+import { isEmpty } from 'lodash'
 
 @Component({
   components: {
@@ -117,6 +129,7 @@ import { lastDays } from '@/util/timeSpan'
     Age,
     VsList,
     MultiTable,
+    DataEmpty,
   }
 })
 export default class extends ViewBase {
@@ -190,6 +203,18 @@ export default class extends ViewBase {
     { name: 'top4', title: 'TOP4', html: true },
     { name: 'top5', title: 'TOP5', html: true },
   ]
+
+  get ageRangeEmpty() {
+    return isEmpty(this.ageRangeList)
+  }
+
+  get sexEmpty() {
+    return isEmpty(this.sexData)
+  }
+
+  get areaEmpty() {
+    return isEmpty(this.areaList)
+  }
 
   created() {
     this.init()

@@ -19,7 +19,10 @@ import { keyBy, groupBy, flatMap, uniq } from 'lodash'
 import { PlayView } from './components/playStats'
 
 const toPercent = (list: any[], percentKey = 'value') => {
-  const result = (list || []).map(it => ({ ...it, [percentKey]: it[percentKey] / 100 }))
+  const result = (list || []).map(it => ({
+    ...it,
+    [percentKey]: +(it[percentKey] / 100).toFixed(1)
+  }))
   return result
 }
 

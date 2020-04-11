@@ -59,6 +59,11 @@ export default class ChinaMap extends Vue {
         position: 'top',
         formatter: (params: any) => {
           const { name, value, color } = params
+
+          if (value == null || value == 0) {
+            return null
+          }
+
           const valueShow = `${value}${this.unit}`
           const boxStyle = cssifyObject({
             position: 'relative',

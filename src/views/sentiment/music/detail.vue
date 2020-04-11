@@ -506,7 +506,7 @@ export default class extends ViewBase {
   }
 
   async getEvent() {
-    const eventData = await getEventList({}, this.isAlbum)
+    const eventData = await getEventList(this.id, this.isAlbum)
     this.eventData = eventData
   }
 

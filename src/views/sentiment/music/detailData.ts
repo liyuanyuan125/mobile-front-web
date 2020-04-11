@@ -351,10 +351,10 @@ export async function getPlayAnalysis(id: number, query: any, isAlbum: boolean) 
   return result
 }
 
-export async function getEventList(query: any, isAlbum: boolean) {
+export async function getEventList(id: number, isAlbum: boolean) {
   const { data } = isAlbum
-    ? await albumGetEventList(query)
-    : await songGetEventList(query)
+    ? await albumGetEventList(id)
+    : await songGetEventList(id)
   return data
 }
 

@@ -23,18 +23,19 @@
     </section>
 
     <section class="pane pane-heat" id="hot" v-if="!isAlbum">
-      <ModuleHeader title="热度分析"/>
+      <SelectTime v-model="heatDay" class="select-time"/>
       <HeatContrast
         lineTitle="综合热度对比"
         :colors="['#88aaf6', '#4cc8d0', '#c965dd']"
-        :overAllHeat="heatContrastData.overAllHeat"
-        :interactList="heatContrastData.interactList"
-        :materialList="heatContrastData.materialList"
+        :overAllHeat="heatData.overAllHeat"
+        :interactList="heatData.interactList"
+        :materialList="heatData.materialList"
         :tabs="[
           { key: 0, text: '新增物料数' },
           { key: 1, text: '新增互动数' },
         ]"
-        v-if="heatContrastData"
+        :daysNum="heatDay"
+        v-if="heatData"
       />
     </section>
 
@@ -105,6 +106,7 @@ import RivalList from '@/views/common/rivalList/index.vue'
 import TabNav, { TabNavItem } from '@/components/tabNav'
 import ModuleHeader from '@/components/moduleHeader'
 import Table, { TableColumn } from '@/components/table'
+import { selectTime as SelectTime } from '@/components/hotLine'
 import HeatContrast from '@/views/common/heatContrast/index.vue'
 import PlayStats, { PlayQuery } from './components/playStats'
 import MarketContrast from '@/views/common/marketContrast/index.vue'
@@ -123,6 +125,7 @@ import { isEmpty } from 'lodash'
     TabNav,
     ModuleHeader,
     Table,
+    SelectTime,
     HeatContrast,
     PlayStats,
     MarketContrast,
@@ -182,8 +185,11 @@ export default class extends ViewBase {
     return list
   }
 
+  // 热度分析天数
+  heatDay = 7
+
   // 热度分析数据
-  heatContrastData: any = null
+  heatData: any = null
 
   rankTable: any = null
 
@@ -247,12 +253,13 @@ export default class extends ViewBase {
   }
 
   async getHeat() {
-    const heatContrastData = await getHeat({
+    const [ startTime, endTime ] = lastDays(this.heatDay)
+    const heatData = await getHeat({
       songIdList: this.ids,
-      startTime: 20200212,
-      endTime: 20200330,
+      startTime,
+      endTime,
     })
-    this.heatContrastData = heatContrastData
+    this.heatData = heatData
   }
 
   async playFetch(query: PlayQuery) {
@@ -266,6 +273,11 @@ export default class extends ViewBase {
 
   praiseFetch(query: any) {
     return getPraise(this.ids, query, this.isAlbum)
+  }
+
+  @Watch('heatDay')
+  watchHeatDay() {
+    this.getHeat()
   }
 }
 </script>
@@ -298,8 +310,11 @@ export default class extends ViewBase {
 
 .pane-heat {
   padding: 50px 0 30px;
-  /deep/ .module-header {
-    padding: 0 0 20px 30px;
+  .select-time {
+    padding: 0 30px 10px;
+  }
+  /deep/ .platform-title {
+    font-weight: 400;
   }
 }
 

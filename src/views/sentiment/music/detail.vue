@@ -126,7 +126,7 @@
     <section class="pane" v-if="!isAlbum">
       <ModuleHeader
         title="榜单表现"
-        :link="{ page: 'songRankPerformance', songId: id }"
+        :link="rankAnnularEmpty ? null : { page: 'songRankPerformance', songId: id }"
       />
       <ul class="rank-list" v-if="rankAnalysis">
         <li class="rank-item">
@@ -388,6 +388,8 @@ export default class extends ViewBase {
 
   rankAnalysis: any = null
 
+  // rankAnalysisEmpty = false
+
   rankAnnularData: any = null
 
   rankAnnularEmpty = false
@@ -457,6 +459,8 @@ export default class extends ViewBase {
 
       // 单曲：榜单表现
       rankAnalysis,
+      // 单曲：榜单表现是否为空
+      // rankAnalysisEmpty,
       // 单曲：上榜数量分布
       rankAnnularData,
       // 单曲：上榜数量分布是否为空
@@ -477,6 +481,7 @@ export default class extends ViewBase {
     this.bubbleData = bubbleData
     this.songList = songList
     this.rankAnalysis = rankAnalysis
+    // this.rankAnalysisEmpty = rankAnalysisEmpty
     this.rankAnnularData = rankAnnularData
     this.rankAnnularEmpty = rankAnnularEmpty
     this.praiseData = praiseData

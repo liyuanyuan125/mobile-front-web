@@ -1,8 +1,8 @@
 <template>
   <!--数据为空 -->
   <div class="datanull">
-    <img src="@/assets/sentiment/event-null.png" alt="暂无数据" />
-    <p>暂无数据</p>
+    <img src="@/assets/sentiment/event-null.png" :alt="text"/>
+    <p>{{text}}</p>
   </div>
 </template>
 
@@ -13,7 +13,9 @@ import ViewBase from '@/util/ViewBase'
 @Component({
   components: {}
 })
-export default class DataEmpty extends ViewBase {}
+export default class DataEmpty extends ViewBase {
+  @Prop({ type: String, default: '暂无数据' }) text!: string
+}
 </script>
 
 <style lang="less" scoped>

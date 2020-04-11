@@ -17,7 +17,7 @@ import { arrayMap } from '@jydata/fe-util'
 import { readableNumber, formatValidDate } from '@/util/dealData'
 import { PlayView } from './components/playStats'
 import { TableColumn } from '@/components/table'
-import { uniq, flatMap } from 'lodash'
+import { uniq, flatMap, compact, isEmpty } from 'lodash'
 import { toMoment } from '@/util/dealData'
 import { imgFixed } from '@/fn/imgProxy'
 
@@ -69,7 +69,7 @@ const songBasic = async (id: number) => {
       cover: imgFixed(info.songCover, 200, 200, 4),
       name: info.songName || '',
       singer: info.songSinger || '',
-      release: `单曲 / ${releaseDate} / ${platform}`,
+      release: compact(['单曲', releaseDate, platform]).join(' / '),
       rankingNum: info.rankingNum || '',
       rankingName: info.rankingName || '',
       rankingId: info.rankingId || 0,
@@ -113,9 +113,11 @@ const songBasic = async (id: number) => {
     },
 
     // 单曲：上榜数量分布
-    annularData: {
-      data: platformList
-    },
+    rankAnnularData: isEmpty(platformList)
+      ? null
+      : { data: platformList },
+
+    rankAnnularEmpty: isEmpty(platformList),
 
     // 口碑评论
     praiseData: {
@@ -157,7 +159,7 @@ const albumBasic = async (id: number) => {
       cover: imgFixed(info.coverUrl, 210, 210, 4),
       name: info.albumName || '',
       singer: info.albumSinger || '',
-      release: `专辑 / ${releaseDate} / ${platform}`,
+      release: compact(['专辑', releaseDate, platform]).join(' / '),
       rankingNum: info.rankingNum || '',
       rankingName: info.rankingName || '',
       rankingId: info.rankingId || 0,
@@ -290,7 +292,8 @@ const dealPlayView = (view: any, isAlbum = false) => {
     return { name, title: name, align: 'right', width: '8em' }
   })
   const columns = fixedColumns.concat(dynamicColumns)
-  const tableData = formList.map(item => {
+  // 产品需求：只取前三条
+  const tableData = formList.slice(0, 3).map(item => {
     const m = toMoment(item.date)
     const ymd = m.format('YYYY-MM-DD')
     const wi = m.day()

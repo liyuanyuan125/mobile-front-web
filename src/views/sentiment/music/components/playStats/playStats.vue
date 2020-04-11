@@ -38,7 +38,7 @@
           class="total-item"
         >
           <i class="total-no">{{index + 1}}</i>
-          <em class="total-name">{{name}}</em>
+          <div class="total-name van-multi-ellipsis--l2">{{name}}</div>
           <Progress
             :percentage="percent"
             :show-pivot="false"
@@ -384,19 +384,20 @@ export default class PlayStats extends Vue {
 }
 
 .total-name {
-  flex: 1;
+  width: 140px;
   margin-left: 18px;
 }
 
 .total-progress {
-  width: 216px;
+  width: 200px;
   height: 10px;
   margin-left: 28px;
 }
 
 .total-show {
-  margin-left: 28px;
+  width: 120px;
   font-size: 24px;
+  text-align: right;
 }
 
 .total-percent {

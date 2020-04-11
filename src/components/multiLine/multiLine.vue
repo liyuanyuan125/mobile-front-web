@@ -71,7 +71,7 @@ export default class MultiLine extends Vue {
             const itemHtml = `
               <p class="tooltip-item">
                 <i class="tooltip-dot" style="background-color: ${color}"></i>
-                <span class="tooltip-name" style="color: ${nameColor}">${seriesName}</span>
+                <span class="tooltip-name van-ellipsis" style="color: ${nameColor}">${seriesName}</span>
                 <span class="tooltip-value" style="color: ${valueColor}">${valueShow}</span>
               </p>
             `
@@ -96,6 +96,7 @@ export default class MultiLine extends Vue {
         extraCssText: cssifyObject({
           border: '2px solid rgba(48, 48, 48, .1)',
           borderRadius: '6px',
+          maxWidth: '55%',
         }),
       },
 

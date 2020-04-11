@@ -3,7 +3,7 @@ export default function(change = false) {
   return [
     {
       platformName: '全部',
-      rivalName: '挪威的森林',
+      rivalName: '挪威的森林森林森林森林森林森林森林森林森林森林森林森林森林森林森林森林森林森林森林森林森林森林',
       playCountShow: '12,432.4万',
       dataList: [
         { date: 1585756800000, value: change ? 58888 : 118888 },

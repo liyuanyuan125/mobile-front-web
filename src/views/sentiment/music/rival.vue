@@ -77,7 +77,7 @@
 
         <ModuleHeader title="性别分布" tag="h4" class="vs-header"/>
 
-        <VsList :data="sexData" class="vs-chart"/>
+        <VsList :data="sexData" empty="暂无性别数据" class="vs-chart"/>
       </template>
 
       <template v-if="!areaEmpty">

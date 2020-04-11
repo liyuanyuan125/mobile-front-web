@@ -83,25 +83,25 @@ const songBasic = async (id: number) => {
       {
         type: 1,
         title: '累计播放量',
-        value: overview.playCount || '暂无数据',
+        value: overview.playCount || '-',
         trend: overview.playTrend || 0,
       },
       {
         type: 2,
         title: '累计互动量',
-        value: overview.interactCount || '暂无数据',
+        value: overview.interactCount || '-',
         trend: overview.interactTrend || 0,
       },
       {
         type: 3,
         title: '综合热度',
-        value: overview.heatCount || '暂无数据',
+        value: overview.heatCount || '-',
         trend: overview.heatTrend || 0,
       },
       {
         type: 4,
         title: '好感度',
-        value: info.favorable || '暂无数据',
+        value: info.favorable || '-',
       },
     ],
 
@@ -175,25 +175,25 @@ const albumBasic = async (id: number) => {
       {
         type: 1,
         title: isDigital ? '累计销售量' : '歌曲播放量',
-        value: (isDigital ? overview.playCount : overview.saleCount) || '暂无数据',
+        value: (isDigital ? overview.playCount : overview.saleCount) || '-',
         trend: (isDigital ? overview.playTrend : overview.saleTrend) || 0,
       },
       {
         type: 2,
         title: isDigital ? '累计互动数' : '累计互动量',
-        value: overview.interactCount || '暂无数据',
+        value: overview.interactCount || '-',
         trend: overview.interactTrend || 0,
       },
       {
         type: 3,
         title: isDigital ? '昨日销量排名' : '最高单曲播放',
-        value: (isDigital ? overview.yesterdaySaleRank : overview.singlePlayCount) || '暂无数据',
+        value: (isDigital ? overview.yesterdaySaleRank : overview.singlePlayCount) || '-',
         trend: (isDigital ? overview.yesterdaySaleTrend : overview.singlePlayTrend)  || 0,
       },
       {
         type: 4,
         title: '好感度',
-        value: info.favorable || '暂无数据',
+        value: info.favorable || '-',
       },
     ],
 

@@ -69,14 +69,14 @@ export default class MultiLine extends Vue {
             const valueColor = color || nameColor
             const valueShow = value != null ? readableNumber(value) : '-'
             const itemHtml = `
-              <p class="tooltip-item">
+              <div class="tooltip-item">
                 <i class="tooltip-dot" style="background-color: ${color}"></i>
                 <span class="tooltip-name van-ellipsis" style="color: ${nameColor}">${seriesName}</span>
                 <span class="tooltip-value" style="color: ${valueColor}">${valueShow}</span>
-              </p>
+              </div>
             `
             return itemHtml.trim()
-          })
+          }).join('')
           const ename = list[0].name
           const event = this.events[ename]
           const eventHtml = event
@@ -139,10 +139,10 @@ export default class MultiLine extends Vue {
       },
 
       grid: {
-        left: 6,
+        left: 5,
         right: 20,
         top: 10,
-        bottom: 0,
+        bottom: 5,
         containLabel: true
       },
 
@@ -178,13 +178,13 @@ export default class MultiLine extends Vue {
 
   /deep/ .tooltip-box {
     position: relative;
-    line-height: 1;
+    line-height: 1.5;
     font-size: 22px;
-    padding: 18px 20px 26px;
+    padding: 18px 20px 22px;
   }
 
   /deep/ .tooltip-title {
-    margin-bottom: 16px;
+    margin-bottom: 5px;
   }
 
   /deep/ .tooltip-item {
@@ -196,7 +196,7 @@ export default class MultiLine extends Vue {
   /deep/ .tooltip-dot {
     position: relative;
     display: inline-block;
-    top: 6px;
+    top: 12px;
     width: 12px;
     height: 12px;
     border-radius: 100%;
@@ -221,7 +221,7 @@ export default class MultiLine extends Vue {
     color: #88aaf6;
     text-decoration: underline;
     cursor: pointer;
-    margin-top: 22px;
+    margin-top: 12px;
   }
 
   /deep/ [style*=pointer-events] {

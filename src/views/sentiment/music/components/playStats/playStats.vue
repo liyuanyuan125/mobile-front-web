@@ -451,7 +451,7 @@ export default class PlayStats extends Vue {
 }
 
 .daily-form {
-  margin-top: 60px;
+  margin-top: 50px;
   background: rgba(242, 243, 246, .5);
   border-radius: 10px;
   border: 2px solid rgba(242, 243, 246, 1);

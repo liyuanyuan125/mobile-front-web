@@ -286,7 +286,7 @@ mockGet('/yuqing/music/album/rival/list', () => {
       yesterdaySalesTrend: 88,
       yesterdayInteractCount: '1.2万',
       yesterdayInteractTrend: 99,
-      eventName: '英首相与女友订婚',
+      eventName: '英首相与女友订婚很长很长很长很长很长很长很长很长',
       eventCreatTime: 1583909626668,
     },
     {

@@ -17,10 +17,23 @@
         <div class="header-price" v-if="basic.price">{{basic.price}}</div>
       </figure>
       <div class="header-main">
-        <h1 class="header-title">{{basic.name}}</h1>
-        <div class="header-singer">{{basic.singer}}</div>
-        <div class="header-release" @click="popupShow = true">{{basic.release}}</div>
-        <div class="header-ranking">{{basic.rankingNum}} <a>{{basic.rankingName}}</a></div>
+        <h1 class="header-title van-ellipsis">{{basic.name}}</h1>
+        <div class="header-singer van-ellipsis">{{basic.singer}}</div>
+        <div class="header-release" @click="popupShow = true">
+          <div class="header-release-in van-ellipsis">{{basic.release}}</div>
+        </div>
+        <div class="header-ranking">
+          <em>{{basic.rankingNum}}</em>
+          <router-link
+            :to="{
+              name: 'sentimenteventmarketing',
+              params: { eventId: basic.rankingId },
+              query: { title: basic.rankingName },
+            }"
+            class="header-event van-ellipsis"
+            v-if="basic.rankingId"
+          >#{{basic.rankingName}}</router-link>
+        </div>
       </div>
     </section>
 
@@ -114,15 +127,15 @@
       />
       <ul class="rank-list" v-if="rankAnalysis">
         <li class="rank-item">
-          <em>{{rankAnalysis.rankCount}}</em>
+          <em>{{rankAnalysis.rankCount || '-'}}</em>
           <i>上榜数量</i>
         </li>
         <li class="rank-item rank-item-best">
-          <em>{{rankAnalysis.rankBest}}</em>
+          <em>{{rankAnalysis.rankBest || '-'}}</em>
           <i>最佳排名</i>
         </li>
         <li class="rank-item">
-          <em>{{rankAnalysis.rankType}}</em>
+          <em>{{rankAnalysis.rankType || '-'}}</em>
           <i>榜单类型</i>
         </li>
       </ul>
@@ -130,11 +143,13 @@
       <ModuleHeader title="上榜数量分布" tag="h4" class="rank-header"/>
 
       <AnnularChart
-        :data="annularData"
+        :data="rankAnnularData"
         :width="345"
         class="rank-chart"
-        v-if="annularData"
+        v-if="rankAnnularData"
       />
+
+      <DataEmpty text="抱歉，这首歌曲未能上榜" v-if="rankAnnularEmpty"/>
     </section>
 
     <section class="pane praise-pane" id="praise">
@@ -239,7 +254,7 @@
                 </li>
               </ul>
               <div class="rival-event" v-if="it.eventName">
-                <div class="rival-event-name">{{it.eventName}}</div>
+                <div class="rival-event-name van-ellipsis">{{it.eventName}}</div>
                 <div class="rival-event-date">{{it.eventDate}}</div>
               </div>
             </div>
@@ -367,7 +382,9 @@ export default class extends ViewBase {
 
   rankAnalysis: any = null
 
-  annularData: any = null
+  rankAnnularData: any = null
+
+  rankAnnularEmpty = false
 
   praiseData: any = null
 
@@ -435,7 +452,9 @@ export default class extends ViewBase {
       // 单曲：榜单表现
       rankAnalysis,
       // 单曲：上榜数量分布
-      annularData,
+      rankAnnularData,
+      // 单曲：上榜数量分布是否为空
+      rankAnnularEmpty,
 
       // 口碑评论
       praiseData,
@@ -452,7 +471,8 @@ export default class extends ViewBase {
     this.bubbleData = bubbleData
     this.songList = songList
     this.rankAnalysis = rankAnalysis
-    this.annularData = annularData
+    this.rankAnnularData = rankAnnularData
+    this.rankAnnularEmpty = rankAnnularEmpty
     this.praiseData = praiseData
     this.userAnalysis = userAnalysis
     this.singerList = singerList
@@ -617,6 +637,7 @@ export default class extends ViewBase {
 }
 
 .header-main {
+  width: 420px;
   margin-left: 30px;
 }
 
@@ -636,6 +657,7 @@ export default class extends ViewBase {
 }
 
 .header-release {
+  display: flex;
   &::after {
     content: '';
     display: inline-block;
@@ -645,6 +667,17 @@ export default class extends ViewBase {
     background-size: 30px 30px;
     vertical-align: top;
   }
+}
+
+.header-ranking {
+  display: flex;
+}
+
+.header-event {
+  flex: 1;
+  color: #88aaf6;
+  text-decoration: underline;
+  margin-left: 11px;
 }
 
 .popup-props {

@@ -127,15 +127,15 @@
       />
       <ul class="rank-list" v-if="rankAnalysis">
         <li class="rank-item">
-          <em>{{rankAnalysis.rankCount || '-'}}</em>
+          <em class="van-multi-ellipsis--l2">{{rankAnalysis.rankCount || '-'}}</em>
           <i>上榜数量</i>
         </li>
         <li class="rank-item rank-item-best">
-          <em>{{rankAnalysis.rankBest || '-'}}</em>
+          <em class="van-multi-ellipsis--l2">{{rankAnalysis.rankBest || '-'}}</em>
           <i>最佳排名</i>
         </li>
         <li class="rank-item">
-          <em>{{rankAnalysis.rankType || '-'}}</em>
+          <em class="van-multi-ellipsis--l2">{{rankAnalysis.rankType || '-'}}</em>
           <i>榜单类型</i>
         </li>
       </ul>
@@ -215,7 +215,7 @@
     </section>
 
     <section class="pane" id="rival">
-      <ModuleHeader title="相似歌曲"/>
+      <ModuleHeader :title="isAlbum ? '竞品分析' : '相似歌曲'"/>
       <ul class="rival-list">
         <li
           v-for="it in rivalList"
@@ -844,21 +844,20 @@ export default class extends ViewBase {
   flex: 1;
   text-align: center;
 
-  em, i {
-    display: block;
-  }
   em {
     font-size: 40px;
     font-family: DINAlternate-Bold, DINAlternate, serif;
     font-weight: 600;
-    line-height: 50px;
+    line-height: 40px;
+    padding: 0 8px;
   }
   i {
+    display: block;
     font-size: 24px;
     font-family: PingFangSC-Light, PingFang SC, serif;
     font-weight: 300;
     color: rgba(48, 48, 48, .6);
-    line-height: 26px;
+    line-height: 38px;
   }
 
   &:last-child {

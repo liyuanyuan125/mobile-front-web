@@ -56,9 +56,10 @@ mockGet('/yuqing/music/song/detail', ({ songId }) => {
 
     // 榜单表现
     rankAnalysis: {
-      rankCount: '',
-      rankBest: '',
-      rankType: '',
+      rankCount: '2,588',
+      rankBest: 'NO.38',
+      rankType: '流行 飙升',
+      // rankType: '水电费沙发 沙发斯蒂芬 斯蒂芬 斯蒂芬',
       // platformList: [
       //   { name: '抖音', value: 1080 },
       //   { name: '酷我音乐', value: 1840 },
@@ -82,8 +83,8 @@ mockGet('/yuqing/music/song/detail', ({ songId }) => {
     // 用户分析
     userAnalysis: {
       genderList: [
-        { name: '男', value: 3220 },
-        { name: '女', value: 6880 },
+        { name: '男', value: 9990 },
+        { name: '女', value: 10 },
       ],
       ageRangeList: [
         { name: '≤19岁', value: 880 },
@@ -649,22 +650,22 @@ mockGet('/yuqing/music/song/rival/report', () => {
       {
         rivalName: 'Last Dance',
         dataList: [
-          { name: '男', value: 3120 },
-          { name: '女', value: 6880 },
+          { name: '男', value: 9990 },
+          { name: '女', value: 10 },
         ]
       },
       {
         rivalName: '挪威的森林',
         dataList: [
-          { name: '男', value: 5220 },
-          { name: '女', value: 4780 },
+          { name: '男1', value: 5220 },
+          { name: '女1', value: 4780 },
         ]
       },
       {
         rivalName: '想见你想见你想见你',
         dataList: [
           { name: '男', value: 8220 },
-          { name: '女', value: 1780 },
+          { name: '女2', value: 1780 },
         ]
       },
     ],

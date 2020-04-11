@@ -593,7 +593,24 @@ mockGet('/yuqing/music/album/rival/analysis', () => {
  * https://yapi.aiads-dev.com/project/404/interface/api/11608
  */
 mockGet('/yuqing/music/album/rival/analysis/sale', () => {
-  return rivalPlayData()
+  // return [
+  //   {
+  //     platformName: '全部',
+  //     rivalName: '挪威的森林',
+  //     playCountShow: '12,432.4万',
+  //     dataList: [
+  //       { date: 1585756800000, value: 118888 },
+  //       { date: 1586016000000, value: 128888 },
+  //       { date: 1586275200000, value: 138888 },
+  //     ],
+  //     dateShowList: [
+  //       { date: '2020-04-02', value: '118,888' },
+  //       { date: '2020-04-05', value: '128,888' },
+  //       { date: '2020-04-08', value: '138,888' },
+  //     ]
+  //   },
+  // ]
+  // return rivalPlayData()
 })
 
 /**

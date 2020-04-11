@@ -59,7 +59,7 @@
       v-if="chartTitle && dailyData"
     />
 
-    <ul class="group-list" v-if="groupNames.length > 1">
+    <ul class="group-list" v-if="showGroupName">
       <li
         v-for="(name, index) in groupNames"
         :key="name"
@@ -197,6 +197,13 @@ export default class PlayStats extends Vue {
     }
     const names = currentView.dataGroup.map(it => it.name)
     return names
+  }
+
+  // 是否显示 group，当 group 个数大于 1 个，或者，虽然只有一个，但不为空
+  get showGroupName() {
+    const names = this.groupNames
+    const show = names.length > 1 || (names.length == 1 && !isEmpty(names[0]))
+    return show
   }
 
   get dailyNames() {

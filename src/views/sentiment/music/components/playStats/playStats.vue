@@ -164,9 +164,9 @@ export default class PlayStats extends Vue {
   }
 
   get dayList() {
-    const alignMode = this.alignMode
+    const isAlign = this.isAlign
     const list = this.days.map(value => ({
-      name: alignMode ? `发行${value}天` : `最近${value}天`,
+      name: isAlign ? `发行${value}天` : `最近${value}天`,
       value
     }))
     return list

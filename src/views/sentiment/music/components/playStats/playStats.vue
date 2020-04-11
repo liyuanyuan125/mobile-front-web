@@ -200,9 +200,10 @@ export default class PlayStats extends Vue {
   }
 
   // 是否显示 group，当 group 个数大于 1 个，或者，虽然只有一个，但不为空
-  showGroupName() {
+  get showGroupName() {
     const names = this.groupNames
     const show = names.length > 1 || (names.length == 1 && !isEmpty(names[0]))
+    return show
   }
 
   get dailyNames() {

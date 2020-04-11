@@ -139,7 +139,7 @@ export default class MultiLine extends Vue {
       },
 
       grid: {
-        left: 0,
+        left: 6,
         right: 20,
         top: 10,
         bottom: 0,

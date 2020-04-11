@@ -94,9 +94,12 @@ export function getRivalPraise(query: IdListTime) {
 }
 
 /**
- * TODO: 获取事件列表
- * @param query 查询参数
+ * 获取事件列表
+ * https://yapi.aiads-dev.com/project/416/interface/api/11088
+ * @param id 单曲 id
  */
-export function getEventList(query: any) {
-  return get('/mock/416/yuqing/common/eventAnalysis', query)
+export function getEventList(id: number) {
+  // 1 品牌 2 艺人 3 电影4 剧集 5 音乐-单曲 6 音乐-专辑
+  const query = { type: 5, objectId: id }
+  return get('/yuqing/common/eventAnalysis', query)
 }

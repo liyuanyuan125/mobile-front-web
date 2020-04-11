@@ -43,14 +43,8 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
-
 import { TableColumn } from './types'
-
-const lineClassList = [
-  'van-ellipsis',
-  'van-multi-ellipsis--l2',
-  'van-multi-ellipsis--l3',
-]
+import { getLineClass } from '@/util/lines'
 
 @Component
 export default class Table extends Vue {
@@ -70,7 +64,7 @@ export default class Table extends Vue {
       ...item,
       width: typeof item.width == 'number' ? `${item.width}px` : (item.width || 'auto'),
       className: `col-${item.name} col-align-${item.align || 'center'}`,
-      lineClass: typeof item.lines === 'number' && lineClassList[item.lines - 1] || ''
+      lineClass: getLineClass(item.lines)
     }))
     return result
   }

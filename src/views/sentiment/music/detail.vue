@@ -555,7 +555,7 @@ export default class extends ViewBase {
 <style lang="less" scoped>
 .main-page {
   background-color: #f2f3f6;
-  padding: 88px 0 8px;
+  padding: 88px 0 0;
 }
 
 .main-page-album {

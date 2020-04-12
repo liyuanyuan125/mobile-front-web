@@ -162,8 +162,8 @@ export default class extends ViewBase {
   get basicColumns() {
     const isAlbum = this.isAlbum
     const list: TableColumn[] = [
-      { name: 'rivalName', title: isAlbum ? '专辑名称' : '单曲', width: 8.5, align: 'left', lines: 2, fixed: 'left' },
-      { name: 'releaseDate', title: '发行时间', width: 7 },
+      { name: 'rivalName', title: isAlbum ? '专辑名称' : '单曲', width: 9, align: 'left', lines: 2, fixed: 'left' },
+      { name: 'releaseDate', title: '发行时间', width: 8 },
       { name: 'companyName', title: '唱片公司', width: 6 },
     ]
     if (isAlbum) {

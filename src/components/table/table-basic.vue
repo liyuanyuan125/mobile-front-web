@@ -125,7 +125,7 @@ export default class TableBasic extends Vue {
 
   th,
   td {
-    padding: 28px 4px;
+    padding: 28px 8px;
     line-height: 1.3;
   }
 

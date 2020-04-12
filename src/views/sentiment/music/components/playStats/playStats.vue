@@ -59,7 +59,10 @@
       v-if="chartTitle && dailyData"
     />
 
-    <ul class="group-list" v-if="showGroupName">
+    <ul
+      class="group-list"
+      v-if="showGroupName && dailyData"
+    >
       <li
         v-for="(name, index) in groupNames"
         :key="name"
@@ -223,7 +226,7 @@ export default class PlayStats extends Vue {
     if (isEmpty(chart)) {
       return null
     }
-    const list = dealDailyData(this.day, chart, this.autoColor, this.isAlign)
+    const list = dealDailyData(this.day, chart, this.isAlign, this.autoColor)
     return list
   }
 

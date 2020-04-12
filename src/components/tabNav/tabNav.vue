@@ -26,7 +26,8 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import { Tab, Tabs } from 'vant'
 import { TabNavItem } from './types'
-import { scrollIntoView } from './scroll'
+import { scrollIntoView } from './util'
+import { watchScroll } from '@/util/scroll'
 
 @Component({
   components: {
@@ -45,12 +46,58 @@ export default class TabNav extends Vue {
   /** 去掉头部的装饰 */
   @Prop({ type: Boolean, default: false }) hideHeader!: boolean
 
+  /** 滚动调节量 */
+  @Prop({ type: Number, default: 30 }) scrollThreshold!: number
+
   model = 0
+
+  clickedScroll = false
+
+  get box() {
+    return this.$refs.box as HTMLElement
+  }
+
+  get children() {
+    const ids = this.list.map(it => it.name)
+    const elList = ids.map(id => document.getElementById(id))
+    return elList
+  }
 
   handleClick(index: number) {
     const { name = '' } = this.list[index] || {}
     const nav = document.getElementById(name)
-    scrollIntoView(nav, this.$refs.box as HTMLElement)
+    if (nav) {
+      this.clickedScroll = true
+      scrollIntoView(nav, this.box).then(() => this.clickedScroll = false)
+    }
+    this.model = index
+  }
+
+  getScrollIndex() {
+    const line = this.box.getBoundingClientRect().bottom + this.scrollThreshold
+    const children = this.children
+    const count = children.length
+
+    for (let index = 0; index < count; index++) {
+      const el = children[index]
+      if (el != null) {
+        const top = el.getBoundingClientRect().top
+        if (top > line) {
+          return index == 0 ? 0 : index - 1
+        }
+      }
+    }
+
+    return count - 1
+  }
+
+  mounted() {
+    watchScroll().then(() => {
+      if (!this.clickedScroll) {
+        const index = this.getScrollIndex()
+        this.model = index
+      }
+    })
   }
 
   @Watch('value', { immediate: true })

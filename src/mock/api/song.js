@@ -606,7 +606,7 @@ mockGet('/yuqing/music/song/rival/report', () => {
         // favorable: 'A+',
       },
       {
-        rivalName: '想见你想见你想见你想见你想见你想见你',
+        rivalName: '想见你想见你想见你想见你想见你想见你想见你想见你想见你想见你想见你想见你',
         releaseDate: '2020-02-22',
         companyName: '滚石音乐',
         playCount: '66,883',
@@ -643,7 +643,7 @@ mockGet('/yuqing/music/song/rival/report', () => {
         ]
       },
       {
-        rivalName: '想见你想见你想见你',
+        rivalName: '想见你想见你想见你想见你想见你想见你想见你想见你想见你想见你想见你想见你',
         rankCount: '8,311',
         rankBest: 'NO.182',
         rankType: '口水歌',

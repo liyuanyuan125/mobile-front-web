@@ -288,12 +288,12 @@ const weekDays = [ '日', '一', '二', '三', '四', '五', '六' ]
 const dealPlayView = (view: any, isAlbum = false) => {
   const formList: PlayForm[] = view.dailyFormList || []
   const fixedColumns: TableColumn[] = [
-    { name: 'date', title: '日期', align: 'left', width: '9em', html: true },
-    { name: 'count', title: `当日${isAlbum ? '销量' : '播放量'}`, align: 'right', width: '7em' },
+    { name: 'date', title: '日期', align: 'left', width: 9, html: true, fixed: 'left' },
+    { name: 'count', title: `当日${isAlbum ? '销量' : '播放量'}`, align: 'right', width: 8 },
   ]
   const names = platformNames(formList)
   const dynamicColumns: TableColumn[] = names.map(name => {
-    return { name, title: name, align: 'right', width: '8em' }
+    return { name, title: name, align: 'right', width: 8 }
   })
   const columns = fixedColumns.concat(dynamicColumns)
   // 产品需求：只取前三条

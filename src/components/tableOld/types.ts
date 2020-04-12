@@ -14,6 +14,4 @@ export interface TableColumn {
   html?: boolean
   /** 文字行控制 */
   lines?: 1 | 2 | 3
-  /** fixed 位置 */
-  fixed?: string
 }

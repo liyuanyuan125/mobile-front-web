@@ -94,16 +94,16 @@ const songBasic = async (ids: string) => {
 
     rankTable: ((list: any[]) => {
       const columns: TableColumn[] = [
-        { name: 'name', title: '单曲', width: '9em', align: 'left' },
-        { name: 'count', title: '上榜数量', width: '5em' },
-        { name: 'best', title: '最高排名', width: '5em' },
-        { name: 'type', title: '上榜类型', width: '5em' },
+        { name: 'name', title: '单曲', width: 9, align: 'left', lines: 2, fixed: 'left' },
+        { name: 'count', title: '上榜数量', width: 5 },
+        { name: 'best', title: '最高排名', width: 5 },
+        { name: 'type', title: '上榜类型', width: 5 },
       ]
       if (list.length > 0) {
         const platList = list[0].platformList as any[] || []
         platList.forEach(
           ({ platformName: name, platformNotice: title }) => {
-            columns.push({ name, title: `${name}<br>${title}`, width: '9em' })
+            columns.push({ name, title: `${name}<br>${title}`, width: 9 })
           }
         )
       }
@@ -190,10 +190,10 @@ const dealPlayView = (
       }, {} as any)
     }))
 
-    const dynamicColumns = dayNames.map(date => ({ name: date, title: date, width: '8em' }))
+    const dynamicColumns = dayNames.map(date => ({ name: date, title: date, width: 8 }))
     const tableColumns: TableColumn[] = [
-      { name: 'name', title: isAlbum ? '专辑名称' : '单曲名称', align: 'left', width: '8em', lines: 2 },
-      { name: 'count', title: isAlbum ? '累计销量' : '累计播放', width: '7em' },
+      { name: 'name', title: isAlbum ? '专辑名称' : '单曲名称', align: 'left', width: 8, lines: 2, fixed: 'left' },
+      { name: 'count', title: isAlbum ? '累计销量' : '累计播放', width: 7 },
       ...dynamicColumns,
     ]
 

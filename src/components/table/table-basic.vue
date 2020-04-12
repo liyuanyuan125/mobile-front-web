@@ -8,20 +8,20 @@
     >
       <thead>
         <th
-          v-for="column in finalColumns"
-          :key="column.name"
-          :class="alignCls(column)"
-          :style="{ width: column.width + 'em' }"
-          v-html="column.title"
+          v-for="{ name, title, className, width } in normalizeColumns"
+          :key="name"
+          :class="className"
+          :style="{ width }"
+          v-html="title"
         ></th>
       </thead>
       <tbody>
         <tr v-for="(item, index) in data" :key="index">
           <td
-            v-for="col in finalColumns"
+            v-for="col in normalizeColumns"
             :key="col.name"
-            :class="alignCls(col)"
-            :style="{ width: col.width + 'em' }"
+            :class="col.className"
+            :style="{ width: col.width }"
           >
             <div
               class="cell-inner"
@@ -56,18 +56,18 @@ export default class TableBasic extends Vue {
 
   @Prop({ type: Boolean, default: false }) showBorder!: boolean
 
-  @Prop({ default: false }) fixed!: string | boolean
+  @Prop({ type: [String, Boolean], default: false }) fixed!: string | boolean
 
-  prefixCls: string = 'jydata-table'
+  prefixCls = 'jydata-table'
 
-  get finalColumns() {
+  get normalizeColumns() {
     const result = this.columns.map(item => ({
       title: '',
       align: 'center',
       html: false,
       ...item,
-      width: typeof item.width == 'number' ? `${item.width}px` : (item.width || 'auto'),
-      className: `col-${item.name} col-align-${item.align || 'center'}`,
+      width: typeof item.width == 'number' ? `${item.width}em` : (item.width || 'auto'),
+      className: this.alignCls(item),
       lineClass: getLineClass(item.lines)
     }))
     return result
@@ -104,6 +104,7 @@ export default class TableBasic extends Vue {
   .col-align-left {
     text-align: left;
     padding-left: 30px;
+    padding-right: 24px;
   }
 
   .col-align-center {
@@ -112,6 +113,7 @@ export default class TableBasic extends Vue {
 
   .col-align-right {
     text-align: right;
+    padding-left: 24px;
     padding-right: 30px;
   }
 

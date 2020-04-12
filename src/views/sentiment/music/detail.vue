@@ -86,7 +86,7 @@
     </section>
 
     <section class="pane" id="song" v-if="isAlbum">
-      <ModuleHeader title="歌曲热度"/>
+      <ModuleHeader title="歌曲热度" tip="歌曲热度描述"/>
       <div class="song-wrap" ref="songWrap" v-if="songList && songList.length > 0">
         <ul class="song-list" ref="songList">
           <li class="song-head">

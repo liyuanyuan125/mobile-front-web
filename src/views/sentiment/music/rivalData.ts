@@ -206,6 +206,7 @@ const dealPlayView = (
       }
     }
   })
+  .sort(a => a.name == '全部' ? -1 : 0)
 
   return {
     dataGroup

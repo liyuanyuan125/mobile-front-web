@@ -1,6 +1,6 @@
 <template>
   <div class="two-bar">
-    <ECharts :options="chartData" auto-resize class="the-chart"/>
+    <ECharts :options="chartData" autoresize class="the-chart"/>
   </div>
 </template>
 

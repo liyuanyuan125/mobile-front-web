@@ -321,9 +321,27 @@ mockGet('/yuqing/music/song/play/analysis', () => {
         {
           platformName: '酷我音乐',
           dataList: [
-            { date: 1585756800000, value: 188823231 },
-            { date: 1586016000000, value: 588123231 },
-            { date: 1586275200000, value: 388923231 },
+            { date: 1585756800000, value: 288823231 },
+            { date: 1586016000000, value: 688123231 },
+            { date: 1586275200000, value: 66923231 },
+            { date: 1585324800000, value: 288223231 },
+          ]
+        },
+        {
+          platformName: '酷狗音乐',
+          dataList: [
+            { date: 1585756800000, value: 88823231 },
+            { date: 1586016000000, value: 88123231 },
+            { date: 1586275200000, value: 288923231 },
+            { date: 1585324800000, value: 588223231 },
+          ]
+        },
+        {
+          platformName: '音乐名称太长太长太长太长太长太长',
+          dataList: [
+            { date: 1585756800000, value: 98823231 },
+            { date: 1586016000000, value: 98123231 },
+            { date: 1586275200000, value: 988923231 },
             { date: 1585324800000, value: 288223231 },
           ]
         },

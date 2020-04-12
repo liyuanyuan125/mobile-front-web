@@ -77,6 +77,7 @@
       :names="dailyNames"
       :data="dailyData"
       :events="dailyEvents"
+      :showLegend="showLegend"
       smooth
       class="daily-chart"
       v-if="dailyData"
@@ -147,6 +148,9 @@ export default class PlayStats extends Vue {
 
   /** 销售对比：显示对齐发行时间 */
   @Prop({ type: Boolean, default: false }) alignMode!: boolean
+
+  /** 是否显示图例 */
+  @Prop({ type: Boolean, default: false }) showLegend!: boolean
 
   day = 7
 
@@ -237,6 +241,16 @@ export default class PlayStats extends Vue {
       })
     })
     return list
+  }
+
+  get legendOptions() {
+    const options = {
+      // show: true,
+      left: 0,
+      bottom: -10,
+      padding: [60, 0, 0, 0],
+    }
+    return options
   }
 
   get table() {

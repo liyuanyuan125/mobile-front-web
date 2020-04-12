@@ -86,6 +86,7 @@
         :isAlbum="isAlbum"
         :chartTitle="isAlbum ? '分日销量' : '分日播放量'"
         :moreDateLink="detailPage(isAlbum ? 'albumSaleCountDetail' : 'songPlayCountDetail')"
+        showLegend
         class="play-stats"
       />
     </section>

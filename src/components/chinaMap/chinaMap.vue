@@ -1,6 +1,6 @@
 <template>
   <div class="china-map">
-    <ECharts :options="chartData" auto-resize class="the-chart"/>
+    <ECharts :options="chartData" autoresize class="the-chart"/>
   </div>
 </template>
 
@@ -14,7 +14,6 @@ import 'echarts/lib/component/visualMap'
 import 'echarts/lib/component/tooltip'
 
 import { cssifyObject } from 'css-in-js-utils'
-
 import provinceData from './province'
 
 ECharts.registerMap('china', provinceData)
@@ -60,7 +59,7 @@ export default class ChinaMap extends Vue {
         formatter: (params: any) => {
           const { name, value, color } = params
 
-          if (value == null || value == 0) {
+          if (value == null || value == 0 || isNaN(value)) {
             return null
           }
 

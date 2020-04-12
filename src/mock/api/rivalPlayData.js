@@ -2,6 +2,21 @@
 export default function(change = false) {
   return [
     {
+      platformName: '网易云音乐',
+      rivalName: '挪威的森林',
+      playCountShow: '2,432.4万',
+      dataList: [
+        { date: 1585756800000, value: 18888 },
+        { date: 1586016000000, value: 28888 },
+        { date: 1586275200000, value: 38888 },
+      ],
+      dateShowList: [
+        { date: '2020-04-02', value: '18,888' },
+        { date: '2020-04-05', value: '28,888' },
+        { date: '2020-04-08', value: '38,888' },
+      ]
+    },
+    {
       platformName: '全部',
       rivalName: '挪威的森林森林森林森林森林森林森林森林森林森林森林森林森林森林森林森林森林森林森林森林森林森林',
       playCountShow: '12,432.4万',
@@ -44,21 +59,6 @@ export default function(change = false) {
         { date: '2020-04-02', value: change ? '108,888' : '138,888' },
         { date: '2020-04-05', value: change ? '118,888' : '148,888' },
         { date: '2020-04-08', value: change ? '128,888' : '158,888' },
-      ]
-    },
-    {
-      platformName: '网易云音乐',
-      rivalName: '挪威的森林',
-      playCountShow: '2,432.4万',
-      dataList: [
-        { date: 1585756800000, value: 18888 },
-        { date: 1586016000000, value: 28888 },
-        { date: 1586275200000, value: 38888 },
-      ],
-      dateShowList: [
-        { date: '2020-04-02', value: '18,888' },
-        { date: '2020-04-05', value: '28,888' },
-        { date: '2020-04-08', value: '38,888' },
       ]
     },
     {

@@ -1,6 +1,28 @@
 <template>
   <div class="multi-line" ref="box">
-    <ECharts :options="chartData" auto-resize class="the-chart" />
+    <div class="chart-wrap">
+      <ECharts
+        :options="chartData"
+        autoresize
+        class="the-chart"
+        ref="chart"
+      />
+    </div>
+
+    <div class="legend-box" v-if="showLegend">
+      <ul class="legend-list">
+        <li
+          v-for="{ name, color } in data"
+          :key="name"
+          class="legend-item"
+          :class="{ 'legend-item-off': !!legendDisabledMap[name] }"
+          @click="toggleLegend(name)"
+        >
+          <i :style="{ backgroundColor: color || '#ccc' }"></i>
+          <em class="van-ellipsis">{{name}}</em>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -14,6 +36,8 @@ import 'echarts/lib/component/tooltip'
 import { MultiLineItem, MultiLineTooltipFormatTitle, MultiLineEvents } from './types'
 import { cssifyObject } from 'css-in-js-utils'
 import { readableNumber } from '@/util/dealData'
+import { MapType } from '@/util/types'
+import { toast } from '@/util/toast'
 
 @Component({
   components: {
@@ -45,6 +69,38 @@ export default class MultiLine extends Vue {
 
   @Prop({ type: String, default: 'rgba(71, 64, 59, .6)' }) axisLabelColor!: string
 
+  /** 是否显示图例 */
+  @Prop({ type: Boolean, default: false }) showLegend!: boolean
+
+  get chart() {
+    const chart = this.$refs.chart as any
+    return chart
+  }
+
+  legendDisabledMap: MapType<boolean> = {}
+
+  get legendEnabledCount() {
+    const list = this.data.filter(({ name }) => this.legendIsEnable(name))
+    return list.length
+  }
+
+  legendIsEnable(name: string) {
+    const disabledMap = this.legendDisabledMap
+    return !disabledMap[name]
+  }
+
+  toggleLegend(name: string) {
+    const enable = this.legendIsEnable(name)
+    const type = enable ? 'legendUnSelect' : 'legendSelect'
+    // 保持最后一个图例，不能被「取消选择」
+    if (type == 'legendSelect' || this.legendEnabledCount > 1) {
+      this.chart.dispatchAction({ type, name })
+      this.$set(this.legendDisabledMap, name, enable)
+    } else {
+      toast('最后一个了哦，不能反选')
+    }
+  }
+
   get chartData() {
     const series = this.data.map(({ name, data, color }) => {
       const line: any = {
@@ -59,6 +115,11 @@ export default class MultiLine extends Vue {
     })
 
     const result: any = {
+      // 必须设置为 false，才能使 legendSelect、legendUnSelect 等 dispatchAction 起作用
+      legend: {
+        show: false
+      },
+
       tooltip: {
         trigger: 'axis',
         formatter: (list: any[]) => {
@@ -175,8 +236,6 @@ export default class MultiLine extends Vue {
 <style lang="less" scoped>
 .multi-line {
   position: relative;
-  width: 100%;
-  height: 388px;
 
   /deep/ .tooltip-box {
     position: relative;
@@ -231,8 +290,46 @@ export default class MultiLine extends Vue {
   }
 }
 
+.chart-wrap {
+  position: relative;
+  width: 100%;
+  height: 388px;
+}
+
 .the-chart {
   width: 100%;
   height: 100%;
+}
+
+.legend-box {
+  overflow: hidden;
+}
+
+.legend-list {
+  margin: 20px -28px 8px 0;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  font-size: 26px;
+  padding: 10px 20px;
+  background-color: #f2f3f6;
+  border-radius: 30px;
+  margin: 20px 20px 0 0;
+  i {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 100%;
+  }
+  em {
+    margin-left: 10px;
+    max-width: 6em;
+  }
+}
+
+.legend-item-off {
+  opacity: .3;
 }
 </style>

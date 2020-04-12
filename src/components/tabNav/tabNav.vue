@@ -8,7 +8,11 @@
     }"
     ref="box"
   >
-    <Tabs v-model="model" @click="handleClick" v-if="list && list.length > 0">
+    <Tabs
+      v-model="model"
+      @click="handleClick"
+      v-if="list && list.length > 0"
+    >
       <Tab
         v-for="{ name, label } in list"
         :key="name"
@@ -20,12 +24,9 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
-
 import { Tab, Tabs } from 'vant'
-
 import { TabNavItem } from './types'
-
-import scrollIntoView from 'scroll-into-view-if-needed'
+import { scrollIntoView } from './scroll'
 
 @Component({
   components: {
@@ -49,28 +50,7 @@ export default class TabNav extends Vue {
   handleClick(index: number) {
     const { name = '' } = this.list[index] || {}
     const nav = document.getElementById(name)
-    nav && scrollIntoView(nav, {
-      block: 'start',
-      scrollMode: 'always',
-      behavior: actions => {
-        const canSmoothScroll = 'scrollBehavior' in document.body.style
-        const box = this.$refs.box as HTMLElement
-        const boxTop = parseInt(getComputedStyle(box).top, 10)
-        const boxHeight = box.offsetHeight
-        actions.forEach(({ el, top, left }) => {
-          if (el.scroll && canSmoothScroll) {
-            el.scroll({
-              top: top - boxTop - boxHeight,
-              left,
-              behavior: 'smooth'
-            })
-          } else {
-            el.scrollTop = top - boxTop
-            el.scrollLeft = left
-          }
-        })
-      },
-    })
+    scrollIntoView(nav, this.$refs.box as HTMLElement)
   }
 
   @Watch('value', { immediate: true })

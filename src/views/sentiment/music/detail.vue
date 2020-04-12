@@ -3,13 +3,7 @@
     class="main-page"
     :class="isAlbum ? 'main-page-album' : 'main-page-song'"
   >
-    <SentimentBar
-      :sidebar="{
-        diggType: isAlbum ? 'album' : 'song',
-        diggId: id,
-      }"
-      :title="basic.name"
-    />
+    <SentimentBar :title="basic.name" :sidebar="topbarSidebar"/>
 
     <section class="header">
       <figure class="header-fig">
@@ -267,13 +261,7 @@
       </ul>
 
       <div class="rival-more">
-        <router-link
-          :to="{
-            name: isAlbum ? 'sentiment-album-rival' : 'sentiment-song-rival',
-            query: { ids: rivalIds }
-          }"
-          class="rival-button"
-        >查看详细报告</router-link>
+        <router-link :to="rivalRoute" class="rival-button">查看详细报告</router-link>
       </div>
     </section>
   </main>
@@ -332,6 +320,28 @@ export default class extends ViewBase {
   @Prop({ type: Number }) id!: number
 
   @Prop({ type: Boolean, default: false }) isAlbum!: boolean
+
+  get topbarSidebar() {
+    // 有竞品数据，跳转竞品报告页；否则，跳转到设置竞品页
+    const type = this.isAlbum ? 6 : 5
+    const route = (this.rivalList || []).length > 0
+      ? this.rivalRoute
+      : { businessType: type, businessObjectIdList: this.id }
+    return {
+      // 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
+      diggType: type,
+      diggId: this.id,
+      rivalIds: route
+    }
+  }
+
+  get rivalRoute() {
+    const route = {
+      name: this.isAlbum ? 'sentiment-album-rival' : 'sentiment-song-rival',
+      query: { ids: this.rivalIds }
+    }
+    return route
+  }
 
   get navList(): TabNavItem[] {
     const list = this.isAlbum
@@ -491,7 +501,7 @@ export default class extends ViewBase {
     this.singerList = singerList
   }
 
-  // 单曲：热度分析 TODO:
+  // 单曲：热度分析
   async getHeat() {
     const [ startTime, endTime ] = lastDays(this.heatDay)
     const {

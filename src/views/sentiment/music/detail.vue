@@ -774,6 +774,10 @@ export default class extends ViewBase {
   width: 100%;
   z-index: 999;
   overflow: hidden;
+  pointer-events: none;
+  /deep/ .title {
+    pointer-events: all;
+  }
 }
 
 .bubble-bottom {

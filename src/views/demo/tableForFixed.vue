@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import Table, { TableColumn } from '@/components/tableForFixed'
+import Table, { TableColumn } from '@/components/table'
 
 @Component({
   components: {

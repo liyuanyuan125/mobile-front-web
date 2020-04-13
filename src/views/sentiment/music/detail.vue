@@ -773,8 +773,11 @@ export default class extends ViewBase {
   top: 338px;
   width: 100%;
   z-index: 999;
-  pointer-events: none;
   overflow: hidden;
+  pointer-events: none;
+  /deep/ .title {
+    pointer-events: all;
+  }
 }
 
 .bubble-bottom {

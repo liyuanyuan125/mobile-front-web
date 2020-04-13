@@ -162,24 +162,24 @@ export default class extends ViewBase {
   get basicColumns() {
     const isAlbum = this.isAlbum
     const list: TableColumn[] = [
-      { name: 'rivalName', title: isAlbum ? '专辑名称' : '单曲', width: '8.5em', align: 'left', lines: 2 },
-      { name: 'releaseDate', title: '发行时间', width: '7em' },
-      { name: 'companyName', title: '唱片公司', width: '6em' },
+      { name: 'rivalName', title: isAlbum ? '专辑名称' : '单曲', width: 9, align: 'left', lines: 2, fixed: 'left' },
+      { name: 'releaseDate', title: '发行时间', width: 8 },
+      { name: 'companyName', title: '唱片公司', width: 6 },
     ]
     if (isAlbum) {
       list.push(
-        { name: 'totalSaleCount', title: '累计销售量', width: '6em' },
-        { name: 'totalInteractCount', title: '累计互动量', width: '6em' },
-        { name: 'favorable', title: '好感度', width: '4em' },
-        { name: 'musicCount', title: '专辑内歌曲量', width: '7em' },
-        { name: 'musicPlayCount', title: '歌曲累计播放量', width: '8em' },
-        { name: 'musicInteractCount', title: '歌曲累计互动量', width: '8em' },
+        { name: 'totalSaleCount', title: '累计销售量', width: 6 },
+        { name: 'totalInteractCount', title: '累计互动量', width: 6 },
+        { name: 'favorable', title: '好感度', width: 4 },
+        { name: 'musicCount', title: '专辑内歌曲量', width: 7 },
+        { name: 'musicPlayCount', title: '歌曲累计播放量', width: 8 },
+        { name: 'musicInteractCount', title: '歌曲累计互动量', width: 8 },
       )
     } else {
       list.push(
-        { name: 'playCount', title: '累计播放量', width: '6em' },
-        { name: 'interactCount', title: '累计互动量', width: '6em' },
-        { name: 'favorable', title: '好感度', width: '4em' },
+        { name: 'playCount', title: '累计播放量', width: 6 },
+        { name: 'interactCount', title: '累计互动量', width: 6 },
+        { name: 'favorable', title: '好感度', width: 4 },
       )
     }
     return list

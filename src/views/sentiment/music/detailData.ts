@@ -20,6 +20,30 @@ import { TableColumn } from '@/components/table'
 import { uniq, flatMap, compact, isEmpty } from 'lodash'
 import { toMoment } from '@/util/dealData'
 import { imgFixed } from '@/fn/imgProxy'
+import { Title } from '@/components/bubble'
+import { alert } from '@/util/toast'
+
+const bubbleTip = (title: string, message: string) => {
+  return (h: any) => {
+    return h(Title, {
+      props: {
+        title,
+      },
+      on: {
+        click: () => alert({
+          message,
+          showConfirmButton: true,
+          width: '80%'
+        })
+      }
+    })
+  }
+}
+
+const bubbleTipInteractCount = bubbleTip(
+  '累计活动量',
+  '累计互动说明话说：物料的点赞、评论、转发、阅读或播放的累计之和'
+)
 
 const commonBasic = (data: any) => {
   const publicPraise = data.publicPraise || {}
@@ -85,18 +109,21 @@ const songBasic = async (id: number) => {
         title: '累计播放量',
         value: overview.playCount || '-',
         trend: overview.playTrend || 0,
+        showdown: true,
       },
       {
         type: 2,
-        title: '累计互动量',
+        renderTitle: bubbleTipInteractCount,
         value: overview.interactCount || '-',
         trend: overview.interactTrend || 0,
+        showdown: true,
       },
       {
         type: 3,
         title: '综合热度',
         value: overview.heatCount || '-',
         trend: overview.heatTrend || 0,
+        showdown: true,
       },
       {
         type: 4,
@@ -181,18 +208,21 @@ const albumBasic = async (id: number) => {
         title: isDigital ? '累计销售量' : '歌曲播放量',
         value: (isDigital ? overview.playCount : overview.saleCount) || '-',
         trend: (isDigital ? overview.playTrend : overview.saleTrend) || 0,
+        showdown: true,
       },
       {
         type: 2,
-        title: isDigital ? '累计互动数' : '累计互动量',
+        renderTitle: bubbleTipInteractCount,
         value: overview.interactCount || '-',
         trend: overview.interactTrend || 0,
+        showdown: true,
       },
       {
         type: 3,
         title: isDigital ? '昨日销量排名' : '最高单曲播放',
         value: (isDigital ? overview.yesterdaySaleRank : overview.singlePlayCount) || '-',
         trend: (isDigital ? overview.yesterdaySaleTrend : overview.singlePlayTrend)  || 0,
+        showdown: true,
       },
       {
         type: 4,
@@ -288,12 +318,12 @@ const weekDays = [ '日', '一', '二', '三', '四', '五', '六' ]
 const dealPlayView = (view: any, isAlbum = false) => {
   const formList: PlayForm[] = view.dailyFormList || []
   const fixedColumns: TableColumn[] = [
-    { name: 'date', title: '日期', align: 'left', width: '9em', html: true },
-    { name: 'count', title: `当日${isAlbum ? '销量' : '播放量'}`, align: 'right', width: '7em' },
+    { name: 'date', title: '日期', align: 'left', width: 9, html: true, fixed: 'left' },
+    { name: 'count', title: `当日${isAlbum ? '销量' : '播放量'}`, align: 'right', width: 8 },
   ]
   const names = platformNames(formList)
   const dynamicColumns: TableColumn[] = names.map(name => {
-    return { name, title: name, align: 'right', width: '8em' }
+    return { name, title: name, align: 'right', width: 8 }
   })
   const columns = fixedColumns.concat(dynamicColumns)
   // 产品需求：只取前三条

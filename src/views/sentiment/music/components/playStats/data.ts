@@ -3,6 +3,7 @@ import { formatValidDate } from '@/util/dealData'
 import { arrayMap } from '@jydata/fe-util'
 import { MultiLineItem, MultiLineEvents, MultiLineEventHandler } from '@/components/multiLine'
 import { lastDayList } from '@/util/timeSpan'
+import { flatMap } from 'lodash'
 
 // const colorMap: any = {
 //   网易云音乐: '#ff6262',
@@ -34,8 +35,8 @@ export function releaseDayList(day: number) {
 export function dealDailyData(
   day: number,
   list: PlayData[],
-  autoColor: boolean,
-  isAlign: boolean
+  isAlign: boolean,
+  autoColor = true,
 ) {
   const dayList: any[] = isAlign ? releaseDayList(day) : lastDayList(day)
   const dateNames = dayList.map(it => ({
@@ -63,7 +64,12 @@ export function dealDailyData(
     }
     return item
   })
-  return result
+
+  // 检查全部的值是否为 null 或 0
+  const allEmpty = flatMap(result, 'data').every(({ value }) => value == null || value == 0)
+
+  // 若全部为 null 或 0，则作为 null 返回
+  return allEmpty ? null : result
 }
 
 export function dealDailyEvents(list: PlayEvent[], clickHandler: MultiLineEventHandler) {

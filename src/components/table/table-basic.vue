@@ -148,6 +148,8 @@ export default class TableBasic extends Vue {
 }
 
 .jydata-table-hidden {
-  visibility: hidden;
+  // visibility: hidden 真机中配合多行省略，会出现bug，会把省略的文字放开再隐藏，很尴尬，单行省略没问题，暂定使用opacity
+  // visibility: hidden;
+  opacity: 0;
 }
 </style>

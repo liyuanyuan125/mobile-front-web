@@ -1,38 +1,35 @@
 <template>
   <div class="content">
     <SentimentBar :title="brandInfo.brandName" :sidebar="sidebar" />
-    <brandInfoArea :brandInfo="brandInfo" :bubbleData="bubbleData"/>
-    <TabNav
-      :list="navList"
-      class="tab-nav"
-    />
+    <brandInfoArea :brandInfo="brandInfo" :bubbleData="bubbleData" />
+    <TabNav :list="navList" class="tab-nav" />
     <section class="brand-hot bg_fff" id="hot">
-      <selectTime v-model="day" class="select-time"/>
-      <heatLineCom 
-        :overAllList="overAllHeatList" 
+      <selectTime v-model="day" class="select-time" />
+      <heatLineCom
+        :overAllList="overAllHeatList"
         :platformList="platformHeatList"
         :params="platformParams"
-       />
+      />
     </section>
-    <PraiseComment 
-      :favorable="brandInfo.favorable" 
+    <PraiseComment
+      :favorable="brandInfo.favorable"
       :publicPraise="publicPraise"
       :link="getApplink('praiseHotWordsList')"
       v-if="publicPraise.appraiseList"
       id="praise"
       class="praise"
     />
-    <UserPortrait 
-      :ageRangeList="userAnalysis.ageRangeList" 
+    <UserPortrait
+      :ageRangeList="userAnalysis.ageRangeList"
       :genderList="userAnalysis.genderList"
       v-if="userAnalysis.genderList"
       :link="getApplink('userAnalysis')"
       id="user"
     />
-    <eventList 
-      :eventList="brandEventList" 
+    <eventList
+      :eventList="brandEventList"
       :params="eventParams"
-      :link="getApplink('eventMarketingList')" 
+      :link="getApplink('eventMarketingList')"
       id="event"
       class="bg_fff"
     />
@@ -70,14 +67,14 @@ import Competing from './components/competing.vue' // 竞品分析
   }
 })
 export default class BrandPage extends ViewBase {
-  @Prop({ type: Number, default: 0}) id!: number
+  @Prop({ type: Number, default: 0 }) id!: number
 
   navList: TabNavItem[] = [
     { name: 'hot', label: '热度' },
     { name: 'praise', label: '口碑' },
     { name: 'user', label: '用户' },
     { name: 'event', label: '事件' },
-    { name: 'part', label: '竞品' },
+    { name: 'part', label: '竞品' }
   ]
 
   // 气泡
@@ -90,13 +87,13 @@ export default class BrandPage extends ViewBase {
   platformHeatList: any = []
 
   get platformParams() {
-    const [ startTime, endTime ] = lastDays(this.day)
+    const [startTime, endTime] = lastDays(this.day)
     return {
       type: 1, // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
       id: this.id, // 详情页id
       name: '奔驰',
       startTime,
-      endTime,
+      endTime
     }
   }
 
@@ -125,15 +122,15 @@ export default class BrandPage extends ViewBase {
     } else {
       // 无竞品的时候，跳设置竞品页
       rivalObj = {
-        businessType: 1,
-        businessObjectIdList: this.id
+        businessType: '1',
+        businessObjectIdList: String(this.id)
       }
     }
-   return {
-    diggType: 1, // 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
-    diggId: this.id,
-    rivalIds: rivalObj
-   }
+    return {
+      diggType: 1, // 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
+      diggId: this.id,
+      rivalIds: rivalObj
+    }
   }
 
   mounted() {
@@ -146,12 +143,9 @@ export default class BrandPage extends ViewBase {
   async brandDetail() {
     const brandId = this.id
     try {
-      const { data: {
-        brandInfo,
-        brandOverView,
-        publicPraise,
-        userAnalysis
-      } } = await brandList({brandId})
+      const {
+        data: { brandInfo, brandOverView, publicPraise, userAnalysis }
+      } = await brandList({ brandId })
 
       this.brandInfo = brandInfo || {} // 头部基础信息
       this.bubbleData = brandOverView // 气泡数据
@@ -163,15 +157,14 @@ export default class BrandPage extends ViewBase {
   }
 
   async getHotList() {
-    const [ startTime, endTime ] = lastDays(this.day)
+    const [startTime, endTime] = lastDays(this.day)
     try {
-      const { data: {
-        overAllHeatList,
-        platformHeatList
-      } } = await getList({
+      const {
+        data: { overAllHeatList, platformHeatList }
+      } = await getList({
         brandId: this.id,
         startTime,
-        endTime,
+        endTime
       })
       this.overAllHeatList = overAllHeatList || []
       this.platformHeatList = platformHeatList || []
@@ -228,7 +221,7 @@ export default class BrandPage extends ViewBase {
     }
   }
 
-  @Watch('day', {deep: true})
+  @Watch('day', { deep: true })
   watchDay() {
     this.getHotList()
   }

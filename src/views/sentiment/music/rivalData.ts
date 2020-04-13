@@ -15,11 +15,14 @@ import {
 } from '@/api/album'
 import { dot } from '@jydata/fe-util'
 import { TableColumn } from '@/components/table'
-import { groupBy, flatMap, uniq } from 'lodash'
-import { PlayView } from './components/playStats'
+import { keyBy, groupBy } from 'lodash'
+import { PlayView, PlayQuery } from './components/playStats'
 
 const toPercent = (list: any[], percentKey = 'value') => {
-  const result = (list || []).map(it => ({ ...it, [percentKey]: it[percentKey] / 100 }))
+  const result = (list || []).map(it => ({
+    ...it,
+    [percentKey]: +(it[percentKey] / 100).toFixed(1)
+  }))
   return result
 }
 
@@ -36,11 +39,16 @@ const commonBasic = (data: any) => {
     ageRangeList,
 
     sexData: ((list: any[]) => {
-      const ret = list.map(({ rivalName, dataList }) => ({
-        name: rivalName,
-        rate1: dataList[0].value / 100,
-        rate2: dataList[1].value / 100,
-      }))
+      const ret = list.map(({ rivalName, dataList }) => {
+        const dataMap = keyBy(dataList, 'name')
+        const man = dataMap.男
+        const woman = dataMap.女
+        return {
+          name: rivalName,
+          rate1: man && +(man.value / 100).toFixed(1),
+          rate2: woman && +(woman.value / 100).toFixed(1),
+        }
+      })
       return ret
     })(data.genderList || []),
 
@@ -86,16 +94,16 @@ const songBasic = async (ids: string) => {
 
     rankTable: ((list: any[]) => {
       const columns: TableColumn[] = [
-        { name: 'name', title: '单曲', width: '9em', align: 'left' },
-        { name: 'count', title: '上榜数量', width: '5em' },
-        { name: 'best', title: '最高排名', width: '5em' },
-        { name: 'type', title: '上榜类型', width: '5em' },
+        { name: 'name', title: '单曲', width: 9, align: 'left', lines: 2, fixed: 'left' },
+        { name: 'count', title: '上榜数量', width: 5 },
+        { name: 'best', title: '最高排名', width: 5 },
+        { name: 'type', title: '上榜类型', width: 5 },
       ]
       if (list.length > 0) {
         const platList = list[0].platformList as any[] || []
         platList.forEach(
           ({ platformName: name, platformNotice: title }) => {
-            columns.push({ name, title: `${name}<br>${title}`, width: '9em' })
+            columns.push({ name, title: `${name}<br>${title}`, width: 9 })
           }
         )
       }
@@ -160,13 +168,11 @@ interface RivalView {
   dateShowList: Array<{ date: string, value: string }>
 }
 
-// 从所有 view 的 dateShowList 字段中，聚合出所有的日期
-const dateShowDates = (view: RivalView[]) => {
-  const result = flatMap(view, 'dateShowList').map(({ date }) => date as string)
-  return uniq(result)
-}
-
-const dealPlayView = (view: RivalView[], isAlbum = false): PlayView => {
+const dealPlayView = (
+  view: RivalView[],
+  dayNames: string[],
+  isAlbum = false
+): PlayView => {
   const group = groupBy(view, 'platformName')
 
   const dataGroup = Object.entries(group).map(([ name, list ]) => {
@@ -184,11 +190,10 @@ const dealPlayView = (view: RivalView[], isAlbum = false): PlayView => {
       }, {} as any)
     }))
 
-    const dates = dateShowDates(view)
-    const dynamicColumns = dates.map(date => ({ name: date, title: date, width: '8em' }))
+    const dynamicColumns = dayNames.map(date => ({ name: date, title: date, width: 8 }))
     const tableColumns: TableColumn[] = [
-      { name: 'name', title: isAlbum ? '专辑名称' : '单曲名称', align: 'left', width: '8em' },
-      { name: 'count', title: isAlbum ? '累计销量' : '累计播放', width: '7em' },
+      { name: 'name', title: isAlbum ? '专辑名称' : '单曲名称', align: 'left', width: 8, lines: 2, fixed: 'left' },
+      { name: 'count', title: isAlbum ? '累计销量' : '累计播放', width: 7 },
       ...dynamicColumns,
     ]
 
@@ -201,36 +206,41 @@ const dealPlayView = (view: RivalView[], isAlbum = false): PlayView => {
       }
     }
   })
+  .sort(a => a.name == '全部' ? -1 : 0)
 
   return {
     dataGroup
   }
 }
 
-const songPlay = async (query: SongIdListTime) => {
+const songPlay = async (query: SongIdListTime, dayNames: string[]) => {
   const { data: { rivalPlay, videoView } } = await songGetPlay(query)
   const result = []
-  rivalPlay && result.push({ label: '单曲', view: dealPlayView(rivalPlay) })
-  videoView && result.push({ label: '视频', view: dealPlayView(videoView) })
+  rivalPlay && result.push({ label: '单曲', view: dealPlayView(rivalPlay, dayNames) })
+  videoView && result.push({ label: '视频', view: dealPlayView(videoView, dayNames) })
   return result
 }
 
-const albumPlay = async (query: AlbumIdListTime) => {
+const albumPlay = async (query: AlbumIdListTime, dayNames: string[]) => {
   const { data } = await albumGetSale(query)
-  return dealPlayView(data, true)
+  return dealPlayView(data, dayNames, true)
 }
 
-const albumPlayAlign = async (query: AlbumIdListDays) => {
+const albumPlayAlign = async (query: AlbumIdListDays, dayNames: string[]) => {
   const { data } = await albumGetSaleAlign(query)
-  return dealPlayView(data, true)
+  return dealPlayView(data, dayNames, true)
 }
 
-export async function getPlay(ids: string, query: any, isAlbum: boolean) {
+export async function getPlay(
+  ids: string,
+  { startTime, endTime, days, isAlign, dayNames }: PlayQuery,
+  isAlbum: boolean
+) {
   const result = isAlbum
-    ? query.days
-    ? await albumPlayAlign({ albumIdList: ids, ...query })
-    : await albumPlay({ albumIdList: ids, ...query })
-    : await songPlay({ songIdList: ids, ...query })
+    ? isAlign
+    ? await albumPlayAlign({ albumIdList: ids, days }, dayNames)
+    : await albumPlay({ albumIdList: ids, startTime, endTime }, dayNames)
+    : await songPlay({ songIdList: ids, startTime, endTime }, dayNames)
   return result
 }
 

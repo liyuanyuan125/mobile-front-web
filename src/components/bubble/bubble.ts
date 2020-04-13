@@ -1,5 +1,5 @@
 import { BubbleBottomItem } from './types'
-import { realThousands } from '@/util/dealData'
+import { realThousands, readableNumber } from '@/util/dealData'
 
 /**
  * 规范化 Data
@@ -39,7 +39,7 @@ export function normalizeData(list: BubbleBottomItem[]) {
           it.styles = lineHeight
         } else {
           const trend = Number(it.trend)
-          it.trend = realThousands(trend)
+          it.trend = readableNumber(trend)
         }
       }
     } else {
@@ -48,11 +48,11 @@ export function normalizeData(list: BubbleBottomItem[]) {
         it.styles = lineHeight
       } else if (it.trend < 0) {
         const trend =  Math.abs(Number(it.trend))
-        it.trend = realThousands(trend)
+        it.trend = readableNumber(trend)
         it.rotate = true
       } else {
         const trend = Number(it.trend)
-        it.trend = realThousands(trend)
+        it.trend = readableNumber(trend)
       }
     }
 

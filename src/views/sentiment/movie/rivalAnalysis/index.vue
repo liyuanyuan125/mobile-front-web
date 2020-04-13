@@ -29,6 +29,7 @@
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
+import { keyBy, groupBy } from 'lodash'
 import {
   movieRivalList,
   movieRivalPraise,
@@ -79,17 +80,19 @@ export default class MovieRivalAnalysisPage extends ViewBase {
     this.rivalList = res.rivalList
     this.basisList = res.basisDataList
     // 处理性别分布
-    const genderList = []
-    for (const el of res.genderList) {
-      const rate1 = Number((el.dataList[0].value / 100).toFixed(1))
-      const rate2 = 100 - rate1
-      genderList.push({
-        name: el.rivalName,
-        rate1,
-        rate2
+    this.vsData = ((list: any[]) => {
+      const ret = list.map(({ rivalName, dataList }) => {
+        const dataMap = keyBy(dataList, 'name')
+        const man = dataMap.男
+        const woman = dataMap.女
+        return {
+          name: rivalName,
+          rate1: man && +(man.value / 100).toFixed(1),
+          rate2: woman && +(woman.value / 100).toFixed(1)
+        }
       })
-    }
-    this.vsData = genderList
+      return ret
+    })(res.genderList || [])
     // 年龄分布
     this.ageRangeList = res.ageRangeList
   }

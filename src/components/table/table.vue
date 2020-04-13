@@ -1,58 +1,35 @@
 <template>
-  <div class="table-wrap">
-    <table
-      class="the-table"
-      :class="{
-        'table-border': showBorder
-      }"
-    >
-      <thead>
-        <th
-          v-for="{ name, title, className, width } in finalColumns"
-          :key="name"
-          :class="className"
-          :style="{ width }"
-          v-html="title"
-        ></th>
-      </thead>
-      <tbody>
-        <tr v-for="(item, index) in data" :key="index">
-          <td
-            v-for="col in finalColumns"
-            :key="col.name"
-            :class="col.className"
-            :style="{ width: col.width }"
-          >
-            <div
-              class="cell-inner"
-              :class="col.lineClass"
-              v-html="item[col.name] || htmlPlaceholder"
-              v-if="col.html"
-            ></div>
-            <div
-              class="cell-inner"
-              :class="col.lineClass"
-              v-else
-            >{{item[col.name] || placeholder}}</div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="jydata-table-wrapper">
+    <div :class="[prefixCls + '-normal']">
+      <table-basic
+        :data="data"
+        :columns="normalizeColumns"
+        :placeholder="placeholder"
+        :showBorder="showBorder"
+      ></table-basic>
+    </div>
+    <div :class="[prefixCls + '-fixed']" :style="fixedTableStyle" v-if="isLeftFixed">
+      <table-basic
+        fixed="left"
+        :data="data"
+        :columns="normalizeColumns"
+        :placeholder="placeholder"
+        :showBorder="showBorder"
+      ></table-basic>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
-
+import TableBasic from './table-basic.vue'
 import { TableColumn } from './types'
 
-const lineClassList = [
-  'van-ellipsis',
-  'van-multi-ellipsis--l2',
-  'van-multi-ellipsis--l3',
-]
-
-@Component
+@Component({
+  components: {
+    TableBasic
+  }
+})
 export default class Table extends Vue {
   @Prop({ type: Array, default: () => [] }) data!: any[]
 
@@ -62,17 +39,36 @@ export default class Table extends Vue {
 
   @Prop({ type: Boolean, default: false }) showBorder!: boolean
 
-  get finalColumns() {
-    const result = this.columns.map(item => ({
-      title: '',
-      align: 'center',
-      html: false,
-      ...item,
-      width: typeof item.width == 'number' ? `${item.width}px` : (item.width || 'auto'),
-      className: `col-${item.name} col-align-${item.align || 'center'}`,
-      lineClass: typeof item.lines === 'number' && lineClassList[item.lines - 1] || ''
-    }))
-    return result
+  prefixCls: string = 'jydata-table'
+
+  get normalizeColumns() {
+    const left: TableColumn[] = []
+    const right: TableColumn[] = []
+    this.columns.forEach((column: TableColumn) => {
+      column.width = column.width ? column.width : ''
+      if (column.fixed && column.fixed === 'left') {
+        left.push(column)
+      } else {
+        right.push(column)
+      }
+    })
+    return [...left, ...right]
+  }
+
+  get isLeftFixed() {
+    return this.columns.some(col => col.fixed && col.fixed === 'left')
+  }
+
+  get fixedTableStyle() {
+    const style: any = {}
+    let width: number = 0
+    this.normalizeColumns.forEach((col: TableColumn) => {
+      if (col.fixed && col.fixed === 'left') {
+        width += Number(col.width)
+      }
+    })
+    style.width = `${width}em`
+    return style
   }
 
   get htmlPlaceholder() {
@@ -83,55 +79,22 @@ export default class Table extends Vue {
 </script>
 
 <style lang="less" scoped>
-.table-wrap {
-  overflow-y: auto;
+.jydata-table-wrapper {
+  position: relative;
+  overflow: hidden;
+  font-size: 24px;
 }
 
-.the-table {
-  width: 100%;
-  table-layout: fixed;
-
-  .col-align-left {
-    text-align: left;
-    padding-left: 30px;
-  }
-
-  .col-align-center {
-    text-align: center;
-  }
-
-  .col-align-right {
-    text-align: right;
-    padding-right: 30px;
-  }
-
-  tr {
-    &:nth-child(2n) {
-      background-color: #f2f3f6;
-    }
-  }
-
-  th,
-  td {
-    padding: 28px 4px;
-    line-height: 1.3;
-  }
-
-  th {
-    font-size: 24px;
-    font-weight: 400;
-    background-color: #f2f3f6;
-  }
-
-  td {
-    font-size: 26px;
+.jydata-table-fixed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  background-color: #fff;
+  box-shadow: 8px 0 24px 0 rgba(0, 0, 0, .08);
+  /deep/ .table-wrap {
+    overflow-x: hidden;
   }
 }
 
-.table-border {
-  border-collapse: collapse;
-  th, td {
-    border: 1px solid #e8e8e8;
-  }
-}
 </style>

@@ -15,11 +15,35 @@ import {
 } from '@/api/album'
 import { arrayMap } from '@jydata/fe-util'
 import { readableNumber, formatValidDate } from '@/util/dealData'
-import { PlayView } from './components/playStats'
+import { PlayView, PlayQuery } from './components/playStats'
 import { TableColumn } from '@/components/table'
 import { uniq, flatMap, compact, isEmpty } from 'lodash'
 import { toMoment } from '@/util/dealData'
 import { imgFixed } from '@/fn/imgProxy'
+import { Title } from '@/components/bubble'
+import { alert } from '@/util/toast'
+
+const bubbleTip = (title: string, message: string) => {
+  return (h: any) => {
+    return h(Title, {
+      props: {
+        title,
+      },
+      on: {
+        click: () => alert({
+          message,
+          showConfirmButton: true,
+          width: '80%'
+        })
+      }
+    })
+  }
+}
+
+const bubbleTipInteractCount = bubbleTip(
+  '累计活动量',
+  '累计互动说明话说：物料的点赞、评论、转发、阅读或播放的累计之和'
+)
 
 const commonBasic = (data: any) => {
   const publicPraise = data.publicPraise || {}
@@ -83,25 +107,28 @@ const songBasic = async (id: number) => {
       {
         type: 1,
         title: '累计播放量',
-        value: overview.playCount || '暂无数据',
+        value: overview.playCount || '-',
         trend: overview.playTrend || 0,
+        showdown: true,
       },
       {
         type: 2,
-        title: '累计互动量',
-        value: overview.interactCount || '暂无数据',
+        renderTitle: bubbleTipInteractCount,
+        value: overview.interactCount || '-',
         trend: overview.interactTrend || 0,
+        showdown: true,
       },
       {
         type: 3,
         title: '综合热度',
-        value: overview.heatCount || '暂无数据',
+        value: overview.heatCount || '-',
         trend: overview.heatTrend || 0,
+        showdown: true,
       },
       {
         type: 4,
         title: '好感度',
-        value: info.favorable || '暂无数据',
+        value: info.favorable || '-',
       },
     ],
 
@@ -111,6 +138,10 @@ const songBasic = async (id: number) => {
       rankBest: rankAnalysis.rankBest || '',
       rankType: rankAnalysis.rankType || '',
     },
+
+    // rankAnalysisEmpty: (({ rankCount, rankBest, rankType }) => {
+    //   return isEmpty(rankCount) && isEmpty(rankBest) && isEmpty(rankType)
+    // })(rankAnalysis),
 
     // 单曲：上榜数量分布
     rankAnnularData: isEmpty(platformList)
@@ -175,25 +206,28 @@ const albumBasic = async (id: number) => {
       {
         type: 1,
         title: isDigital ? '累计销售量' : '歌曲播放量',
-        value: (isDigital ? overview.playCount : overview.saleCount) || '暂无数据',
+        value: (isDigital ? overview.playCount : overview.saleCount) || '-',
         trend: (isDigital ? overview.playTrend : overview.saleTrend) || 0,
+        showdown: true,
       },
       {
         type: 2,
-        title: isDigital ? '累计互动数' : '累计互动量',
-        value: overview.interactCount || '暂无数据',
+        renderTitle: bubbleTipInteractCount,
+        value: overview.interactCount || '-',
         trend: overview.interactTrend || 0,
+        showdown: true,
       },
       {
         type: 3,
         title: isDigital ? '昨日销量排名' : '最高单曲播放',
-        value: (isDigital ? overview.yesterdaySaleRank : overview.singlePlayCount) || '暂无数据',
+        value: (isDigital ? overview.yesterdaySaleRank : overview.singlePlayCount) || '-',
         trend: (isDigital ? overview.yesterdaySaleTrend : overview.singlePlayTrend)  || 0,
+        showdown: true,
       },
       {
         type: 4,
         title: '好感度',
-        value: info.favorable || '暂无数据',
+        value: info.favorable || '-',
       },
     ],
 
@@ -242,7 +276,7 @@ export async function getBasic(id: number, isAlbum: boolean) {
   return result
 }
 
-// 单曲：热度分析 TODO:
+// 单曲：热度分析
 export async function getHeatAnalysis(query: SongIdTime) {
   const { data } = await songGetHeatAnalysis(query)
   return data
@@ -284,12 +318,12 @@ const weekDays = [ '日', '一', '二', '三', '四', '五', '六' ]
 const dealPlayView = (view: any, isAlbum = false) => {
   const formList: PlayForm[] = view.dailyFormList || []
   const fixedColumns: TableColumn[] = [
-    { name: 'date', title: '日期', align: 'left', width: '9em', html: true },
-    { name: 'count', title: `当日${isAlbum ? '销量' : '播放量'}`, align: 'right', width: '7em' },
+    { name: 'date', title: '日期', align: 'left', width: 9, html: true, fixed: 'left' },
+    { name: 'count', title: `当日${isAlbum ? '销量' : '播放量'}`, align: 'right', width: 8 },
   ]
   const names = platformNames(formList)
   const dynamicColumns: TableColumn[] = names.map(name => {
-    return { name, title: name, align: 'right', width: '8em' }
+    return { name, title: name, align: 'right', width: 8 }
   })
   const columns = fixedColumns.concat(dynamicColumns)
   // 产品需求：只取前三条
@@ -340,17 +374,21 @@ const albumPlay = async (query: AlbumIdTime) => {
   return dealPlayView(data, true)
 }
 
-export async function getPlayAnalysis(id: number, query: any, isAlbum: boolean) {
+export async function getPlayAnalysis(
+  id: number,
+  { startTime, endTime }: PlayQuery,
+  isAlbum: boolean
+) {
   const result = isAlbum
-    ? await albumPlay({ albumId: id, ...query })
-    : await songPlay({ songId: id, ...query })
+    ? await albumPlay({ albumId: id, startTime, endTime })
+    : await songPlay({ songId: id, startTime, endTime })
   return result
 }
 
-export async function getEventList(query: any, isAlbum: boolean) {
+export async function getEventList(id: number, isAlbum: boolean) {
   const { data } = isAlbum
-    ? await albumGetEventList(query)
-    : await songGetEventList(query)
+    ? await albumGetEventList(id)
+    : await songGetEventList(id)
   return data
 }
 

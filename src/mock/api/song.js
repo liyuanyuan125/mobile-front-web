@@ -49,23 +49,24 @@ mockGet('/yuqing/music/song/detail', ({ songId }) => {
       interactCount: '1,213.4万',
       interactTrend: -12,
       playCount: '',
-      playTrend: 32,
+      playTrend: 3288888,
       heatCount: '3,321',
       heatTrend: 0,
     },
 
     // 榜单表现
     rankAnalysis: {
-      rankCount: '',
-      rankBest: '',
-      rankType: '',
-      // platformList: [
-      //   { name: '抖音', value: 1080 },
-      //   { name: '酷我音乐', value: 1840 },
-      //   { name: '搜狗音乐', value: 2020 },
-      //   { name: '网易云音乐', value: 2620 },
-      //   { name: 'QQ音乐', value: 3850 },
-      // ]
+      rankCount: '2,588',
+      rankBest: 'NO.38',
+      rankType: '流行 飙升',
+      // rankType: '水电费沙发 沙发斯蒂芬 斯蒂芬 斯蒂芬',
+      platformList: [
+        { name: '抖音', value: 1080 },
+        { name: '酷我音乐', value: 1840 },
+        { name: '搜狗音乐', value: 2020 },
+        { name: '网易云音乐', value: 2620 },
+        { name: 'QQ音乐', value: 3850 },
+      ]
     },
 
     // 口碑
@@ -82,8 +83,8 @@ mockGet('/yuqing/music/song/detail', ({ songId }) => {
     // 用户分析
     userAnalysis: {
       genderList: [
-        { name: '男', value: 3220 },
-        { name: '女', value: 6880 },
+        { name: '男', value: 9990 },
+        { name: '女', value: 10 },
       ],
       ageRangeList: [
         { name: '≤19岁', value: 880 },
@@ -320,9 +321,27 @@ mockGet('/yuqing/music/song/play/analysis', () => {
         {
           platformName: '酷我音乐',
           dataList: [
-            { date: 1585756800000, value: 188823231 },
-            { date: 1586016000000, value: 588123231 },
-            { date: 1586275200000, value: 388923231 },
+            { date: 1585756800000, value: 288823231 },
+            { date: 1586016000000, value: 688123231 },
+            { date: 1586275200000, value: 66923231 },
+            { date: 1585324800000, value: 288223231 },
+          ]
+        },
+        {
+          platformName: '酷狗音乐',
+          dataList: [
+            { date: 1585756800000, value: 88823231 },
+            { date: 1586016000000, value: 88123231 },
+            { date: 1586275200000, value: 288923231 },
+            { date: 1585324800000, value: 588223231 },
+          ]
+        },
+        {
+          platformName: '音乐名称太长太长太长太长太长太长',
+          dataList: [
+            { date: 1585756800000, value: 98823231 },
+            { date: 1586016000000, value: 98123231 },
+            { date: 1586275200000, value: 988923231 },
             { date: 1585324800000, value: 288223231 },
           ]
         },
@@ -449,53 +468,97 @@ mockGet('/yuqing/music/song/play/analysis', () => {
  */
 mockGet('/yuqing/music/song/user/analysis', () => {
   return {
-    genderList: [
-      { value: 1335, name: '男性' },
-      { value: 310, name: '女性' }
+    "userRegionList": [
+      {
+        "name": "北京",
+        "value": 9313
+      },
+      {
+        "name": "新疆",
+        "value": 2313
+      }
     ],
-
-    ageRangeList: [
-      { name: '小于19岁', value: 880 },
-      { name: '20-24', value: 1760 },
-      { name: '25-29', value: 3280 },
-      { name: '30-34', value: 2800 },
-      { name: '35-39', value: 920 },
-      { name: '大于40岁', value: 310 },
+    "genderList": [
+      {
+        "name": "男",
+        "value": 4300
+      },
+      {
+        "name": "女",
+        "value": 5700
+      }
     ],
-
-    userRegionList: [
-      { name: '新疆', value: 0 },
-      { name: '西藏', value: 2080 },
-      { name: '青海', value: 3000 },
-      { name: '甘肃', value: 4000 },
-      { name: '内蒙古', value: 5000 },
-      { name: '宁夏', value: 8088 },
-      { name: '陕西', value: 6099 },
-      { name: '黑龙江', value: 8000 },
-      { name: '吉林', value: 3000 },
-      { name: '辽宁', value: 5000 },
-      { name: '河南', value: 9900 },
-      { name: '北京', value: 8866 },
-      { name: '天津', value: 6666 },
-      { name: '江苏', value: 6666 },
-      { name: '安徽', value: 8888 },
-      { name: '湖北', value: 3888 },
-      { name: '湖南', value: 5888 },
-      { name: '河北', value: 3888 },
-      { name: '山西', value: 4888 },
-      { name: '四川', value: 2888 },
-      { name: '广东', value: 5288 },
-      { name: '山东', value: 8222 },
-      { name: '广西', value: 8233 },
-      { name: '重庆', value: 8255 },
-      { name: '江西', value: 5288 },
-      { name: '浙江', value: 5222 },
-      { name: '福建', value: 8200 },
-      { name: '台湾', value: 9200 },
-      { name: '云南', value: 9200 },
-      { name: '贵州', value: 6200 },
+    "ageRangeList": [
+      {
+        "name": "19岁以下",
+        "value": 3141
+      },
+      {
+        "name": "20-35岁",
+        "value": 5141
+      },
+      {
+        "name": "36-45岁",
+        "value": 1141
+      },
+      {
+        "name": "46-59岁",
+        "value": 941
+      },
+      {
+        "name": "60岁以上",
+        "value": 598
+      }
     ]
   }
+  // return {
+  //   genderList: [
+  //     { value: 1335, name: '男性' },
+  //     { value: 310, name: '女性' }
+  //   ],
+
+  //   ageRangeList: [
+  //     { name: '小于19岁', value: 880 },
+  //     { name: '20-24', value: 1760 },
+  //     { name: '25-29', value: 3280 },
+  //     { name: '30-34', value: 2800 },
+  //     { name: '35-39', value: 920 },
+  //     { name: '大于40岁', value: 310 },
+  //   ],
+
+  //   userRegionList: [
+  //     { name: '新疆', value: 0 },
+  //     { name: '西藏', value: 2080 },
+  //     { name: '青海', value: 3000 },
+  //     { name: '甘肃', value: 4000 },
+  //     { name: '内蒙古', value: 5000 },
+  //     { name: '宁夏', value: 8088 },
+  //     { name: '陕西', value: 6099 },
+  //     { name: '黑龙江', value: 8000 },
+  //     { name: '吉林', value: 3000 },
+  //     { name: '辽宁', value: 5000 },
+  //     { name: '河南', value: 9900 },
+  //     { name: '北京', value: 8866 },
+  //     { name: '天津', value: 6666 },
+  //     { name: '江苏', value: 6666 },
+  //     { name: '安徽', value: 8888 },
+  //     { name: '湖北', value: 3888 },
+  //     { name: '湖南', value: 5888 },
+  //     { name: '河北', value: 3888 },
+  //     { name: '山西', value: 4888 },
+  //     { name: '四川', value: 2888 },
+  //     { name: '广东', value: 5288 },
+  //     { name: '山东', value: 8222 },
+  //     { name: '广西', value: 8233 },
+  //     { name: '重庆', value: 8255 },
+  //     { name: '江西', value: 5288 },
+  //     { name: '浙江', value: 5222 },
+  //     { name: '福建', value: 8200 },
+  //     { name: '台湾', value: 9200 },
+  //     { name: '云南', value: 9200 },
+  //     { name: '贵州', value: 6200 },
+  //   ]
+  // }
 })
 
 /**
@@ -543,7 +606,7 @@ mockGet('/yuqing/music/song/rival/report', () => {
         // favorable: 'A+',
       },
       {
-        rivalName: '想见你想见你想见你想见你想见你想见你',
+        rivalName: '想见你想见你想见你想见你想见你想见你想见你想见你想见你想见你想见你想见你',
         releaseDate: '2020-02-22',
         companyName: '滚石音乐',
         playCount: '66,883',
@@ -580,7 +643,7 @@ mockGet('/yuqing/music/song/rival/report', () => {
         ]
       },
       {
-        rivalName: '想见你想见你想见你',
+        rivalName: '想见你想见你想见你想见你想见你想见你想见你想见你想见你想见你想见你想见你',
         rankCount: '8,311',
         rankBest: 'NO.182',
         rankType: '口水歌',
@@ -649,23 +712,23 @@ mockGet('/yuqing/music/song/rival/report', () => {
       {
         rivalName: 'Last Dance',
         dataList: [
-          { name: '男', value: 3120 },
-          { name: '女', value: 6880 },
+          { name: '男', value: 8190 },
+          { name: '女', value: 1810 },
         ]
       },
       {
         rivalName: '挪威的森林',
         dataList: [
-          { name: '男', value: 5220 },
-          { name: '女', value: 4780 },
+          { name: '男1', value: 5220 },
+          { name: '女1', value: 4780 },
         ]
       },
       {
-        rivalName: '想见你想见你想见你',
+        rivalName: '想见你想见你想见你想见你想见你想见你想见你想见你想见你',
         dataList: [
           { name: '男', value: 8220 },
-          { name: '女', value: 1780 },
-        ]
+          { name: '女2', value: 1780 },
+        ],
       },
     ],
 

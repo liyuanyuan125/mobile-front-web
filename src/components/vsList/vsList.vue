@@ -1,7 +1,15 @@
 <template>
   <ul class="vs-list">
-    <li v-for="it in data" :key="it.name" class="vs-item">
-      <label class="vs-name">{{ it.name }}</label>
+    <li
+      v-for="it in data"
+      :key="it.name"
+      class="vs-item"
+      :class="{
+        'vs-item-has-empty': hasEmpty(it),
+        'vs-item-all-empty': allEmpty(it),
+      }"
+    >
+      <label class="vs-name" :class="nameClass">{{ it.name }}</label>
       <div class="vs-bar">
         <div class="vs-percent">
           <span
@@ -20,12 +28,14 @@
           ></span>
         </div>
         <div class="vs-text">
-          <span class="vs-text-1">
+          <span class="vs-text-empty" v-if="allEmpty(it)">{{ empty }}</span>
+
+          <span class="vs-text-1" v-if="!allEmpty(it)">
             <label>{{ labels[0] }}</label>
-            <em :style="{ color: colors[0] }">{{ it.rate1 }}%</em>
+            <em :style="{ color: colors[0] }">{{ it.rate1 ? `${it.rate1}%` : '-' }}</em>
           </span>
-          <span class="vs-text-2">
-            <em :style="{ color: colors[1] }">{{ it.rate2 }}%</em>
+          <span class="vs-text-2" v-if="!allEmpty(it)">
+            <em :style="{ color: colors[1] }">{{ it.rate2 ? `${it.rate2}%` : '-' }}</em>
             <label>{{ labels[1] }}</label>
           </span>
         </div>
@@ -36,8 +46,8 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
-
 import { VsItem } from './types'
+import { getLineClass } from '@/util/lines'
 
 @Component
 export default class VsList extends Vue {
@@ -46,6 +56,22 @@ export default class VsList extends Vue {
   @Prop({ type: Array, default: () => ['男', '女'] }) labels!: string[]
 
   @Prop({ type: Array, default: () => ['#7ca4ff', '#ff6262'] }) colors!: string[]
+
+  @Prop({ type: Number, default: 2 }) nameLines!: number
+
+  @Prop({ type: String, default: '暂无数据' }) empty!: string
+
+  get nameClass() {
+    return getLineClass(this.nameLines)
+  }
+
+  hasEmpty(item: VsItem) {
+    return item.rate1 == null || item.rate2 == null
+  }
+
+  allEmpty(item: VsItem) {
+    return item.rate1 == null && item.rate2 == null
+  }
 }
 </script>
 
@@ -55,37 +81,58 @@ export default class VsList extends Vue {
   width: 100%;
   font-size: 26px;
 }
+
 .vs-item {
   display: flex;
   margin-bottom: 20px;
 }
+
+.vs-item-has-empty {
+  .vs-percent {
+    background-color: #f0f0f0;
+  }
+}
+
+.vs-text-empty {
+  color: #999;
+}
+
 .vs-name {
   width: 140px;
+  /deep/ &.van-multi-ellipsis--l2 {
+    max-height: 76px;
+  }
 }
+
 .vs-bar {
   position: relative;
   margin: 0 30px;
   flex: 1;
 }
+
 .vs-percent,
 .vs-text {
   display: flex;
 }
+
 .vs-percent {
   border-radius: 4px;
   overflow: hidden;
   margin-top: 8px;
 }
+
 .vs-percent-1,
 .vs-percent-2 {
   height: 20px;
 }
+
 .vs-percent-1 {
   transform: translateX(-3px);
 }
 .vs-percent-2 {
   transform: translateX(3px);
 }
+
 .vs-text {
   line-height: 60px;
 }

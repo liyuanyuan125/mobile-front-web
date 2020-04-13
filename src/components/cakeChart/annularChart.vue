@@ -87,7 +87,7 @@ export default class ChinaMap extends Vue {
   // let index = 0
   const $this: any = this
     // 设置默认选中高亮部分
-    this.proportion = (maxValue / allValue).toFixed(2) + '%'
+    this.proportion = (Number((maxValue / allValue)) * 100).toFixed(openData.legendtoFixed) + '%'
     if (openData.color[colorIndex]) {
       this.nameColor = openData.color[colorIndex]
     }
@@ -95,7 +95,7 @@ export default class ChinaMap extends Vue {
     myChart.dispatchAction({type: 'highlight', seriesIndex: 0, dataIndex: colorIndex})
     // 当鼠标移入时
     myChart.on('mouseover', (e: any) => {
-      $this.proportion = e.percent + '%'
+      $this.proportion = e.percent.toFixed(openData.legendtoFixed) + '%'
       $this.name = e.name
       $this.nameColor = e.color
       if (e.dataIndex != colorIndex) {

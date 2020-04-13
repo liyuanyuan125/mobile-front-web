@@ -1,19 +1,10 @@
 <template>
-  <main
-    class="main-page"
-    :class="isAlbum ? 'main-page-album' : 'main-page-song'"
-  >
-    <SentimentBar
-      :sidebar="{
-        diggType: isAlbum ? 'album' : 'song',
-        diggId: id,
-      }"
-      titleShow
-    />
+  <main class="main-page" :class="isAlbum ? 'main-page-album' : 'main-page-song'">
+    <SentimentBar :title="basic.name" :sidebar="topbarSidebar" />
 
     <section class="header">
       <figure class="header-fig">
-        <img :src="basic.cover" v-if="basic.cover">
+        <img :src="basic.cover" v-if="basic.cover" />
         <div class="header-price" v-if="basic.price">{{basic.price}}</div>
       </figure>
       <div class="header-main">
@@ -37,13 +28,7 @@
       </div>
     </section>
 
-    <Popup
-      v-model="popupShow"
-      position="bottom"
-      round
-      closeable
-      class="popup-props"
-    >
+    <Popup v-model="popupShow" position="bottom" round closeable class="popup-props">
       <div class="popup-wrap">
         <div class="popup-title">简介</div>
         <CellGroup class="popup-list" v-if="popupData">
@@ -59,53 +44,49 @@
     </Popup>
 
     <div class="bubble-wrap">
-      <BubbleBottom :data="bubbleData" class="bubble-bottom"/>
+      <BubbleBottom :data="bubbleData" class="bubble-bottom" />
     </div>
 
-    <TabNav
-      :list="navList"
-      class="tab-nav"
-    />
+    <TabNav :list="navList" class="tab-nav" />
 
-    <section class="pane pane-hot" id="hot" v-if="!isAlbum">
-      <ModuleHeader title="热度分析"/>
+    <section class="pane pane-heat" id="heat" v-if="!isAlbum">
+      <SelectTime v-model="heatDay" class="select-time" />
+      <ModuleHeader title="综合热度" tag="h4" class="heat-header" />
       <HeatLineCom
         :overAllList="overAllHeatList"
         :platformList="platformHeatList"
-        :params="params"
+        :params="platformParams(basic.name)"
+        lineTitle
+        class="heat-line-com"
       />
     </section>
 
     <section class="pane" id="play" v-if="!isAlbum || isDigital">
-      <ModuleHeader :title="isAlbum ? '销量分析' : '播放量分析'"/>
+      <ModuleHeader :title="isAlbum ? '销量分析' : '播放量分析'" />
       <PlayStats
         :fetch="playFetch"
         :isAlbum="isAlbum"
         :chartTitle="isAlbum ? '分日销量' : '分日播放量'"
         :moreDateLink="detailPage(isAlbum ? 'albumSaleCountDetail' : 'songPlayCountDetail')"
+        showLegend
         class="play-stats"
       />
     </section>
 
     <section class="pane" id="song" v-if="isAlbum">
-      <ModuleHeader title="歌曲热度"/>
+      <ModuleHeader title="歌曲热度" tip="歌曲热度描述" />
       <div class="song-wrap" ref="songWrap" v-if="songList && songList.length > 0">
         <ul class="song-list" ref="songList">
           <li class="song-head">
             <span class="song-heat">热度值</span>
             <span class="song-comment">评论量</span>
           </li>
-          <li
-            v-for="song in songList"
-            :key="song.id"
-            class="song-item"
-          >
+          <li v-for="song in songList" :key="song.id" class="song-item">
             <router-link
               :to="{ name: 'sentiment-song', params: { id: song.id } }"
               class="song-name"
               v-html="song.name"
-            >
-            </router-link>
+            ></router-link>
             <span class="song-heat">{{song.heatCount || '-'}}</span>
             <span class="song-comment">{{song.commentCount || '-'}}</span>
           </li>
@@ -117,39 +98,34 @@
         v-if="songList && songList.length > 5"
       >{{ songUnfold ? '收起更多' : '展开更多' }}</a>
 
-      <DataEmpty v-if="songList && songList.length == 0"/>
+      <DataEmpty v-if="songList && songList.length == 0" />
     </section>
 
     <section class="pane" v-if="!isAlbum">
       <ModuleHeader
         title="榜单表现"
-        :link="{ page: 'songRankPerformance', songId: id }"
+        :link="rankAnnularEmpty ? null : { page: 'songRankPerformance', songId: id }"
       />
       <ul class="rank-list" v-if="rankAnalysis">
         <li class="rank-item">
-          <em>{{rankAnalysis.rankCount || '-'}}</em>
+          <em class="van-multi-ellipsis--l2">{{rankAnalysis.rankCount || '-'}}</em>
           <i>上榜数量</i>
         </li>
         <li class="rank-item rank-item-best">
-          <em>{{rankAnalysis.rankBest || '-'}}</em>
+          <em class="van-multi-ellipsis--l2">{{rankAnalysis.rankBest || '-'}}</em>
           <i>最佳排名</i>
         </li>
         <li class="rank-item">
-          <em>{{rankAnalysis.rankType || '-'}}</em>
+          <em class="van-multi-ellipsis--l2">{{rankAnalysis.rankType || '-'}}</em>
           <i>榜单类型</i>
         </li>
       </ul>
 
-      <ModuleHeader title="上榜数量分布" tag="h4" class="rank-header"/>
+      <ModuleHeader title="上榜数量分布" tag="h4" class="rank-header" />
 
-      <AnnularChart
-        :data="rankAnnularData"
-        :width="345"
-        class="rank-chart"
-        v-if="rankAnnularData"
-      />
+      <AnnularChart :data="rankAnnularData" :width="345" class="rank-chart" v-if="rankAnnularData" />
 
-      <DataEmpty text="抱歉，这首歌曲未能上榜" v-if="rankAnnularEmpty"/>
+      <DataEmpty text="抱歉，这首歌曲未能上榜" v-if="rankAnnularEmpty" />
     </section>
 
     <section class="pane praise-pane" id="praise">
@@ -184,21 +160,21 @@
     </section>
 
     <section class="pane" v-if="singerList && singerList.length > 0">
-      <ModuleHeader title="音乐人分析"/>
+      <ModuleHeader title="音乐人分析" />
       <Swipe class="singer-swipe">
-        <SwipeItem
-          v-for="it in singerList"
-          :key="it.singerId"
-        >
+        <SwipeItem v-for="it in singerList" :key="it.singerId">
           <router-link
             :to="{ name: 'sentimentactor', params: { actorId: it.singerId } }"
             class="singer-card"
           >
-            <img :src="it.avatar" class="singer-avatar">
+            <img :src="it.avatar" class="singer-avatar" />
             <div class="singer-main">
               <h4 class="singer-name">{{it.singerName}}</h4>
               <div class="singer-bar">
-                <span class="singer-count">昨日热度 <em>{{it.heatCount}}</em></span>
+                <span class="singer-count">
+                  昨日热度
+                  <em>{{it.heatCount}}</em>
+                </span>
                 <span
                   class="singer-trend"
                   :class="{
@@ -215,29 +191,18 @@
     </section>
 
     <section class="pane" id="rival">
-      <ModuleHeader title="相似歌曲"/>
+      <ModuleHeader :title="isAlbum ? '竞品分析' : '相似歌曲'" />
       <ul class="rival-list">
-        <li
-          v-for="it in rivalList"
-          :key="it.id"
-          class="rival-item"
-        >
-          <router-link
-            :to="it.link"
-            class="rival-item-in"
-          >
+        <li v-for="it in rivalList" :key="it.id" class="rival-item">
+          <router-link :to="it.link" class="rival-item-in">
             <figure class="rival-fig">
-              <img :src="it.cover">
+              <img :src="it.cover" />
             </figure>
             <div class="rival-main">
               <h4 class="rival-name van-ellipsis">{{it.name}}</h4>
               <div class="rival-author van-ellipsis">{{it.author}}</div>
               <ul class="rival-stats">
-                <li
-                  v-for="stats in it.statsList"
-                  :key="stats.type"
-                  class="rival-stats-item"
-                >
+                <li v-for="stats in it.statsList" :key="stats.type" class="rival-stats-item">
                   <i class="rival-stats-type">{{stats.type}}</i>
                   <em class="rival-count">{{stats.count || '-'}}</em>
                   <span
@@ -263,13 +228,7 @@
       </ul>
 
       <div class="rival-more">
-        <router-link
-          :to="{
-            name: isAlbum ? 'sentiment-album-rival' : 'sentiment-song-rival',
-            query: { ids: rivalIds }
-          }"
-          class="rival-button"
-        >查看详细报告</router-link>
+        <router-link :to="rivalRoute" class="rival-button">查看详细报告</router-link>
       </div>
     </section>
   </main>
@@ -283,6 +242,7 @@ import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import TabNav, { TabNavItem } from '@/components/tabNav'
 import ModuleHeader from '@/components/moduleHeader'
 import { BubbleBottom } from '@/components/bubble'
+import { selectTime as SelectTime } from '@/components/hotLine'
 import HeatLineCom from '@/views/common/heatLineCom/index.vue'
 import PlayStats, { PlayQuery } from './components/playStats'
 import PraiseComment from '@/views/common/praiseComment/index.vue'
@@ -297,7 +257,7 @@ import {
   getHeatAnalysis,
   getPlayAnalysis,
   getEventList,
-  getRivalList,
+  getRivalList
 } from './detailData'
 
 const removeFalsy = (list: any[]) => list.filter(it => !!it)
@@ -308,6 +268,7 @@ const removeFalsy = (list: any[]) => list.filter(it => !!it)
     TabNav,
     ModuleHeader,
     BubbleBottom,
+    SelectTime,
     HeatLineCom,
     PlayStats,
     AnnularChart,
@@ -319,7 +280,7 @@ const removeFalsy = (list: any[]) => list.filter(it => !!it)
     Popup,
     Cell,
     CellGroup,
-    DataEmpty,
+    DataEmpty
   }
 })
 export default class extends ViewBase {
@@ -327,23 +288,46 @@ export default class extends ViewBase {
 
   @Prop({ type: Boolean, default: false }) isAlbum!: boolean
 
+  get topbarSidebar() {
+    // 有竞品数据，跳转竞品报告页；否则，跳转到设置竞品页
+    const type = this.isAlbum ? '6' : '5'
+    const route =
+      (this.rivalList || []).length > 0
+        ? this.rivalRoute
+        : { businessType: type, businessObjectIdList: String(this.id) }
+    return {
+      // 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
+      diggType: type,
+      diggId: this.id,
+      rivalIds: route
+    }
+  }
+
+  get rivalRoute() {
+    const route = {
+      name: this.isAlbum ? 'sentiment-album-rival' : 'sentiment-song-rival',
+      query: { ids: this.rivalIds }
+    }
+    return route
+  }
+
   get navList(): TabNavItem[] {
     const list = this.isAlbum
-    ? removeFalsy([
-      this.isDigital && { name: 'play', label: '销量' },
-      { name: 'song', label: '歌曲' },
-      { name: 'praise', label: '口碑' },
-      { name: 'user', label: '用户' },
-      { name: 'event', label: '事件' },
-      { name: 'rival', label: '竞品' },
-    ])
-    : [
-      { name: 'hot', label: '热度' },
-      { name: 'praise', label: '口碑' },
-      { name: 'user', label: '用户' },
-      { name: 'event', label: '事件' },
-      { name: 'rival', label: '竞品' },
-    ]
+      ? removeFalsy([
+          this.isDigital && { name: 'play', label: '销量' },
+          { name: 'song', label: '歌曲' },
+          { name: 'praise', label: '口碑' },
+          { name: 'user', label: '用户' },
+          { name: 'event', label: '事件' },
+          { name: 'rival', label: '竞品' }
+        ])
+      : [
+          { name: 'heat', label: '热度' },
+          { name: 'praise', label: '口碑' },
+          { name: 'user', label: '用户' },
+          { name: 'event', label: '事件' },
+          { name: 'rival', label: '竞品' }
+        ]
     return list
   }
 
@@ -358,19 +342,21 @@ export default class extends ViewBase {
   bubbleData: any[] = []
 
   // 热度分析+平台信息
+  heatDay = 7
+
   overAllHeatList: any = []
 
   platformHeatList: any = []
 
-  get params() {
-    // 1 品牌 2 艺人 3 电影 4 音乐-单曲 5 音乐-专辑  6 剧集
-    const type = this.isAlbum ? 5 : 4
+  platformParams(name: any) {
+    const [startTime, endTime] = lastDays(this.heatDay)
     return {
-      type,
+      // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
+      type: this.isAlbum ? 6 : 5,
       id: this.id, // 详情页id
-      name: '奔驰',
-      startTime: 20200304, // this.startTime,
-      endTime: 20200310 // this.endTime
+      name,
+      startTime,
+      endTime
     }
   }
 
@@ -381,6 +367,8 @@ export default class extends ViewBase {
   songInitHeight = 0
 
   rankAnalysis: any = null
+
+  // rankAnalysisEmpty = false
 
   rankAnnularData: any = null
 
@@ -451,6 +439,8 @@ export default class extends ViewBase {
 
       // 单曲：榜单表现
       rankAnalysis,
+      // 单曲：榜单表现是否为空
+      // rankAnalysisEmpty,
       // 单曲：上榜数量分布
       rankAnnularData,
       // 单曲：上榜数量分布是否为空
@@ -463,14 +453,15 @@ export default class extends ViewBase {
       userAnalysis,
 
       // 音乐人分析
-      singerList,
-    } = await getBasic(this.id, this.isAlbum) as any
+      singerList
+    } = (await getBasic(this.id, this.isAlbum)) as any
     this.isDigital = isDigital
     this.basic = basic
     this.popupData = popupData
     this.bubbleData = bubbleData
     this.songList = songList
     this.rankAnalysis = rankAnalysis
+    // this.rankAnalysisEmpty = rankAnalysisEmpty
     this.rankAnnularData = rankAnnularData
     this.rankAnnularEmpty = rankAnnularEmpty
     this.praiseData = praiseData
@@ -478,13 +469,10 @@ export default class extends ViewBase {
     this.singerList = singerList
   }
 
-  // 单曲：热度分析 TODO:
+  // 单曲：热度分析
   async getHeat() {
-    const [ startTime, endTime ] = lastDays(7)
-    const {
-      overAllHeatList = [],
-      platformHeatList = []
-    } = await getHeatAnalysis({
+    const [startTime, endTime] = lastDays(this.heatDay)
+    const { overAllHeatList = [], platformHeatList = [] } = await getHeatAnalysis({
       songId: this.id,
       startTime,
       endTime
@@ -494,7 +482,7 @@ export default class extends ViewBase {
   }
 
   async getEvent() {
-    const eventData = await getEventList({}, this.isAlbum)
+    const eventData = await getEventList(this.id, this.isAlbum)
     this.eventData = eventData
   }
 
@@ -515,7 +503,7 @@ export default class extends ViewBase {
   handleSongMore() {
     const wrap = this.$refs.songWrap as HTMLDivElement
     if (this.songInitHeight == 0) {
-      const height = this.songInitHeight = wrap.offsetHeight
+      const height = (this.songInitHeight = wrap.offsetHeight)
       wrap.style.height = `${height}px`
       wrap.style.maxHeight = 'none'
     }
@@ -532,13 +520,18 @@ export default class extends ViewBase {
   watchId() {
     this.init()
   }
+
+  @Watch('heatDay')
+  watchHeatDay() {
+    this.getHeat()
+  }
 }
 </script>
 
 <style lang="less" scoped>
 .main-page {
   background-color: #f2f3f6;
-  padding: 88px 0 8px;
+  padding: 88px 0 0;
 }
 
 .main-page-album {
@@ -581,7 +574,7 @@ export default class extends ViewBase {
     text-align: right;
     color: #fff;
     font-size: 24px;
-    background-color: rgba(0, 0, 0, .6);
+    background-color: rgba(0, 0, 0, 0.6);
     border-radius: 0 0 10px 10px;
     z-index: 18;
   }
@@ -724,7 +717,7 @@ export default class extends ViewBase {
 
   /deep/ .van-cell__title {
     font-weight: 300;
-    color: rgba(48, 48, 48, .5);
+    color: rgba(48, 48, 48, 0.5);
   }
 
   /deep/ .van-cell__value {
@@ -745,8 +738,11 @@ export default class extends ViewBase {
   top: 338px;
   width: 100%;
   z-index: 999;
-  pointer-events: none;
   overflow: hidden;
+  pointer-events: none;
+  /deep/ .title {
+    pointer-events: all;
+  }
 }
 
 .bubble-bottom {
@@ -768,11 +764,18 @@ export default class extends ViewBase {
   }
 }
 
-.pane-hot {
+.pane-heat {
   padding-left: 0;
   padding-right: 0;
-  /deep/ .module-header {
-    padding: 0 0 20px 30px;
+  .select-time {
+    padding: 0 30px;
+  }
+  .heat-header {
+    padding: 0 30px;
+    margin: 20px 0 0;
+    /deep/ .module-title {
+      font-size: 34px;
+    }
   }
 }
 
@@ -833,7 +836,7 @@ export default class extends ViewBase {
 .rank-list {
   display: flex;
   height: 130px;
-  background-color: rgba(242, 243, 246, .5);
+  background-color: rgba(242, 243, 246, 0.5);
   border-radius: 10px;
   align-items: center;
   margin-top: 36px;
@@ -844,21 +847,20 @@ export default class extends ViewBase {
   flex: 1;
   text-align: center;
 
-  em, i {
-    display: block;
-  }
   em {
     font-size: 40px;
     font-family: DINAlternate-Bold, DINAlternate, serif;
     font-weight: 600;
-    line-height: 50px;
+    line-height: 40px;
+    padding: 0 8px;
   }
   i {
+    display: block;
     font-size: 24px;
     font-family: PingFangSC-Light, PingFang SC, serif;
     font-weight: 300;
-    color: rgba(48, 48, 48, .6);
-    line-height: 26px;
+    color: rgba(48, 48, 48, 0.6);
+    line-height: 38px;
   }
 
   &:last-child {
@@ -877,7 +879,7 @@ export default class extends ViewBase {
     top: 16px;
     width: 1px;
     height: 50px;
-    background-color: rgba(216, 216, 216, .5);
+    background-color: rgba(216, 216, 216, 0.5);
   }
   &::before {
     left: 0;
@@ -948,7 +950,7 @@ export default class extends ViewBase {
   /deep/ .van-swipe__indicator {
     width: 14px;
     height: 14px;
-    background-color: rgba(172, 172, 172, .4);
+    background-color: rgba(172, 172, 172, 0.4);
     &:not(:last-child) {
       margin-right: 30px;
     }
@@ -998,7 +1000,7 @@ export default class extends ViewBase {
       display: inline-block;
       width: 16px;
       height: 4px;
-      background-color: #ff6262;
+      background-color: #47403b;
     }
   }
 }
@@ -1091,7 +1093,7 @@ export default class extends ViewBase {
   font-family: SanFranciscoDisplay-Light, SanFranciscoDisplay, serif;
   font-weight: 300;
   margin-top: 2px;
-  color: rgba(48, 48, 48, .7);
+  color: rgba(48, 48, 48, 0.7);
 }
 
 .rival-stats {
@@ -1116,7 +1118,7 @@ export default class extends ViewBase {
   font-size: 26px;
   font-family: PingFangSC-Light, PingFang SC, serif;
   font-weight: 300;
-  color: rgba(48, 48, 48, .4);
+  color: rgba(48, 48, 48, 0.4);
 }
 
 .rival-count {
@@ -1152,11 +1154,11 @@ export default class extends ViewBase {
   line-height: 60px;
   margin-top: 16px;
   padding: 0 20px;
-  background-color: rgba(242, 243, 246, .5);
+  background-color: rgba(242, 243, 246, 0.5);
   font-size: 26px;
   font-family: PingFangSC-Light, PingFang SC, serif;
   font-weight: 300;
-  color: rgba(48, 48, 48, .8);
+  color: rgba(48, 48, 48, 0.8);
 }
 
 .rival-event-name {
@@ -1167,7 +1169,7 @@ export default class extends ViewBase {
   font-size: 22px;
   font-family: SanFranciscoDisplay-Light, SanFranciscoDisplay, serif;
   font-weight: 300;
-  color: rgba(48, 48, 48, .4);
+  color: rgba(48, 48, 48, 0.4);
 }
 
 .rival-more {

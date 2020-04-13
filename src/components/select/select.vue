@@ -48,6 +48,7 @@ export default class Select extends Vue {
   color: #303030;
   font-size: 14px;
   padding: 0 58px 0 24px;
+  appearance: none;
   &::after {
     content: '';
     position: absolute;

@@ -1,19 +1,24 @@
 <template>
   <div class="vertical-bar">
-    <ECharts :options="chartData" auto-resize class="the-chart" />
+    <ECharts
+      :options="chartData"
+      autoresize
+      @finished="handleFinished"
+      @mouseover="handleMouseOver"
+      class="the-chart"
+      ref="chart"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
-
 import ECharts from 'vue-echarts'
 import 'echarts/lib/chart/bar'
 import 'echarts/lib/component/tooltip'
-
 import { VerticalBarItem } from './types'
-
 import { cssifyObject } from 'css-in-js-utils'
+import { maxBy } from 'lodash'
 
 @Component({
   components: {
@@ -43,6 +48,14 @@ export default class VerticalBar extends Vue {
 
   @Prop({ type: String, default: '#8798af' }) axisLabelColor!: string
 
+  /** 是否禁止自动高亮最大值，默认是自动高亮行为 */
+  @Prop({ type: Boolean, default: false }) disableAutoHighlightMaxValue!: boolean
+
+  get chart() {
+    const chart = this.$refs.chart as any
+    return chart
+  }
+
   get chartData() {
     const result: any = {
       tooltip: {
@@ -51,37 +64,16 @@ export default class VerticalBar extends Vue {
         formatter: (params: any) => {
           const { name, value } = params
           const valueShow = `${value}${this.unit}`
-          const boxStyle = cssifyObject({
-            position: 'relative',
-            lineHeight: '16px',
-            paddingLeft: '12px'
-          })
-          const valueStyle = cssifyObject({
-            color: this.tooltipValueColor,
-            fontSize: '18px',
-            fontWeight: 'bold',
-            fontFamily: 'DINAlternate-Bold, DINAlternate'
-          })
-          const dotStyle = cssifyObject({
-            position: 'absolute',
-            left: '2px',
-            top: '5px',
-            width: '6px',
-            height: '6px',
-            borderRadius: '100%',
-            backgroundColor: this.hiColor,
-          })
-          const nameStyle = cssifyObject({
-            color: this.tooltipNameColor,
-            fontSize: '11px',
-          })
+          const valueColor = this.tooltipValueColor
+          const dotColor = this.hiColor
+          const nameColor = this.tooltipNameColor
           const html = `
-            <div style="${boxStyle}">
-              <p style="${valueStyle}">
-                <i style="${dotStyle}"></i>
+            <div class="tooltip-box">
+              <div class="tooltip-value" style="color: ${valueColor}">
+                <i class="tooltip-dot" style="background-color: ${dotColor}"></i>
                 ${valueShow}
-              </p>
-              <p style="${nameStyle}">${name}</p>
+              </div>
+              <div class="tooltip-name" style="color: ${nameColor}">${name}</div>
             </div>
           `
           return html.trim()
@@ -133,10 +125,10 @@ export default class VerticalBar extends Vue {
       },
 
       grid: {
-        left: 0,
-        right: 0,
+        left: 5,
+        right: 5,
         top: 10,
-        bottom: 0,
+        bottom: 5,
         containLabel: true
       },
 
@@ -158,6 +150,45 @@ export default class VerticalBar extends Vue {
     }
     return result
   }
+
+  get maxValueIndex() {
+    const item = maxBy(this.data, 'value')
+    const index = this.data.findIndex(it => it === item)
+    return index
+  }
+
+  firstHighlight = false
+
+  handleFinished() {
+    if (!this.firstHighlight && !this.disableAutoHighlightMaxValue) {
+      this.firstHighlight = true
+      const index = this.maxValueIndex
+      this.highlight(index)
+      this.showTip(index)
+    }
+  }
+
+  handleMouseOver({ dataIndex }: any) {
+    if (dataIndex != this.maxValueIndex) {
+      this.highlight(this.maxValueIndex, false)
+    }
+  }
+
+  highlight(dataIndex: number, enable = true) {
+    this.chart.dispatchAction({
+      type: enable ? 'highlight' : 'downplay',
+      seriesIndex: 0,
+      dataIndex,
+    })
+  }
+
+  showTip(dataIndex: number, enable = true) {
+    this.chart.dispatchAction({
+      type: enable ? 'showTip' : 'hideTip',
+      seriesIndex: 0,
+      dataIndex,
+    })
+  }
 }
 </script>
 
@@ -166,7 +197,33 @@ export default class VerticalBar extends Vue {
   position: relative;
   width: 100%;
   height: 388px;
+
+  /deep/ .tooltip-box {
+    position: relative;
+    line-height: 32px;
+    padding-left: 24px;
+  }
+
+  /deep/ .tooltip-dot {
+    position: absolute;
+    left: 4px;
+    top: 10px;
+    width: 12px;
+    height: 12px;
+    border-radius: 100%;
+  }
+
+  /deep/ .tooltip-value {
+    font-size: 36px;
+    font-weight: bold;
+    font-family: DINAlternate-Bold, DINAlternate, serif;
+  }
+
+  /deep/ .tooltip-name {
+    font-size: 22px;
+  }
 }
+
 .the-chart {
   width: 100%;
   height: 100%;

@@ -59,7 +59,10 @@
       v-if="chartTitle && dailyData"
     />
 
-    <ul class="group-list" v-if="groupNames.length > 1">
+    <ul
+      class="group-list"
+      v-if="showGroupName"
+    >
       <li
         v-for="(name, index) in groupNames"
         :key="name"
@@ -77,6 +80,7 @@
       :names="dailyNames"
       :data="dailyData"
       :events="dailyEvents"
+      :showLegend="showLegend"
       smooth
       class="daily-chart"
       v-if="dailyData"
@@ -148,6 +152,9 @@ export default class PlayStats extends Vue {
   /** 销售对比：显示对齐发行时间 */
   @Prop({ type: Boolean, default: false }) alignMode!: boolean
 
+  /** 是否显示图例 */
+  @Prop({ type: Boolean, default: false }) showLegend!: boolean
+
   day = 7
 
   viewIndex = 0
@@ -164,9 +171,9 @@ export default class PlayStats extends Vue {
   }
 
   get dayList() {
-    const alignMode = this.alignMode
+    const isAlign = this.isAlign
     const list = this.days.map(value => ({
-      name: alignMode ? `发行${value}天` : `最近${value}天`,
+      name: isAlign ? `发行${value}天` : `最近${value}天`,
       value
     }))
     return list
@@ -199,11 +206,15 @@ export default class PlayStats extends Vue {
     return names
   }
 
+  // 是否显示 group，当 group 个数大于 1 个，或者，虽然只有一个，但不为空
+  get showGroupName() {
+    const names = this.groupNames
+    const show = names.length > 1 || (names.length == 1 && !isEmpty(names[0]))
+    return show
+  }
+
   get dailyNames() {
-    const names = this.isAlign
-      ? releaseDayList(this.day)
-      : (list => list.map(it => intDate(it, 'MM-DD') as string))(lastDayList(this.day))
-    return names
+    return this.getDayList('MM-DD')
   }
 
   get dailyData() {
@@ -215,7 +226,7 @@ export default class PlayStats extends Vue {
     if (isEmpty(chart)) {
       return null
     }
-    const list = dealDailyData(this.day, chart, this.autoColor, this.isAlign)
+    const list = dealDailyData(this.day, chart, this.isAlign, this.autoColor)
     return list
   }
 
@@ -235,6 +246,16 @@ export default class PlayStats extends Vue {
     return list
   }
 
+  get legendOptions() {
+    const options = {
+      // show: true,
+      left: 0,
+      bottom: -10,
+      padding: [60, 0, 0, 0],
+    }
+    return options
+  }
+
   get table() {
     const currentView = this.currentView
     if (currentView == null || isEmpty(currentView.dataGroup)) {
@@ -247,14 +268,27 @@ export default class PlayStats extends Vue {
     return table
   }
 
+  getDayList(format = 'YYYY-MM-DD') {
+    const day = this.day
+    const names = this.isAlign
+      ? releaseDayList(day)
+      : lastDayList(day).map(it => String(intDate(it, format)))
+    return names
+  }
+
   mounted() {
     this.fetchData()
   }
 
   async fetchData() {
-    const query = this.isAlign
-      ? { days: this.day }
-      : (([ startTime, endTime ]) => ({ startTime, endTime }))(lastDays(this.day))
+    const [ startTime, endTime ] = lastDays(this.day)
+    const query = {
+      startTime,
+      endTime,
+      days: this.day,
+      isAlign: this.isAlign,
+      dayNames: this.getDayList(),
+    }
     const view = await this.fetch(query)
     const list = Array.isArray(view) ? view : [ { label: '', view } ]
     this.viewList = list
@@ -417,6 +451,9 @@ export default class PlayStats extends Vue {
   ~ .daily-chart {
     margin-top: 10px;
   }
+  ~ .daily-form {
+    margin-top: 30px;
+  }
 }
 
 .group-item {
@@ -444,7 +481,7 @@ export default class PlayStats extends Vue {
 }
 
 .daily-form {
-  margin-top: 60px;
+  margin-top: 50px;
   background: rgba(242, 243, 246, .5);
   border-radius: 10px;
   border: 2px solid rgba(242, 243, 246, 1);

@@ -2,7 +2,7 @@
     <div class='scroll'>
         <div class='title'>品牌({{data.brandCount}})</div>
         <div class='movielist'>
-            <div class='rowmovie' v-for='item in dataList' :key='item.brandId'>
+            <div class='rowmovie' v-for='(item, index) in dataList' :key='index + item.brandId'>
                 <div class="img" @click='goDetail(item.brandId)'>
                   <img :src="item.coverImg || require('@/assets/branddefault.png')"  alt="">
                 </div>

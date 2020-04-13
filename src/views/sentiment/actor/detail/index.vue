@@ -311,7 +311,7 @@ export default class KolPage extends ViewBase {
       this.pkUserList = pkUser.data || []
       this.pkIdList = (pkUser.data || []).map((it: any) => {
         return it.rivalId
-      })
+      }).slice(0, 2)
       if (this.pkIdList.length) {
         // 有竞品数据跳竞品报告页
         this.sidebar.rivalIds = {

@@ -192,7 +192,8 @@
 
     <section class="pane" id="rival">
       <ModuleHeader :title="isAlbum ? '竞品分析' : '相似歌曲'" />
-      <ul class="rival-list">
+
+      <ul class="rival-list" v-if="rivalList && rivalList.length > 0">
         <li v-for="it in rivalList" :key="it.id" class="rival-item">
           <router-link :to="it.link" class="rival-item-in">
             <figure class="rival-fig">
@@ -227,7 +228,9 @@
         </li>
       </ul>
 
-      <div class="rival-more">
+      <DataEmpty v-if="rivalList && rivalList.length == 0" />
+
+      <div class="rival-more" v-if="rivalList && rivalList.length > 0">
         <router-link :to="rivalRoute" class="rival-button">查看详细报告</router-link>
       </div>
     </section>

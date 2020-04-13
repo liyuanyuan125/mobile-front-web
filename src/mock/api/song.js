@@ -724,6 +724,13 @@ mockGet('/yuqing/music/song/rival/report', () => {
         ]
       },
       {
+        rivalName: '挪威的森林是多少',
+        dataList: [
+          { name: '男', value: null },
+          { name: '女', value: null },
+        ]
+      },
+      {
         rivalName: '想见你想见你想见你想见你想见你想见你想见你想见你想见你',
         dataList: [
           { name: '男', value: 8220 },

@@ -126,6 +126,10 @@ export default class TVPage extends ViewBase {
   async created() {
     this.tvId = this.$route.params.tvId
     this.sidebar.diggId = this.tvId
+    this.sidebar.rivalIds = {
+      businessType: 4,
+      businessObjectIdList: this.tvId
+    }
     if (this.tvId) {
       await this.getTVInfo()
       await this.getHeat90()
@@ -179,7 +183,7 @@ export default class TVPage extends ViewBase {
       this.sidebar.rivalIds = {
         name: 'sentimenttvrivalanalysis',
         query: {
-          ids: ids.join(',')
+          ids: ids.slice(0, 3).join(',')
         }
       }
     } else {

@@ -191,7 +191,7 @@ export default class MoviePage extends ViewBase {
       this.sidebar.rivalIds = {
         name: 'sentimentmovierivalanalysis',
         query: {
-          ids: ids.join(',')
+          ids: ids.slice(0, 3).join(',')
         }
       }
     } else {

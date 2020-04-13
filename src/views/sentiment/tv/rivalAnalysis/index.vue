@@ -11,7 +11,13 @@
 
     <BasisList :basisList="basisList" v-if="basisList.length" />
     <PlatformTrend :fetch="platformFetch" :query="tvIdList" v-if="tvIdList" />
-    <marketContrast :fetch="praiseFetch" :query="{tvIdList}" v-if="tvIdList" class="praisebox" />
+    <marketContrast
+      :fetch="praiseFetch"
+      :query="{tvIdList}"
+      v-if="tvIdList"
+      class="praisebox"
+      :businessType="4"
+    />
     <div class="portrait">
       <moduleHeader title="受众画像" />
       <SexVs :data="vsData" class="genderbox" />

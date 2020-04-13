@@ -25,7 +25,7 @@
             <div class='rowmovie' v-for='(item, index) in dataList' :key='index + item.tvId'>
                 <div class="img" @click='goDetail(item.tvId)'>
                   <!-- <img :src=item.coverUrl.url alt=""> -->
-                  <img :src="item.coverImg || require('@/assets/tvdefault.png')"  alt="">
+                  <img :src="item.coverImg"  alt="">
                 </div>
                 <div class='name'>
                   {{item.tvName}}
@@ -194,6 +194,8 @@ export default class Main extends Vue {
     width: 100%;
     height: 260px;
     border-radius: 10px;
+    background: url('../../../../../assets/tvdefault.png') no-repeat center center;
+    background-size: cover;
     // border: 1px solid #ccc;
     img {
       width: 100%;

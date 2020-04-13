@@ -5,7 +5,7 @@
       <div class="moviebox">
         <img :src="movieCover" :alt="baseInfo.tvName" class="img" />
         <h3 class="van-ellipsis">{{baseInfo.tvName}}</h3>
-        <p>{{baseInfo.episodes}}{{!baseInfo.episodes ? '' : ' / '}}{{baseInfo.duration}}{{!baseInfo.duration ? '' : ' / '}}{{baseInfo.genreName}}</p>
+        <p>{{baseInfo.episodes}}{{!baseInfo.episodes ? '' : ' / '}}{{baseInfo.genreName}}</p>
         <p v-if="baseInfo.releaseDate">{{baseInfo.releaseDate}}</p>
         <p v-if="platformList.length" class="platlist">
           播放平台

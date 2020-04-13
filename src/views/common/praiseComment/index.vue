@@ -22,7 +22,8 @@
             <div class="progress">
               <Progress :percentage="it.raisePercent || 0" color="#88aaf6" stroke-width="5" />
             </div>
-            <div class="progress-text">{{it.raisePercent || '-'}}%</div>
+            <div class="progress-text" v-if="it.raisePercent">{{it.raisePercent}}%</div>
+            <div class="progress-text" v-else>-</div>
           </div>
         </div>
       </div>
@@ -36,7 +37,7 @@
             </p>
           </div>
           <div class="hot-box-right">
-            <div class="hot-none">
+            <div v-if="(publicPraise.hotWordList || []).length > 0">
               <span
                 v-for="(it,index) in (publicPraise.hotWordList || []).slice(0,4)"
                 :key="it+index"
@@ -44,6 +45,7 @@
                 @click="wordLink(it,0)"
               >{{it}}</span>
             </div>
+            <div v-else><span>-</span></div>
           </div>
         </div>
         <div class="hot-box">
@@ -53,7 +55,7 @@
             </p>
           </div>
           <div class="hot-box-right">
-            <div class="hot-none">
+            <div v-if="(publicPraise.badWordList || []).length > 0">
               <span
                 v-for="(it,index) in (publicPraise.badWordList || []).slice(0,4)"
                 :key="it + index"
@@ -61,6 +63,7 @@
                 @click="wordLink(it,3)"
               >{{it}}</span>
             </div>
+            <div v-else><span>-</span></div>
           </div>
         </div>
       </div>
@@ -89,7 +92,8 @@ import dataEmpty from '@/views/common/dataEmpty/index.vue'
 export default class PraiseComment extends Vue {
   @Prop({ required: true }) publicPraise?: any
   @Prop({ type: String }) favorable?: any
-  @Prop({ type: Object }) link!: AppLink
+  @Prop({ type: Object }) link!: any // 更多信息link
+  @Prop({ type: Object }) applink!: AppLink // app 热词link
 
   praiseList: any[] = []
   noappraiseList = [{raiseName: '正面评价', raisePercent: 0},
@@ -99,7 +103,7 @@ export default class PraiseComment extends Vue {
     const list = this.publicPraise.appraiseList || []
     if (list && list.length) {
       for (const item of list) {
-        item.raisePercent = (item.raisePercent / 100).toFixed(1)
+        item.raisePercent = item.raisePercent ? (item.raisePercent / 100).toFixed(1) : 0
       }
     }
     return list
@@ -109,19 +113,19 @@ export default class PraiseComment extends Vue {
   wordLink(word: string, markType: number) {
     let link: AppLink = {
       page: 'praiseHotWordsDetail',
-      businessType: this.link.businessType, // 业务类型
-      businessObjectId: this.link.businessObjectId, // 业务 id
+      businessType: this.applink.businessType, // 业务类型
+      businessObjectId: this.applink.businessObjectId, // 业务 id
       keyword: encodeURIComponent(word),
       markType
     }
     if (
-      this.link.eventType &&
-      (this.link.eventType === 100 || this.link.eventType === 101)
+      this.applink.eventType &&
+      (this.applink.eventType === 100 || this.applink.eventType === 101)
     ) {
       link = {
         page: 'eventPraiseHotWordsDetail',
-        eventType: this.link.eventType, // 业务类型
-        eventId: this.link.eventId, // 业务 id
+        eventType: this.applink.eventType, // 业务类型
+        eventId: this.applink.eventId, // 业务 id
         keyword: encodeURIComponent(word),
         markType
       }

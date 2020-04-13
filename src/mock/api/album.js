@@ -195,6 +195,209 @@ mockGet('/yuqing/music/album/detail', ({ songId }) => {
  */
 mockGet('/yuqing/music/album/sale/analysis', () => {
   return {
+    "platformList": [
+      {
+        "name": "网易云音乐",
+        "value": 1600,
+        "countShow": "2.3亿"
+      },
+      {
+        "name": "腾讯音乐",
+        "value": 1000,
+        "countShow": "1.3亿"
+      },
+      {
+        "name": "酷我音乐",
+        "value": 600,
+        "countShow": "0.3亿"
+      },
+      {
+        "name": "搜狗音乐",
+        "value": 500,
+        "countShow": "0.2亿"
+      }
+    ],
+    "dailyFormList": [
+      {
+        "date": 1583896221000,
+        "saleCount": "1.2万",
+        "platformList": [
+          {
+            "name": "QQ音乐",
+            "value": "2,342万"
+          },
+          {
+            "name": "QQ音乐",
+            "value": "2,342万"
+          }
+        ],
+        "markName": "上线首日"
+      },
+      {
+        "date": 1583896221000,
+        "saleCount": "1.2万",
+        "platformList": [
+          {
+            "name": "QQ音乐",
+            "value": "2,342万"
+          }
+        ],
+        "markName": "上线首日"
+      }
+    ],
+    "dailyPlatformList": [
+      {
+        "platformName": "网易云音乐",
+        "dataList": [
+          {
+            "date": 1585714881000,
+            "value": 22321
+          },
+          {
+            "date": 1585801281000,
+            "value": 32321
+          },
+          {
+            "date": 1585887681000,
+            "value": 62321
+          },
+          {
+            "date": 1585974081000,
+            "value": 12321
+          },
+          {
+            "date": 1586060481000,
+            "value": 22321
+          },
+          {
+            "date": 1586146881000,
+            "value": 32389
+          },
+          {
+            "date": 1586233281000,
+            "value": 32321
+          }
+        ]
+      },
+      {
+        "platformName": "QQ音乐",
+        "dataList": [
+          {
+            "date": 1585714881000,
+            "value": 42321
+          },
+          {
+            "date": 1585801281000,
+            "value": 16221
+          },
+          {
+            "date": 1585887681000,
+            "value": 42321
+          },
+          {
+            "date": 1585974081000,
+            "value": 32321
+          },
+          {
+            "date": 1586060481000,
+            "value": 12321
+          },
+          {
+            "date": 1586146881000,
+            "value": 52389
+          },
+          {
+            "date": 1586233281000,
+            "value": 12321
+          }
+        ]
+      },
+      {
+        "platformName": "腾讯音乐",
+        "dataList": [
+          {
+            "date": 1585714881000,
+            "value": 72321
+          },
+          {
+            "date": 1585801281000,
+            "value": 2321
+          },
+          {
+            "date": 1585887681000,
+            "value": 11321
+          },
+          {
+            "date": 1585974081000,
+            "value": 19321
+          },
+          {
+            "date": 1586060481000,
+            "value": 28321
+          },
+          {
+            "date": 1586146881000,
+            "value": 30389
+          },
+          {
+            "date": 1586233281000,
+            "value": 9321
+          }
+        ]
+      },
+      {
+        "platformName": "酷狗音乐",
+        "dataList": [
+          {
+            "date": 1585714881000,
+            "value": 2321
+          },
+          {
+            "date": 1585801281000,
+            "value": 9321
+          },
+          {
+            "date": 1585887681000,
+            "value": 7321
+          },
+          {
+            "date": 1585974081000,
+            "value": 6321
+          },
+          {
+            "date": 1586060481000,
+            "value": 5321
+          },
+          {
+            "date": 1586146881000,
+            "value": 8389
+          },
+          {
+            "date": 1586233281000,
+            "value": 11321
+          }
+        ]
+      }
+    ],
+    "dailyEventList": [
+      {
+        "date": 1585801281000,
+        "eventId": "13232",
+        "eventName": "这个时间可以点击查看的"
+      },
+      {
+        "date": 1586146881000,
+        "eventId": "1323",
+        "eventName": "冲击最后的股市"
+      },
+      {
+        "date": 1586233281000,
+        "eventId": "232",
+        "eventName": "冲击最后的股市"
+      }
+    ]
+  }
+  return {
     platformList: [
       { name: '网易云音乐', value: 6880, countShow: '7.59亿' },
       { name: 'QQ音乐', value: 3888, countShow: '4.8亿' },

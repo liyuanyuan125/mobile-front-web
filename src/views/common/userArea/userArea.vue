@@ -35,7 +35,7 @@
       class="top-5-header"
     />
 
-    <ol class="top-5">
+    <ol class="top-5" :class="{ 'top-5-less': top5.length < 5 }">
       <li v-for="it in top5" :key="it">{{it}}</li>
     </ol>
   </section>
@@ -120,7 +120,7 @@ export default class UserArea extends Vue {
 }
 
 .top-5-header {
-  padding-top: 32px;
+  padding-top: 42px;
 }
 
 .top-5 {
@@ -130,6 +130,13 @@ export default class UserArea extends Vue {
   font-size: 30px;
   font-family: PingFangSC-Light, PingFang SC, serif;
   font-weight: 300;
-  padding-top: 10px;
+  padding-top: 20px;
+}
+
+.top-5-less {
+  justify-content: flex-start;
+  li {
+    margin-right: 30px;
+  }
 }
 </style>

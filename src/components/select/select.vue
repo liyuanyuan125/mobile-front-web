@@ -47,7 +47,8 @@ export default class Select extends Vue {
   text-align: center;
   color: #303030;
   font-size: 14px;
-  padding: 0 28px 0 24px;
+  padding: 0 58px 0 24px;
+  appearance: none;
   &::after {
     content: '';
     position: absolute;

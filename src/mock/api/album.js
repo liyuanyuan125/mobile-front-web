@@ -1,4 +1,5 @@
 import { mockGet, mockPost, mockPut, mockDel } from '../util'
+import rivalPlayData from './rivalPlayData'
 
 /**
  * 1.专辑详情页
@@ -63,9 +64,9 @@ mockGet('/yuqing/music/album/detail', ({ songId }) => {
       {
         musicId: 1,
         musicName: 'Yummy',
-        heatCount: '123,235',
+        heatCount: null,
         playCount: '888,222',
-        commentCount: '688,000',
+        commentCount: 0,
       },
       {
         musicId: 2,
@@ -285,7 +286,7 @@ mockGet('/yuqing/music/album/rival/list', () => {
       yesterdaySalesTrend: 88,
       yesterdayInteractCount: '1.2万',
       yesterdayInteractTrend: 99,
-      eventName: '英首相与女友订婚',
+      eventName: '英首相与女友订婚很长很长很长很长很长很长很长很长',
       eventCreatTime: 1583909626668,
     },
     {
@@ -587,14 +588,383 @@ mockGet('/yuqing/music/album/rival/analysis', () => {
   }
 })
 
-// /**
-//  * 2.4.1竞品分析报告详情-获取销量对比
-//  * https://yapi.aiads-dev.com/project/404/interface/api/11608
-//  */
-// mockGet('/yuqing/music/song/rival/play/analysis', () => {
-//   return {
-//   }
-// })
+/**
+ * 2.4.1竞品分析报告详情-获取销量对比
+ * https://yapi.aiads-dev.com/project/404/interface/api/11608
+ */
+mockGet('/yuqing/music/album/rival/analysis/sale', () => {
+  // return [
+  //   {
+  //     platformName: '全部',
+  //     rivalName: '挪威的森林',
+  //     playCountShow: '12,432.4万',
+  //     dataList: [
+  //       { date: 1585756800000, value: 118888 },
+  //       { date: 1586016000000, value: 128888 },
+  //       { date: 1586275200000, value: 138888 },
+  //     ],
+  //     dateShowList: [
+  //       { date: '2020-04-02', value: '118,888' },
+  //       { date: '2020-04-05', value: '128,888' },
+  //       { date: '2020-04-08', value: '138,888' },
+  //     ]
+  //   },
+  // ]
+  return [
+    {
+      "platformName": "网易云音乐",
+      "dateShowList": [
+        {
+          "date": "2020-01-03",
+          "value": "1,231"
+        }
+      ],
+      "playCountShow": "2,432.4万",
+      "rivalName": "人生海海人生海海人生海海人生海海人生海海人生海海",
+      "dataList": [
+        {
+          "date": 1585714881000,
+          "value": 123231
+        },
+        {
+          "date": 1585801281000,
+          "value": 323231
+        },
+        {
+          "date": 1585887681000,
+          "value": 623231
+        },
+        {
+          "date": 1585974081000,
+          "value": 123231
+        },
+        {
+          "date": 1586060481000,
+          "value": 183745
+        },
+        {
+          "date": 1586060481000,
+          "value": 323231
+        },
+        {
+          "date": 1586233281000,
+          "value": 303231
+        }
+      ]
+    },
+    {
+      "platformName": "网易云音乐",
+      "dateShowList": [
+        {
+          "date": "2020-04-01",
+          "value": "1,231"
+        },
+        {
+          "date": "2020-04-02",
+          "value": "1,931"
+        },
+        {
+          "date": "2020-04-03",
+          "value": "4,231"
+        },
+        {
+          "date": "2020-04-05",
+          "value": "1,231"
+        }
+      ],
+      "playCountShow": "",
+      "rivalName": "最清楚",
+      "dataList": [
+        {
+          "date": 1585714881000,
+          "value": 228231
+        },
+        {
+          "date": 1585801281000,
+          "value": 300031
+        },
+        {
+          "date": 1585887681000,
+          "value": 923231
+        },
+        {
+          "date": 1585974081000,
+          "value": 108761
+        },
+        {
+          "date": 1586060481000,
+          "value": 283745
+        },
+        {
+          "date": 1586060481000,
+          "value": 423231
+        },
+        {
+          "date": 1586233281000,
+          "value": 103231
+        }
+      ]
+    },
+    {
+      "platformName": "网易云音乐",
+      "dateShowList": [
+        {
+          "date": "2020-01-03",
+          "value": "1,231"
+        },
+        {
+          "date": "2020-01-03",
+          "value": "1,231"
+        },
+        {
+          "date": "2020-01-03",
+          "value": "1,231"
+        },
+        {
+          "date": "2020-01-03",
+          "value": "1,231"
+        }
+      ],
+      "playCountShow": "2,432.4万",
+      "rivalName": "哼唧哼唧",
+      "dataList": [
+        {
+          "date": 1585714881000,
+          "value": 10000
+        },
+        {
+          "date": 1585801281000,
+          "value": 328907
+        },
+        {
+          "date": 1585887681000,
+          "value": 442321
+        },
+        {
+          "date": 1585974081000,
+          "value": 123999
+        },
+        {
+          "date": 1586060481000,
+          "value": 180745
+        },
+        {
+          "date": 1586060481000,
+          "value": 12345
+        },
+        {
+          "date": 1586233281000,
+          "value": 703231
+        }
+      ]
+    },
+    {
+      "platformName": "网易云音乐",
+      "dateShowList": [
+        {
+          "date": "2020-01-03",
+          "value": "1,231"
+        },
+        {
+          "date": "2020-01-03",
+          "value": "1,231"
+        },
+        {
+          "date": "2020-01-03",
+          "value": ""
+        },
+        {
+          "date": "2020-01-03",
+          "value": "1,231"
+        }
+      ],
+      "playCountShow": "2,432.4万",
+      "rivalName": "度卡拉胶",
+      "dataList": [
+        {
+          "date": 1583902834605,
+          "value": 1232313232
+        }
+      ]
+    }
+  ]
+  // return rivalPlayData()
+})
+
+/**
+ * 2.4.1竞品分析报告详情-获取销量对比-对齐发行时间
+ * https://yapi.aiads-dev.com/project/404/interface/api/11648
+ */
+mockGet('/yuqing/music/album/rival/analysis/sale/align-release', () => {
+  return [
+    {
+      platformName: '全部',
+      rivalName: '挪威的森林',
+      playCountShow: '12,432.4万',
+      dataList: [
+        { date: '发行首日', value: 118888 },
+        { date: '发行1日', value: 128888 },
+        { date: '发行2日', value: 138888 },
+      ],
+      dateShowList: [
+        { date: '发行首日', value: '118,888' },
+        { date: '发行1日', value: '128,888' },
+        { date: '发行2日', value: '138,888' },
+      ]
+    },
+    {
+      platformName: '全部',
+      rivalName: '学猫叫',
+      playCountShow: '23,432.4万',
+      dataList: [
+        { date: '发行首日', value: 138888 },
+        { date: '发行1日', value: 148888 },
+        { date: '发行2日', value: 158888 },
+      ],
+      dateShowList: [
+        { date: '发行首日', value: '138,888' },
+        { date: '发行1日', value: '148,888' },
+        { date: '发行2日', value: '158,888' },
+      ]
+    },
+    {
+      platformName: '全部',
+      rivalName: '爱我别走',
+      playCountShow: '38,432.4万',
+      dataList: [
+        { date: '发行首日', value: 168888 },
+        { date: '发行1日', value: 178888 },
+        { date: '发行2日', value: 188888 },
+      ],
+      dateShowList: [
+        { date: '发行首日', value: '138,888' },
+        { date: '发行1日', value: '148,888' },
+        { date: '发行2日', value: '158,888' },
+      ]
+    },
+    {
+      platformName: '网易云音乐',
+      rivalName: '挪威的森林',
+      playCountShow: '2,432.4万',
+      dataList: [
+        { date: '发行首日', value: 18888 },
+        { date: '发行1日', value: 28888 },
+        { date: '发行2日', value: 38888 },
+      ],
+      dateShowList: [
+        { date: '发行首日', value: '18,888' },
+        { date: '发行1日', value: '28,888' },
+        { date: '发行2日', value: '38,888' },
+      ]
+    },
+    {
+      platformName: '网易云音乐',
+      rivalName: '学猫叫',
+      playCountShow: '3,432.4万',
+      dataList: [
+        { date: '发行首日', value: 38888 },
+        { date: '发行1日', value: 48888 },
+        { date: '发行2日', value: 58888 },
+      ],
+      dateShowList: [
+        { date: '发行首日', value: '38,888' },
+        { date: '发行1日', value: '48,888' },
+        { date: '发行2日', value: '58,888' },
+      ]
+    },
+    {
+      platformName: '网易云音乐',
+      rivalName: '爱我别走',
+      playCountShow: '8,432.4万',
+      dataList: [
+        { date: '发行首日', value: 68888 },
+        { date: '发行1日', value: 78888 },
+        { date: '发行2日', value: 88888 },
+      ],
+      dateShowList: [
+        { date: '发行首日', value: '38,888' },
+        { date: '发行1日', value: '48,888' },
+        { date: '发行2日', value: '58,888' },
+      ]
+    },
+    {
+      platformName: 'QQ音乐',
+      rivalName: '学猫叫',
+      playCountShow: '8,432.4万',
+      dataList: [
+        { date: '发行首日', value: 18888 },
+        { date: '发行1日', value: 38888 },
+        { date: '发行2日', value: 58888 },
+      ],
+      dateShowList: [
+        { date: '发行首日', value: '18,888' },
+        { date: '发行1日', value: '38,888' },
+        { date: '发行2日', value: '58,888' },
+      ]
+    },
+    {
+      platformName: 'QQ音乐',
+      rivalName: '爱我别走',
+      playCountShow: '8,432.4万',
+      dataList: [
+        { date: '发行首日', value: 5888 },
+        { date: '发行1日', value: 6888 },
+        { date: '发行2日', value: 7888 },
+      ],
+      dateShowList: [
+        { date: '发行首日', value: '5,888' },
+        { date: '发行1日', value: '6,888' },
+        { date: '发行2日', value: '7,888' },
+      ]
+    },
+    {
+      platformName: '酷我',
+      rivalName: '学猫叫',
+      playCountShow: '8,432.4万',
+      dataList: [
+        { date: '发行首日', value: 18888 },
+        { date: '发行1日', value: 88888 },
+        { date: '发行2日', value: 98888 },
+      ],
+      dateShowList: [
+        { date: '发行首日', value: '18,888' },
+        { date: '发行1日', value: '88,888' },
+        { date: '发行2日', value: '98,888' },
+      ]
+    },
+    {
+      platformName: '酷狗',
+      rivalName: '学猫叫',
+      playCountShow: '9,432.4万',
+      dataList: [
+        { date: '发行首日', value: 28888 },
+        { date: '发行1日', value: 38888 },
+        { date: '发行2日', value: 78888 },
+      ],
+      dateShowList: [
+        { date: '发行首日', value: '28,888' },
+        { date: '发行1日', value: '38,888' },
+        { date: '发行2日', value: '78,888' },
+      ]
+    },
+    {
+      platformName: '虾米',
+      rivalName: '爽爽爽',
+      playCountShow: '3,432.4万',
+      dataList: [
+        { date: '发行首日', value: 38888 },
+        { date: '发行1日', value: 58888 },
+        { date: '发行2日', value: 88888 },
+      ],
+      dateShowList: [
+        { date: '发行首日', value: '38,888' },
+        { date: '发行1日', value: '58,888' },
+        { date: '发行2日', value: '88,888' },
+      ]
+    },
+  ]
+})
+
 
 /**
  * 2.4.2竞品分析报告详情-获取口碑评论对比

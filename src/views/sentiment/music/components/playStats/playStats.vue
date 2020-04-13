@@ -1,5 +1,13 @@
 <template>
-  <section class="play-stats">
+  <section
+    class="play-stats"
+    :class="{ 'play-stats-align': alignMode }"
+  >
+    <div class="align-control" v-if="alignMode">
+      <label>对齐发行时间</label>
+      <van-switch v-model="isAlign" class="align-switch"/>
+    </div>
+
     <Select v-model="day" :list="dayList" class="day-list"/>
 
     <Tabs
@@ -15,7 +23,9 @@
       />
     </Tabs>
 
-    <section class="total-stats">
+    <DataEmpty v-if="allEmpty"/>
+
+    <section class="total-stats" v-if="platformList">
       <ModuleHeader
         title="累计分布"
         tag="h4"
@@ -28,7 +38,7 @@
           class="total-item"
         >
           <i class="total-no">{{index + 1}}</i>
-          <em class="total-name">{{name}}</em>
+          <div class="total-name van-multi-ellipsis--l2">{{name}}</div>
           <Progress
             :percentage="percent"
             :show-pivot="false"
@@ -43,45 +53,53 @@
     </section>
 
     <ModuleHeader
-      :title="isAlbum ? '分日销量' : '分日播放量'"
+      :title="chartTitle"
       tag="h4"
       class="daily-header"
+      v-if="chartTitle && dailyData"
     />
+
+    <ul
+      class="group-list"
+      v-if="showGroupName && dailyData"
+    >
+      <li
+        v-for="(name, index) in groupNames"
+        :key="name"
+        class="group-item"
+      >
+        <Button
+          :type="index == groupIndex ? 'info' : 'default'"
+          class="group-button"
+          @click="groupIndex = index"
+        >{{name}}</Button>
+      </li>
+    </ul>
 
     <MultiLine
       :names="dailyNames"
       :data="dailyData"
       :events="dailyEvents"
+      :showLegend="showLegend"
       smooth
       class="daily-chart"
+      v-if="dailyData"
     />
 
-    <section class="daily-form">
-      <div class="daily-table-wrap">
-        <table class="daily-table">
-          <thead>
-            <th class="col-date">日期</th>
-            <th class="col-count">当日{{isAlbum ? '销量' : '播放量'}}</th>
-            <th
-              v-for="name in dailyFormNames"
-              :key="name"
-              class="col-cell"
-            >{{name}}</th>
-          </thead>
-          <tbody>
-            <tr v-for="item in dailyFormList" :key="item.date">
-              <td class="col-date" v-html="item.dateText"></td>
-              <td class="col-count">{{item.count}}</td>
-              <td
-                v-for="sub in item.platformList"
-                :key="sub.name"
-                class="col-cell"
-              >{{sub.value || placeholder}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <a class="daily-form-more">查看全部日期</a>
+    <section
+      class="daily-form"
+      v-if="table"
+    >
+      <Table
+        :data="table.data"
+        :columns="table.columns"
+        class="daily-table-wrap"
+      />
+      <a
+        class="daily-form-more"
+        @click="handleFormMore"
+        v-if="moreDateLink"
+      >查看全部日期</a>
     </section>
   </section>
 </template>
@@ -90,15 +108,17 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import ModuleHeader from '@/components/moduleHeader'
 import { RawLocation } from 'vue-router'
-import { Tabs, Tab, Progress } from 'vant'
-import { lastDays } from '@/util/timeSpan'
+import { Tabs, Tab, Progress, Button, Switch } from 'vant'
+import { lastDays, lastDayList } from '@/util/timeSpan'
 import Select from '@/components/select'
 import MultiLine, { MultiLineItem, MultiLineEvents } from '@/components/multiLine'
-import { toMoment } from '@/util/dealData'
-
+import { toMoment, intDate } from '@/util/dealData'
 import { PlayFetch, PlayItem, PlayView } from './types'
-
-const weekDays = [ '日', '一', '二', '三', '四', '五', '六' ]
+import { releaseDayList, dealDailyData, dealDailyEvents } from './data'
+import { openAppLink, AppLink } from '@/util/native'
+import Table from '@/components/table'
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
+import { isEmpty } from 'lodash'
 
 @Component({
   components: {
@@ -106,8 +126,12 @@ const weekDays = [ '日', '一', '二', '三', '四', '五', '六' ]
     Tabs,
     Tab,
     Progress,
+    Button,
+    [Switch.name]: Switch,
     Select,
     MultiLine,
+    Table,
+    DataEmpty,
   }
 })
 export default class PlayStats extends Vue {
@@ -118,7 +142,18 @@ export default class PlayStats extends Vue {
   /** 日期范围列表，数字代表最近几天 */
   @Prop({ type: Array, default: () => [ 7, 15, 30, 60, 90 ] }) days!: number[]
 
-  @Prop({ type: String, default: '--' }) placeholder!: string
+  @Prop({ type: String }) chartTitle!: string
+
+  @Prop({ type: Object }) moreDateLink!: AppLink
+
+  /** 自动着色模式 */
+  @Prop({ type: Boolean, default: false }) autoColor!: boolean
+
+  /** 销售对比：显示对齐发行时间 */
+  @Prop({ type: Boolean, default: false }) alignMode!: boolean
+
+  /** 是否显示图例 */
+  @Prop({ type: Boolean, default: false }) showLegend!: boolean
 
   day = 7
 
@@ -126,85 +161,118 @@ export default class PlayStats extends Vue {
 
   viewList: PlayItem[] = []
 
-  get dayList() {
-    const list = this.days.map(value => ({ name: `最近${value}天`, value }))
-    return list
+  groupIndex = 0
+
+  isAlign = false
+
+  get currentView() {
+    const viewItem = this.viewList[this.viewIndex]
+    return viewItem && viewItem.view
   }
 
-  get platformList() {
-    const viewItem = this.viewList[this.viewIndex]
-    if (viewItem == null) {
-      return []
-    }
-    const list = viewItem.view.platformList.map(item => ({
-      ...item,
-      percent: item.value / 100
+  get dayList() {
+    const isAlign = this.isAlign
+    const list = this.days.map(value => ({
+      name: isAlign ? `发行${value}天` : `最近${value}天`,
+      value
     }))
     return list
   }
 
-  dailyColors = [
-    '#ff6262',
-    '#ff9833',
-    '#ffce59',
-    '#88aaf6',
-    '#4cc8d0',
-  ]
-
-  get dailyNames() {
-    return [ '12-02', '12-03', '12-04', '12-05', '12-06', '12-07' ]
+  get allEmpty() {
+    return this.platformList == null
+      && this.dailyData == null
+      && this.table == null
   }
 
-  // TODO:
+  get platformList() {
+    const currentView = this.currentView
+    if (currentView == null || isEmpty(currentView.platformList)) {
+      return null
+    }
+    const list = currentView.platformList!.map(item => ({
+      ...item,
+      percent: +((item.value || 0) / 100).toFixed(1)
+    }))
+    return list
+  }
+
+  get groupNames() {
+    const currentView = this.currentView
+    if (currentView == null || isEmpty(currentView.dataGroup)) {
+      return []
+    }
+    const names = currentView.dataGroup.map(it => it.name)
+    return names
+  }
+
+  // 是否显示 group，当 group 个数大于 1 个，或者，虽然只有一个，但不为空
+  get showGroupName() {
+    const names = this.groupNames
+    const show = names.length > 1 || (names.length == 1 && !isEmpty(names[0]))
+    return show
+  }
+
+  get dailyNames() {
+    return this.getDayList('MM-DD')
+  }
+
   get dailyData() {
-    const list: MultiLineItem[] = [
-      { name: '网易云音乐', data: [ 7500, 7800, 6800, 5800, 3800, 8888 ], color: '#ff6262' },
-      { name: 'QQ音乐', data: [ 6500, 8800, 3800, 4800, 6800, 2888 ], color: '#ff9833' },
-      { name: '酷我音乐', data: [ 1500, 9800, 2800, 3800, 9800, 3888 ], color: '#ffce59' },
-    ]
+    const currentView = this.currentView
+    if (currentView == null || isEmpty(currentView.dataGroup)) {
+      return null
+    }
+    const { chart } = currentView.dataGroup[this.groupIndex]
+    if (isEmpty(chart)) {
+      return null
+    }
+    const list = dealDailyData(this.day, chart, this.isAlign, this.autoColor)
     return list
   }
 
   get dailyEvents() {
-    const events: MultiLineEvents = {
-      '12-03': {
-        id: 'xxxx',
-        name: '最适合跨年看得电影，曝终胜多负少是反倒伤',
-        click: ({ id }) => {
-          // console.log(`----> event ${id}`)
-          // debugger
-        }
-      }
+    const currentView = this.currentView
+    if (currentView == null) {
+      return {}
     }
-    return events
-  }
-
-  get dailyFormList() {
-    const viewItem = this.viewList[this.viewIndex]
-    if (viewItem == null) {
-      return []
-    }
-    const list = viewItem.view.dailyFormList.map(item => {
-      const m = toMoment(item.date)
-      const ymd = m.format('YYYY-MM-DD')
-      const wi = m.day()
-      const day = weekDays[wi]
-      const mark = item.markName ? `<em>${item.markName}</em>` : ''
-      return {
-        ...item,
-        count: (this.isAlbum ? item.saleCount : item.playCount) || this.placeholder,
-        dateText: `<i>${ymd}</i><br>周${day}${mark}`
-      }
+    const eventList = currentView.eventList || []
+    const list = dealDailyEvents(eventList, ({ id, name }) => {
+      this.$router.push({
+        name: 'sentimenteventmarketing',
+        params: { eventId: id },
+        query: { title: name },
+      })
     })
     return list
   }
 
-  get dailyFormNames() {
-    const list = this.dailyFormList
-    if (list.length == 0) {
-      return []
+  get legendOptions() {
+    const options = {
+      // show: true,
+      left: 0,
+      bottom: -10,
+      padding: [60, 0, 0, 0],
     }
-    const names = list[0].platformList.map(it => it.name)
+    return options
+  }
+
+  get table() {
+    const currentView = this.currentView
+    if (currentView == null || isEmpty(currentView.dataGroup)) {
+      return null
+    }
+    const { table } = currentView.dataGroup[this.groupIndex]
+    if (isEmpty(table.data)) {
+      return null
+    }
+    return table
+  }
+
+  getDayList(format = 'YYYY-MM-DD') {
+    const day = this.day
+    const names = this.isAlign
+      ? releaseDayList(day)
+      : lastDayList(day).map(it => String(intDate(it, format)))
     return names
   }
 
@@ -214,23 +282,61 @@ export default class PlayStats extends Vue {
 
   async fetchData() {
     const [ startTime, endTime ] = lastDays(this.day)
-    const query = { startTime, endTime }
+    const query = {
+      startTime,
+      endTime,
+      days: this.day,
+      isAlign: this.isAlign,
+      dayNames: this.getDayList(),
+    }
     const view = await this.fetch(query)
     const list = Array.isArray(view) ? view : [ { label: '', view } ]
     this.viewList = list
+  }
+
+  handleFormMore() {
+    openAppLink(this.moreDateLink)
   }
 
   @Watch('day')
   watchDay() {
     this.fetchData()
   }
+
+  @Watch('isAlign')
+  watchIsAlign() {
+    this.fetchData()
+  }
 }
 </script>
 
 <style lang="less" scoped>
+@color: #88aaf6;
+
 .play-stats {
   position: relative;
   padding: 90px 0 20px;
+}
+
+.play-stats-align {
+  .day-list {
+    top: 78px;
+  }
+}
+
+.align-control {
+  font-size: 34px;
+  line-height: 34px;
+  label {
+    vertical-align: top;
+    margin-right: 14px;
+  }
+}
+
+.align-switch {
+  /deep/ &.van-switch--on {
+    background-color: @color;
+  }
 }
 
 .day-list {
@@ -265,7 +371,7 @@ export default class PlayStats extends Vue {
 
   /deep/ .van-tab.van-tab--active {
     color: #fff;
-    background-color: #88aaf6;
+    background-color: @color;
     font-weight: 400;
   }
 }
@@ -312,19 +418,20 @@ export default class PlayStats extends Vue {
 }
 
 .total-name {
-  flex: 1;
+  width: 140px;
   margin-left: 18px;
 }
 
 .total-progress {
-  width: 216px;
+  width: 200px;
   height: 10px;
   margin-left: 28px;
 }
 
 .total-show {
-  margin-left: 28px;
+  width: 120px;
   font-size: 24px;
+  text-align: right;
 }
 
 .total-percent {
@@ -337,12 +444,41 @@ export default class PlayStats extends Vue {
   margin-top: 40px;
 }
 
+.group-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 30px -9px 0;
+  ~ .daily-chart {
+    margin-top: 10px;
+  }
+}
+
+.group-item {
+  width: 25%;
+  padding: 10px;
+}
+
+.group-button {
+  width: 100%;
+  height: 60px;
+  padding: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 26px;
+  border-radius: 30px;
+  /deep/ &.van-button--info {
+    border-color: @color;
+    background-color: @color;
+  }
+}
+
 .daily-chart {
   margin-top: 52px;
 }
 
 .daily-form {
-  margin-top: 60px;
+  margin-top: 50px;
   background: rgba(242, 243, 246, .5);
   border-radius: 10px;
   border: 2px solid rgba(242, 243, 246, 1);
@@ -350,54 +486,25 @@ export default class PlayStats extends Vue {
 
 .daily-table-wrap {
   overflow-y: auto;
-}
-
-.daily-table {
-  width: 100%;
-  table-layout: fixed;
-
-  .col-date {
-    width: 210px;
-    text-align: left;
-    padding-left: 30px;
-    /deep/ i {
-      font-size: 24px;
-    }
-    /deep/ em {
-      margin-left: 3px;
-      color: #ff6262;
+  /deep/ thead {
+    th {
+      background-color: #f9f9fa;
     }
   }
-  .col-count {
-    width: 150px;
-  }
-  .col-cell {
-    width: 180px;
-  }
-
-  tr {
+  /deep/ tr {
+    &:nth-child(2n) {
+      background-color: #f9f9fa;
+    }
     &:nth-child(2n + 1) {
       background-color: #fff;
     }
-  }
-
-  th,
-  td {
-    padding: 40px 0;
-    text-align: right;
-    &:last-child {
-      width: 180px + 64;
-      padding-right: 64px;
+    i {
+      font-size: 24px;
     }
-  }
-
-  th {
-    font-size: 24px;
-    font-weight: 400;
-  }
-
-  td {
-    font-size: 26px;
+    em {
+      margin-left: 3px;
+      color: #ff6262;
+    }
   }
 }
 
@@ -408,6 +515,6 @@ export default class PlayStats extends Vue {
   text-align: center;
   font-size: 28px;
   font-weight: 500;
-  color: #88aaf6;
+  color: @color;
 }
 </style>

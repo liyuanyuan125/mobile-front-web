@@ -12,6 +12,11 @@ export interface IdListTime {
   endTime: number
 }
 
+export interface IdListDays {
+  albumIdList: string
+  days: number
+}
+
 /**
  * 1.专辑详情页
  * https://yapi.aiads-dev.com/project/404/interface/api/10908
@@ -67,6 +72,15 @@ export function getRivalSale(query: IdListTime) {
 }
 
 /**
+ * 2.4.1竞品分析报告详情-获取销量对比-对齐发行时间
+ * https://yapi.aiads-dev.com/project/404/interface/api/11648
+ * @param query 查询参数
+ */
+export function getRivalSaleAlign(query: IdListDays) {
+  return get('/yuqing/music/album/rival/analysis/sale/align-release', query)
+}
+
+/**
  * 2.4.2竞品分析报告详情-获取口碑评论对比
  * https://yapi.aiads-dev.com/project/404/interface/api/11613
  * @param query 查询参数
@@ -76,9 +90,12 @@ export function getRivalPraise(query: IdListTime) {
 }
 
 /**
- * TODO: 获取事件列表
- * @param query 查询参数
+ * 获取事件列表
+ * https://yapi.aiads-dev.com/project/416/interface/api/11088
+ * @param id 专辑 id
  */
-export function getEventList(query: any) {
-  return get('/mock/416/yuqing/common/eventAnalysis', query)
+export function getEventList(id: number) {
+  // 1 品牌 2 艺人 3 电影4 剧集 5 音乐-单曲 6 音乐-专辑
+  const query = { type: 6, objectId: id }
+  return get('/yuqing/common/eventAnalysis', query)
 }

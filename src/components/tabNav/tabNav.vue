@@ -4,10 +4,15 @@
     :class="{
       'tab-nav-normal': normal,
       'tab-nav-hide-header': hideHeader,
+      [`tab-nav-count-${list.length}`]: true
     }"
     ref="box"
   >
-    <Tabs v-model="model" @click="handleClick" v-if="list && list.length > 0">
+    <Tabs
+      v-model="model"
+      @click="handleClick"
+      v-if="list && list.length > 0"
+    >
       <Tab
         v-for="{ name, label } in list"
         :key="name"
@@ -19,12 +24,10 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
-
 import { Tab, Tabs } from 'vant'
-
 import { TabNavItem } from './types'
-
-import scrollIntoView from 'scroll-into-view-if-needed'
+import { scrollIntoView } from './util'
+import { watchScroll } from '@/util/scroll'
 
 @Component({
   components: {
@@ -43,32 +46,57 @@ export default class TabNav extends Vue {
   /** 去掉头部的装饰 */
   @Prop({ type: Boolean, default: false }) hideHeader!: boolean
 
+  /** 滚动调节量 */
+  @Prop({ type: Number, default: 30 }) scrollThreshold!: number
+
   model = 0
+
+  clickedScroll = false
+
+  get box() {
+    return this.$refs.box as HTMLElement
+  }
+
+  get children() {
+    const ids = this.list.map(it => it.name)
+    const elList = ids.map(id => document.getElementById(id))
+    return elList
+  }
 
   handleClick(index: number) {
     const { name = '' } = this.list[index] || {}
     const nav = document.getElementById(name)
-    nav && scrollIntoView(nav, {
-      block: 'start',
-      scrollMode: 'always',
-      behavior: actions => {
-        const canSmoothScroll = 'scrollBehavior' in document.body.style
-        const box = this.$refs.box as HTMLElement
-        const boxTop = parseInt(getComputedStyle(box).top, 10)
-        const boxHeight = box.offsetHeight
-        actions.forEach(({ el, top, left }) => {
-          if (el.scroll && canSmoothScroll) {
-            el.scroll({
-              top: top - boxTop - boxHeight,
-              left,
-              behavior: 'smooth'
-            })
-          } else {
-            el.scrollTop = top - boxTop
-            el.scrollLeft = left
-          }
-        })
-      },
+    if (nav) {
+      this.clickedScroll = true
+      scrollIntoView(nav, this.box).then(() => this.clickedScroll = false)
+    }
+    this.model = index
+  }
+
+  getScrollIndex() {
+    const line = this.box.getBoundingClientRect().bottom + this.scrollThreshold
+    const children = this.children
+    const count = children.length
+
+    for (let index = 0; index < count; index++) {
+      const el = children[index]
+      if (el != null) {
+        const top = el.getBoundingClientRect().top
+        if (top > line) {
+          return index == 0 ? 0 : index - 1
+        }
+      }
+    }
+
+    return count - 1
+  }
+
+  mounted() {
+    watchScroll().then(() => {
+      if (!this.clickedScroll) {
+        const index = this.getScrollIndex()
+        this.model = index
+      }
     })
   }
 
@@ -113,7 +141,7 @@ export default class TabNav extends Vue {
     font-size: 30px;
     font-weight: 500;
     padding: 10px 0 6px 0;
-    flex-basis: 16.667% !important;
+    flex-basis: 16.66666% !important;
   }
 
   /deep/ .van-tab--active {
@@ -166,6 +194,12 @@ export default class TabNav extends Vue {
     top: -5px;
     height: 5px;
     background: #fff;
+  }
+}
+
+.tab-nav-count-5 {
+  /deep/ .van-tab {
+    flex-basis: 20% !important;
   }
 }
 </style>

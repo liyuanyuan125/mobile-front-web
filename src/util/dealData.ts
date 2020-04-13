@@ -240,9 +240,9 @@ export function readableNumber(number: number | string, placeholder = '-') {
     return placeholder
   }
 
-  // 产品需求：亿保留 2 位，万保留 1 位
+  // 产品需求：https://zentao.aiads.com/index.php?m=story&f=view&storyID=619
   return number >= YI
-    ? (+number / YI).toFixed(2) + '亿'
+    ? (+number / YI).toFixed(1) + '亿'
     : number >= WAN
     ? (+number / WAN).toFixed(1) + '万'
     : toThousands(number)
@@ -301,18 +301,39 @@ export function intDate(date: number, format = 'YYYY-MM-DD') {
  * 将形如 20190622 形式的整数，或者其他一些符合要求的字符串，转换成 Moment 对象
  * @param date 数字日期或其他形式的日期字符串
  */
-export function toMoment(date: number | string | null) {
+export function toMoment(date: number | string | null | moment.Moment) {
   return date == null || date == 0 || date == ''
     ? moment.invalid()
+    // 如果 date 是一个对象，则假设，它就是一个 moment.Moment 对象
+    : typeof date == 'object'
+    ? date as moment.Moment
     // 如果是很大的数字，则说明这是一个时间戳
     : moment(date > 28880000 ? +date : String(date))
+}
+
+const weekDays = ['日', '一', '二', '三', '四', '五', '六']
+
+/**
+ * 返回周几
+ * @param date 日期
+ * @param options 选项
+ */
+export function weekName(
+  date: number | string | null | moment.Moment,
+  {
+    prefix = '周',
+    blank = '',
+  }: any = {}
+) {
+  const m = toMoment(date)
+  return m.isValid() ? prefix + weekDays[m.day()] : blank
 }
 
 /**
  * 将形如 20190622 形式的整数，或者其他一些符合要求的字符串，转换成日期
  * @param date 数字日期或其他形式的日期字符串
  */
-export function validDate(date: number | string | null) {
+export function validDate(date: number | string | null | moment.Moment) {
   const m = toMoment(date)
   return m.isValid() ? m.toDate() : null
 }
@@ -323,14 +344,18 @@ export function validDate(date: number | string | null) {
  * @param options 选项
  */
 export function formatValidDate(
-  date: number | string | null,
+  date: number | string | null | moment.Moment,
   {
     format = 'YYYY-MM-DD',
     blank = '-',
+    withWeek = false,
+    weekPrefix = '周',
   }: any = {}
 ) {
   const m = toMoment(date)
-  const result = m.isValid() ? m.format(format) : blank
+  const result = m.isValid()
+    ? m.format(format) + (withWeek ? ' ' + weekName(date, { prefix: weekPrefix }) : '')
+    : blank
   return result
 }
 
@@ -351,8 +376,8 @@ export function formatValidDateTime(date: number | string | null) {
  * @param options 选项
  */
 export function formatIntDateRange(
-  dateStart: number | null,
-  dateEnd: number | null,
+  dateStart: number | string | null | moment.Moment,
+  dateEnd: number | string | null | moment.Moment,
   {
     separator = '~',
     format = 'YYYY-MM-DD',
@@ -389,7 +414,7 @@ export function formatTimestamp(
  * 获取开始日期的时间戳
  * @param date
  */
-export function startDayTimestamp(date: number | string | null) {
+export function startDayTimestamp(date: number | string | null | moment.Moment) {
   const m = toMoment(date)
   const result = m.isValid() ? m.startOf('day').valueOf() : null
   return result
@@ -399,7 +424,7 @@ export function startDayTimestamp(date: number | string | null) {
  * 获取结束日期的时间戳
  * @param date
  */
-export function endDayTimestamp(date: number | string | null) {
+export function endDayTimestamp(date: number | string | null | moment.Moment) {
   const m = toMoment(date)
   const result = m.isValid() ? m.endOf('day').valueOf() : null
   return result

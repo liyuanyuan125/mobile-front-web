@@ -1,34 +1,35 @@
 <template>
   <div>
-    <ModuleHeader title="平台热度" class="formatmodule" v-if="dataList.length < 3"/>
-    <ModuleHeader title="平台热度"  class="formatmodule" :link="link" v-else/>
-    
-    <ul class="platform-item">
-      <li
-        class="flex-box flex-between"
-        v-for="(item, index) in dataList"
-        :key="item.platformId"
-        v-if="index < 3"
-        @click="goPlatformDetail(item)"
-      >
-        <div class="flex-box">
-          <div class="plat-left">
-            <img :src="item.coverImg" v-if="item.coverImg" />
-            <img v-else src="@/assets/platform-default-icon.png" width="60" height="60" />
-            <div class="name van-ellipsis">{{item.platformName}}</div>
+      <ModuleHeader title="平台热度" class="formatmodule" v-if="dataList.length < 3"/>
+      <ModuleHeader title="平台热度"  class="formatmodule" :link="link" v-else/>
+      
+      <ul class="platform-item" v-if="platformList.length">
+        <li
+          class="flex-box flex-between"
+          v-for="(item, index) in dataList"
+          :key="item.platformId"
+          v-if="index < 3"
+          @click="goPlatformDetail(item)"
+        >
+          <div class="flex-box">
+            <div class="plat-left">
+              <img :src="item.coverImg" v-if="item.coverImg" />
+              <img v-else src="@/assets/platform-default-icon.png" width="60" height="60" />
+              <div class="name van-ellipsis">{{item.platformName}}</div>
+            </div>
+            
+            <div class="item-centers">
+              <p class="values flex-box flex-between">
+                <span v-for="(it, index) in item.platformValueList" :key="it.name" v-if="index < 2">
+                  {{it.name}} {{it.value || '-'}}
+                </span>
+              </p>
+              <p class="texts">{{item.platformNotice}}</p>
+            </div>
           </div>
-          
-          <div class="item-centers">
-            <p class="values flex-box flex-between">
-              <span v-for="(it, index) in item.platformValueList" :key="it.name" v-if="index < 2">
-                {{it.name}} {{it.value || '-'}}
-              </span>
-            </p>
-            <p class="texts">{{item.platformNotice}}</p>
-          </div>
-        </div>
-      </li>
-    </ul>
+        </li>
+      </ul>
+    <DataEmpty v-else/>
   </div>
 </template>
 
@@ -36,13 +37,15 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Icon } from 'vant'
 import ModuleHeader from '@/components/moduleHeader'
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
 import { openAppLink, AppLink } from '@/util/native'
 import { imgFixed } from '@/fn/imgProxy'
 
 @Component({
   components: {
     [Icon.name]: Icon,
-    ModuleHeader
+    ModuleHeader,
+    DataEmpty
   }
 })
 export default class Main extends Vue {
@@ -60,10 +63,11 @@ export default class Main extends Vue {
     })
     return list
   }
-
-  link: any = {
-    name: 'platform-detail',
-    params: this.params
+  get link() {
+    return {
+      name: 'platform-detail',
+      params: this.params
+    }
   }
 
   // 去原生app评台详情页

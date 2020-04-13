@@ -8,7 +8,7 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import echarts from 'echarts'
 import { cssifyObject } from 'css-in-js-utils'
-import {readableNumber} from '@/util/dealData'
+import {readableNumber, readableThousands, toThousands} from '@/util/dealData'
 import moment from 'moment'
 const format = 'YYYY-MM-DD'
 
@@ -61,9 +61,6 @@ export default class Main extends Vue {
   initChart() {
     const chartEl = this.$refs.refChart as any
     const myChart = echarts.init(chartEl)
-    // myChart.on('click', (params: any) => {
-    //   console.log(params)
-    // })
 
     const linearGradient = {
       normal: {
@@ -87,6 +84,7 @@ export default class Main extends Vue {
         smooth: true, // 平滑
         name: it.name,
         data: it.data,
+        connectNulls: true, // 是否连接空数据
       }
     })
 
@@ -171,7 +169,7 @@ export default class Main extends Vue {
           const cloneData = moment(this.lineData.xDate[dataIndex]).format('YYYY-MM-DD')
           const html = `
            <div style="${nameStyle}" >
-             <p>${cloneData} ${seriesName} ${readableNumber(value)}</p>
+             <p>${cloneData} ${seriesName} ${toThousands(value)}</p>
              <div>
              ${eventHtml.join('')}
              </div>

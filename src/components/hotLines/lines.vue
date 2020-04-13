@@ -39,7 +39,8 @@ export default class Main extends Vue {
         symbolSize: 6,
         smooth: true, // 平滑
         name: it.name,
-        data: it.list
+        data: it.list,
+        connectNulls: true,
       }
     })
 
@@ -74,12 +75,12 @@ export default class Main extends Vue {
         // 分为两个模块来展示html
         formatter: (params: any) => {
           const dataIndex = (params[0].dataIndex)
-          const titleDate = this.lineData.yyDate[dataIndex]
+          const titleDate = this.lineData.xDate[dataIndex]
           const listHtml = (params || []).map(({seriesName, name, value, color }: any) => {
             const itemHtml = `
               <p class="tooltip-item">
                 <i class="tooltip-dot" style="background-color: ${color}"></i>
-                <span class="tooltip-name" >${seriesName}</span>
+                <span class="tooltip-name van-ellipsis" >${seriesName}</span>
                 <span class="tooltip-value">${readableNumber(value)}</span>
               </p>
             `
@@ -105,7 +106,7 @@ export default class Main extends Vue {
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: this.lineData.xDate,
+        data: (this.lineData.xDate || []).map((t: any) => moment(t).format('MM-DD')),
         axisLabel: {
           color: '#8f8f8f',
           fontSize: 11
@@ -182,8 +183,7 @@ export default class Main extends Vue {
   font-size: 22px;
   color: #303030;
   display: block;
-  margin-right: 15px;
-  min-width: 70px;
+  width: 160px;
 }
 /deep/ .tooltip-value {
   color: #303030;

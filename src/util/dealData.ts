@@ -462,3 +462,77 @@ export function joinAddress(
   const result = Array.from(new Set(parts)).join(separator).trim() || blank
   return result
 }
+
+/**
+ * getPercentFieldValue 函数参数
+ */
+export interface PercentFieldOptions {
+  /** 百分比字段名，默认 'value' */
+  percentKey?: string
+
+  /** 默认值，默认 null */
+  defaultValue?: any
+
+  /** 除数，默认 100 */
+  divisor?: number
+
+  /** 保留的小数位数，默认 1 */
+  digits?: number
+}
+
+/**
+ * 获取单一对象，或一组对象中的百分比字段值，按照选项进行加工
+ * 若传入的是一个单一对象，则返回单一值，否则返回一组值
+ * @param list 单一对象或对象数组
+ * @param options 选项
+ */
+export function getPercentFieldValue(
+  list: object | object[],
+  {
+    percentKey = 'value',
+    defaultValue = null,
+    divisor = 100,
+    digits = 1,
+  }: PercentFieldOptions = {}
+) {
+  const isArray = Array.isArray(list)
+  const trueList = (isArray ? list : [ list ]) as any[]
+
+  const valueList = trueList.map(item => {
+    const value = (item || {})[percentKey]
+    const ret = value != null && !isNaN(value)
+      ? +(value / divisor).toFixed(digits)
+      : defaultValue
+    return ret
+  })
+
+  // 多态返回，若传入的是单一对象，则返回单一值，否则返回值数组
+  const result = isArray ? valueList : valueList[0]
+  return result
+}
+
+/**
+ * 转换单一对象或一组对象的百分比字段，按照选项进行加工
+ * 若传入的是一个单一对象，则返回单一值，否则返回一组值
+ * @param list
+ * @param options
+ */
+export function transformPercentField(
+  list: object | object[],
+  options: PercentFieldOptions = {}
+) {
+  const isArray = Array.isArray(list)
+  const trueList = (isArray ? list : [ list ]) as any[]
+
+  // 注意，这里 percentKey 的默认值，一定要与 getPercentFieldValue 保持一致
+  const { percentKey = 'value' } = options
+
+  const resultList = trueList.map(item => ({
+    ...item,
+    [percentKey]: getPercentFieldValue(item, options)
+  }))
+
+  // 多态返回，若传入的是单一对象，则返回单一值，否则返回值数组
+  const result = isArray ? resultList : resultList[0]
+  return result
+}

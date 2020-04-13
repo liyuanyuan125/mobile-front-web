@@ -61,7 +61,7 @@
     </section>
 
     <section class="pane pane-praise" id="praise">
-      <MarketContrast :fetch="praiseFetch"/>
+      <MarketContrast :fetch="praiseFetch" :businessType="isAlbum ? 6 : 5"/>
     </section>
 
     <section class="pane pane-user" id="user">

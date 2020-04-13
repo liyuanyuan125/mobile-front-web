@@ -149,6 +149,7 @@ export default class RivalList extends Vue {
       color: rgba(48, 48, 48, 0.7);
       font-size: 22px;
       line-height: 1;
+      text-align: center;
     }
     .img {
       width: 150px;

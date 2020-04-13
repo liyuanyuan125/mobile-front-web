@@ -16,18 +16,23 @@
     <section class="pane" id="hot" style='padding-bottom: 30px;border-top: 0px;'>
       <selectTime v-model="day" class="select-time"  ref="reftimes"/>
       <heatContrast 
-        style='padding-top: 33px; background: #FFF;'
+        style=' background: #FFF;'
         :overAllHeat="combinedHeat.overAllHeat"
         :interactList="combinedHeat.interactList"
         :materialList="combinedHeat.materialList"
         :tabs="combinedHeat.tabs"
+        :daysNum="day"
         />
     </section>
 
-    <section v-if='showpraise' class="pane" id="praise" style='padding-top: 20px;padding-right:15px;'>
+    <section v-if='showpraise' class="pane" id="praise" style='padding-top:15px;padding-right:15px;padding-bottom:15px;'>
       <!-- 口碑评论 -->
       <div class='public'>
-        <MarketContrast :fetch="publicPraise.fetch" :query="publicPraise.query" />
+        <MarketContrast 
+          :fetch="publicPraise.fetch" 
+          :query="publicPraise.query"
+          :businessType='2'
+        />
       </div>
     </section>
 
@@ -78,7 +83,8 @@ import VsList, { VsItem } from '@/components/vsList'
 import Table from '@/views/common/table/table.vue'
 import TabNav, { TabNavItem } from '@/components/tabNav'
 import { rivalPraise , rivalanaly , rivalHeatAnalysis } from '@/api/kol'
-
+import { keyBy, groupBy } from 'lodash'
+import { getPercentFieldValue, transformPercentField } from '@/util/dealData'
 import { toast } from '@/util/toast'
 import { Tab, Tabs } from 'vant'
 
@@ -304,11 +310,16 @@ export default class KolPage extends ViewBase {
        this.rivalList = rivalList
        this.publicObj.tableItem = platformList
        this.ageRangeList = ageRangeList
-       this.sexdata = (genderList || []).map((it: any) => {
+       this.sexdata = (genderList || []).map((it: any , dataList: any) => {
+         const dataMap = keyBy(dataList, 'name')
+         const man = dataMap.男
+         const woman = dataMap.女
          return {
            name: it.rivalName,
-           rate1: 98.8,
-           rate2: 1.2
+           rate1: it.dataList[0].name == '男' ? (it.dataList[0].value / 100).toFixed(1)
+           : (it.dataList[1].value / 100).toFixed(1),
+           rate2: it.dataList[0].name == '男' ? (it.dataList[1].value / 100).toFixed(1)
+           : (it.dataList[0].value / 100).toFixed(1),
          }
        })
        this.userRegion = userRegion
@@ -391,7 +402,7 @@ export default class KolPage extends ViewBase {
   min-height: 200px;
   background-color: #fff;
   margin-bottom: 20px;
-  border-top: 20px solid #f2f3f6;
+  // border-top: 20px solid #f2f3f6;
 }
 
 .pane-head {

@@ -17,6 +17,7 @@
       :query="{movieIdList}"
       v-if="movieIdList"
       class="praisebox"
+      :businessType="3"
     />
     <div class="portrait">
       <moduleHeader title="受众画像" />
@@ -119,8 +120,6 @@ export default class MovieRivalAnalysisPage extends ViewBase {
   changeIds(ids: string) {
     this.movieIdList = ids
     this.init()
-    this.praiseFetch
-    this.wantSeeFetch
   }
 }
 </script>

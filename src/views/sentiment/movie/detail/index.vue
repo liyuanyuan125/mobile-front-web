@@ -16,7 +16,6 @@
       :favorable="movieInfo.favorable"
       :publicPraise="publicPraise"
       :link="getApplink('praiseHotWordsList')"
-      v-if="publicPraise.appraiseList"
       id="praise"
     />
     <UserPortrait

@@ -17,14 +17,10 @@ import { dot } from '@jydata/fe-util'
 import { TableColumn } from '@/components/table'
 import { keyBy, groupBy } from 'lodash'
 import { PlayView, PlayQuery } from './components/playStats'
+import { getPercentFieldValue, transformPercentField } from '@/util/dealData'
 
-const toPercent = (list: any[], percentKey = 'value') => {
-  const result = (list || []).map(it => ({
-    ...it,
-    [percentKey]: +(it[percentKey] / 100).toFixed(1)
-  }))
-  return result
-}
+const toPercent = (list: any[], percentKey = 'percent') =>
+  transformPercentField(list, { percentKey })
 
 const commonBasic = (data: any) => {
   const rivalList = data.rivalList || []
@@ -45,8 +41,8 @@ const commonBasic = (data: any) => {
         const woman = dataMap.女
         return {
           name: rivalName,
-          rate1: man && +(man.value / 100).toFixed(1),
-          rate2: woman && +(woman.value / 100).toFixed(1),
+          rate1: getPercentFieldValue(man),
+          rate2: getPercentFieldValue(woman),
         }
       })
       return ret
@@ -250,9 +246,9 @@ export async function getPraise(ids: string, query: any, isAlbum: boolean) {
     : await songGetPraise({ songIdList: ids, ...query })
   const data = ret.data || {}
   ret.data = {
-    goodList: toPercent(data.goodList, 'percent'),
-    badList: toPercent(data.badList, 'percent'),
-    neutralList: toPercent(data.neutralList, 'percent'),
+    goodList: toPercent(data.goodList),
+    badList: toPercent(data.badList),
+    neutralList: toPercent(data.neutralList),
   }
   return ret
 }

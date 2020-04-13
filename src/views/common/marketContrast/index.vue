@@ -129,24 +129,12 @@ export default class Options extends Vue {
 
   // 热词 applink 跳转
   wordLink(word: string, id: string) {
-    let link: AppLink = {
+    const link: AppLink = {
       page: 'praiseHotWordsDetail',
       businessType: this.link.businessType, // 业务类型
       businessObjectId: id, // 业务 id
       keyword: encodeURIComponent(word),
       markType: this.indexs + 1
-    }
-    if (
-      this.link.eventType &&
-      (this.link.eventType === 100 || this.link.eventType === 101)
-    ) {
-      link = {
-        page: 'eventPraiseHotWordsDetail',
-        eventType: this.link.eventType, // 业务类型
-        eventId: this.link.eventId, // 业务 id
-        keyword: encodeURIComponent(word),
-        markType: this.indexs + 1
-      }
     }
     openAppLink(link)
   }

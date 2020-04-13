@@ -106,8 +106,6 @@ export default class TVRivalAnalysisPage extends ViewBase {
   changeIds(ids: string) {
     this.tvIdList = ids
     this.init()
-    this.praiseFetch
-    this.platformFetch
   }
 }
 </script>

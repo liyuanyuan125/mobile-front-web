@@ -17,7 +17,7 @@
             <Progress :percentage="(item.percent || 0) " color="#88aaf6" stroke-width="10" />
             <div class="contrast-message">
               <div class="contrast-message-progress">
-                <span v-if="item.percent">{{(item.percent || 0).toFixed(1) }}%</span>
+                <span v-if="item.percent">{{item.percent }}%</span>
                 <span v-else>—</span>
               </div>
               <div class="contrast-message-text" v-if="(item.hotWordList || []).length > 0">

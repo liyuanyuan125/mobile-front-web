@@ -5,7 +5,7 @@
       <li class='li-item'>
         <div class='li-left'>
           <div>
-            <img :src="coverImg || require('@/assets/actordefault.png')" alt="">
+            <img :src="coverImg" alt="">
           </div>
         </div>
         <div class='li-right'>
@@ -24,10 +24,10 @@
           </div>
         </div>
       </li>
-      <li class='li-item-pk' v-for='item in pkUserListData' :key='item.rivalId' >
+      <li class='li-item-pk' v-for='(item, index) in pkUserListData' :key='index + item.rivalId' >
         <div class='li-left' @click='goActorDetail(item.rivalId)'>
           <div>
-            <img :src="item.coverImg || require('@/assets/actordefault.png')" alt="">
+            <img :src="item.coverImg" alt="">
           </div>
         </div>
         <div class='li-right'>
@@ -138,11 +138,13 @@ export default class Main extends Vue {
       height: 200px;
       margin: auto;
       border-radius: 5px;
+      background: url('../../../../../assets/actordefault.png') no-repeat center center;
+      background-size: cover;
       img {
-        width: 100%;
+        // width: 100%;
         height: 100%;
         // object-fit: contain;
-        background-color: #fff;
+        // background-color: #fff;
         border-radius: 5px;
       }
     }

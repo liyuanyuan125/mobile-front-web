@@ -11,7 +11,13 @@
 
     <BasisList :basisList="basisList" v-if="basisList.length" />
     <PlatformTrend :fetch="platformFetch" :query="tvIdList" v-if="tvIdList" />
-    <marketContrast :fetch="praiseFetch" :query="{tvIdList}" v-if="tvIdList" class="praisebox" />
+    <marketContrast
+      :fetch="praiseFetch"
+      :query="{tvIdList}"
+      v-if="tvIdList"
+      class="praisebox"
+      :businessType="4"
+    />
     <div class="portrait">
       <moduleHeader title="受众画像" />
       <SexVs :data="vsData" class="genderbox" />
@@ -23,6 +29,7 @@
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
+import { keyBy, groupBy } from 'lodash'
 import { tvRivalList, tvRivalPraise, tvRivalPlatform } from './data'
 import SentimentBar from '@/views/common/sentimentBar/index.vue' // topbar
 import RivalList from '@/views/common/rivalList/index.vue' // 竞品列表
@@ -66,15 +73,19 @@ export default class TVRivalAnalysisPage extends ViewBase {
     this.rivalList = res.rivalList
     this.basisList = res.basisDataList
     // 处理性别分布
-    for (const el of res.genderList) {
-      const rate1 = Number((el.dataList[0].value / 100).toFixed(1))
-      const rate2 = 100 - rate1
-      this.vsData.push({
-        name: el.rivalName,
-        rate1,
-        rate2
+    this.vsData = ((list: any[]) => {
+      const ret = list.map(({ rivalName, dataList }) => {
+        const dataMap = keyBy(dataList, 'name')
+        const man = dataMap.男
+        const woman = dataMap.女
+        return {
+          name: rivalName,
+          rate1: man && +(man.value / 100).toFixed(1),
+          rate2: woman && +(woman.value / 100).toFixed(1)
+        }
       })
-    }
+      return ret
+    })(res.genderList || [])
     // 年龄分布
     this.ageRangeList = res.ageRangeList
   }

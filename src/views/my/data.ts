@@ -28,7 +28,10 @@ export const myService = async (query: any) => {
                         case 'BRAND':
                             it.imgUrl = require('../../assets/sentiment/my-brand.png')
                             break
-                        case 'SONG' || 'ALBUM':
+                        case 'SONG':
+                            it.imgUrl = require('../../assets/sentiment/my-music.png')
+                            break
+                        case 'ALBUM':
                             it.imgUrl = require('../../assets/sentiment/my-music.png')
                             break
                         case 'MOVIE':

@@ -61,7 +61,7 @@
 
     <ul
       class="group-list"
-      v-if="showGroupName && dailyData"
+      v-if="showGroupName"
     >
       <li
         v-for="(name, index) in groupNames"
@@ -450,6 +450,9 @@ export default class PlayStats extends Vue {
   margin: 30px -9px 0;
   ~ .daily-chart {
     margin-top: 10px;
+  }
+  ~ .daily-form {
+    margin-top: 30px;
   }
 }
 

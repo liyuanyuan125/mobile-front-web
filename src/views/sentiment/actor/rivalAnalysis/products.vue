@@ -16,7 +16,7 @@
     <section class="pane" id="hot" style='padding-bottom: 30px;border-top: 0px;'>
       <selectTime v-model="day" class="select-time"  ref="reftimes"/>
       <heatContrast 
-        style='padding-top: 33px; background: #FFF;'
+        style=' background: #FFF;'
         :overAllHeat="combinedHeat.overAllHeat"
         :interactList="combinedHeat.interactList"
         :materialList="combinedHeat.materialList"
@@ -24,10 +24,14 @@
         />
     </section>
 
-    <section v-if='showpraise' class="pane" id="praise" style='padding-top: 20px;padding-right:15px;'>
+    <section v-if='showpraise' class="pane" id="praise" style='padding-top:15px;padding-right:15px;padding-bottom:15px;'>
       <!-- 口碑评论 -->
       <div class='public'>
-        <MarketContrast :fetch="publicPraise.fetch" :query="publicPraise.query" />
+        <MarketContrast 
+          :fetch="publicPraise.fetch" 
+          :query="publicPraise.query"
+          :businessType='2'
+        />
       </div>
     </section>
 
@@ -391,7 +395,7 @@ export default class KolPage extends ViewBase {
   min-height: 200px;
   background-color: #fff;
   margin-bottom: 20px;
-  border-top: 20px solid #f2f3f6;
+  // border-top: 20px solid #f2f3f6;
 }
 
 .pane-head {

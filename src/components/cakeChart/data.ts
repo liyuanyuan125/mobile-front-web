@@ -212,7 +212,7 @@ export function getRingOption(data: any) {
         {
             name: '',
             type: 'pie',
-            radius: ['35%', '50%'],
+            radius: [data.withinProportion, data.externalProportion],
             center: ['50%', '50%'],
 
             data: data.data,
@@ -222,23 +222,19 @@ export function getRingOption(data: any) {
                     // formatter: '{a|{d}%}{b|{b}}\n\n',
                     formatter(a: any) {
                       const arr = [
-                        '{a|' + parseFloat(a.percent).toFixed(1) + '%}{b|' + a.name + '}\n\n']
+                        '{b|' + a.name + '}{a|' + parseFloat(a.percent).toFixed(1) + '%}']
                         return arr.join()
                     },
                     borderWidth: 20,
                     borderRadius: 4,
-                    padding: [0, -60 ,  0 , -60],
                     rich: {
                         a: {
-                            color: '#333',
-                            fontSize: 10,
+                            fontSize: data.fontsize,
                             lineHeight: 2,
-                            padding: [25, 25, 90, 10]
                         },
                         b: {
-                            fontSize: 10,
+                            fontSize:  data.fontsize,
                             lineHeight: 2,
-                            padding: [-20, 0, 0, -65]
                         }
                     }
                 },
@@ -268,8 +264,7 @@ export function getRingOption(data: any) {
                     labelLine: {  // 指示线状态
                         show: true,
                         smooth: 0,
-                        length: 25,
-                        length2: data.length2,
+                        length: 14,
                         lineStyle: {
                           width: 1,
                           type: 'solid'

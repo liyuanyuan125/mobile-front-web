@@ -47,13 +47,16 @@ export default class ChinaMap extends Vue {
   }
   getSize(width: number) {
     const w = document.documentElement.clientWidth
-        if (width >= w || width < 300) {
-            this.sizeWidth = w
-        } else {
-            this.sizeWidth = width
-        }
-        this.length2 =  this.sizeWidth * 0.2
-        return this.sizeWidth
+    // 判断当前图标width 最小300  最大屏幕宽度
+  if (width >= w || width == 0 ) {
+        this.sizeWidth = w
+    } else if (width < 300 ) {
+      this.sizeWidth = 300
+    }  else {
+      this.sizeWidth = width
+    }
+    this.length2 =  this.sizeWidth * 0.2
+    return this.sizeWidth
   }
   getcherts() {
   const myEcharts = this.$refs.annular as HTMLDivElement
@@ -61,6 +64,23 @@ export default class ChinaMap extends Vue {
   let maxValue = 0
   let allValue = 0
   let name = ''
+  let fontSize: number = 10
+  let withinProportion: string = '34%'
+  let externalProportion: string = '50%'
+  if (this.sizeWidth > 320 && this.sizeWidth <= 414) {
+    fontSize = 10
+    withinProportion = '34%'
+    externalProportion = '50%'
+  } else if (this.sizeWidth <= 320 ) {
+    fontSize = 8
+    withinProportion = '30%'
+    externalProportion = '44%'
+
+  } else {
+    fontSize = 12
+    withinProportion = '34%'
+    externalProportion = '50%'
+  }
   this.data.data.forEach((it: any, index: number) => {
     maxValue = it.value > maxValue ? it.value : maxValue
     allValue +=  it.value
@@ -80,7 +100,10 @@ export default class ChinaMap extends Vue {
       titleSize: this.data.titleSize || 18, // 标题字体大小
       titleWeight: this.data.titleWeight || 'bold', // 标题字体粗细
       legendtoFixed : this.data.legendtoFixed || 1, // legend显示几位小数
-      length2: this.length2
+      length2: this.length2,
+      fontsize: fontSize,
+      withinProportion ,
+      externalProportion
   }
   const option: object = getRingOption(openData)
   myChart.setOption(option)

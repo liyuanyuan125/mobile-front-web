@@ -39,7 +39,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
-import { Progress } from 'vant'
+import { Progress, ContactEdit } from 'vant'
 import moment from 'moment'
 import Time from './time.vue'
 import { FetchResult, FetchData } from './type'
@@ -77,6 +77,14 @@ export default class Options extends Vue {
 
   optionsList: any = optionsList
   days = 'last_7_day'
+
+  get newQuery() {
+    return {
+      day: this.days,
+      query: this.query
+    }
+  }
+
   // 接口传入数据
   get startTime() {
     switch (this.days) {
@@ -152,10 +160,11 @@ export default class Options extends Vue {
     }
   }
 
-  @Watch('days', { immediate: true })
+  @Watch('newQuery', { immediate: true })
   watchdays(val: any) {
     this.uplist()
   }
+
 }
 </script>
 

@@ -1,9 +1,10 @@
 <template>
   <div class="options-page">
+    {{applink}}
     <ModuleHeader
       title="口碑评论"
-      :link="favorable || appraiseList.length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0 ? link : false" />
-    <div v-if="appraiseList.length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0">
+      :link="favorable || (appraiseList || []).length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0 ? link : false" />
+    <div v-if="(appraiseList || []).length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0">
       <div class="options-top">
         <div class="options-left">
           <span class="hot" @click="showNote">
@@ -15,14 +16,15 @@
         <div class="options-right">
           <div
             class="options-progress"
-            v-for="(it, index) in (appraiseList.length > 0 ? appraiseList : noappraiseList)"
+            v-for="(it, index) in ((appraiseList || []).length > 0 ? appraiseList : noappraiseList)"
             :key="it.raiseName + index"
           >
             <span>{{it.raiseName}}</span>
             <div class="progress">
               <Progress :percentage="it.raisePercent || 0" color="#88aaf6" stroke-width="5" />
             </div>
-            <div class="progress-text">{{it.raisePercent || '-'}}%</div>
+            <div class="progress-text" v-if="it.raisePercent">{{it.raisePercent}}%</div>
+            <div class="progress-text" v-else>-</div>
           </div>
         </div>
       </div>
@@ -36,7 +38,7 @@
             </p>
           </div>
           <div class="hot-box-right">
-            <div class="hot-none">
+            <div v-if="(publicPraise.hotWordList || []).length > 0">
               <span
                 v-for="(it,index) in (publicPraise.hotWordList || []).slice(0,4)"
                 :key="it+index"
@@ -44,6 +46,7 @@
                 @click="wordLink(it,0)"
               >{{it}}</span>
             </div>
+            <div v-else><span>-</span></div>
           </div>
         </div>
         <div class="hot-box">
@@ -53,7 +56,7 @@
             </p>
           </div>
           <div class="hot-box-right">
-            <div class="hot-none">
+            <div v-if="(publicPraise.badWordList || []).length > 0">
               <span
                 v-for="(it,index) in (publicPraise.badWordList || []).slice(0,4)"
                 :key="it + index"
@@ -61,6 +64,7 @@
                 @click="wordLink(it,3)"
               >{{it}}</span>
             </div>
+            <div v-else><span>-</span></div>
           </div>
         </div>
       </div>
@@ -89,7 +93,7 @@ import dataEmpty from '@/views/common/dataEmpty/index.vue'
 export default class PraiseComment extends Vue {
   @Prop({ required: true }) publicPraise?: any
   @Prop({ type: String }) favorable?: any
-  @Prop({ type: Object }) link!: AppLink
+  @Prop({ type: Object }) link!: AppLink // app 热词link
 
   praiseList: any[] = []
   noappraiseList = [{raiseName: '正面评价', raisePercent: 0},
@@ -99,7 +103,7 @@ export default class PraiseComment extends Vue {
     const list = this.publicPraise.appraiseList || []
     if (list && list.length) {
       for (const item of list) {
-        item.raisePercent = (item.raisePercent / 100).toFixed(1)
+        item.raisePercent = item.raisePercent ? (item.raisePercent / 100).toFixed(1) : 0
       }
     }
     return list

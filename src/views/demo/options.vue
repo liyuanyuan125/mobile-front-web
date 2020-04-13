@@ -1,7 +1,7 @@
 <template>
   <div class="demo-page">
     <MarketContrast :fetch="fetch" :query="query" />
-    <MarketComment  :href="href" link="123" :publicPraise='publicPraise' :hotQuery="hotQuery" />
+    <MarketComment  :href="href" :publicPraise='publicPraise' :hotQuery="hotQuery" />
     <AgeDistribution :href="href" :ageRangeList='ageRangeList' />
   </div>
 </template>
@@ -36,20 +36,20 @@ export default class DemoPage extends Vue {
     ageRangeList = [
         {
             ageType: '20-30',
-            brandList: [
+            rivalList: [
                 {
                     brandName: '奔驰',
-                    brandPercent: 32,
+                    rivalPercent: 32,
                 },
                 {
                     brandName: '奔驰',
-                    brandPercent: 30,
+                    rivalPercent: 0,
                 }
             ]
         },
         {
             ageType: '20-30',
-            brandList: [
+            rivalList: [
             ]
         }
     ]
@@ -60,6 +60,7 @@ export default class DemoPage extends Vue {
         hotWordList: [
         ],
         badWordList: [
+            1
         ]
     }
 
@@ -76,12 +77,12 @@ export default class DemoPage extends Vue {
                 goodList: [
                     {
                         rivalName: query.startTime,
-                        percent: 12.35,
+                        percent: 0.0,
                         hotWordList: [
-                            '你好傻炮',
-                            '你好傻炮',
-                            '你好傻炮',
-                            '你好傻炮'
+                            '你好',
+                            '你好',
+                            '你好',
+                            '你好'
                         ]
                     }
                 ]

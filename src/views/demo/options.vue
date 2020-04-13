@@ -1,7 +1,7 @@
 <template>
   <div class="demo-page">
     <MarketContrast :fetch="fetch" :query="query" />
-    <MarketComment  :href="href" link="123" :publicPraise='publicPraise' :hotQuery="hotQuery" />
+    <MarketComment  :href="href" :publicPraise='publicPraise' :hotQuery="hotQuery" />
     <AgeDistribution :href="href" :ageRangeList='ageRangeList' />
   </div>
 </template>

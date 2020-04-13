@@ -5,7 +5,7 @@
       <div class="header" v-if="show">
         <div class="left">
           <div>
-            <img :src="coverImg || require('@/assets/actordefault.png')" class="img" />
+            <img :src="coverImg" class="img" />
           </div>
         </div>
         <div class="right">
@@ -389,11 +389,14 @@ export default class KolPage extends ViewBase {
       height: 172px;
       border-radius: 50%;
       overflow: hidden;
+      background: url('../../../../assets/actordefault.png') no-repeat center center;
+      background-size: cover;
+      border: 1px solid #d4d4d4;
       img {
-        width: 100%;
-        height: 100%;
+        // width: 172px;
+        height: 172px;
         border-radius: 50%;
-        background-color: #fff;
+        // background-color: #fff;
       }
     }
   }

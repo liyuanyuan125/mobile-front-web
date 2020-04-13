@@ -4,7 +4,7 @@
         <div class='movielist'>
             <div class='rowmovie' v-for='(item, index) in dataList' :key='index + item.brandId'>
                 <div class="img" @click='goDetail(item.brandId)'>
-                  <img :src="item.coverImg || require('@/assets/branddefault.png')"  alt="">
+                  <img :src="item.coverImg"  alt="">
                 </div>
                 <div class='name'>
                   {{item.brandName}}
@@ -136,8 +136,10 @@ export default class Main extends Vue {
   margin-bottom: 30px;
   .img {
     width: 100%;
-    height: 200;
+    height: 200px;
     border-radius: 10px;
+    background: url('../../../../../assets/branddefault.png') no-repeat center center;
+    background-size: cover;
     // border: 1px solid #ccc;
     img {
       width: 100%;

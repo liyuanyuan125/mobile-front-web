@@ -17,13 +17,13 @@
             <Progress :percentage="(item.percent || 0) " color="#88aaf6" stroke-width="10" />
             <div class="contrast-message">
               <div class="contrast-message-progress">
-                <span v-if="item.percent">{{(item.percent || 0).toFixed(1) }}%</span>
+                <span v-if="item.percent">{{item.percent}}%</span>
                 <span v-else>—</span>
               </div>
               <div class="contrast-message-text" v-if="(item.hotWordList || []).length > 0">
                 <span>热词</span>
                 <span class="van-ellipsis" 
-                  @click="wordLink(it)"
+                  @click="wordLink(it, item.rivalId)"
                   :key="ins" v-for="(it, ins) in item.hotWordList">{{it}}</span>
               </div>
             </div>
@@ -128,25 +128,13 @@ export default class Options extends Vue {
   }
 
   // 热词 applink 跳转
-  wordLink(word: string) {
-    let link: AppLink = {
+  wordLink(word: string, id: string) {
+    const link: AppLink = {
       page: 'praiseHotWordsDetail',
       businessType: this.link.businessType, // 业务类型
-      businessObjectId: this.link.businessObjectId, // 业务 id
+      businessObjectId: id, // 业务 id
       keyword: encodeURIComponent(word),
       markType: this.indexs + 1
-    }
-    if (
-      this.link.eventType &&
-      (this.link.eventType === 100 || this.link.eventType === 101)
-    ) {
-      link = {
-        page: 'eventPraiseHotWordsDetail',
-        eventType: this.link.eventType, // 业务类型
-        eventId: this.link.eventId, // 业务 id
-        keyword: encodeURIComponent(word),
-        markType: this.indexs + 1
-      }
     }
     openAppLink(link)
   }

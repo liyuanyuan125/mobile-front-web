@@ -15,7 +15,7 @@
             </li>
         </ul>
         <div class='movielist'>
-            <div class='rowmovie' v-for='item in dataList' :key='item.musicId'>
+            <div class='rowmovie' v-for='(item, index) in dataList' :key='index + item.musicId'>
                 <div class="img" @click='goDetail(item.musicId)'>
                   <!-- <img :src=item.coverUrl.url alt=""> -->
                   <img :src="item.coverImg || require('@/assets/musicdefault.png')"  alt="">

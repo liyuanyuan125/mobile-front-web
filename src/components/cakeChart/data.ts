@@ -268,7 +268,7 @@ export function getRingOption(data: any) {
                     labelLine: {  // 指示线状态
                         show: true,
                         smooth: 0,
-                        length: 18,
+                        length: 25,
                         length2: data.length2,
                         lineStyle: {
                           width: 1,

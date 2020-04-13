@@ -2,8 +2,8 @@
   <div class="options-page">
     <ModuleHeader
       title="口碑评论"
-      :link="favorable || appraiseList.length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0 ? link : false" />
-    <div v-if="appraiseList.length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0">
+      :link="favorable || (appraiseList || []).length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0 ? link : false" />
+    <div v-if="(appraiseList || []).length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0">
       <div class="options-top">
         <div class="options-left">
           <span class="hot" @click="showNote">
@@ -15,7 +15,7 @@
         <div class="options-right">
           <div
             class="options-progress"
-            v-for="(it, index) in (appraiseList.length > 0 ? appraiseList : noappraiseList)"
+            v-for="(it, index) in ((appraiseList || []).length > 0 ? appraiseList : noappraiseList)"
             :key="it.raiseName + index"
           >
             <span>{{it.raiseName}}</span>
@@ -92,7 +92,7 @@ import dataEmpty from '@/views/common/dataEmpty/index.vue'
 export default class PraiseComment extends Vue {
   @Prop({ required: true }) publicPraise?: any
   @Prop({ type: String }) favorable?: any
-  @Prop({ type: Object }) link!: any // 更多信息link
+  @Prop({ type: Object }) link!: any // 口碑评论更多link
   @Prop({ type: Object }) applink!: AppLink // app 热词link
 
   praiseList: any[] = []

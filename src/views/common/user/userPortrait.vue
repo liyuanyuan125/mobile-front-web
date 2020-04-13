@@ -1,15 +1,15 @@
 <template>
   <div class="userportrait">
-    <ModuleHeader title="用户分析" :link="link" />
-    <van-row type="flex" class="raitwrap">
+    <ModuleHeader title="用户分析" :link="ageRangeList.length || genderList.length ? link : null" />
+    <van-row type="flex" class="raitwrap" v-if="ageRangeList.length || genderList.length">
       <van-col span="10">
         <BarGraph :dataOption="genderListData" :colorList="colorList" />
       </van-col>
-      <van-col span="13">
+      <van-col span="14">
         <barGraphRow :dataOption="ageRangeListData" :itemlist="itemlist" />
       </van-col>
     </van-row>
-    <!-- <dataEmpty /> -->
+    <dataEmpty v-else />
   </div>
 </template>
 
@@ -57,19 +57,6 @@ export default class UserPortrait extends ViewBase {
       bgColor: '#F0F0F0'
     }
   }
-  created() {
-    // this.add()
-  }
-
-  add() {
-    if (this.arr.length != this.ageRangeList.length) {
-      this.arr.push(100)
-      this.add()
-    }
-    if (this.arr.length == this.ageRangeList.length) {
-      return this.arr
-    }
-  }
 
   // 处理年龄数据
   get ageRangeListData() {
@@ -94,12 +81,9 @@ export default class UserPortrait extends ViewBase {
     const xData: any[] = []
     const yData: any[] = []
     // const rait: any = []
-    let genderList: any = {}
-    if (this.genderList[0].name == '女') {
-      this.raitList = [
-        this.genderList[1],
-        this.genderList[0]
-      ]
+    let gender: any = {}
+    if (this.genderList && this.genderList[0].name == '女') {
+      this.raitList = [this.genderList[1], this.genderList[0]]
     } else {
       this.raitList = this.genderList
     }
@@ -108,12 +92,12 @@ export default class UserPortrait extends ViewBase {
         xData.push(item.name)
         yData.push((item.value / 100).toFixed(1))
       }
-      genderList = {
+      gender = {
         xData,
         yData
       }
     }
-    return genderList
+    return gender
   }
 }
 </script>
@@ -136,6 +120,6 @@ h4 {
   padding: 0 30px;
 }
 .raitwrap {
-  margin-top: 30px;
+  padding: 30px;
 }
 </style>

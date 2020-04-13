@@ -182,6 +182,11 @@ export default class KolPage extends ViewBase {
 
   created() {
     this.sidebar.diggId = this.$route.params.actorId
+    // 无竞品的时候，跳设置竞品页
+    this.sidebar.rivalIds = {
+      businessType: '2',
+      businessObjectIdList: String(this.$route.params.actorId)
+    }
     this.getActorDetail()
     this.getHotList()
     this.getPkUser()
@@ -314,12 +319,6 @@ export default class KolPage extends ViewBase {
           query: {
             ids: this.pkIdList.join(',')
           }
-        }
-      } else {
-        // 无竞品的时候，跳设置竞品页
-        this.sidebar.rivalIds = {
-          businessType: 2,
-          businessObjectIdList: this.$route.params.actorId
         }
       }
     } catch (ex) {

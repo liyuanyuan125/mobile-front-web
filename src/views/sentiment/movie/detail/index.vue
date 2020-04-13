@@ -132,6 +132,11 @@ export default class MoviePage extends ViewBase {
   async created() {
     this.movieId = this.$route.params.movieId
     this.sidebar.diggId = this.movieId
+    // 无竞品的时候，跳设置竞品页
+    this.sidebar.rivalIds = {
+      businessType: '3',
+      businessObjectIdList: String(this.movieId)
+    }
     await this.getMovieInfo()
     await this.getHeatAnalysis()
     await this.getEventList()
@@ -193,12 +198,6 @@ export default class MoviePage extends ViewBase {
         query: {
           ids: ids.slice(0, 3).join(',')
         }
-      }
-    } else {
-      // 无竞品的时候，跳设置竞品页
-      this.sidebar.rivalIds = {
-        businessType: 3,
-        businessObjectIdList: this.movieId
       }
     }
   }

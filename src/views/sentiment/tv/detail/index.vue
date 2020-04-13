@@ -126,9 +126,10 @@ export default class TVPage extends ViewBase {
   async created() {
     this.tvId = this.$route.params.tvId
     this.sidebar.diggId = this.tvId
+    // 无竞品的时候，跳设置竞品页
     this.sidebar.rivalIds = {
-      businessType: 4,
-      businessObjectIdList: this.tvId
+      businessType: '4',
+      businessObjectIdList: String(this.tvId)
     }
     if (this.tvId) {
       await this.getTVInfo()
@@ -185,12 +186,6 @@ export default class TVPage extends ViewBase {
         query: {
           ids: ids.slice(0, 3).join(',')
         }
-      }
-    } else {
-      // 无竞品的时候，跳设置竞品页
-      this.sidebar.rivalIds = {
-        businessType: 4,
-        businessObjectIdList: this.tvId
       }
     }
   }

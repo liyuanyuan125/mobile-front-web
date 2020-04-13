@@ -17,10 +17,7 @@
       :query="{movieIdList}"
       v-if="movieIdList"
       class="praisebox"
-      :link="{
-          page:'praiseHotWordsList',
-          businessType: 3,
-      }"
+      :businessType="3"
     />
     <div class="portrait">
       <moduleHeader title="受众画像" />

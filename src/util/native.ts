@@ -59,7 +59,6 @@ export function registerCallMeInJs() {
  */
 export async function handleUploadImage(obj: any) {
   const data = await callNative('handleUploadImage', obj)
-  devInfo(`[sayHi] native return data:`, data)
   return data
 }
 
@@ -70,7 +69,6 @@ export async function handleUploadImage(obj: any) {
 export async function getApiSignature(obj: any) {
   // devInfo(`getApiSignature`, obj)
   const data = await callNative('getApiSignature', obj)
-  devInfo(`[sayHi] native return data:`, data)
   return data
 }
 /**
@@ -79,7 +77,6 @@ export async function getApiSignature(obj: any) {
  */
 export async function handleGoBack(obj: any) {
   const data = await callNative('handleGoBack', obj)
-  devInfo(`[sayHi] native return data:`, data)
   return data
 }
 
@@ -89,7 +86,6 @@ export async function handleGoBack(obj: any) {
  */
 export async function setNavBarStatus(obj: any) {
   const data = await callNative('setNavBarStatus', obj)
-  devInfo(`[sayHi] native return data:`, data)
   return data
 }
 
@@ -99,7 +95,6 @@ export async function setNavBarStatus(obj: any) {
  */
 export async function openAppLinkClient(obj: any) {
   const data = await callNative('openAppLinkClient', obj)
-  devInfo(`[sayHi] native return data:`, data)
   return data
 }
 
@@ -159,7 +154,6 @@ export async function openAppLink(p: string | AppLink, query: object = {}) {
  */
 export async function handleDialTel(obj: any) {
   const data = await callNative('handleDialTel', obj)
-  devInfo(`[sayHi] native return data:`, data)
   return data
 }
 
@@ -169,7 +163,6 @@ export async function handleDialTel(obj: any) {
  */
 export async function getNativeNetStatus(obj: any) {
   const data = await callNative('getNativeNetStatus', obj)
-  devInfo(`[sayHi] native return data:`, data)
   return data
 }
 
@@ -179,7 +172,6 @@ export async function getNativeNetStatus(obj: any) {
  */
 export async function showShare(obj: any) {
   const data = await callNative('showShare', obj)
-  devInfo(`[sayHi] native return data:`, data)
   return data
 }
 
@@ -189,7 +181,6 @@ export async function showShare(obj: any) {
  */
 export async function showVideoPlayer(obj: any) {
   const data = await callNative('showVideoPlayer', obj)
-  devInfo(`[sayHi] native return data:`, data)
   return data
 }
 
@@ -199,7 +190,6 @@ export async function showVideoPlayer(obj: any) {
  */
 export async function showImageBrowser(obj: any) {
   const data = await callNative('showImageBrowser', obj)
-  devInfo(`[sayHi] native return data:`, data)
   return data
 }
 
@@ -209,7 +199,6 @@ export async function showImageBrowser(obj: any) {
  */
 export async function userHasLoginInH5(obj: any) {
   const data = await callNative('userHasLoginInH5', obj)
-  devInfo(`[sayHi] native return data:`, data)
   return data
 }
 
@@ -219,7 +208,6 @@ export async function userHasLoginInH5(obj: any) {
  */
 export async function startCaptureImage(obj: any) {
   const data = await callNative('startCaptureImage', obj)
-  devInfo(`[sayHi] native return data:`, data)
   return data
 }
 
@@ -229,7 +217,6 @@ export async function startCaptureImage(obj: any) {
  */
 export async function handleCitySelect(obj: any) {
   const data = await callNative('handleCitySelect', obj)
-  devInfo(`[sayHi] native return data:`, data)
   return data
 }
 
@@ -239,7 +226,6 @@ export async function handleCitySelect(obj: any) {
  */
 export async function handleSetRival(obj: any) {
   const data = await callNative('handleSetRival', obj)
-  devInfo(`[sayHi] native return data:`, data)
   return data
 }
 

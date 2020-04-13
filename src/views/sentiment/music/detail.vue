@@ -400,9 +400,10 @@ export default class extends ViewBase {
   }
 
   businessPage(page: string) {
+    const businessType = this.isAlbum ? '6' : '5'
     return {
       page,
-      businessType: 5,
+      businessType,
       businessObjectId: this.id
     }
   }

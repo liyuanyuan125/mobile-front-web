@@ -1,5 +1,6 @@
 <template>
   <div class="options-page">
+    {{applink}}
     <ModuleHeader
       title="口碑评论"
       :link="favorable || (appraiseList || []).length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0 ? link : false" />
@@ -92,8 +93,7 @@ import dataEmpty from '@/views/common/dataEmpty/index.vue'
 export default class PraiseComment extends Vue {
   @Prop({ required: true }) publicPraise?: any
   @Prop({ type: String }) favorable?: any
-  @Prop({ type: Object }) link!: any // 口碑评论更多link
-  @Prop({ type: Object }) applink!: AppLink // app 热词link
+  @Prop({ type: Object }) link!: AppLink // app 热词link
 
   praiseList: any[] = []
   noappraiseList = [{raiseName: '正面评价', raisePercent: 0},
@@ -113,19 +113,19 @@ export default class PraiseComment extends Vue {
   wordLink(word: string, markType: number) {
     let link: AppLink = {
       page: 'praiseHotWordsDetail',
-      businessType: this.applink.businessType, // 业务类型
-      businessObjectId: this.applink.businessObjectId, // 业务 id
+      businessType: this.link.businessType, // 业务类型
+      businessObjectId: this.link.businessObjectId, // 业务 id
       keyword: encodeURIComponent(word),
       markType
     }
     if (
-      this.applink.eventType &&
-      (this.applink.eventType === 100 || this.applink.eventType === 101)
+      this.link.eventType &&
+      (this.link.eventType === 100 || this.link.eventType === 101)
     ) {
       link = {
         page: 'eventPraiseHotWordsDetail',
-        eventType: this.applink.eventType, // 业务类型
-        eventId: this.applink.eventId, // 业务 id
+        eventType: this.link.eventType, // 业务类型
+        eventId: this.link.eventId, // 业务 id
         keyword: encodeURIComponent(word),
         markType
       }

@@ -231,12 +231,12 @@ export function getRingOption(data: any) {
                     rich: {
                         a: {
                             color: '#333',
-                            fontSize: 12,
+                            fontSize: 10,
                             lineHeight: 2,
                             padding: [25, 25, 90, 10]
                         },
                         b: {
-                            fontSize: 12,
+                            fontSize: 10,
                             lineHeight: 2,
                             padding: [-20, 0, 0, -65]
                         }
@@ -268,7 +268,7 @@ export function getRingOption(data: any) {
                     labelLine: {  // 指示线状态
                         show: true,
                         smooth: 0,
-                        length: 5,
+                        length: 25,
                         length2: data.length2,
                         lineStyle: {
                           width: 1,

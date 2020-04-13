@@ -73,7 +73,7 @@ export default class Options extends Vue {
   /* 接口传参日期格式 */
   @Prop({ type: String, default: 'YYYYMMDD' }) timeFormat!: string
 
-  @Prop({ type: Object }) link!: AppLink
+  @Prop({ type: Number }) businessType!: number
 
   optionsList: any = optionsList
   days = 'last_7_day'
@@ -131,7 +131,7 @@ export default class Options extends Vue {
   wordLink(word: string, id: string) {
     const link: AppLink = {
       page: 'praiseHotWordsDetail',
-      businessType: this.link.businessType, // 业务类型
+      businessType: this.businessType, // 业务类型
       businessObjectId: id, // 业务 id
       keyword: encodeURIComponent(word),
       markType: this.indexs + 1

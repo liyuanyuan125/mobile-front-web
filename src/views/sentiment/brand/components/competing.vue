@@ -1,49 +1,52 @@
 <template>
   <div class="compet-content">
     <ModuleHeader title="竞品分析" />
-    <ul>
-      <li class="flex-box" v-for="(item, index) in getRivalList" v-if="index < 3" :key="item.rivalId">
-        <div class="parse-left">
-          <img :src="item.rivalCover.url" alt=""/>
-          <p>{{item.rivalName}}</p>
-        </div>
-        <div class="parse-right flex-box">
-          <!-- 当前品牌 -->
-          <div v-if="!item.eventName">
-            <p class="col_8f flex-box">
-              <span class="pad-right">昨日热度</span>
-              <span>昨日互动量</span>
-            </p>
-            <h5 class="flex-box numbers">
-              <span class="pad-right">{{item.yesterHeatCount}}</span>
-              <span>{{item.yesterInteractCount}}</span>
-            </h5>
+    <div v-if="getRivalList.length">
+      <ul>
+        <li class="flex-box" v-for="(item, index) in getRivalList" v-if="index < 3" :key="item.rivalId">
+          <div class="parse-left">
+            <img :src="item.rivalCover.url" alt=""/>
+            <p>{{item.rivalName}}</p>
           </div>
-          <!-- 竞品显示内容 -->
-          <div v-else>
-            <h5 class="flex-box numbers">
-              <span class="pad-right trend-head">
-                {{item.yesterHeatCount}}
-                <i class="col_7ca4ff" v-if="item.yesterHeatTrend">{{changeNum(item.yesterHeatTrend)}}</i>
-                <i v-else>-</i>
-              </span>
-              <span class="trend-interact">
-                {{item.yesterInteractCount}}
-                <i class="col_ff6262" v-if="item.yesterInteractTrend">{{changeNum(item.yesterInteractTrend)}}</i>
-                <i v-else>-</i>
-              </span>
-            </h5>
-            <p class="event-name">
-              <span>{{item.eventNameStr}}</span>
-              <i>{{item.eventCreatTime}}</i>
-            </p>
+          <div class="parse-right flex-box">
+            <!-- 当前品牌 -->
+            <div v-if="!item.eventName">
+              <p class="col_8f flex-box">
+                <span class="pad-right">昨日热度</span>
+                <span>昨日互动量</span>
+              </p>
+              <h5 class="flex-box numbers">
+                <span class="pad-right">{{item.yesterHeatCount}}</span>
+                <span>{{item.yesterInteractCount}}</span>
+              </h5>
+            </div>
+            <!-- 竞品显示内容 -->
+            <div v-else>
+              <h5 class="flex-box numbers">
+                <span class="pad-right trend-head">
+                  {{item.yesterHeatCount}}
+                  <i class="col_7ca4ff" v-if="item.yesterHeatTrend">{{changeNum(item.yesterHeatTrend)}}</i>
+                  <i v-else>-</i>
+                </span>
+                <span class="trend-interact">
+                  {{item.yesterInteractCount}}
+                  <i class="col_ff6262" v-if="item.yesterInteractTrend">{{changeNum(item.yesterInteractTrend)}}</i>
+                  <i v-else>-</i>
+                </span>
+              </h5>
+              <p class="event-name">
+                <span>{{item.eventNameStr}}</span>
+                <i>{{item.eventCreatTime}}</i>
+              </p>
+            </div>
           </div>
-        </div>
-      </li>
-    </ul>
-    <div class="submit-button">
-      <router-link :to="{name: 'sentimentbrand-analyze', query: {ids: idsString}}" class="to-link" >查看详细报告</router-link>
+        </li>
+      </ul>
+      <div class="submit-button">
+        <router-link :to="{name: 'sentimentbrand-analyze', query: {ids: idsString}}" class="to-link" >查看详细报告</router-link>
+      </div>
     </div>
+    <DataEmpty v-else/>
   </div>
 </template>
 
@@ -54,11 +57,13 @@ import moment from 'moment'
 import ModuleHeader from '@/components/moduleHeader'
 import { imgFixed } from '@/fn/imgProxy'
 import {readableNumber} from '@/util/dealData'
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
 
 @Component({
   components: {
     [Icon.name]: Icon,
-    ModuleHeader
+    ModuleHeader,
+    DataEmpty
   }
 })
 export default class Main extends Vue {

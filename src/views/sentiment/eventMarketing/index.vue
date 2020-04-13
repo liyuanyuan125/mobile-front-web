@@ -104,25 +104,26 @@ export default class KolPage extends ViewBase {
   favorable: any = ''
   publicPraise = {}
   // 数据表切换列表
+  // 表示已选内容的code: 新闻 news，评论 comment,  点赞 praise，转发 forward，阅读 read
   tabList: any = [
     {
-      key: 'newsList',
+      key: 'news',
       name: '新闻'
     },
     {
-      key: 'commentList',
+      key: 'comment',
       name: '评论'
     },
     {
-      key: 'praisedList',
+      key: 'praise',
       name: '点赞'
     },
     {
-      key: 'forwardList',
+      key: 'forward',
       name: '转发'
     },
     {
-      key: 'readList',
+      key: 'read',
       name: '阅读'
     }
   ]
@@ -216,7 +217,9 @@ export default class KolPage extends ViewBase {
     const link: AppLink = {
       page: 'eventTrendDetail',
       eventId: this.eventId,
-      title: encodeURIComponent(this.title)
+      title: encodeURIComponent(this.title),
+      contentCode: this.newPk
+      // 表示已选内容的code: 新闻 news，评论 comment,  点赞 praise，转发 forward，阅读 read
     }
     openAppLink(link)
   }

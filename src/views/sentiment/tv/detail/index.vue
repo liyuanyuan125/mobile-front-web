@@ -27,7 +27,6 @@
       :genderList="userAnalysis.genderList"
       id="user"
       :link="getApplink('userAnalysis')"
-      :title="tvInfo.tvName"
     />
     <EventList :eventList="eventList" id="event" :link="getApplink('eventMarketingList')" />
     <RivalAnalysis :rivalList="rivalAnalysis" id="rival" />

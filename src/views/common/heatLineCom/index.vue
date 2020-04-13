@@ -1,6 +1,7 @@
 <template>
    <div>
      <div>
+       <p class="hot-title">{{lineTitle}}</p>
        <dubline 
           :lineData="lineDatas" 
           v-if="lineDatas.xDate.length" 
@@ -87,5 +88,10 @@ export default class Main extends Vue {
 }
 .platfrom {
   border-top: solid 1px rgba(216, 216, 216, 0.5);
+}
+.hot-title {
+  font-size: 34px;
+  color: #303030;
+  padding-left: 30px;
 }
 </style>

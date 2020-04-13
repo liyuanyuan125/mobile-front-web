@@ -22,6 +22,8 @@ export default class Main extends Vue {
   @Prop({ type: String, default: '#f7a345' }) dotColor!: string
   /** tooltip 文本色 */
   @Prop({ type: String, default: '#8f8f8f' }) textColor!: string
+  /** title text */
+  @Prop({type: String}) titleText!: string
   /** tooltip 事件处理 */
   @Prop({ type: Object, default: () => ({}) }) events!: any
   /** 自定义 tooltip框 内容 */
@@ -95,7 +97,7 @@ export default class Main extends Vue {
 
     const options: any = {
       title: {
-        text: this.lineData.title,
+        // text: this.lineData.title || '综合热度',
         left: 12,
         textStyle: {
           fontSize: 17,
@@ -181,7 +183,7 @@ export default class Main extends Vue {
       grid: {
         left: 15,
         right: 26,
-        top: 50,
+        top: 24,
         bottom: 40,
         containLabel: true
       },

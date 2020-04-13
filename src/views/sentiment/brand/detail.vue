@@ -36,7 +36,7 @@
       id="event"
       class="bg_fff"
     />
-    <Competing :rivalList="rivalList" v-if="rivalList.length" id="part" />
+    <Competing :rivalList="rivalList" id="part" />
   </div>
 </template>
 
@@ -153,7 +153,7 @@ export default class BrandPage extends ViewBase {
         userAnalysis
       } } = await brandList({brandId})
 
-      this.brandInfo = brandInfo // 头部基础信息
+      this.brandInfo = brandInfo || {} // 头部基础信息
       this.bubbleData = brandOverView // 气泡数据
       this.publicPraise = publicPraise // 口碑
       this.userAnalysis = userAnalysis // 用户分析

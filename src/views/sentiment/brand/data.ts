@@ -1,20 +1,23 @@
 import {rivalreportDetail } from '@/api/brand'
+import { keyBy } from 'lodash'
+import { getPercentFieldValue } from '@/util/dealData'
 
 export async function reportDetail(query: any) {
   const {code, data, msg} = await rivalreportDetail(query)
 
-  const {genderList, rivalList} = data
+  const {genderList} = data
   // 处理性别分布数据
-  const sexData = (genderList || []).map((it: any) => {
-    const format = Number((it.dataList[0].value / 100).toFixed(1))
-    const rate1: number = it.dataList ? format : 0
-    const rate2: number = 100 - rate1
+  const sexData = (genderList || []).map(({rivalName, dataList}: any) => {
+    const dataMap = keyBy(dataList, 'name')
+    const man = dataMap.男
+    const woman = dataMap.女
     return {
-      name: it.rivalName,
-      rate1,
-      rate2,
+      name: rivalName,
+      rate1: getPercentFieldValue(man),
+      rate2: getPercentFieldValue(woman),
     }
   })
+
   return {
     code,
     data: {

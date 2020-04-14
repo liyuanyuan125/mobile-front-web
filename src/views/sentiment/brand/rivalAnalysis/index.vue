@@ -77,6 +77,7 @@ import TabNav, { TabNavItem } from '@/components/tabNav'
 import {rivalHeatAnalysis, rivalPraise } from '@/api/brand'
 import {reportDetail} from '../data'
 
+
 @Component({
   components: {
     ModuleHeader,
@@ -234,8 +235,8 @@ export default class Main extends Vue {
         brandIdList: this.brandIdList
       })
       this.rivalList = rivalList || []
-      this.ageRangeList = ageRangeList || []
-      this.genderList = sexData || []
+      this.ageRangeList = ageRangeList || [] // 年龄
+      this.genderList = sexData || [] // 性别
 
       // this.promotionList = promotionList || []
       // this.sensTableItem = promotionList || []

@@ -2,8 +2,8 @@
   <div class="options-page">
     <ModuleHeader
       title="口碑评论"
-      :link="publicPraise && (favorable || (appraiseList || []).length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0) ? link : null" />
-    <div v-if="publicPraise && (favorable || (appraiseList || []).length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0)">
+      :link="show ? link : null" />
+    <div v-if="show">
       <div class="options-top">
         <div class="options-left">
           <span class="hot" @click="showNote">
@@ -37,9 +37,9 @@
             </p>
           </div>
           <div class="hot-box-right">
-            <div v-if="(publicPraise.hotWordList || []).length > 0">
+            <div v-if="hotWordList.length > 0">
               <span
-                v-for="(it,index) in (publicPraise.hotWordList || []).slice(0,4)"
+                v-for="(it,index) in hotWordList.slice(0,4)"
                 :key="it+index"
                 class="van-ellipsis"
                 @click="wordLink(it,0)"
@@ -55,9 +55,9 @@
             </p>
           </div>
           <div class="hot-box-right">
-            <div v-if="(publicPraise.badWordList || []).length > 0">
+            <div v-if="badWordList.length > 0">
               <span
-                v-for="(it,index) in (publicPraise.badWordList || []).slice(0,4)"
+                v-for="(it,index) in badWordList.slice(0,4)"
                 :key="it + index"
                 class="van-ellipsis"
                 @click="wordLink(it,3)"
@@ -98,6 +98,15 @@ export default class PraiseComment extends Vue {
   noappraiseList = [{raiseName: '正面评价', raisePercent: 0},
   {raiseName: '中性评价', raisePercent: 0},
   {raiseName: '负面评价', raisePercent: 0}]
+
+  get hotWordList() {
+    return this.publicPraise ? (this.publicPraise.hotWordList || []) : []
+  }
+
+  get badWordList() {
+    return this.publicPraise ? (this.publicPraise.badWordList || []) : []
+  }
+
   get appraiseList() {
     const list = this.publicPraise && (this.publicPraise.appraiseList || [])
     if (list && list.length) {
@@ -106,6 +115,11 @@ export default class PraiseComment extends Vue {
       }
     }
     return list
+  }
+
+  get show() {
+    return this.favorable ||
+    (this.publicPraise && (this.appraiseList.length > 0 || this.badWordList.length > 0 || this.hotWordList.length > 0))
   }
 
   // 热词 applink 跳转

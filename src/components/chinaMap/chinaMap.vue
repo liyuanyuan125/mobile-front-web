@@ -51,6 +51,8 @@ export default class ChinaMap extends Vue {
 
   @Prop({ type: String, default: '#8798af' }) tooltipNameColor!: string
 
+  @Prop({ type: Number, default: 1 }) digits!: number
+
   get chartData() {
     const result: any = {
       tooltip: {
@@ -63,38 +65,16 @@ export default class ChinaMap extends Vue {
             return null
           }
 
-          const valueShow = `${value}${this.unit}`
-          const boxStyle = cssifyObject({
-            position: 'relative',
-            lineHeight: '16px',
-            paddingLeft: '12px'
-          })
-          const valueStyle = cssifyObject({
-            color: this.tooltipValueColor,
-            fontSize: '18px',
-            fontWeight: 'bold',
-            fontFamily: 'DINAlternate-Bold, DINAlternate'
-          })
-          const dotStyle = cssifyObject({
-            position: 'absolute',
-            left: '2px',
-            top: '5px',
-            width: '6px',
-            height: '6px',
-            borderRadius: '100%',
-            backgroundColor: color,
-          })
-          const nameStyle = cssifyObject({
-            color: this.tooltipNameColor,
-            fontSize: '11px',
-          })
+          const valueShow = `${value.toFixed(this.digits)}${this.unit}`
+          const valueColor = this.tooltipValueColor
+          const nameColor = this.tooltipNameColor
           const html = `
-            <div style="${boxStyle}">
-              <p style="${valueStyle}">
-                <i style="${dotStyle}"></i>
+            <div class="tooltip-box">
+              <div class="tooltip-value" style="color: ${valueColor}">
+                <i class="tooltip-dot" style="background-color: ${color}"></i>
                 ${valueShow}
-              </p>
-              <p style="${nameStyle}">${name}</p>
+              </div>
+              <div class="tooltip-name" style="color: ${nameColor}">${name}</p>
             </div>
           `
           return html.trim()
@@ -144,9 +124,36 @@ export default class ChinaMap extends Vue {
   position: relative;
   width: 100%;
   height: 320px;
+
+  /deep/ .tooltip-box {
+    position: relative;
+    line-height: 32px;
+    padding-left: 24px;
+  }
+
+  /deep/ .tooltip-value {
+    font-size: 36px;
+    font-weight: bold;
+    font-family: DINAlternate-Bold, DINAlternate, sans-serif;
+  }
+
+  /deep/ .tooltip-dot {
+    position: absolute;
+    left: 4px;
+    top: 10px;
+    width: 12px;
+    height: 12px;
+    border-radius: 100%;
+  }
+
+  /deep/ .tooltip-name {
+    font-size: 22px;
+  }
 }
+
 .the-chart {
   width: 100%;
   height: 100%;
 }
+
 </style>

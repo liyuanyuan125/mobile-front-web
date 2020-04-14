@@ -2,10 +2,10 @@
   <div class="content-wrap">
     <div class="chart-default" v-if="!dataOption"></div>
     <div ref="refChart" v-if="dataOption" class="chart-wrap"></div>
-    <div class="color" v-if="this.dataOption != null">
+    <!-- <div class="color" v-if="this.dataOption != null">
       <span class="lf">男</span>
       <span class="rf">女</span>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -57,17 +57,13 @@ export default class BarGraph extends ViewBase {
         data: this.dataOption.xData,
         axisLabel: {
           interval: 0,
+          show: true,
+          inside: false,
           // X轴上字的样式
           textStyle: {
-            // normal: {
-            // color: '#88AAF6',
-            // opacity: 0,
-            color(params: any) {
-              const colorList: any = ['#88AAF6', '#F18F8F']
-              return colorList[params.dataIndex]
+            color: (param: any) => {
+              return param.indexOf('男') > -1 ? '#7CA4FF' : '#FF6262'
             }
-            // },
-            // fontSize: 14
           }
         },
         axisLine: {
@@ -110,9 +106,9 @@ export default class BarGraph extends ViewBase {
 
       grid: {
         left: 10,
-        top: '27px',
-        bottom: '26px',
-        right: '15px',
+        top: 15,
+        bottom: 0,
+        right: 10,
         containLabel: true,
         show: false,
         borderWidth: 0

@@ -1,15 +1,15 @@
 <template>
   <div class="userportrait">
-    <ModuleHeader title="用户分析" :link="link" />
-    <van-row type="flex" class="raitwrap">
-      <van-col span="10">
+    <ModuleHeader title="用户分析" :link="genderListData || ageRangeListData ? link : null" />
+    <van-row type="flex" align="center" class="raitwrap" v-if="genderListData || ageRangeListData">
+      <van-col :span="genderListData && ageRangeListData ? 10 :24" v-if="genderListData">
         <BarGraph :dataOption="genderListData" :colorList="colorList" />
       </van-col>
-      <van-col span="13">
+      <van-col :span="genderListData && ageRangeListData ? 14 :24" v-if="ageRangeListData">
         <barGraphRow :dataOption="ageRangeListData" :itemlist="itemlist" />
       </van-col>
     </van-row>
-    <!-- <dataEmpty /> -->
+    <dataEmpty v-else />
   </div>
 </template>
 
@@ -37,7 +37,7 @@ export default class UserPortrait extends ViewBase {
   @Prop({ type: Array }) genderList!: any
   @Prop({ type: Object }) link!: any
   // 男女比例颜色信息
-  @Prop({ type: Array, default: () => ['#88AAF6', '#F18F8F'] }) colorList!: string[]
+  @Prop({ type: Array, default: () => ['#7CA4FF', '#FF6262'] }) colorList!: string[]
 
   // ageRangeListData: any = null
   // genderListData: any = null
@@ -57,25 +57,12 @@ export default class UserPortrait extends ViewBase {
       bgColor: '#F0F0F0'
     }
   }
-  created() {
-    // this.add()
-  }
-
-  add() {
-    if (this.arr.length != this.ageRangeList.length) {
-      this.arr.push(100)
-      this.add()
-    }
-    if (this.arr.length == this.ageRangeList.length) {
-      return this.arr
-    }
-  }
 
   // 处理年龄数据
   get ageRangeListData() {
     const xData: any[] = []
     const yData: any[] = []
-    let ageList: any = {}
+    let ageList: any = null
     const rait = this.ageRangeList
     if (rait && rait.length) {
       for (const item of this.ageRangeList) {
@@ -94,12 +81,9 @@ export default class UserPortrait extends ViewBase {
     const xData: any[] = []
     const yData: any[] = []
     // const rait: any = []
-    let genderList: any = {}
-    if (this.genderList[0].name == '女') {
-      this.raitList = [
-        this.genderList[1],
-        this.genderList[0]
-      ]
+    let gender: any = null
+    if (this.genderList && this.genderList[0].name == '女') {
+      this.raitList = [this.genderList[1], this.genderList[0]]
     } else {
       this.raitList = this.genderList
     }
@@ -108,12 +92,12 @@ export default class UserPortrait extends ViewBase {
         xData.push(item.name)
         yData.push((item.value / 100).toFixed(1))
       }
-      genderList = {
+      gender = {
         xData,
         yData
       }
     }
-    return genderList
+    return gender
   }
 }
 </script>
@@ -127,14 +111,12 @@ h4 {
   margin-left: 5%;
 }
 .userportrait {
-  height: 500px;
-  padding: 50px 0;
+  // min-height: 500px;
+  padding: 50px 30px;
   background: #fff;
   border-top: 20px solid #f7f6f9;
 }
-.module-header {
-  padding: 0 30px;
-}
+
 .raitwrap {
   margin-top: 30px;
 }

@@ -94,6 +94,7 @@
         :data="table.data"
         :columns="table.columns"
         class="daily-table-wrap"
+        ref="table"
       />
       <a
         class="daily-form-more"
@@ -292,6 +293,11 @@ export default class PlayStats extends Vue {
     const view = await this.fetch(query)
     const list = Array.isArray(view) ? view : [ { label: '', view } ]
     this.viewList = list
+
+    this.$nextTick(() => {
+      const table = this.$refs.table as Table
+      table.updateUI()
+    })
   }
 
   handleFormMore() {

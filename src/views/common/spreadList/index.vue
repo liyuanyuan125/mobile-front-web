@@ -180,10 +180,14 @@ export default class SpreadList extends Vue {
     }
     .datebox {
       font-size: 26px;
-      line-height: 32px;
+      line-height: 40px;
       display: flex;
       p:first-child {
         flex: 1;
+        span {
+          display: inline-block;
+          vertical-align: middle;
+        }
       }
       .user {
         font-size: 26px;

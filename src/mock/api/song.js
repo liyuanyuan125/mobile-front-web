@@ -712,8 +712,8 @@ mockGet('/yuqing/music/song/rival/report', () => {
       {
         rivalName: 'Last Dance',
         dataList: [
-          { name: '男', value: 8190 },
-          { name: '女', value: 1810 },
+          { name: '男', value: 8100 },
+          { name: '女', value: 1900 },
         ]
       },
       {

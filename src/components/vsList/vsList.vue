@@ -32,10 +32,10 @@
 
           <span class="vs-text-1" v-if="!allEmpty(it)">
             <label>{{ labels[0] }}</label>
-            <em :style="{ color: colors[0] }">{{ it.rate1 ? `${it.rate1}%` : '-' }}</em>
+            <em :style="{ color: colors[0] }">{{ it.rate1 ? `${it.rate1.toFixed(digits)}%` : '-' }}</em>
           </span>
           <span class="vs-text-2" v-if="!allEmpty(it)">
-            <em :style="{ color: colors[1] }">{{ it.rate2 ? `${it.rate2}%` : '-' }}</em>
+            <em :style="{ color: colors[1] }">{{ it.rate2 ? `${it.rate2.toFixed(digits)}%` : '-' }}</em>
             <label>{{ labels[1] }}</label>
           </span>
         </div>
@@ -60,6 +60,8 @@ export default class VsList extends Vue {
   @Prop({ type: Number, default: 2 }) nameLines!: number
 
   @Prop({ type: String, default: '暂无数据' }) empty!: string
+
+  @Prop({ type: Number, default: 1 }) digits!: number
 
   get nameClass() {
     return getLineClass(this.nameLines)

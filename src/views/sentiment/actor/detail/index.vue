@@ -309,9 +309,11 @@ export default class KolPage extends ViewBase {
     try {
       const pkUser = await getPkUser({ actorId: this.$route.params.actorId })
       this.pkUserList = pkUser.data || []
-      this.pkIdList = (pkUser.data || []).map((it: any) => {
-        return it.rivalId
-      }).slice(0, 2)
+      this.pkIdList = (pkUser.data || [])
+        .map((it: any) => {
+          return it.rivalId
+        })
+        .slice(0, 2)
       if (this.pkIdList.length) {
         // 有竞品数据跳竞品报告页
         this.sidebar.rivalIds = {
@@ -457,7 +459,6 @@ export default class KolPage extends ViewBase {
   background: #fff;
 }
 .pane {
-  padding-top: 30px;
   min-height: 200px;
   background-color: #fff;
   margin-bottom: 20px;

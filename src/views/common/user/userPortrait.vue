@@ -1,11 +1,11 @@
 <template>
   <div class="userportrait">
-    <ModuleHeader title="用户分析" :link="ageRangeList.length || genderList.length ? link : null" />
-    <van-row type="flex" class="raitwrap" v-if="ageRangeList.length || genderList.length">
-      <van-col span="10">
+    <ModuleHeader title="用户分析" :link="genderListData || ageRangeListData ? link : null" />
+    <van-row type="flex" align="center" class="raitwrap" v-if="genderListData || ageRangeListData">
+      <van-col :span="genderListData && ageRangeListData ? 10 :24" v-if="genderListData">
         <BarGraph :dataOption="genderListData" :colorList="colorList" />
       </van-col>
-      <van-col span="14">
+      <van-col :span="genderListData && ageRangeListData ? 14 :24" v-if="ageRangeListData">
         <barGraphRow :dataOption="ageRangeListData" :itemlist="itemlist" />
       </van-col>
     </van-row>
@@ -37,7 +37,7 @@ export default class UserPortrait extends ViewBase {
   @Prop({ type: Array }) genderList!: any
   @Prop({ type: Object }) link!: any
   // 男女比例颜色信息
-  @Prop({ type: Array, default: () => ['#88AAF6', '#F18F8F'] }) colorList!: string[]
+  @Prop({ type: Array, default: () => ['#7CA4FF', '#FF6262'] }) colorList!: string[]
 
   // ageRangeListData: any = null
   // genderListData: any = null
@@ -62,7 +62,7 @@ export default class UserPortrait extends ViewBase {
   get ageRangeListData() {
     const xData: any[] = []
     const yData: any[] = []
-    let ageList: any = {}
+    let ageList: any = null
     const rait = this.ageRangeList
     if (rait && rait.length) {
       for (const item of this.ageRangeList) {
@@ -81,7 +81,7 @@ export default class UserPortrait extends ViewBase {
     const xData: any[] = []
     const yData: any[] = []
     // const rait: any = []
-    let gender: any = {}
+    let gender: any = null
     if (this.genderList && this.genderList[0].name == '女') {
       this.raitList = [this.genderList[1], this.genderList[0]]
     } else {
@@ -111,15 +111,13 @@ h4 {
   margin-left: 5%;
 }
 .userportrait {
-  height: 500px;
-  padding: 50px 0;
+  // min-height: 500px;
+  padding: 50px 30px;
   background: #fff;
   border-top: 20px solid #f7f6f9;
 }
-.module-header {
-  padding: 0 30px;
-}
+
 .raitwrap {
-  padding: 30px;
+  margin-top: 30px;
 }
 </style>

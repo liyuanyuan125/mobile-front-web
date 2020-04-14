@@ -19,19 +19,8 @@ export default class BarGraphRow extends ViewBase {
   @Prop({ type: Object }) dataOption!: any
   @Prop({ type: Object }) itemlist: any
 
-  // itemlist: any = {
-  //   colorMain: '#7CA4FF', // 右边显示数据颜色
-  //   borderRadius: [3, 3, 3, 3], // 柱形图圆角
-  //   colorColumn: '#7CA4FF', // 柱子的颜色
-  //   widthColumn: 10, // 柱子的宽度
-  //   normalColor: [100 , 100 , 100 , 100 , 100 , 100 , 100 , 100 , 100 , 100 , ] // 默认的底层数据列表,跟展示数据的长度保持一致。默认为100
-  //   bgColor: '#F0F0F0', // 柱状图条形图背景展示颜色
-  // }
-
   mounted() {
     if (this.dataOption) {
-      // console.log(this.dataOption.xData.length)
-      // this.add(this.normalColor.length)
       this.updateCharts()
     }
   }
@@ -41,19 +30,12 @@ export default class BarGraphRow extends ViewBase {
     this.updateCharts()
   }
 
-  // add(num: any) {
-  //   console.log(111,num)
-  //   if (num != this.dataOption.xData.length) {
-  //       this.normalColor.push(100)
-  //   }
-  //   // this.add(this.normalColor.length)
-  // }
-
   // 画图
   updateCharts() {
     const chartEl = this.$refs.refChart as HTMLDivElement
     echarts.dispose(chartEl)
     chartEl.innerHTML = ''
+    chartEl.style.height = this.dataOption.yData.length * 45 + 'px'
     const myChart = echarts.init(chartEl)
     const option: any = {
       xAxis: {
@@ -84,9 +66,9 @@ export default class BarGraphRow extends ViewBase {
       },
 
       grid: {
-        left: 0,
-        top: 0,
-        bottom: 0,
+        left: 5,
+        top: 15,
+        bottom: 5,
         right: '50px',
         containLabel: true,
         show: false,
@@ -157,7 +139,7 @@ export default class BarGraphRow extends ViewBase {
 
 <style lang="less" scoped>
 .content-wrap {
-  height: 350px;
+  // height: 350px;
   position: relative;
   width: 100%;
   // height: 100%;

@@ -106,7 +106,7 @@ export default class BarGraph extends ViewBase {
 
       grid: {
         left: 10,
-        top: 15,
+        top: 25,
         bottom: 0,
         right: 10,
         containLabel: true,

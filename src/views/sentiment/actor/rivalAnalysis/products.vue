@@ -21,6 +21,7 @@
         :interactList="combinedHeat.interactList"
         :materialList="combinedHeat.materialList"
         :tabs="combinedHeat.tabs"
+        :daysNum="day"
         />
     </section>
 
@@ -82,7 +83,8 @@ import VsList, { VsItem } from '@/components/vsList'
 import Table from '@/views/common/table/table.vue'
 import TabNav, { TabNavItem } from '@/components/tabNav'
 import { rivalPraise , rivalanaly , rivalHeatAnalysis } from '@/api/kol'
-
+import { keyBy, groupBy } from 'lodash'
+import { getPercentFieldValue, transformPercentField } from '@/util/dealData'
 import { toast } from '@/util/toast'
 import { Tab, Tabs } from 'vant'
 
@@ -308,11 +310,16 @@ export default class KolPage extends ViewBase {
        this.rivalList = rivalList
        this.publicObj.tableItem = platformList
        this.ageRangeList = ageRangeList
-       this.sexdata = (genderList || []).map((it: any) => {
+       this.sexdata = (genderList || []).map((it: any , dataList: any) => {
+         const dataMap = keyBy(dataList, 'name')
+         const man = dataMap.男
+         const woman = dataMap.女
          return {
            name: it.rivalName,
-           rate1: 98.8,
-           rate2: 1.2
+           rate1: it.dataList[0].name == '男' ? (it.dataList[0].value / 100)
+           : (it.dataList[1].value / 100),
+           rate2: it.dataList[0].name == '男' ? (it.dataList[1].value / 100)
+           : (it.dataList[0].value / 100),
          }
        })
        this.userRegion = userRegion

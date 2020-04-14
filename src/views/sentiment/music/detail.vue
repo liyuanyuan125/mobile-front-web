@@ -74,7 +74,7 @@
     </section>
 
     <section class="pane" id="song" v-if="isAlbum">
-      <ModuleHeader title="歌曲热度" tip="歌曲热度描述" />
+      <ModuleHeader title="歌曲热度" tip="表示歌曲在一定计算周期内用户的关注程度，统计数据包括：音乐平台播放/评论/上榜表现及其他平台的互动数据。" />
       <div class="song-wrap" ref="songWrap" v-if="songList && songList.length > 0">
         <ul class="song-list" ref="songList">
           <li class="song-head">
@@ -154,7 +154,6 @@
       <EventList
         eventName="营销事件"
         :eventList="eventData"
-        :params="{}"
         :link="businessPage('eventMarketingList')"
       />
     </section>
@@ -192,7 +191,8 @@
 
     <section class="pane" id="rival">
       <ModuleHeader :title="isAlbum ? '竞品分析' : '相似歌曲'" />
-      <ul class="rival-list">
+
+      <ul class="rival-list" v-if="rivalList && rivalList.length > 0">
         <li v-for="it in rivalList" :key="it.id" class="rival-item">
           <router-link :to="it.link" class="rival-item-in">
             <figure class="rival-fig">
@@ -227,7 +227,9 @@
         </li>
       </ul>
 
-      <div class="rival-more">
+      <DataEmpty v-if="rivalList && rivalList.length == 0" />
+
+      <div class="rival-more" v-if="rivalList && rivalList.length > 0">
         <router-link :to="rivalRoute" class="rival-button">查看详细报告</router-link>
       </div>
     </section>
@@ -455,7 +457,7 @@ export default class extends ViewBase {
 
       // 音乐人分析
       singerList
-    } = (await getBasic(this.id, this.isAlbum)) as any
+    } = await getBasic(this.id, this.isAlbum) as any
     this.isDigital = isDigital
     this.basic = basic
     this.popupData = popupData

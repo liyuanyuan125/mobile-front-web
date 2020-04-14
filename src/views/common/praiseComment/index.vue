@@ -2,8 +2,8 @@
   <div class="options-page">
     <ModuleHeader
       title="口碑评论"
-      :link="favorable || appraiseList.length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0 ? link : false" />
-    <div v-if="appraiseList.length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0">
+      :link="show ? link : null" />
+    <div v-if="show">
       <div class="options-top">
         <div class="options-left">
           <span class="hot" @click="showNote">
@@ -15,14 +15,15 @@
         <div class="options-right">
           <div
             class="options-progress"
-            v-for="(it, index) in (appraiseList.length > 0 ? appraiseList : noappraiseList)"
+            v-for="(it, index) in ((appraiseList || []).length > 0 ? appraiseList : noappraiseList)"
             :key="it.raiseName + index"
           >
             <span>{{it.raiseName}}</span>
             <div class="progress">
               <Progress :percentage="it.raisePercent || 0" color="#88aaf6" stroke-width="5" />
             </div>
-            <div class="progress-text">{{it.raisePercent || '-'}}%</div>
+            <div class="progress-text" v-if="it.raisePercent">{{it.raisePercent}}%</div>
+            <div class="progress-text" v-else>-</div>
           </div>
         </div>
       </div>
@@ -36,14 +37,15 @@
             </p>
           </div>
           <div class="hot-box-right">
-            <div class="hot-none">
+            <div v-if="hotWordList.length > 0">
               <span
-                v-for="(it,index) in (publicPraise.hotWordList || []).slice(0,4)"
+                v-for="(it,index) in hotWordList.slice(0,4)"
                 :key="it+index"
                 class="van-ellipsis"
                 @click="wordLink(it,0)"
               >{{it}}</span>
             </div>
+            <div v-else class="nomore"><span>-</span></div>
           </div>
         </div>
         <div class="hot-box">
@@ -53,14 +55,15 @@
             </p>
           </div>
           <div class="hot-box-right">
-            <div class="hot-none">
+            <div v-if="badWordList.length > 0">
               <span
-                v-for="(it,index) in (publicPraise.badWordList || []).slice(0,4)"
+                v-for="(it,index) in badWordList.slice(0,4)"
                 :key="it + index"
                 class="van-ellipsis"
                 @click="wordLink(it,3)"
               >{{it}}</span>
             </div>
+            <div v-else class="nomore"><span>-</span></div>
           </div>
         </div>
       </div>
@@ -89,20 +92,34 @@ import dataEmpty from '@/views/common/dataEmpty/index.vue'
 export default class PraiseComment extends Vue {
   @Prop({ required: true }) publicPraise?: any
   @Prop({ type: String }) favorable?: any
-  @Prop({ type: Object }) link!: AppLink
+  @Prop({ type: Object }) link!: AppLink // app 热词link
 
   praiseList: any[] = []
   noappraiseList = [{raiseName: '正面评价', raisePercent: 0},
   {raiseName: '中性评价', raisePercent: 0},
   {raiseName: '负面评价', raisePercent: 0}]
+
+  get hotWordList() {
+    return this.publicPraise ? (this.publicPraise.hotWordList || []) : []
+  }
+
+  get badWordList() {
+    return this.publicPraise ? (this.publicPraise.badWordList || []) : []
+  }
+
   get appraiseList() {
-    const list = this.publicPraise.appraiseList || []
+    const list = this.publicPraise && (this.publicPraise.appraiseList || [])
     if (list && list.length) {
       for (const item of list) {
-        item.raisePercent = (item.raisePercent / 100).toFixed(1)
+        item.raisePercent = item.raisePercent ? (item.raisePercent / 100).toFixed(1) : 0
       }
     }
     return list
+  }
+
+  get show() {
+    return this.favorable ||
+    (this.publicPraise && (this.appraiseList.length > 0 || this.badWordList.length > 0 || this.hotWordList.length > 0))
   }
 
   // 热词 applink 跳转
@@ -144,4 +161,10 @@ export default class PraiseComment extends Vue {
 
 <style lang="less" scoped>
 @import url(./index.less);
+.nomore {
+  font-size: 46px;
+  line-height: 18px;
+  text-align: center;
+  font-weight: 800;
+}
 </style>

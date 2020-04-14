@@ -6,7 +6,6 @@
       'tab-nav-hide-header': hideHeader,
       [`tab-nav-count-${list.length}`]: true
     }"
-    ref="box"
   >
     <Tabs
       v-model="model"
@@ -53,11 +52,8 @@ export default class TabNav extends Vue {
 
   clickedScroll = false
 
-  get box() {
-    return this.$refs.box as HTMLElement
-  }
-
-  get children() {
+  // 不做成 get children() 是因为涉及 dom 节点，在 vue 中「易失」
+  getChildren() {
     const ids = this.list.map(it => it.name)
     const elList = ids.map(id => document.getElementById(id))
     return elList
@@ -68,14 +64,15 @@ export default class TabNav extends Vue {
     const nav = document.getElementById(name)
     if (nav) {
       this.clickedScroll = true
-      scrollIntoView(nav, this.box).then(() => this.clickedScroll = false)
+      scrollIntoView(nav, this.$el as HTMLElement)
+      .then(() => this.clickedScroll = false)
     }
     this.model = index
   }
 
   getScrollIndex() {
-    const line = this.box.getBoundingClientRect().bottom + this.scrollThreshold
-    const children = this.children
+    const line = this.$el.getBoundingClientRect().bottom + this.scrollThreshold
+    const children = this.getChildren()
     const count = children.length
 
     for (let index = 0; index < count; index++) {

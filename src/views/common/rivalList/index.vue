@@ -155,8 +155,10 @@ export default class RivalList extends Vue {
       width: 150px;
       height: 195px;
       display: block;
-      border: 1px solid #d4d4d4;
+      border: 1px solid #d8d8d8;
       border-radius: 10px;
+      font-size: 0;
+      line-height: 0;
       background: url('../../../assets/moviedefault.png') no-repeat center center;
       background-size: cover;
     }
@@ -264,7 +266,7 @@ dl.album {
       border-radius: 10px;
       background: url('../../../assets/musicdefault.png') no-repeat center center;
       background-size: cover;
-      border: none;
+      // border: none;
     }
     .close {
       right: -15px;

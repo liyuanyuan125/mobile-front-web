@@ -81,19 +81,19 @@ export default class SpreadList extends Vue {
         it.topicInfo.creatDate = moment(it.topicInfo.publishTime).format('YYYY-MM-DD')
         // 处理图片
         it.platformInfo.imgUrl = imgFixed(it.platformInfo.avatarUrl)
-        it.userInfo.imgUrl = imgFixed(it.userInfo.avatarUrl)
+        it.userInfo.imgUrl = it.userInfo.avatarUrl.url
+          ? imgFixed(it.userInfo.avatarUrl)
+          : require('../../../assets/default.png')
         // 处理标签颜色
         if (it.markList && it.markList.length) {
           for (const item of it.markList) {
             switch (item.markType) {
-              case '1':
-                item.color = '#FF6262'
-                break
-              case '2':
+              // 1.源头 2.热点 3.负面
+              case 3:
                 item.color = '#9374DB'
                 break
               default:
-                item.color = '#666'
+                item.color = '#FF6262'
             }
           }
         }
@@ -182,10 +182,14 @@ export default class SpreadList extends Vue {
     }
     .datebox {
       font-size: 26px;
-      line-height: 32px;
+      line-height: 40px;
       display: flex;
       p:first-child {
         flex: 1;
+        span {
+          display: inline-block;
+          vertical-align: middle;
+        }
       }
       .user {
         font-size: 26px;

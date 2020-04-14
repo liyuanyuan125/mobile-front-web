@@ -108,7 +108,7 @@ export default class MultiLine extends Vue {
         type: 'line',
         smooth: this.smooth,
         data,
-        connectNulls: true
+        connectNulls: true,
       }
       color && (line.itemStyle = { color })
       return line
@@ -122,6 +122,15 @@ export default class MultiLine extends Vue {
 
       tooltip: {
         trigger: 'axis',
+        enterable: true,
+        confine: true,
+        axisPointer: {
+          lineStyle: {
+            width: 2,
+            opacity: .2,
+            color: '#303030'
+          }
+        },
         formatter: (list: any[]) => {
           const title = this.tooltipFormatTitle({ list })
           const titleColor = this.tooltipTitleColor
@@ -169,6 +178,7 @@ export default class MultiLine extends Vue {
         data: this.names,
         axisLabel: {
           color: this.axisLabelColor,
+          fontSize: 10,
           // 切换的时候无法工作
           // interval: dataCount < 8 ? 0 : 'auto',
         },
@@ -185,8 +195,8 @@ export default class MultiLine extends Vue {
         splitNumber: 4,
         axisTick: false,
         axisLabel: {
-          formatter: `{value}`,
           color: this.axisLabelColor,
+          fontSize: 10,
         },
         axisLine: {
           lineStyle: {
@@ -205,7 +215,7 @@ export default class MultiLine extends Vue {
         left: 5,
         right: 20,
         top: 10,
-        bottom: 5,
+        bottom: 10,
         containLabel: true
       },
 
@@ -236,6 +246,7 @@ export default class MultiLine extends Vue {
 <style lang="less" scoped>
 .multi-line {
   position: relative;
+  z-index: 2;
 
   /deep/ .tooltip-box {
     position: relative;
@@ -293,7 +304,7 @@ export default class MultiLine extends Vue {
 .chart-wrap {
   position: relative;
   width: 100%;
-  height: 388px;
+  height: 400px;
 }
 
 .the-chart {
@@ -306,7 +317,7 @@ export default class MultiLine extends Vue {
 }
 
 .legend-list {
-  margin: 20px -28px 8px 0;
+  margin: 15px -28px 8px 0;
 }
 
 .legend-item {

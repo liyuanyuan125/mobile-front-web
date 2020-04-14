@@ -7,17 +7,18 @@
         <SelectDate v-model="dates" />
       </div>
     </div>
+
     <div>
       <trendLines
         :lineData="lineDatas"
-        v-if="lineDatas.xDate"
+        v-if="(response.dailyFormList || []).length"
         class="wantchart"
         :colors="colors"
         :isGrad="true"
       />
       <dataEmpty v-else />
     </div>
-    <div class="daily-form">
+    <div class="daily-form" v-if="platName.length && platData.length ">
       <div class="daily-table-wrap">
         <table class="daily-table">
           <thead>
@@ -42,7 +43,7 @@
           </tbody>
         </table>
       </div>
-      <a class="daily-form-more" @click="goLink">查看全部日期1</a>
+      <a class="daily-form-more" @click="goLink">查看全部日期</a>
     </div>
   </div>
 </template>
@@ -187,60 +188,6 @@ export default class PlayTrend extends ViewBase {
   border-bottom: none;
 }
 
-// .formlist {
-//   border: 1px solid rgba(242, 243, 246, 0.5);
-//   background: #f2f3f6;
-//   border-radius: 10px;
-//   overflow: hidden;
-//   margin-top: 50px;
-//   dt {
-//     font-size: 26px;
-//     padding: 0 30px;
-//   }
-//   dd {
-//     padding: 0 30px;
-//     &:nth-child(even) {
-//       background: #fff;
-//     }
-//   }
-//   ul {
-//     display: flex;
-//   }
-//   li {
-//     height: 110px;
-//     flex: 1;
-//     align-items: flex-start;
-//     justify-content: center;
-//     display: flex;
-//     flex-direction: column;
-//     &:first-child {
-//       flex: 1.5;
-//     }
-//     .date {
-//       display: block;
-//       font-size: 24px;
-//     }
-//     .week {
-//       display: block;
-//       i {
-//         color: #ff6262;
-//       }
-//     }
-//   }
-//   dd li {
-//     padding-top: 18px;
-//     padding-bottom: 18px;
-//     font-size: 26px;
-//     line-height: 36px;
-//   }
-// }
-// .playmore {
-//   line-height: 110px;
-//   text-align: center;
-//   font-size: 28px;
-//   color: #88aaf6;
-// }
-
 .daily-form {
   margin-top: 60px;
   background: rgba(242, 243, 246, 0.5);
@@ -312,6 +259,7 @@ export default class PlayTrend extends ViewBase {
 }
 
 .daily-form-more {
+  border-top: 2px solid rgba(242, 243, 246, 1);
   display: block;
   height: 110px;
   line-height: 110px;

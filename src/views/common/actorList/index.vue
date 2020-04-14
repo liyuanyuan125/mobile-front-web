@@ -102,6 +102,8 @@ export default class ActorList extends Vue {
     img {
       width: 100%;
       height: 100%;
+      font-size: 0;
+      line-height: 0;
     }
   }
 

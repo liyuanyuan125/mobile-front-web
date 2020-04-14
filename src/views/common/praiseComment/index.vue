@@ -2,8 +2,8 @@
   <div class="options-page">
     <ModuleHeader
       title="口碑评论"
-      :link="favorable || (appraiseList || []).length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0 ? link : false" />
-    <div v-if="favorable || (appraiseList || []).length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0">
+      :link="publicPraise && (favorable || (appraiseList || []).length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0) ? link : null" />
+    <div v-if="publicPraise && (favorable || (appraiseList || []).length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0)">
       <div class="options-top">
         <div class="options-left">
           <span class="hot" @click="showNote">
@@ -99,7 +99,7 @@ export default class PraiseComment extends Vue {
   {raiseName: '中性评价', raisePercent: 0},
   {raiseName: '负面评价', raisePercent: 0}]
   get appraiseList() {
-    const list = this.publicPraise.appraiseList || []
+    const list = this.publicPraise && (this.publicPraise.appraiseList || [])
     if (list && list.length) {
       for (const item of list) {
         item.raisePercent = item.raisePercent ? (item.raisePercent / 100).toFixed(1) : 0

@@ -35,7 +35,8 @@ export default class BarGraphRow extends ViewBase {
     const chartEl = this.$refs.refChart as HTMLDivElement
     echarts.dispose(chartEl)
     chartEl.innerHTML = ''
-    chartEl.style.height = this.dataOption.yData.length * 45 + 'px'
+    const len = this.dataOption.yData.length
+    chartEl.style.height = len > 3 ? len * 35 + 'px' : len * 45 + 'px'
     const myChart = echarts.init(chartEl)
     const option: any = {
       xAxis: {

@@ -39,6 +39,7 @@
         :daysNum="heatDay"
         v-if="heatData"
       />
+      <DataEmpty v-if="heatEmpty"/>
     </section>
 
     <section class="pane pane-play" id="play">
@@ -194,6 +195,8 @@ export default class extends ViewBase {
   // 单曲：热度分析数据
   heatData: any = null
 
+  heatEmpty = false
+
   rankTable: any = null
 
   // 年龄分布数据
@@ -265,12 +268,13 @@ export default class extends ViewBase {
   async getHeat() {
     try {
       const [ startTime, endTime ] = lastDays(this.heatDay)
-      const heatData = await getHeat({
+      const { heatData, allEmpty } = await getHeat({
         songIdList: this.ids,
         startTime,
         endTime,
       })
       this.heatData = heatData
+      this.heatEmpty = allEmpty
     } catch (ex) {
       this.handleError(ex)
     }

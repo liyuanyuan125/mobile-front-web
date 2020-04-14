@@ -50,18 +50,18 @@ export default class extends ViewBase {
     this.init()
   }
 
-  async init() {
-    try {
-      this.getBasic()
-    } catch (ex) {
-      this.handleError(ex)
-    }
+  init() {
+    this.getBasic()
   }
 
   async getBasic() {
-    const { portrait, area } = await getBasic(this.id, this.isAlbum)
-    this.portrait = portrait
-    this.area = area
+    try {
+      const { portrait, area } = await getBasic(this.id, this.isAlbum)
+      this.portrait = portrait
+      this.area = area
+    } catch (ex) {
+      this.handleError(ex)
+    }
   }
 }
 </script>

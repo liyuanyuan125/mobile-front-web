@@ -106,7 +106,7 @@ export default class BarGraph extends ViewBase {
 
       grid: {
         left: 10,
-        top: 15,
+        top: 25,
         bottom: 0,
         right: 10,
         containLabel: true,
@@ -128,7 +128,8 @@ export default class BarGraph extends ViewBase {
                 formatter: '{c}' + '%',
                 textStyle: {
                   // 数值样式
-                  fontSize: 14
+                  fontSize: 14,
+                  fontFamily: 'DIN Alternate'
                 }
               },
               color: (params: any) => {
@@ -151,7 +152,7 @@ export default class BarGraph extends ViewBase {
 .content-wrap {
   position: relative;
   width: 100%;
-  height: 350px;
+  height: 300px;
 }
 .chart-default {
   background: url('../../assets/data-null.png') no-repeat center;
@@ -161,7 +162,7 @@ export default class BarGraph extends ViewBase {
 }
 .chart-wrap {
   width: 100%;
-  height: 350px;
+  height: 300px;
 }
 .chart-wrap:empty {
   display: flex;

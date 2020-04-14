@@ -251,6 +251,6 @@ export default class TrendLine extends Vue {
   margin-right: 10px;
 }
 /deep/ .tooltip-value {
-  font-family: SanFranciscoDisplay-Semibold, SanFranciscoDisplay, serif;
+  font-family: SanFranciscoDisplay-Semibold, SanFranciscoDisplay, sans-serif;
 }
 </style>

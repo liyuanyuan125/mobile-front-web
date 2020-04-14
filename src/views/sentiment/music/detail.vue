@@ -49,7 +49,7 @@
 
     <TabNav :list="navList" class="tab-nav" />
 
-    <section class="pane pane-heat" id="heat" v-if="!isAlbum">
+    <section class="pane pane-heat" id="heat" v-if="isSong">
       <SelectTime v-model="heatDay" class="select-time" />
       <ModuleHeader title="综合热度" tag="h4" class="heat-header" />
       <HeatLineCom
@@ -61,7 +61,7 @@
       />
     </section>
 
-    <section class="pane" id="play" v-if="!isAlbum || isDigital">
+    <section class="pane" id="play" v-if="isSong || isDigital">
       <ModuleHeader :title="isAlbum ? '销量分析' : '播放量分析'" />
       <PlayStats
         :fetch="playFetch"
@@ -101,7 +101,7 @@
       <DataEmpty v-if="songList && songList.length == 0" />
     </section>
 
-    <section class="pane" v-if="!isAlbum">
+    <section class="pane" v-if="isSong">
       <ModuleHeader
         title="榜单表现"
         :link="rankAnnularEmpty ? null : { page: 'songRankPerformance', songId: id }"
@@ -256,8 +256,8 @@ import { lastDays } from '@/util/timeSpan'
 import {
   basicEmpty,
   getBasic,
-  getHeatAnalysis,
-  getPlayAnalysis,
+  getHeat,
+  getPlay,
   getEventList,
   getRivalList
 } from './detailData'
@@ -290,13 +290,16 @@ export default class extends ViewBase {
 
   @Prop({ type: Boolean, default: false }) isAlbum!: boolean
 
+  get isSong() {
+    return !this.isAlbum
+  }
+
   get topbarSidebar() {
     // 有竞品数据，跳转竞品报告页；否则，跳转到设置竞品页
     const type = this.isAlbum ? '6' : '5'
-    const route =
-      (this.rivalList || []).length > 0
-        ? this.rivalRoute
-        : { businessType: type, businessObjectIdList: String(this.id) }
+    const route = (this.rivalList || []).length > 0
+      ? this.rivalRoute
+      : { businessType: type, businessObjectIdList: String(this.id) }
     return {
       // 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
       diggType: type,
@@ -390,8 +393,9 @@ export default class extends ViewBase {
     if (this.rivalList == null) {
       return ''
     }
-    const ids = (this.rivalList as any[]).map(it => it.id)
-    return ids.join(',')
+    // 产品需求：只取前两个，与本身组成竞品分析
+    const ids = (this.rivalList as any[]).slice(0, 2).map(it => it.id)
+    return [ this.id, ...ids ].join(',')
   }
 
   detailPage(page: string) {
@@ -415,88 +419,101 @@ export default class extends ViewBase {
   }
 
   init() {
+    const isSong = this.isSong
+    this.getBasic()
+    isSong && this.getHeat()
+    this.getEvent()
+    this.getRival()
+  }
+
+  async getBasic() {
     try {
-      this.getBasic()
-      !this.isAlbum && this.getHeat()
-      this.getEvent()
-      this.getRival()
+      const {
+        // 是否为数字专辑
+        isDigital = false,
+
+        // 基础信息
+        basic,
+        // 基础信息弹出窗
+        popupData,
+        // 气泡
+        bubbleData,
+
+        // 专辑：歌曲热度
+        songList,
+
+        // 单曲：榜单表现
+        rankAnalysis,
+        // 单曲：榜单表现是否为空
+        // rankAnalysisEmpty,
+        // 单曲：上榜数量分布
+        rankAnnularData,
+        // 单曲：上榜数量分布是否为空
+        rankAnnularEmpty,
+
+        // 口碑评论
+        praiseData,
+
+        // 用户分析
+        userAnalysis,
+
+        // 音乐人分析
+        singerList
+      } = await getBasic(this.id, this.isAlbum) as any
+      this.isDigital = isDigital
+      this.basic = basic
+      this.popupData = popupData
+      this.bubbleData = bubbleData
+      this.songList = songList
+      this.rankAnalysis = rankAnalysis
+      // this.rankAnalysisEmpty = rankAnalysisEmpty
+      this.rankAnnularData = rankAnnularData
+      this.rankAnnularEmpty = rankAnnularEmpty
+      this.praiseData = praiseData
+      this.userAnalysis = userAnalysis
+      this.singerList = singerList
     } catch (ex) {
       this.handleError(ex)
     }
   }
 
-  async getBasic() {
-    const {
-      // 是否为数字专辑
-      isDigital = false,
-
-      // 基础信息
-      basic,
-      // 基础信息弹出窗
-      popupData,
-      // 气泡
-      bubbleData,
-
-      // 专辑：歌曲热度
-      songList,
-
-      // 单曲：榜单表现
-      rankAnalysis,
-      // 单曲：榜单表现是否为空
-      // rankAnalysisEmpty,
-      // 单曲：上榜数量分布
-      rankAnnularData,
-      // 单曲：上榜数量分布是否为空
-      rankAnnularEmpty,
-
-      // 口碑评论
-      praiseData,
-
-      // 用户分析
-      userAnalysis,
-
-      // 音乐人分析
-      singerList
-    } = await getBasic(this.id, this.isAlbum) as any
-    this.isDigital = isDigital
-    this.basic = basic
-    this.popupData = popupData
-    this.bubbleData = bubbleData
-    this.songList = songList
-    this.rankAnalysis = rankAnalysis
-    // this.rankAnalysisEmpty = rankAnalysisEmpty
-    this.rankAnnularData = rankAnnularData
-    this.rankAnnularEmpty = rankAnnularEmpty
-    this.praiseData = praiseData
-    this.userAnalysis = userAnalysis
-    this.singerList = singerList
-  }
-
   // 单曲：热度分析
   async getHeat() {
-    const [startTime, endTime] = lastDays(this.heatDay)
-    const { overAllHeatList = [], platformHeatList = [] } = await getHeatAnalysis({
-      songId: this.id,
-      startTime,
-      endTime
-    })
-    this.overAllHeatList = overAllHeatList
-    this.platformHeatList = platformHeatList
+    try {
+      const [startTime, endTime] = lastDays(this.heatDay)
+      const { overAllHeatList = [], platformHeatList = [] } = await getHeat({
+        songId: this.id,
+        startTime,
+        endTime
+      })
+      this.overAllHeatList = overAllHeatList
+      this.platformHeatList = platformHeatList
+    } catch (ex) {
+      this.handleError(ex)
+    }
   }
 
   async getEvent() {
-    const eventData = await getEventList(this.id, this.isAlbum)
-    this.eventData = eventData
+    try {
+      const data = await getEventList(this.id, this.isAlbum)
+      this.eventData = data
+    } catch (ex) {
+      this.handleError(ex)
+    }
   }
 
   async getRival() {
-    const list = await getRivalList(this.id, this.isAlbum)
-    this.rivalList = list
+    try {
+      const list = await getRivalList(this.id, this.isAlbum)
+      this.rivalList = list
+    } catch (ex) {
+      this.handleError(ex)
+    }
   }
 
   async playFetch(query: PlayQuery) {
     try {
-      const data = await getPlayAnalysis(this.id, query, this.isAlbum)
+      const data = await getPlay(this.id, query, this.isAlbum)
       return data
     } catch (ex) {
       this.handleError(ex)
@@ -852,7 +869,7 @@ export default class extends ViewBase {
 
   em {
     font-size: 40px;
-    font-family: DINAlternate-Bold, DINAlternate, serif;
+    font-family: DINAlternate-Bold, DINAlternate, sans-serif;
     font-weight: 600;
     line-height: 40px;
     padding: 0 8px;
@@ -860,7 +877,7 @@ export default class extends ViewBase {
   i {
     display: block;
     font-size: 24px;
-    font-family: PingFangSC-Light, PingFang SC, serif;
+    font-family: PingFangSC-Light, PingFang SC, sans-serif;
     font-weight: 300;
     color: rgba(48, 48, 48, 0.6);
     line-height: 38px;
@@ -869,7 +886,7 @@ export default class extends ViewBase {
   &:last-child {
     em {
       font-size: 30px;
-      font-family: PingFangSC-Semibold, PingFang SC, serif;
+      font-family: PingFangSC-Semibold, PingFang SC, sans-serif;
     }
   }
 }
@@ -919,7 +936,6 @@ export default class extends ViewBase {
 
 .user-pane {
   /deep/ .userportrait {
-    height: 400px;
     border-top: 0;
     padding: 0;
   }
@@ -983,14 +999,14 @@ export default class extends ViewBase {
 
 .singer-name {
   font-size: 32px;
-  font-family: PingFangSC-Semibold, PingFang SC, serif;
+  font-family: PingFangSC-Semibold, PingFang SC, sans-serif;
   font-weight: 600;
   margin-top: 10px;
 }
 
 .singer-bar {
   font-size: 30px;
-  font-family: PingFangSC-Regular, PingFang SC, serif;
+  font-family: PingFangSC-Regular, PingFang SC, sans-serif;
   margin-top: 20px;
 }
 
@@ -1013,7 +1029,7 @@ export default class extends ViewBase {
   top: -3px;
   left: 12px;
   font-size: 26px;
-  font-family: DINAlternate-Bold, DINAlternate, serif;
+  font-family: DINAlternate-Bold, DINAlternate, sans-serif;
   font-weight: bold;
   &:empty {
     display: inline-block;
@@ -1087,13 +1103,13 @@ export default class extends ViewBase {
 
 .rival-name {
   font-size: 36px;
-  font-family: PingFangSC-Medium, PingFang SC, serif;
+  font-family: PingFangSC-Medium, PingFang SC, sans-serif;
   font-weight: 500;
 }
 
 .rival-author {
   font-size: 26px;
-  font-family: SanFranciscoDisplay-Light, SanFranciscoDisplay, serif;
+  font-family: SanFranciscoDisplay-Light, SanFranciscoDisplay, sans-serif;
   font-weight: 300;
   margin-top: 2px;
   color: rgba(48, 48, 48, 0.7);
@@ -1119,7 +1135,7 @@ export default class extends ViewBase {
   height: 36px;
   line-height: 36px;
   font-size: 26px;
-  font-family: PingFangSC-Light, PingFang SC, serif;
+  font-family: PingFangSC-Light, PingFang SC, sans-serif;
   font-weight: 300;
   color: rgba(48, 48, 48, 0.4);
 }
@@ -1128,7 +1144,7 @@ export default class extends ViewBase {
   height: 60px;
   line-height: 60px;
   font-size: 46px;
-  font-family: DINAlternate-Bold, DINAlternate, serif;
+  font-family: DINAlternate-Bold, DINAlternate, sans-serif;
   font-weight: bold;
 }
 
@@ -1139,7 +1155,7 @@ export default class extends ViewBase {
   height: 36px;
   line-height: 36px;
   font-size: 26px;
-  font-family: DINAlternate-Bold, DINAlternate, serif;
+  font-family: DINAlternate-Bold, DINAlternate, sans-serif;
   font-weight: bold;
   vertical-align: top;
 }
@@ -1159,7 +1175,7 @@ export default class extends ViewBase {
   padding: 0 20px;
   background-color: rgba(242, 243, 246, 0.5);
   font-size: 26px;
-  font-family: PingFangSC-Light, PingFang SC, serif;
+  font-family: PingFangSC-Light, PingFang SC, sans-serif;
   font-weight: 300;
   color: rgba(48, 48, 48, 0.8);
 }
@@ -1170,7 +1186,7 @@ export default class extends ViewBase {
 
 .rival-event-date {
   font-size: 22px;
-  font-family: SanFranciscoDisplay-Light, SanFranciscoDisplay, serif;
+  font-family: SanFranciscoDisplay-Light, SanFranciscoDisplay, sans-serif;
   font-weight: 300;
   color: rgba(48, 48, 48, 0.4);
 }

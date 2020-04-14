@@ -95,6 +95,13 @@ export default class Table extends Vue {
   mounted() {
     this.updateUI()
   }
+
+  @Watch('data', { deep: true })
+  @Watch('columns', { deep: true })
+  @Watch('showBorder', { deep: true })
+  watchTable() {
+    this.updateUI()
+  }
 }
 </script>
 

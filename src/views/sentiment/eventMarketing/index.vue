@@ -93,12 +93,15 @@ export default class KolPage extends ViewBase {
     return {
       type: 101, // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
       id: this.$route.params.eventId, // 详情页id
-      name: this.title
+      name: this.title,
+      startTime: 0,
+      endTime: 0
     }
   }
 
   show: any = false
   newPk: any = 'newsList'
+  newCode: any = 'news'
   newPkName: any = '新闻'
   // 口碑评论 数据
   favorable: any = ''
@@ -107,23 +110,28 @@ export default class KolPage extends ViewBase {
   // 表示已选内容的code: 新闻 news，评论 comment,  点赞 praise，转发 forward，阅读 read
   tabList: any = [
     {
-      key: 'news',
+      code: 'news',
+      key: 'newsList',
       name: '新闻'
     },
     {
-      key: 'comment',
+      code: 'comment',
+      key: 'commentList',
       name: '评论'
     },
     {
-      key: 'praise',
+      code: 'praise',
+      key: 'praisedList',
       name: '点赞'
     },
     {
-      key: 'forward',
+      code: 'forward',
+      key: 'forwardList',
       name: '转发'
     },
     {
-      key: 'read',
+      code: 'read',
+      key: 'readList',
       name: '阅读'
     }
   ]
@@ -179,6 +187,7 @@ export default class KolPage extends ViewBase {
   chgnewPk(params: any) {
     this.newPk = params.key
     this.newPkName = params.name
+    this.newCode = params.code
     this.overAllHeatList = this.eventInfo[params.key] || []
     this.formatDatas(this.overAllHeatList)
   }
@@ -218,7 +227,7 @@ export default class KolPage extends ViewBase {
       page: 'eventTrendDetail',
       eventId: this.eventId,
       title: encodeURIComponent(this.title),
-      contentCode: this.newPk
+      contentCode: this.newCode
       // 表示已选内容的code: 新闻 news，评论 comment,  点赞 praise，转发 forward，阅读 read
     }
     openAppLink(link)

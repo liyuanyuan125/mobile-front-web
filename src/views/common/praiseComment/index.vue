@@ -1,10 +1,9 @@
 <template>
   <div class="options-page">
-    {{applink}}
     <ModuleHeader
       title="口碑评论"
       :link="favorable || (appraiseList || []).length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0 ? link : false" />
-    <div v-if="(appraiseList || []).length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0">
+    <div v-if="favorable || (appraiseList || []).length > 0 || (publicPraise.hotWordList || []).length > 0 || (publicPraise.badWordList || []).length > 0">
       <div class="options-top">
         <div class="options-left">
           <span class="hot" @click="showNote">
@@ -46,7 +45,7 @@
                 @click="wordLink(it,0)"
               >{{it}}</span>
             </div>
-            <div v-else><span>-</span></div>
+            <div v-else class="nomore"><span>-</span></div>
           </div>
         </div>
         <div class="hot-box">
@@ -64,7 +63,7 @@
                 @click="wordLink(it,3)"
               >{{it}}</span>
             </div>
-            <div v-else><span>-</span></div>
+            <div v-else class="nomore"><span>-</span></div>
           </div>
         </div>
       </div>
@@ -148,4 +147,10 @@ export default class PraiseComment extends Vue {
 
 <style lang="less" scoped>
 @import url(./index.less);
+.nomore {
+  font-size: 46px;
+  line-height: 18px;
+  text-align: center;
+  font-weight: 800;
+}
 </style>

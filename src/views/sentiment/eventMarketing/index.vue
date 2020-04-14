@@ -93,12 +93,14 @@ export default class KolPage extends ViewBase {
     return {
       type: 101, // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
       id: this.$route.params.eventId, // 详情页id
-      name: this.title
+      name: this.title,
+      startTime: 0,
+      endTime: 0
     }
   }
 
   show: any = false
-  newPk: any = 'newsList'
+  newPk: any = 'news'
   newPkName: any = '新闻'
   // 口碑评论 数据
   favorable: any = ''

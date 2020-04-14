@@ -1,14 +1,14 @@
 import {
   getDetail as songGetDetail,
-  getHeatAnalysis as songGetHeatAnalysis,
-  getPlayAnalysis as songPlayAnalysis,
+  getHeatAnalysis as songGetHeat,
+  getPlayAnalysis as songGetPlay,
   getEventList as songGetEventList,
   getRivalList as songGetRivalList,
   IdTime as SongIdTime,
 } from '@/api/song'
 import {
   getDetail as albumGetDetail,
-  getSaleAnalysis as albumSaleAnalysis,
+  getSaleAnalysis as albumGetSale,
   getEventList as albumGetEventList,
   getRivalList as albumGetRivalList,
   IdTime as AlbumIdTime,
@@ -277,8 +277,8 @@ export async function getBasic(id: number, isAlbum: boolean) {
 }
 
 // 单曲：热度分析
-export async function getHeatAnalysis(query: SongIdTime) {
-  const { data } = await songGetHeatAnalysis(query)
+export async function getHeat(query: SongIdTime) {
+  const { data } = await songGetHeat(query)
   return data
 }
 
@@ -362,7 +362,7 @@ const dealPlayView = (view: any, isAlbum = false) => {
 }
 
 const songPlay = async (query: SongIdTime) => {
-  const { data: { songMusicView, videoView } } = await songPlayAnalysis(query)
+  const { data: { songMusicView, videoView } } = await songGetPlay(query)
   const result = []
   songMusicView && result.push({ label: '单曲', view: dealPlayView(songMusicView) })
   videoView && result.push({ label: '视频', view: dealPlayView(videoView) })
@@ -370,11 +370,11 @@ const songPlay = async (query: SongIdTime) => {
 }
 
 const albumPlay = async (query: AlbumIdTime) => {
-  const { data } = await albumSaleAnalysis(query)
+  const { data } = await albumGetSale(query)
   return dealPlayView(data, true)
 }
 
-export async function getPlayAnalysis(
+export async function getPlay(
   id: number,
   { startTime, endTime }: PlayQuery,
   isAlbum: boolean

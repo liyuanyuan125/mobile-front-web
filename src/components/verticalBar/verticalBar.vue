@@ -51,6 +51,8 @@ export default class VerticalBar extends Vue {
   /** 是否禁止自动高亮最大值，默认是自动高亮行为 */
   @Prop({ type: Boolean, default: false }) disableAutoHighlightMaxValue!: boolean
 
+  @Prop({ type: Number, default: 1 }) digits!: number
+
   get chart() {
     const chart = this.$refs.chart as any
     return chart
@@ -63,7 +65,7 @@ export default class VerticalBar extends Vue {
         position: 'top',
         formatter: (params: any) => {
           const { name, value } = params
-          const valueShow = `${value}${this.unit}`
+          const valueShow = `${value.toFixed(this.digits)}${this.unit}`
           const valueColor = this.tooltipValueColor
           const dotColor = this.hiColor
           const nameColor = this.tooltipNameColor
@@ -216,7 +218,7 @@ export default class VerticalBar extends Vue {
   /deep/ .tooltip-value {
     font-size: 36px;
     font-weight: bold;
-    font-family: DINAlternate-Bold, DINAlternate, serif;
+    font-family: DINAlternate-Bold, DINAlternate, sans-serif;
   }
 
   /deep/ .tooltip-name {

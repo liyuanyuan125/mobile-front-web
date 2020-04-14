@@ -475,7 +475,7 @@ mockGet('/yuqing/music/song/user/analysis', () => {
       },
       {
         "name": "新疆",
-        "value": 2313
+        "value": 8300
       }
     ],
     "genderList": [

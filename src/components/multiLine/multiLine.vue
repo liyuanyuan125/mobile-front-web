@@ -97,7 +97,7 @@ export default class MultiLine extends Vue {
       this.chart.dispatchAction({ type, name })
       this.$set(this.legendDisabledMap, name, enable)
     } else {
-      toast('最后一个了哦，不能反选')
+      toast('请至少选择一项查看')
     }
   }
 
@@ -262,7 +262,7 @@ export default class MultiLine extends Vue {
   /deep/ .tooltip-item {
     display: flex;
     font-weight: 500;
-    font-family: SanFranciscoDisplay-Semibold, SanFranciscoDisplay, serif;
+    font-family: SanFranciscoDisplay-Semibold, SanFranciscoDisplay, sans-serif;
   }
 
   /deep/ .tooltip-dot {

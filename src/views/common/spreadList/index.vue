@@ -86,14 +86,12 @@ export default class SpreadList extends Vue {
         if (it.markList && it.markList.length) {
           for (const item of it.markList) {
             switch (item.markType) {
-              case '1':
-                item.color = '#FF6262'
-                break
-              case '2':
+              // 1.源头 2.热点 3.负面
+              case 3:
                 item.color = '#9374DB'
                 break
               default:
-                item.color = '#666'
+                item.color = '#FF6262'
             }
           }
         }

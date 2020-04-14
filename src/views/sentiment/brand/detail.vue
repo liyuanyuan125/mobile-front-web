@@ -3,6 +3,7 @@
     <SentimentBar :title="brandInfo.brandName" :sidebar="sidebar" />
     <brandInfoArea :brandInfo="brandInfo" :bubbleData="bubbleData" />
     <TabNav :list="navList" class="tab-nav" />
+    
     <section class="brand-hot bg_fff" id="hot">
       <selectTime v-model="day" class="select-time" />
       <heatLineCom

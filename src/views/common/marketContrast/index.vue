@@ -22,7 +22,7 @@
               </div>
               <div class="contrast-message-text" v-if="(item.hotWordList || []).length > 0">
                 <span>热词</span>
-                <span class="van-ellipsis" 
+                <span class="van-ellipsis"
                   @click="wordLink(it, item.rivalId)"
                   :key="ins" v-for="(it, ins) in item.hotWordList">{{it}}</span>
               </div>
@@ -60,7 +60,7 @@ const optionsList = {
     dataEmpty
   }
 })
-export default class Options extends Vue {
+export default class MarketContrast extends Vue {
   /* 查询请求 */
   @Prop({ type: Function, required: true })
   fetch!: (query?: any) => Promise<FetchResult>

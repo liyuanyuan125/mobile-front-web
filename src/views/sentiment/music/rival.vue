@@ -9,6 +9,8 @@
       :type="isAlbum ? '6' : '5'"
       :rivalList="rivalList"
       class="rival-list"
+      @setRival="changeIds"
+      v-if="rivalList && rivalList.length"
     />
 
     <TabNav :list="navList" class="tab-nav" normal/>
@@ -138,10 +140,7 @@ import { isEmpty } from 'lodash'
 export default class extends ViewBase {
   @Prop({ type: Boolean, default: false }) isAlbum!: boolean
 
-  get ids() {
-    const { ids = '' } = this.$route.query
-    return ids as string
-  }
+  ids = ''
 
   rivalList: any[] = []
 
@@ -222,7 +221,13 @@ export default class extends ViewBase {
     return isEmpty(this.areaList)
   }
 
+  changeIds(ids: string) {
+    this.ids = ids
+    this.init()
+  }
+
   created() {
+    this.ids = this.$route.query.ids as string
     this.init()
   }
 

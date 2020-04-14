@@ -5,6 +5,7 @@
       :class="{
         'table-border': showBorder
       }"
+      ref="table"
     >
       <thead>
         <th
@@ -60,13 +61,23 @@ export default class TableBasic extends Vue {
 
   prefixCls = 'jydata-table'
 
+  // 从另外一个 table 同步过来的宽度，用于被父组件 Table 组件调用
+  syncWidthList: number[] = []
+
   get normalizeColumns() {
-    const result = this.columns.map(item => ({
+    const result = this.columns.map((item, index) => ({
       title: '',
       align: 'center',
       html: false,
       ...item,
-      width: typeof item.width == 'number' ? `${item.width}em` : (item.width || 'auto'),
+      width: ((width, widthList) => {
+        const syncWidth = widthList[index]
+        return syncWidth > 0
+          ? `${syncWidth}px`
+          : typeof width == 'number'
+          ? `${width}em`
+          : (width || 'auto')
+      })(item.width, this.syncWidthList),
       className: this.alignCls(item),
       lineClass: getLineClass(item.lines)
     }))
@@ -88,6 +99,41 @@ export default class TableBasic extends Vue {
           || (!this.fixed && column.fixed && column.fixed === 'left')
       }
     ]
+  }
+
+  getHeadCells() {
+    const table = this.$refs.table as HTMLTableElement
+    // 由于 table 的特殊性，取 thead 中的 cells 的宽度，就能代表各列的列宽
+    const cells = [ ...table.tHead!.children ] as HTMLElement[]
+    return cells
+  }
+
+  /**
+   * 获取所有固定左列的总宽度，用于被父组件 Table 组件调用
+   */
+  public getFixedLeftColumnsWidth() {
+    const cells = this.getHeadCells()
+    const totalWidth = this.columns.reduce((sum, col, i) => {
+      if (col.fixed == 'left') {
+        const width = cells[i].offsetWidth
+        sum += width
+      }
+      return sum
+    }, 0)
+    return totalWidth
+  }
+
+  /**
+   * 与另外一个 table 同步固定左列的宽度，用于被父组件 Table 组件调用
+   */
+  public syncFixedLeftColumnsWidth(refTable: TableBasic) {
+    const cells = refTable.getHeadCells()
+    this.columns.forEach((col, i) => {
+      if (col.fixed == 'left') {
+        const width = cells[i].offsetWidth
+        this.$set(this.syncWidthList, i, width)
+      }
+    })
   }
 }
 </script>

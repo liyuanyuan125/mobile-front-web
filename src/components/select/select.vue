@@ -59,7 +59,6 @@ export default class Select extends Vue {
     border-top: 10px solid #404d66;
     border-left: 8px solid #fff;
     border-right: 8px solid #fff;
-    background-color: #404d66;
     transform: translateY(-50%);
   }
 

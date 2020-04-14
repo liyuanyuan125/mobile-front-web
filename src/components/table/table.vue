@@ -6,6 +6,7 @@
         :columns="normalizeColumns"
         :placeholder="placeholder"
         :showBorder="showBorder"
+        ref="tableNormal"
       ></table-basic>
     </div>
     <div :class="[prefixCls + '-fixed']" :style="fixedTableStyle" v-if="isLeftFixed">
@@ -15,6 +16,7 @@
         :columns="normalizeColumns"
         :placeholder="placeholder"
         :showBorder="showBorder"
+        ref="tableFixed"
       ></table-basic>
     </div>
   </div>
@@ -39,7 +41,7 @@ export default class Table extends Vue {
 
   @Prop({ type: Boolean, default: false }) showBorder!: boolean
 
-  prefixCls: string = 'jydata-table'
+  prefixCls = 'jydata-table'
 
   get normalizeColumns() {
     const left: TableColumn[] = []
@@ -59,21 +61,39 @@ export default class Table extends Vue {
     return this.columns.some(col => col.fixed && col.fixed === 'left')
   }
 
-  get fixedTableStyle() {
-    const style: any = {}
-    let width: number = 0
-    this.normalizeColumns.forEach((col: TableColumn) => {
-      if (col.fixed && col.fixed === 'left') {
-        width += Number(col.width)
+  fixedTableStyle = {}
+
+  // get fixedTableStyle() {
+  //   const style: any = {}
+  //   let width = 0
+  //   this.normalizeColumns.forEach((col: TableColumn) => {
+  //     if (col.fixed && col.fixed === 'left') {
+  //       width += Number(col.width)
+  //     }
+  //   })
+  //   style.width = `${width}em`
+  //   return style
+  // }
+
+  /**
+   * 更新 UI，当表格内的内容发生变化时，可调用该函数，维持固定列效果
+   * 针对含有固定列的表格，非固定列表格不需要调用
+   */
+  public updateUI() {
+    this.$nextTick(() => {
+      const tableNormal = this.$refs.tableNormal as TableBasic
+      const tableFixed = this.$refs.tableFixed as TableBasic
+      if (tableNormal && tableFixed) {
+        const width = tableNormal.getFixedLeftColumnsWidth()
+        const style = { width: `${width}px` }
+        this.fixedTableStyle = style
+        tableFixed.syncFixedLeftColumnsWidth(tableNormal)
       }
     })
-    style.width = `${width}em`
-    return style
   }
 
-  get htmlPlaceholder() {
-    const html = `<span class="html-placeholder">${this.placeholder}</span>`
-    return html
+  mounted() {
+    this.updateUI()
   }
 }
 </script>

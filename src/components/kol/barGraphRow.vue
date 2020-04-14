@@ -2,7 +2,6 @@
   <div class="content-wrap">
     <div class="chart-default" v-if="!dataOption"></div>
     <div ref="refChart" v-if="dataOption" class="chart-wrap"></div>
-    <div class="hidden"></div>
   </div>
 </template>
 
@@ -52,7 +51,8 @@ export default class BarGraphRow extends ViewBase {
         axisLabel: {
           textStyle: {
             color: '#303030',
-            fontSize: 12
+            fontSize: 12,
+            fontFamily: 'DIN Alternate'
           }
         },
         // 是否显示刻度线
@@ -92,7 +92,8 @@ export default class BarGraphRow extends ViewBase {
             },
             color: this.itemlist.colorMain,
             fontWeight: 'bold',
-            fontSize: 12
+            fontSize: 12,
+            fontFamily: 'DIN Alternate'
           },
           itemStyle: {
             color: this.itemlist.bgColor,

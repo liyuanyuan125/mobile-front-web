@@ -11,29 +11,38 @@
         :params="platformParams"
       />
     </section>
-    <PraiseComment
-      :favorable="brandInfo.favorable"
-      :publicPraise="publicPraise"
-      :link="getApplink('praiseHotWordsList')"
-      v-if="publicPraise.appraiseList"
-      id="praise"
-      class="praise"
-    />
-    <UserPortrait
-      :ageRangeList="userAnalysis.ageRangeList"
-      :genderList="userAnalysis.genderList"
-      v-if="userAnalysis.genderList"
-      :link="getApplink('userAnalysis')"
-      id="user"
-    />
-    <eventList
-      :eventList="brandEventList"
-      :params="eventParams"
-      :link="getApplink('eventMarketingList')"
-      id="event"
-      class="bg_fff"
-    />
-    <Competing :rivalList="rivalList" id="part" />
+
+    <section id="praise">
+      <PraiseComment
+        :favorable="brandInfo.favorable"
+        :publicPraise="publicPraise"
+        :link="getApplink('praiseHotWordsList')"
+        v-if="publicPraise.appraiseList"
+        class="praise"
+      />
+    </section>
+
+    <section id="user">
+      <UserPortrait
+        :ageRangeList="userAnalysis.ageRangeList"
+        :genderList="userAnalysis.genderList"
+        v-if="userAnalysis.genderList"
+        :link="getApplink('userAnalysis')"
+      />
+    </section>
+
+    <section id="event">
+      <eventList
+        :eventList="brandEventList"
+        :params="eventParams"
+        :link="getApplink('eventMarketingList')"
+        class="bg_fff"
+      />
+    </section>
+
+    <section id="part">
+      <Competing :rivalList="rivalList"  />
+    </section>
   </div>
 </template>
 

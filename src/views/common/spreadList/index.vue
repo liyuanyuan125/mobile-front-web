@@ -81,7 +81,9 @@ export default class SpreadList extends Vue {
         it.topicInfo.creatDate = moment(it.topicInfo.publishTime).format('YYYY-MM-DD')
         // 处理图片
         it.platformInfo.imgUrl = imgFixed(it.platformInfo.avatarUrl)
-        it.userInfo.imgUrl = imgFixed(it.userInfo.avatarUrl)
+        it.userInfo.imgUrl = it.userInfo.avatarUrl.url
+          ? imgFixed(it.userInfo.avatarUrl)
+          : require('../../../assets/default.png')
         // 处理标签颜色
         if (it.markList && it.markList.length) {
           for (const item of it.markList) {

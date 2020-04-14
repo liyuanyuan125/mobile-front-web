@@ -1,8 +1,8 @@
 <template>
   <!--影片用户分析受众下的观影偏好 -->
   <div class="progressbox">
-    <moduleHeaer :title="title" />
-    <div v-if="progressData.length">
+    <moduleHeaer :title="title" class="module-header" />
+    <div v-if="progressData.length" class="probox">
       <div class="contrast-progress" v-for="(item,index) in progressData" :key="item.name + index">
         <span class="proleft van-ellipsis">{{item.name}}</span>
         <div class="progress">
@@ -39,11 +39,9 @@ export default class ProgressList extends ViewBase {
 .progressbox {
   border-top: 20px solid rgba(216, 216, 216, 0.2);
   padding: 50px 30px;
-  h3 {
-    font-size: 40px;
-    line-height: 40px;
-    padding-bottom: 30px;
-  }
+}
+.probox {
+  padding-top: 30px;
 }
 .contrast-progress {
   display: flex;

@@ -143,6 +143,7 @@ export async function getBasic(ids: string, isAlbum: boolean) {
   return result
 }
 
+// 单曲：热度分析
 export async function getHeat(query: SongIdListTime) {
   const { data } = await songGetHeat(query)
   const overAllHeat = data.overAllHeat || []

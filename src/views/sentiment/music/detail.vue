@@ -256,7 +256,7 @@ import { lastDays } from '@/util/timeSpan'
 import {
   basicEmpty,
   getBasic,
-  getHeatAnalysis,
+  getHeat,
   getPlayAnalysis,
   getEventList,
   getRivalList
@@ -475,7 +475,7 @@ export default class extends ViewBase {
   // 单曲：热度分析
   async getHeat() {
     const [startTime, endTime] = lastDays(this.heatDay)
-    const { overAllHeatList = [], platformHeatList = [] } = await getHeatAnalysis({
+    const { overAllHeatList = [], platformHeatList = [] } = await getHeat({
       songId: this.id,
       startTime,
       endTime

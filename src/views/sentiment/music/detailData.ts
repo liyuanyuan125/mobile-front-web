@@ -1,6 +1,6 @@
 import {
   getDetail as songGetDetail,
-  getHeatAnalysis as songGetHeatAnalysis,
+  getHeatAnalysis as songGetHeat,
   getPlayAnalysis as songPlayAnalysis,
   getEventList as songGetEventList,
   getRivalList as songGetRivalList,
@@ -277,8 +277,8 @@ export async function getBasic(id: number, isAlbum: boolean) {
 }
 
 // 单曲：热度分析
-export async function getHeatAnalysis(query: SongIdTime) {
-  const { data } = await songGetHeatAnalysis(query)
+export async function getHeat(query: SongIdTime) {
+  const { data } = await songGetHeat(query)
   return data
 }
 

@@ -187,7 +187,7 @@ export default class extends ViewBase {
   // 热度分析天数
   heatDay = 7
 
-  // 热度分析数据
+  // 单曲：热度分析数据
   heatData: any = null
 
   rankTable: any = null
@@ -232,9 +232,10 @@ export default class extends ViewBase {
   }
 
   async init() {
+    const isSong = !this.isAlbum
     try {
       this.getBasic()
-      this.getHeat()
+      isSong && this.getHeat()
     } catch (ex) {
       this.handleError(ex)
     }

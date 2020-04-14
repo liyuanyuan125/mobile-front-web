@@ -316,10 +316,10 @@ export default class KolPage extends ViewBase {
          const woman = dataMap.女
          return {
            name: it.rivalName,
-           rate1: it.dataList[0].name == '男' ? (it.dataList[0].value / 100).toFixed(1)
-           : (it.dataList[1].value / 100).toFixed(1),
-           rate2: it.dataList[0].name == '男' ? (it.dataList[1].value / 100).toFixed(1)
-           : (it.dataList[0].value / 100).toFixed(1),
+           rate1: it.dataList[0].name == '男' ? (it.dataList[0].value / 100)
+           : (it.dataList[1].value / 100),
+           rate2: it.dataList[0].name == '男' ? (it.dataList[1].value / 100)
+           : (it.dataList[0].value / 100),
          }
        })
        this.userRegion = userRegion

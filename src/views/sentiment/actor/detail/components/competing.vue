@@ -46,7 +46,7 @@
               </li>
             </ul>
           </div>
-          <div class='content' v-if='item.eventName != ""'>
+          <div class='content' v-if='item.eventName != "" && item.eventName != null'>
             <div class='left'>{{item.eventName}}</div>
             <div class='right'>{{item.eventCreatTimeDate}}</div>
           </div>

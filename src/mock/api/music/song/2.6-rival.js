@@ -151,15 +151,15 @@ mockGet('/yuqing/music/song/rival/report', () => {
       {
         rivalName: 'Last Dance',
         dataList: [
-          { name: '男', value: 8100 },
+          { name: '男', value: 1100 },
           { name: '女', value: 1900 },
         ]
       },
       {
         rivalName: '挪威的森林',
         dataList: [
-          { name: '男1', value: 5220 },
-          { name: '女1', value: 4780 },
+          { name: '男', value: 0 },
+          { name: '女', value: 2888 },
         ]
       },
       {
@@ -167,6 +167,20 @@ mockGet('/yuqing/music/song/rival/report', () => {
         dataList: [
           { name: '男', value: null },
           { name: '女', value: null },
+        ]
+      },
+      {
+        rivalName: '空串测试测试',
+        dataList: [
+          { name: '男', value: '' },
+          { name: '女', value: 888 },
+        ]
+      },
+      {
+        rivalName: '全部都是空串',
+        dataList: [
+          { name: '男', value: '' },
+          { name: '女', value: '' },
         ]
       },
       {

@@ -1,4 +1,4 @@
-import { get, post, put, del } from '@/fn/ajax'
+import { get, post, put, del } from '@/fn/ajaxFix'
 /**
  * 品牌详情页
  * @param query  object

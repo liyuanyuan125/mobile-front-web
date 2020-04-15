@@ -158,8 +158,15 @@ export default class PlayTrend extends ViewBase {
     openAppLink(this.link)
   }
 
+  // 监测日期选择
   @Watch('dates', { deep: true })
   watchDays(val: any) {
+    this.apiGetData()
+  }
+
+  // 监测id
+  @Watch('query', { deep: true })
+  watchID(val: any) {
     this.apiGetData()
   }
 }

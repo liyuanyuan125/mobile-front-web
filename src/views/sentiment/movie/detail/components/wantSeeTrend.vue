@@ -73,6 +73,12 @@ export default class WantSeeTrend extends ViewBase {
     }
   }
 
+  // 监控ID变化
+  @Watch('query', { deep: true })
+  watchID(val: any) {
+    this.apiGetData()
+  }
+
   // 监控日期变化
   @Watch('dates', { deep: true })
   watchDays(val: any) {

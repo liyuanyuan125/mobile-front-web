@@ -122,7 +122,16 @@ export default class TVPage extends ViewBase {
     }
   }
 
-  async created() {
+  created() {
+    this.init()
+  }
+
+  @Watch('$route')
+  watchRouter() {
+    this.init()
+  }
+
+  async init() {
     this.tvId = this.$route.params.tvId
     this.sidebar.diggId = this.tvId
     // 无竞品的时候，跳设置竞品页
@@ -137,6 +146,7 @@ export default class TVPage extends ViewBase {
       await this.getRivalList()
     }
   }
+
   // api获取电影详情页
   async getTVInfo() {
     const res: any = await getTvDetail(this.tvId)

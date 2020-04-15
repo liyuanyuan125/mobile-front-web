@@ -1,7 +1,7 @@
 <template>
   <div class="userportrait">
     <ModuleHeader title="用户分析" :link="genderListData || ageRangeListData ? link : null" />
-    <van-row type="flex" align="center" class="raitwrap" v-if="genderListData || ageRangeListData">
+    <van-row type="flex" class="raitwrap" v-if="genderListData || ageRangeListData">
       <van-col :span="genderListData && ageRangeListData ? 10 :24" v-if="genderListData">
         <BarGraph :dataOption="genderListData" :colorList="colorList" />
       </van-col>

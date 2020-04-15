@@ -128,7 +128,16 @@ export default class MoviePage extends ViewBase {
     }
   }
 
-  async created() {
+  created() {
+    this.init()
+  }
+
+  @Watch('$route')
+  watchRouter() {
+    this.init()
+  }
+
+  async init() {
     this.movieId = this.$route.params.movieId
     this.sidebar.diggId = this.movieId
     // 无竞品的时候，跳设置竞品页

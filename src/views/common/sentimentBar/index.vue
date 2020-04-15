@@ -2,11 +2,11 @@
   <div class="topbar" :style="{background:bgColor}">
     <span class="reBack" @click="goBack"></span>
     <h1 class="title van-ellipsis" v-show="titleShow || hasTitle">{{title}}</h1>
-    <div class="tool" v-if="sidebar">
-      <i class="ico-pk" v-if="sidebar.rivalIds" title="竞品分析" @click="goRivalAnalysis"></i>
+    <div class="tool" v-if="objectItem">
+      <i class="ico-pk" v-if="objectItem.rivalIds" title="竞品分析" @click="goRivalAnalysis"></i>
       <i
         :class="['ico-digg',digg ? 'ico-diggon' : '' ]"
-        v-if="sidebar.diggType && sidebar.diggId"
+        v-if="objectItem.diggType && objectItem.diggId"
         @click="diggThis"
         title="关注"
       ></i>
@@ -43,13 +43,15 @@ export default class SentimentBar extends Vue {
   hasTitle: boolean = false // 滚动后显示标题
   digg: boolean = false // 是否被用户关注了
 
-  created() {
+  get objectItem() {
+    const obj = this.sidebar
     if (isJyApp()) {
       // 在 app 里执行隐藏native 导航
       this.hideNavBarStatus()
     }
-    this.isDiggThis()
     window.addEventListener('scroll', this.getScroll)
+    obj && this.isDiggThis()
+    return obj
   }
 
   destroyed() {
@@ -58,15 +60,13 @@ export default class SentimentBar extends Vue {
 
   // 是否关注过本体
   async isDiggThis() {
-    if (this.sidebar) {
-      const res: any = await hasDigg({
-        businessType: Number(this.sidebar.diggType) || 0,
-        businessId: this.sidebar.diggId || ''
-      })
-      if (res.code === 0) {
-        // 1=已关注 其他=未关注
-        this.digg = res.data === 1 ? true : false
-      }
+    const res: any = await hasDigg({
+      businessType: Number(this.sidebar.diggType) || 0,
+      businessId: this.sidebar.diggId || ''
+    })
+    if (res.code === 0) {
+      // 1=已关注 其他=未关注
+      this.digg = res.data === 1 ? true : false
     }
   }
 

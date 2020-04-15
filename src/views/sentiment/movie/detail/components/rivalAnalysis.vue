@@ -2,10 +2,10 @@
   <!--竞品分析 -->
   <div class="rival mod">
     <ModuleHeader title="同档期影片分析" />
-    <div v-if="list.length">
+    <div v-if="list.length && list.length >1">
       <dl>
         <dd v-for="(item,index) in list.slice(0,3)" :key="item.rivalId + index">
-          <div class="rivalbox">
+          <div class="rivalbox" @click="goRivalDetail(item,index)">
             <img :src="item.coverImg" :alt="item.rivalName" class="img" />
             <h4 class="van-ellipsis">{{item.rivalName}}</h4>
             <div class="params">
@@ -88,6 +88,18 @@ export default class RivalAnalysis extends ViewBase {
       return list
     } else {
       return []
+    }
+  }
+
+  // 去往竞品详情页
+  goRivalDetail(item: any, index: number) {
+    if (index) {
+      this.$router.push({
+        name: 'sentimentmovie',
+        params: {
+          movieId: item.rivalId
+        }
+      })
     }
   }
 }

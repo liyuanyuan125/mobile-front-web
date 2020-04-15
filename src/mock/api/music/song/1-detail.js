@@ -129,7 +129,7 @@ mockGet('/yuqing/music/song/detail', ({ songId }) => {
       },
       {
         singerName: '汪汪汪',
-        singerId: 333,
+        singerId: 833,
         singerCover: {
           url: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/movie/images/2019/10/31/562EDE9160B003AFECEB.jpg',
           source: 'piaoshen',

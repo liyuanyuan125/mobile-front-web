@@ -43,21 +43,7 @@ export default class SentimentBar extends Vue {
   hasTitle: boolean = false // 滚动后显示标题
   digg: boolean = false // 是否被用户关注了
 
-  // get objectItem() {
-  //   console.log('aaaaaaaa', this.sidebar)
-  //   const obj = this.sidebar
-  //   if (isJyApp()) {
-  //     // 在 app 里执行隐藏native 导航
-  //     this.hideNavBarStatus()
-  //   }
-  //   window.addEventListener('scroll', this.getScroll)
-  //   obj && this.isDiggThis()
-  //   return obj
-  // }
-
   created() {
-    console.log('aaaaaaaa', this.sidebar)
-    // const obj = this.sidebar
     if (isJyApp()) {
       // 在 app 里执行隐藏native 导航
       this.hideNavBarStatus()
@@ -68,7 +54,6 @@ export default class SentimentBar extends Vue {
 
   @Watch('sidebar.diggId', { deep: true })
   watchSidebar(newVal: any, oldVal: any) {
-    console.log('newwwwwwwww', newVal, oldVal)
     if (newVal !== oldVal) {
       this.isDiggThis()
     }

@@ -78,7 +78,6 @@ export default class UserPortrait extends ViewBase {
   }
 
   get genderListData() {
-    console.log('this.genderList', this.genderList)
     const xData: any[] = []
     const yData: any[] = []
     const rait: any = this.genderList

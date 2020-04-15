@@ -393,9 +393,8 @@ export default class extends ViewBase {
     if (this.rivalList == null) {
       return ''
     }
-    // 产品需求：只取前两个，与本身组成竞品分析
-    const ids = (this.rivalList as any[]).slice(0, 2).map(it => it.id)
-    return [ this.id, ...ids ].join(',')
+    const ids = (this.rivalList as any[]).map(it => it.id)
+    return ids.join(',')
   }
 
   detailPage(page: string) {

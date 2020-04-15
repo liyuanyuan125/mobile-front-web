@@ -397,7 +397,7 @@ const dealRival = (
   routeName: string,
   statsConfig: Array<{ type: string, name: string }>
 ) => {
-  const result = list.map(it => ({
+  const dlist = list.map(it => ({
     link: { name: routeName, params: { id: it.rivalId } },
     id: it.rivalId,
     name: it.rivalName || '',
@@ -415,7 +415,9 @@ const dealRival = (
     eventName: it.eventName,
     eventDate: formatValidDate(it.eventCreatTime)
   }))
-  return result
+  // 产品逻辑，只取前三个，第一个一定是其本身，若只有一个，则作为空处理
+  const result = dlist.slice(0, 3)
+  return result.length > 1 ? result : []
 }
 
 const songRival = async (id: number) => {

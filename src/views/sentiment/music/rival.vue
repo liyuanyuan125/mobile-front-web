@@ -277,6 +277,8 @@ export default class extends ViewBase {
       this.heatEmpty = allEmpty
     } catch (ex) {
       this.handleError(ex)
+      this.heatData = null
+      this.heatEmpty = true
     }
   }
 

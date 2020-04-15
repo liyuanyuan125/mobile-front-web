@@ -165,7 +165,7 @@ export default class TableBasic extends Vue {
 
   tr {
     &:nth-child(2n) {
-      background-color: #f2f3f6;
+      background-color: #f9f9fb;
     }
   }
 
@@ -178,7 +178,7 @@ export default class TableBasic extends Vue {
   th {
     font-size: 24px;
     font-weight: 400;
-    background-color: #f2f3f6;
+    background-color: #f9f9fb;
   }
 
   td {

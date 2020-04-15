@@ -65,13 +65,15 @@ export default class SentimentBar extends Vue {
 
   // 是否关注过本体
   async isDiggThis() {
-    const res: any = await hasDigg({
-      businessType: Number(this.sidebar.diggType) || 0,
-      businessId: this.sidebar.diggId || ''
-    })
-    if (res.code === 0) {
-      // 1=已关注 其他=未关注
-      this.digg = res.data === 1 ? true : false
+    if (this.sidebar) {
+      const res: any = await hasDigg({
+        businessType: Number(this.sidebar.diggType) || 0,
+        businessId: this.sidebar.diggId || ''
+      })
+      if (res.code === 0) {
+        // 1=已关注 其他=未关注
+        this.digg = res.data === 1 ? true : false
+      }
     }
   }
 

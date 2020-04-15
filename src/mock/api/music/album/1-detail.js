@@ -162,7 +162,7 @@ mockGet('/yuqing/music/album/detail', ({ songId }) => {
           source: 'piaoshen',
         },
         heatCount: '1.2万',
-        heatTrend: 132
+        heatTrend: 0
       },
       {
         singerName: '汪汪汪',

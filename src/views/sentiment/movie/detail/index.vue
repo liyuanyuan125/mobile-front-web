@@ -161,7 +161,6 @@ export default class MoviePage extends ViewBase {
     this.userAnalysis = res.userAnalysis
     this.actorList = res.actorList ? res.actorList : []
     this.produceList = res.produceList ? res.produceList : []
-    // document.title = res.movieInfo.movieNameCn || '电影详情'
   }
 
   // api获取热度分析
@@ -172,8 +171,10 @@ export default class MoviePage extends ViewBase {
       startTime,
       endTime
     })
-    this.overAllHeat = res.overAllHeatList
-    this.platformHeat = res.platformHeatList
+    if (res && res.code === 0) {
+      this.overAllHeat = res.overAllHeatList
+      this.platformHeat = res.platformHeatList
+    }
   }
 
   // api获取想看趋势

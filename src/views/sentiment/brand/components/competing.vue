@@ -3,9 +3,15 @@
     <ModuleHeader title="竞品分析" />
     <div v-if="getRivalList.length">
       <ul>
-        <li class="flex-box" v-for="(item, index) in getRivalList" v-if="index < 3" :key="item.rivalId">
+        <li
+          class="flex-box"
+          v-for="(item, index) in getRivalList"
+          v-if="index < 3"
+          :key="item.rivalId"
+          @click="goRivalDetail(item,index)"
+        >
           <div class="parse-left">
-            <img :src="item.rivalCover.url" alt=""/>
+            <img :src="item.rivalCover.url" alt />
             <p>{{item.rivalName}}</p>
           </div>
           <div class="parse-right flex-box">
@@ -25,12 +31,18 @@
               <h5 class="flex-box numbers">
                 <span class="pad-right trend-head">
                   {{item.yesterHeatCount}}
-                  <i class="col_7ca4ff" v-if="item.yesterHeatTrend">{{changeNum(item.yesterHeatTrend)}}</i>
+                  <i
+                    class="col_7ca4ff"
+                    v-if="item.yesterHeatTrend"
+                  >{{changeNum(item.yesterHeatTrend)}}</i>
                   <i v-else>-</i>
                 </span>
                 <span class="trend-interact">
                   {{item.yesterInteractCount}}
-                  <i class="col_ff6262" v-if="item.yesterInteractTrend">{{changeNum(item.yesterInteractTrend)}}</i>
+                  <i
+                    class="col_ff6262"
+                    v-if="item.yesterInteractTrend"
+                  >{{changeNum(item.yesterInteractTrend)}}</i>
                   <i v-else>-</i>
                 </span>
               </h5>
@@ -43,10 +55,13 @@
         </li>
       </ul>
       <div class="submit-button">
-        <router-link :to="{name: 'sentimentbrand-analyze', query: {ids: idsString}}" class="to-link" >查看详细报告</router-link>
+        <router-link
+          :to="{name: 'sentimentbrand-analyze', query: {ids: idsString}}"
+          class="to-link"
+        >查看详细报告</router-link>
       </div>
     </div>
-    <DataEmpty v-else/>
+    <DataEmpty v-else />
   </div>
 </template>
 
@@ -56,7 +71,7 @@ import { Icon } from 'vant'
 import moment from 'moment'
 import ModuleHeader from '@/components/moduleHeader'
 import { imgFixed } from '@/fn/imgProxy'
-import {readableNumber} from '@/util/dealData'
+import { readableNumber } from '@/util/dealData'
 import DataEmpty from '@/views/common/dataEmpty/index.vue'
 
 @Component({
@@ -67,7 +82,7 @@ import DataEmpty from '@/views/common/dataEmpty/index.vue'
   }
 })
 export default class Main extends Vue {
-  @Prop({ type: Array, default: () => []}) rivalList: any
+  @Prop({ type: Array, default: () => [] }) rivalList: any
   // 查看详情报告ids参数
   ids: any = []
   get idsString() {
@@ -78,7 +93,10 @@ export default class Main extends Vue {
     const list = (this.rivalList || []).map((it: any, index: number) => {
       this.ids.push(it.rivalId)
 
-      const eventNameStr = it.eventName && it.eventName.length > 10 ? it.eventName.slice(0, 10) + '...' : it.eventName
+      const eventNameStr =
+        it.eventName && it.eventName.length > 10
+          ? it.eventName.slice(0, 10) + '...'
+          : it.eventName
       return {
         ...it,
         eventCreatTime: moment(it.eventCreatTime).format('YYYY-MM-DD'),
@@ -92,8 +110,19 @@ export default class Main extends Vue {
   changeNum(num: number) {
     return num < 0 ? `低${readableNumber(Math.abs(num))}` : `高${readableNumber(num)}`
   }
-}
 
+  // 去往竞品详情页
+  goRivalDetail(item: any, index: number) {
+    if (index) {
+      this.$router.push({
+        name: 'sentiment-brand',
+        params: {
+          id: item.rivalId
+        }
+      })
+    }
+  }
+}
 </script>
 
 <style lang='less' scoped>
@@ -175,5 +204,4 @@ li {
     }
   }
 }
-
 </style>

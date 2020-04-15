@@ -3,7 +3,7 @@
     <SentimentBar :title="brandInfo.brandName" :sidebar="sidebar" />
     <brandInfoArea :brandInfo="brandInfo" :bubbleData="bubbleData" />
     <TabNav :list="navList" class="tab-nav" />
-    
+
     <section class="brand-hot bg_fff" id="hot">
       <selectTime v-model="day" class="select-time" />
       <heatLineCom
@@ -40,7 +40,7 @@
     </section>
 
     <section id="part">
-      <Competing :rivalList="rivalList"  />
+      <Competing :rivalList="rivalList" />
     </section>
   </div>
 </template>
@@ -142,6 +142,14 @@ export default class BrandPage extends ViewBase {
   }
 
   mounted() {
+    this.brandDetail() // 品牌详情页
+    this.getHotList() // 热度分析数据
+    this.eventAnalysis() // 事件分析
+    this.analysisList() // 竞品分析
+  }
+
+  @Watch('$route', { deep: true })
+  watchRoute() {
     this.brandDetail() // 品牌详情页
     this.getHotList() // 热度分析数据
     this.eventAnalysis() // 事件分析

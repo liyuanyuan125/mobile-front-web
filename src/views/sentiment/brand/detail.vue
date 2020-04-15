@@ -18,7 +18,6 @@
         :favorable="brandInfo.favorable"
         :publicPraise="publicPraise"
         :link="getApplink('praiseHotWordsList')"
-        v-if="publicPraise.appraiseList"
         class="praise"
       />
     </section>
@@ -27,7 +26,6 @@
       <UserPortrait
         :ageRangeList="userAnalysis.ageRangeList"
         :genderList="userAnalysis.genderList"
-        v-if="userAnalysis.genderList"
         :link="getApplink('userAnalysis')"
       />
     </section>

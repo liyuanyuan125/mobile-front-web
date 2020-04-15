@@ -24,8 +24,8 @@
           </div>
         </div>
       </li>
-      <li class='li-item-pk' v-for='(item, index) in pkUserListData' :key='index + item.rivalId' >
-        <div class='li-left' @click='goActorDetail(item.rivalId)'>
+      <li class='li-item-pk' v-for='(item, index) in pkUserListData' :key='index + item.rivalId' @click='goActorDetail(item.rivalId)'>
+        <div class='li-left'>
           <div>
             <img :src="item.coverImg" alt="">
           </div>

@@ -245,6 +245,7 @@ export default class KolPage extends ViewBase {
   }
 
   async getActorDetail() {
+    this.show = false
     try {
       const {
         data: {
@@ -305,6 +306,7 @@ export default class KolPage extends ViewBase {
   }
 
   async getPkUser() {
+    this.showuser = false
     this.pkIdList = []
     try {
       const pkUser = await getPkUser({ actorId: this.$route.params.actorId })
@@ -331,6 +333,7 @@ export default class KolPage extends ViewBase {
   }
 
   async getEventList() {
+    this.showevent = false
     try {
       const event = await getEventList({
         objectId: this.$route.params.actorId,

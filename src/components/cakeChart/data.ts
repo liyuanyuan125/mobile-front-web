@@ -265,6 +265,7 @@ export function getRingOption(data: any) {
                         show: true,
                         smooth: 0,
                         length: 14,
+                        length2: 3,
                         lineStyle: {
                           width: 1,
                           type: 'solid'

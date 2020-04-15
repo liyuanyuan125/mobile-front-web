@@ -24,8 +24,8 @@
           </div>
         </div>
       </li>
-      <li class='li-item-pk' v-for='(item, index) in pkUserListData' :key='index + item.rivalId' >
-        <div class='li-left' @click='goActorDetail(item.rivalId)'>
+      <li class='li-item-pk' v-for='(item, index) in pkUserListData' :key='index + item.rivalId' @click='goActorDetail(item.rivalId)'>
+        <div class='li-left'>
           <div>
             <img :src="item.coverImg" alt="">
           </div>
@@ -46,7 +46,7 @@
               </li>
             </ul>
           </div>
-          <div class='content' v-if='item.eventName != ""'>
+          <div class='content' v-if='item.eventName != "" && item.eventName != null'>
             <div class='left'>{{item.eventName}}</div>
             <div class='right'>{{item.eventCreatTimeDate}}</div>
           </div>

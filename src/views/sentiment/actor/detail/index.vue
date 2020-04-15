@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <SentimentBar :title="actorInfo.actorName" :sidebar="sidebar" />
-    <div class="info">
+    <section class="info">
       <div class="header" v-if="show">
         <div class="left">
           <div>
@@ -37,10 +37,10 @@
         <div class="curvetop"></div>
         <div class="curvebot"></div>
       </div>
-    </div>
+    </section>
 
     <TabNav :list="list" class="formattab" />
-    <section v-if="show" class="pane" id="hot">
+    <section  class="pane" id="hot">
       <!-- 热度分析 -->
       <selectTime ref="refsTime" v-model="day" class="select-time" />
       <heatLineCom
@@ -50,18 +50,20 @@
       />
     </section>
 
-    <section v-if="show" class="pane" id="praise">
+    <section  class="pane" id="praise">
       <!-- 口碑评论 -->
       <PraiseComment
+        v-if="show"
         :favorable="actorInfo.favorable"
         :publicPraise="publicPraise"
         :link="getApplink('praiseHotWordsList')"
       />
     </section>
 
-    <section v-if="show" class="pane" id="user">
+    <section class="pane" id="user">
       <!-- 用户分析 -->
       <UserPortrait
+        v-if="show"
         :genderList="userAnalysis.genderList"
         :ageRangeList="userAnalysis.ageRangeList"
         :link="getApplink('userAnalysis')"
@@ -245,6 +247,7 @@ export default class KolPage extends ViewBase {
   }
 
   async getActorDetail() {
+    this.show = false
     try {
       const {
         data: {
@@ -305,6 +308,7 @@ export default class KolPage extends ViewBase {
   }
 
   async getPkUser() {
+    this.showuser = false
     this.pkIdList = []
     try {
       const pkUser = await getPkUser({ actorId: this.$route.params.actorId })
@@ -313,7 +317,7 @@ export default class KolPage extends ViewBase {
         .map((it: any) => {
           return it.rivalId
         })
-        .slice(0, 2)
+        .slice(0, 3)
       if (this.pkIdList.length) {
         // 有竞品数据跳竞品报告页
         this.sidebar.rivalIds = {
@@ -331,6 +335,7 @@ export default class KolPage extends ViewBase {
   }
 
   async getEventList() {
+    this.showevent = false
     try {
       const event = await getEventList({
         objectId: this.$route.params.actorId,

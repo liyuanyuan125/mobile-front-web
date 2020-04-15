@@ -167,7 +167,7 @@ export default class Main extends Vue {
 /deep/ .tooltip-item {
   display: flex;
   font-weight: 500;
-  font-family: SanFranciscoDisplay-Semibold, SanFranciscoDisplay, serif;
+  font-family: SanFranciscoDisplay-Semibold, SanFranciscoDisplay, sans-serif;
 }
 
 /deep/ .tooltip-dot {

@@ -66,20 +66,20 @@ export default class ChinaMap extends Vue {
   let name = ''
   let fontSize: number = 10
   let withinProportion: string = '34%'
-  let externalProportion: string = '50%'
+  let externalProportion: string = '44%'
   if (this.sizeWidth > 320 && this.sizeWidth <= 414) {
     fontSize = 10
     withinProportion = '34%'
-    externalProportion = '50%'
+    externalProportion = '44%'
   } else if (this.sizeWidth <= 320 ) {
     fontSize = 8
     withinProportion = '30%'
-    externalProportion = '44%'
+    externalProportion = '40%'
 
   } else {
     fontSize = 12
     withinProportion = '34%'
-    externalProportion = '50%'
+    externalProportion = '44%'
   }
   this.data.data.forEach((it: any, index: number) => {
     maxValue = it.value > maxValue ? it.value : maxValue
@@ -87,6 +87,9 @@ export default class ChinaMap extends Vue {
     if (maxValue == it.value) {
       colorIndex = index
       name = it.name
+    }
+    if (it.name.length > 5) {
+      it.name = it.name.substring(0, 4) + '...'
     }
   })
   const myChart = eCharts.init(myEcharts)

@@ -143,15 +143,22 @@ export async function getBasic(ids: string, isAlbum: boolean) {
   return result
 }
 
+// 单曲：热度分析
 export async function getHeat(query: SongIdListTime) {
   const { data } = await songGetHeat(query)
   const overAllHeat = data.overAllHeat || []
   const interactList = dot(data, 'platform.interactList') || []
   const materialList = dot(data, 'platform.materialList') || []
+  const allEmpty = overAllHeat.length == 0
+    && interactList.length == 0
+    && materialList.length == 0
   const result = {
-    overAllHeat,
-    interactList,
-    materialList,
+    heatData: allEmpty ? null : {
+      overAllHeat,
+      interactList,
+      materialList,
+    },
+    allEmpty,
   }
   return result
 }

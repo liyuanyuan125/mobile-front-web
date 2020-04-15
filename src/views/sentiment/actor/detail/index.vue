@@ -313,7 +313,7 @@ export default class KolPage extends ViewBase {
         .map((it: any) => {
           return it.rivalId
         })
-        .slice(0, 2)
+        .slice(0, 3)
       if (this.pkIdList.length) {
         // 有竞品数据跳竞品报告页
         this.sidebar.rivalIds = {

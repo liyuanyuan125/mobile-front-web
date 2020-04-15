@@ -4,7 +4,7 @@
 
     <section class="header">
       <figure class="header-fig">
-        <img :src="basic.cover" v-if="basic.cover" />
+        <Cover :src="basic.cover" v-if="basic.cover"/>
         <div class="header-price" v-if="basic.price">{{basic.price}}</div>
       </figure>
       <div class="header-main">
@@ -246,6 +246,7 @@ import ModuleHeader from '@/components/moduleHeader'
 import { BubbleBottom } from '@/components/bubble'
 import { selectTime as SelectTime } from '@/components/hotLine'
 import HeatLineCom from '@/views/common/heatLineCom/index.vue'
+import Cover from './components/cover'
 import PlayStats, { PlayQuery } from './components/playStats'
 import PraiseComment from '@/views/common/praiseComment/index.vue'
 import UserPortrait from '@/views/common/user/userPortrait.vue'
@@ -272,6 +273,7 @@ const removeFalsy = (list: any[]) => list.filter(it => !!it)
     BubbleBottom,
     SelectTime,
     HeatLineCom,
+    Cover,
     PlayStats,
     AnnularChart,
     PraiseComment,

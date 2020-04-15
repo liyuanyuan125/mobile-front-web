@@ -2,11 +2,11 @@
   <div class="topbar" :style="{background:bgColor}">
     <span class="reBack" @click="goBack"></span>
     <h1 class="title van-ellipsis" v-show="titleShow || hasTitle">{{title}}</h1>
-    <div class="tool" v-if="objectItem">
-      <i class="ico-pk" v-if="objectItem.rivalIds" title="竞品分析" @click="goRivalAnalysis"></i>
+    <div class="tool" v-if="sidebar">
+      <i class="ico-pk" v-if="sidebar.rivalIds" title="竞品分析" @click="goRivalAnalysis"></i>
       <i
         :class="['ico-digg',digg ? 'ico-diggon' : '' ]"
-        v-if="objectItem.diggType && objectItem.diggId"
+        v-if="sidebar.diggType && sidebar.diggId"
         @click="diggThis"
         title="关注"
       ></i>
@@ -43,15 +43,35 @@ export default class SentimentBar extends Vue {
   hasTitle: boolean = false // 滚动后显示标题
   digg: boolean = false // 是否被用户关注了
 
-  get objectItem() {
-    const obj = this.sidebar
+  // get objectItem() {
+  //   console.log('aaaaaaaa', this.sidebar)
+  //   const obj = this.sidebar
+  //   if (isJyApp()) {
+  //     // 在 app 里执行隐藏native 导航
+  //     this.hideNavBarStatus()
+  //   }
+  //   window.addEventListener('scroll', this.getScroll)
+  //   obj && this.isDiggThis()
+  //   return obj
+  // }
+
+  created() {
+    console.log('aaaaaaaa', this.sidebar)
+    // const obj = this.sidebar
     if (isJyApp()) {
       // 在 app 里执行隐藏native 导航
       this.hideNavBarStatus()
     }
     window.addEventListener('scroll', this.getScroll)
-    obj && this.isDiggThis()
-    return obj
+    this.isDiggThis()
+  }
+
+  @Watch('sidebar.diggId', { deep: true })
+  watchSidebar(newVal: any, oldVal: any) {
+    console.log('newwwwwwwww', newVal, oldVal)
+    if (newVal !== oldVal) {
+      this.isDiggThis()
+    }
   }
 
   destroyed() {

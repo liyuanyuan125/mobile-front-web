@@ -4,7 +4,7 @@
     <ul v-if="list.length" class="eventlist">
       <li
         v-for="(item,index) in list.slice(0,3)"
-        :key="item.eventId + index"
+        :key="item.eventId +''+ index"
         @click="goEventDetail(item)"
       >
         <p class="datebox">
@@ -12,7 +12,7 @@
           <span class="date" v-else>{{item.creatDate}}</span>
           <i
             v-for="(el,i) in (item.targetList || []).slice(0,3)"
-            :key="el.targetCode+i"
+            :key="el.targetCode+''+i"
             :style="{color:el.color,borderColor:el.color}"
             class="target"
           >{{el.targetName}}</i>
@@ -21,7 +21,7 @@
         <p class="flex-box">
           <span
             v-for="(it,index) in item.interactiveList.slice(0,3)"
-            :key="it.interactiveUrl.url + index"
+            :key="it.interactiveUrl.url +''+ index"
             :style="{display:it.interactiveValue ? '' :'none' }"
             class="counts flex-box"
           >

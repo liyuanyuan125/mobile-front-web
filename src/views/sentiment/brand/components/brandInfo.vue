@@ -1,7 +1,8 @@
 <template>
   <div class="header-info">
     <div class="header">
-      <img :src="coverImg"  alt="" class="img" />
+      <img v-if="coverImg" :src="coverImg" alt="brandInfo.brandName"  class="img"  />
+      <img v-else src="@/assets/branddefault.png" alt="brandInfo.brandName" class="img" />
       <div>
         <p class="brand-name">{{brandInfo.brandName}}</p>
         <p v-if="brandInfo.rankingName && !brandInfo.rankingId " class="event-name">{{brandInfo.rankingName}}</p>
@@ -113,6 +114,7 @@ export default class Main extends Vue {
     width: 210px;
     height: 210px;
     margin-right: 30px;
+    border: solid 1px #d4d4d4;
   }
   .brand-name {
     font-size: 40px;

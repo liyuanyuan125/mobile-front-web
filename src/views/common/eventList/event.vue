@@ -72,10 +72,10 @@ export default class EventList extends Vue {
           for (const item of it.targetList) {
             // 1 热点  0 负面
             switch (item.targetCode) {
-              case '1':
+              case 1:
                 item.color = '#FF6262'
                 break
-              case '0':
+              case 0:
                 item.color = '#9374DB'
                 break
               default:

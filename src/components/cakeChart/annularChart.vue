@@ -74,7 +74,7 @@ export default class ChinaMap extends Vue {
   } else if (this.sizeWidth <= 320 ) {
     fontSize = 8
     withinProportion = '30%'
-    externalProportion = '44%'
+    externalProportion = '40%'
 
   } else {
     fontSize = 12
@@ -87,6 +87,9 @@ export default class ChinaMap extends Vue {
     if (maxValue == it.value) {
       colorIndex = index
       name = it.name
+    }
+    if (it.name.length > 5) {
+      it.name = it.name.substring(0, 4) + '...'
     }
   })
   const myChart = eCharts.init(myEcharts)

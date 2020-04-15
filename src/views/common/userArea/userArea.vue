@@ -128,7 +128,7 @@ export default class UserArea extends Vue {
   list-style: inside decimal;
   justify-content: space-between;
   font-size: 30px;
-  font-family: PingFangSC-Light, PingFang SC, serif;
+  font-family: PingFangSC-Light, PingFang SC, sans-serif;
   font-weight: 300;
   padding-top: 20px;
 }

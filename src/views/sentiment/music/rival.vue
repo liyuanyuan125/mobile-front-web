@@ -24,7 +24,7 @@
       />
     </section>
 
-    <section class="pane pane-heat" id="hot" v-if="!isAlbum">
+    <section class="pane pane-heat" id="hot" v-if="isSong">
       <SelectTime v-model="heatDay" class="select-time"/>
       <HeatContrast
         lineTitle="综合热度对比"
@@ -39,6 +39,7 @@
         :daysNum="heatDay"
         v-if="heatData"
       />
+      <DataEmpty v-if="heatEmpty"/>
     </section>
 
     <section class="pane pane-play" id="play">
@@ -52,7 +53,7 @@
       />
     </section>
 
-    <section class="pane pane-rank" v-if="!isAlbum">
+    <section class="pane pane-rank" v-if="isSong">
       <ModuleHeader title="榜单表现对比"/>
       <Table
         :data="rankTable.data"
@@ -140,6 +141,10 @@ import { isEmpty } from 'lodash'
 export default class extends ViewBase {
   @Prop({ type: Boolean, default: false }) isAlbum!: boolean
 
+  get isSong() {
+    return !this.isAlbum
+  }
+
   ids = ''
 
   rivalList: any[] = []
@@ -187,8 +192,10 @@ export default class extends ViewBase {
   // 热度分析天数
   heatDay = 7
 
-  // 热度分析数据
+  // 单曲：热度分析数据
   heatData: any = null
+
+  heatEmpty = false
 
   rankTable: any = null
 
@@ -232,39 +239,45 @@ export default class extends ViewBase {
   }
 
   async init() {
+    const isSong = this.isSong
+    this.getBasic()
+    isSong && this.getHeat()
+  }
+
+  async getBasic() {
     try {
-      this.getBasic()
-      this.getHeat()
+      const {
+        rivalList,
+        basisDataList,
+        rankTable,
+        ageRangeList,
+        sexData,
+        areaList
+      } = await getBasic(this.ids, this.isAlbum) as any
+      this.rivalList = rivalList
+      this.basisDataList = basisDataList
+      this.rankTable = rankTable
+      this.ageRangeList = ageRangeList
+      this.sexData = sexData
+      this.areaList = areaList
     } catch (ex) {
       this.handleError(ex)
     }
   }
 
-  async getBasic() {
-    const {
-      rivalList,
-      basisDataList,
-      rankTable,
-      ageRangeList,
-      sexData,
-      areaList
-    } = await getBasic(this.ids, this.isAlbum) as any
-    this.rivalList = rivalList
-    this.basisDataList = basisDataList
-    this.rankTable = rankTable
-    this.ageRangeList = ageRangeList
-    this.sexData = sexData
-    this.areaList = areaList
-  }
-
   async getHeat() {
-    const [ startTime, endTime ] = lastDays(this.heatDay)
-    const heatData = await getHeat({
-      songIdList: this.ids,
-      startTime,
-      endTime,
-    })
-    this.heatData = heatData
+    try {
+      const [ startTime, endTime ] = lastDays(this.heatDay)
+      const { heatData, allEmpty } = await getHeat({
+        songIdList: this.ids,
+        startTime,
+        endTime,
+      })
+      this.heatData = heatData
+      this.heatEmpty = allEmpty
+    } catch (ex) {
+      this.handleError(ex)
+    }
   }
 
   async playFetch(query: PlayQuery) {
@@ -276,8 +289,13 @@ export default class extends ViewBase {
     }
   }
 
-  praiseFetch(query: any) {
-    return getPraise(this.ids, query, this.isAlbum)
+  async praiseFetch(query: any) {
+    try {
+      const data = await getPraise(this.ids, query, this.isAlbum)
+      return data
+    } catch (ex) {
+      this.handleError(ex)
+    }
   }
 
   @Watch('heatDay')

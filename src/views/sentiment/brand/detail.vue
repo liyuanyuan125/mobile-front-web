@@ -27,7 +27,6 @@
       <UserPortrait
         :ageRangeList="userAnalysis.ageRangeList"
         :genderList="userAnalysis.genderList"
-        v-if="userAnalysis.genderList"
         :link="getApplink('userAnalysis')"
       />
     </section>

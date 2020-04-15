@@ -88,16 +88,20 @@ export default class TabNav extends Vue {
     return count - 1
   }
 
-  public updateUI() {
+  private updateUIInner() {
     if (!this.clickedScroll) {
       const index = this.getScrollIndex()
       this.model = index
     }
   }
 
+  public updateUI() {
+    this.$nextTick(this.updateUIInner)
+  }
+
   mounted() {
     watchScroll().then(() => {
-      this.updateUI()
+      this.updateUIInner()
     })
   }
 

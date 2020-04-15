@@ -19,6 +19,7 @@
               width: it.rate1 + '%'
             }"
           ></span>
+          <span class="vs-placeholder"></span>
           <span
             class="vs-percent-2"
             :style="{
@@ -89,11 +90,11 @@ export default class VsList extends Vue {
   margin-bottom: 20px;
 }
 
-.vs-item-has-empty {
-  .vs-percent {
-    background-color: #f0f0f0;
-  }
-}
+// .vs-item-has-empty {
+//   .vs-percent {
+//     background-color: #f0f0f0;
+//   }
+// }
 
 .vs-text-empty {
   color: #999;
@@ -121,6 +122,11 @@ export default class VsList extends Vue {
   border-radius: 4px;
   overflow: hidden;
   margin-top: 8px;
+  background-color: #f0f0f0;
+}
+
+.vs-placeholder {
+  flex: 1;
 }
 
 .vs-percent-1,
@@ -138,6 +144,7 @@ export default class VsList extends Vue {
 .vs-text {
   line-height: 60px;
 }
+
 .vs-text-1,
 .vs-text-2 {
   flex: 1;
@@ -149,12 +156,14 @@ export default class VsList extends Vue {
     top: 2px;
   }
 }
+
 .vs-text-1 {
   transform: translateX(-3px);
   em {
     margin-left: 10px;
   }
 }
+
 .vs-text-2 {
   text-align: right;
   transform: translateX(3px);

@@ -104,7 +104,7 @@ mockGet('/yuqing/music/song/detail', ({ songId }) => {
           url: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/movie/images/2019/10/31/562EDE9160B003AFECEB.jpg',
           source: 'piaoshen',
         },
-        heatCount: '',
+        heatCount: '8.88万',
         heatTrend: 0
       },
       {
@@ -126,6 +126,16 @@ mockGet('/yuqing/music/song/detail', ({ songId }) => {
         },
         heatCount: '1.2万',
         heatTrend: 132
+      },
+      {
+        singerName: '汪汪汪',
+        singerId: 333,
+        singerCover: {
+          url: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/movie/images/2019/10/31/562EDE9160B003AFECEB.jpg',
+          source: 'piaoshen',
+        },
+        heatCount: '',
+        heatTrend: 0
       },
     ]
   }

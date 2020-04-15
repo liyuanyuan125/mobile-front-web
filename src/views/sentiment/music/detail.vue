@@ -1037,7 +1037,7 @@ export default class extends ViewBase {
     top: 18px;
     width: 16px;
     height: 4px;
-    background-color: #ff6262;
+    background-color: #47403b;
     vertical-align: top;
   }
 }

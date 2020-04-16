@@ -7,8 +7,10 @@
         <img src="@/assets/moviedefault.png" :alt="baseInfo.movieNameCn" class="img" v-else />
         <h3 class="van-ellipsis">{{baseInfo.movieNameCn}}</h3>
         <h5 class="van-ellipsis">{{baseInfo.movieNameEn}}</h5>
-        <p>{{baseInfo.duration}}{{!baseInfo.duration || !baseInfo.genreName ? '' : ' - '}}{{baseInfo.genreName}}</p>
-        <p>{{baseInfo.releaseDate}}</p>
+        <p
+          class="van-ellipsis"
+        >{{baseInfo.duration}}{{!baseInfo.duration || !baseInfo.genreName ? '' : ' - '}}{{baseInfo.genreName}}</p>
+        <p class="van-ellipsis">{{baseInfo.releaseDate}}</p>
       </div>
     </div>
     <div class="bubble">
@@ -95,6 +97,8 @@ export default class BaseInfoArea extends ViewBase {
     color: #303030;
 
     .img {
+      background: url('.././../../../../assets/moviedefault.png') no-repeat center;
+      background-size: cover;
       position: absolute;
       left: 0;
       top: 0;

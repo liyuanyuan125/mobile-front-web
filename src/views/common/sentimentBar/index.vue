@@ -65,13 +65,15 @@ export default class SentimentBar extends Vue {
 
   // 是否关注过本体
   async isDiggThis() {
-    const res: any = await hasDigg({
-      businessType: Number(this.sidebar.diggType) || 0,
-      businessId: this.sidebar.diggId || ''
-    })
-    if (res.code === 0) {
-      // 1=已关注 其他=未关注
-      this.digg = res.data === 1 ? true : false
+    if (this.sidebar) {
+      const res: any = await hasDigg({
+        businessType: Number(this.sidebar.diggType) || 0,
+        businessId: this.sidebar.diggId || ''
+      })
+      if (res.code === 0) {
+        // 1=已关注 其他=未关注
+        this.digg = res.data === 1 ? true : false
+      }
     }
   }
 
@@ -100,14 +102,18 @@ export default class SentimentBar extends Vue {
 
   // 返回上一页
   async goBack() {
-    const objectData = {
-      // 关闭当前页面，当true时直接返回上个原生界面，如果是false时先执行webView的goBack操作，当goBack没有上一级时就执行返回上个界面
-      isCloseWindow: false,
-      // 返回上个原生界面时，并刷新上个原生页面
-      refreshWindow: true
+    if (isJyApp()) {
+      const objectData = {
+        // 关闭当前页面，当true时直接返回上个原生界面，如果是false时先执行webView的goBack操作，当goBack没有上一级时就执行返回上个界面
+        isCloseWindow: false,
+        // 返回上个原生界面时，并刷新上个原生页面
+        refreshWindow: true
+      }
+      const obj = { params: objectData }
+      await handleGoBack(obj)
+    } else {
+      history.back()
     }
-    const obj = { params: objectData }
-    await handleGoBack(obj)
   }
 
   // 隐藏原生顶部导航

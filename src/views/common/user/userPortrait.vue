@@ -80,13 +80,15 @@ export default class UserPortrait extends ViewBase {
   get genderListData() {
     const xData: any[] = []
     const yData: any[] = []
-    // const rait: any = []
+    const rait: any = this.genderList
     let gender: any = null
-    if (this.genderList && this.genderList[0].name == '女') {
-      this.raitList = [this.genderList[1], this.genderList[0]]
-    } else {
-      this.raitList = this.genderList
+    if (rait && rait.length) {
+      this.raitList =
+        this.genderList[0].name == '女'
+          ? [this.genderList[1], this.genderList[0]]
+          : this.genderList
     }
+
     if (this.raitList && this.raitList.length) {
       for (const item of this.raitList) {
         xData.push(item.name)

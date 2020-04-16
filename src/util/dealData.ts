@@ -500,7 +500,7 @@ export function getPercentFieldValue(
 
   const valueList = trueList.map(item => {
     const value = (item || {})[percentKey]
-    const ret = value != null && !isNaN(value)
+    const ret = value != null && value !== '' && !isNaN(value)
       ? +(value / divisor).toFixed(digits)
       : defaultValue
     return ret

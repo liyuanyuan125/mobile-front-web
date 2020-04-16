@@ -45,8 +45,11 @@ export default class TabNav extends Vue {
   /** 去掉头部的装饰 */
   @Prop({ type: Boolean, default: false }) hideHeader!: boolean
 
-  /** 滚动调节量 */
-  @Prop({ type: Number, default: 30 }) scrollThreshold!: number
+  /** 触顶调节量，默认 30 */
+  @Prop({ type: Number, default: 30 }) topThreshold!: number
+
+  /** 离底调节量，默认 50 */
+  @Prop({ type: Number, default: 50 }) bottomThreshold!: number
 
   model = 0
 
@@ -71,7 +74,9 @@ export default class TabNav extends Vue {
   }
 
   getScrollIndex() {
-    const line = this.$el.getBoundingClientRect().bottom + this.scrollThreshold
+    const line = this.$el.getBoundingClientRect().bottom + this.topThreshold
+    const bottomLine = window.innerHeight + this.bottomThreshold
+
     const children = this.getChildren()
     const count = children.length
 
@@ -80,6 +85,15 @@ export default class TabNav extends Vue {
       if (el != null) {
         const top = el.getBoundingClientRect().top
         if (top > line) {
+          // 对最后一个进行优化
+          if (index == count - 1) {
+            // 判断最后一个是否已离底
+            const last = children[count - 1]!
+            const lastBottom = last.getBoundingClientRect().bottom
+            if (lastBottom < bottomLine) {
+              return count - 1
+            }
+          }
           return index == 0 ? 0 : index - 1
         }
       }

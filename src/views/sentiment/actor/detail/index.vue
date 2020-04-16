@@ -40,7 +40,7 @@
     </section>
 
     <TabNav :list="list" class="formattab" />
-    <section  class="pane" id="hot">
+    <section class="pane" id="hot">
       <!-- 热度分析 -->
       <selectTime ref="refsTime" v-model="day" class="select-time" />
       <heatLineCom
@@ -50,7 +50,7 @@
       />
     </section>
 
-    <section  class="pane" id="praise">
+    <section class="pane" id="praise">
       <!-- 口碑评论 -->
       <PraiseComment
         v-if="show"
@@ -366,6 +366,12 @@ export default class KolPage extends ViewBase {
 
   @Watch('$route', { deep: true })
   watchRoute() {
+    this.sidebar.diggId = this.$route.params.actorId
+    // 无竞品的时候，跳设置竞品页
+    this.sidebar.rivalIds = {
+      businessType: '2',
+      businessObjectIdList: String(this.$route.params.actorId)
+    }
     this.getHotList()
     this.getActorDetail()
     this.getPkUser()

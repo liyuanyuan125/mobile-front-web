@@ -34,18 +34,18 @@ mockGet('/yuqing/music/song/rival/list', () => {
       interactCount: null,
       interactTrend: -8888888880,
     },
-    {
-      rivalName: '翻山越岭来看你',
-      rivalId: 138,
-      rivalDesc: '山姆·史密斯',
-      rivalCover: {
-        source: 'piaoshen',
-        url: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/movie/images/2019/11/25/E3FEEC10AEB32F1C71A3.jpg'
-      },
-      playingCount: '1,313',
-      playingTrend: 8888,
-      interactCount: '3.3亿',
-      interactTrend: -88,
-    },
+    // {
+    //   rivalName: '翻山越岭来看你',
+    //   rivalId: 138,
+    //   rivalDesc: '山姆·史密斯',
+    //   rivalCover: {
+    //     source: 'piaoshen',
+    //     url: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/movie/images/2019/11/25/E3FEEC10AEB32F1C71A3.jpg'
+    //   },
+    //   playingCount: '1,313',
+    //   playingTrend: 8888,
+    //   interactCount: '3.3亿',
+    //   interactTrend: -88,
+    // },
   ]
 })

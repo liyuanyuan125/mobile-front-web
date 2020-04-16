@@ -10,10 +10,9 @@ import vconsole from 'vconsole'
 
 import './mock'
 
-// if (process.env.NODE_ENV !== 'production') {
-//   const vConsole = new vconsole()
-// }
-const vConsole = new vconsole()
+if (process && process.env && process.env.NODE_ENV !== 'production') {
+  new vconsole()
+}
 
 Vue.use(VueCookies)
 

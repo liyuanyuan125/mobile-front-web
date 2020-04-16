@@ -24,10 +24,10 @@ mockGet('/yuqing/music/song/detail', ({ songId }) => {
     // 弹框简介
     basisDataList: [
       { name: '单曲名称1', value: 'Last Dance' },
-      { name: '单曲名称2', value: '挪威的森林2' },
+      { name: '单曲名称2', value: '' },
       { name: '单曲名称3', value: '挪威的森林3' },
-      { name: '单曲名称4', value: '挪威的森林4' },
-      { name: '单曲名称5', value: '挪威的森林5' },
+      { name: '单曲名称4', value: null },
+      { name: '单曲名称5', value: 0 },
       { name: '单曲名称6', value: '网易云音乐，QQ音乐，酷狗音乐，酷我音乐，虾米音乐' },
       { name: '单曲名称7', value: '挪威的森林7' },
       { name: '单曲名称8', value: '挪威的森林8' },
@@ -104,7 +104,7 @@ mockGet('/yuqing/music/song/detail', ({ songId }) => {
           url: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/movie/images/2019/10/31/562EDE9160B003AFECEB.jpg',
           source: 'piaoshen',
         },
-        heatCount: '',
+        heatCount: '8.88万',
         heatTrend: 0
       },
       {
@@ -126,6 +126,16 @@ mockGet('/yuqing/music/song/detail', ({ songId }) => {
         },
         heatCount: '1.2万',
         heatTrend: 132
+      },
+      {
+        singerName: '汪汪汪',
+        singerId: 833,
+        singerCover: {
+          url: 'http://piaoshen.oss-cn-beijing.aliyuncs.com/movie/images/2019/10/31/562EDE9160B003AFECEB.jpg',
+          source: 'piaoshen',
+        },
+        heatCount: '',
+        heatTrend: 0
       },
     ]
   }

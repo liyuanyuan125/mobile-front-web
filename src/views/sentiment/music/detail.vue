@@ -45,11 +45,11 @@
       </div>
     </Popup>
 
-    <TabNav :list="navList" class="tab-nav" />
-
     <div class="bubble-wrap">
       <BubbleBottom :data="bubbleData" class="bubble-bottom" />
     </div>
+
+    <TabNav :list="navList" class="tab-nav" />
 
     <section class="pane pane-heat" id="heat" v-if="isSong">
       <SelectTime v-model="heatDay" class="select-time" />

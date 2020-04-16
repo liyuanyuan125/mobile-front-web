@@ -66,6 +66,7 @@
     <section class="pane" id="play" v-if="isSong || isDigital">
       <ModuleHeader :title="isAlbum ? '销量分析' : '播放量分析'" />
       <PlayStats
+        :id="id"
         :fetch="playFetch"
         :isAlbum="isAlbum"
         :chartTitle="isAlbum ? '分日销量' : '分日播放量'"
@@ -100,7 +101,7 @@
         v-if="songList && songList.length > 5"
       >{{ songUnfold ? '收起更多' : '展开更多' }}</a>
 
-      <DataEmpty v-if="songList && songList.length == 0" />
+      <DataEmpty v-if="songEmpty" />
     </section>
 
     <section class="pane" v-if="isSong">
@@ -229,7 +230,7 @@
         </li>
       </ul>
 
-      <DataEmpty v-if="rivalList && rivalList.length == 0" />
+      <DataEmpty v-if="rivalEmpty" />
 
       <div class="rival-more" v-if="rivalList && rivalList.length > 0">
         <router-link :to="rivalRoute" class="rival-button">查看详细报告</router-link>
@@ -371,6 +372,8 @@ export default class extends ViewBase {
 
   songList: any[] | null = null
 
+  songEmpty = false
+
   songUnfold = false
 
   songInitHeight = 0
@@ -392,6 +395,8 @@ export default class extends ViewBase {
   singerList: any = null
 
   rivalList: any = null
+
+  rivalEmpty = false
 
   get rivalIds() {
     if (this.rivalList == null) {
@@ -421,7 +426,32 @@ export default class extends ViewBase {
     this.init()
   }
 
+  reset() {
+    this.isDigital = false
+    this.basic = basicEmpty()
+    this.popupShow = false
+    this.popupData = null
+    this.bubbleData = []
+    this.heatDay = 7
+    this.overAllHeatList = []
+    this.platformHeatList = []
+    this.songList = null
+    this.songEmpty = false
+    this.songUnfold = false
+    this.songInitHeight = 0
+    this.rankAnalysis = null
+    this.rankAnnularData = null
+    this.rankAnnularEmpty = false
+    this.praiseData = null
+    this.userAnalysis = null
+    this.eventData = null
+    this.singerList = null
+    this.rivalList = null
+    this.rivalEmpty = false
+  }
+
   init() {
+    this.reset()
     const isSong = this.isSong
     this.getBasic()
     isSong && this.getHeat()
@@ -444,6 +474,7 @@ export default class extends ViewBase {
 
         // 专辑：歌曲热度
         songList,
+        songEmpty,
 
         // 单曲：榜单表现
         rankAnalysis,
@@ -468,6 +499,9 @@ export default class extends ViewBase {
       this.popupData = popupData
       this.bubbleData = bubbleData
       this.songList = songList
+      this.songEmpty = songEmpty
+      this.songUnfold = false
+      this.songInitHeight = 0
       this.rankAnalysis = rankAnalysis
       // this.rankAnalysisEmpty = rankAnalysisEmpty
       this.rankAnnularData = rankAnnularData
@@ -476,14 +510,16 @@ export default class extends ViewBase {
       this.userAnalysis = userAnalysis
       this.singerList = singerList
     } catch (ex) {
-      this.handleError(ex)
+      this.logError(ex)
+      this.songEmpty = true
+      this.rankAnnularEmpty = true
     }
   }
 
   // 单曲：热度分析
   async getHeat() {
     try {
-      const [startTime, endTime] = lastDays(this.heatDay)
+      const [ startTime, endTime ] = lastDays(this.heatDay)
       const { overAllHeatList = [], platformHeatList = [] } = await getHeat({
         songId: this.id,
         startTime,
@@ -492,7 +528,9 @@ export default class extends ViewBase {
       this.overAllHeatList = overAllHeatList
       this.platformHeatList = platformHeatList
     } catch (ex) {
-      this.handleError(ex)
+      this.logError(ex)
+      this.overAllHeatList = []
+      this.platformHeatList = []
     }
   }
 
@@ -501,7 +539,7 @@ export default class extends ViewBase {
       const data = await getEventList(this.id, this.isAlbum)
       this.eventData = data
     } catch (ex) {
-      this.handleError(ex)
+      this.logError(ex)
     }
   }
 
@@ -509,17 +547,19 @@ export default class extends ViewBase {
     try {
       const list = await getRivalList(this.id, this.isAlbum)
       this.rivalList = list
+      this.rivalEmpty = (list || []).length == 0
     } catch (ex) {
-      this.handleError(ex)
+      this.logError(ex)
+      this.rivalEmpty = true
     }
   }
 
   async playFetch(query: PlayQuery) {
     try {
-      const data = await getPlay(this.id, query, this.isAlbum)
+      const data = await getPlay(query, this.isAlbum)
       return data
     } catch (ex) {
-      this.handleError(ex)
+      this.logError(ex)
     }
   }
 

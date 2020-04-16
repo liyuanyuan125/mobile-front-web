@@ -33,12 +33,14 @@
         <div class="popup-title">简介</div>
         <CellGroup class="popup-list" v-if="popupData">
           <Cell
-            v-for="{ name, value } in popupData"
+            v-for="{ name, value, html } in popupData"
             :key="name"
             :title="name"
-            :value="value"
             class="popup-cell"
-          />
+          >
+            <div v-html="value" v-if="html"></div>
+            <div v-else>{{ value }}</div>
+          </Cell>
         </CellGroup>
       </div>
     </Popup>
@@ -561,7 +563,7 @@ export default class extends ViewBase {
     width: 210px;
     height: 210px;
     border: 0;
-    border-radius: 0;
+    border-radius: 10px;
     background-color: #fff;
     overflow: visible;
 
@@ -575,11 +577,10 @@ export default class extends ViewBase {
       background-color: #000;
     }
 
-    img {
+    .cover {
       position: relative;
-      width: 100%;
-      height: 100%;
       border-radius: 10px;
+      overflow: hidden;
       z-index: 8;
     }
   }
@@ -746,6 +747,24 @@ export default class extends ViewBase {
     max-width: 380px;
     text-align: left;
     color: #303030;
+  }
+
+  /deep/ .with-digital {
+    display: flex;
+    // align-items: center;
+  }
+
+  /deep/ .is-digital {
+    height: 38px;
+    line-height: 38px;
+    padding: 0 10px;
+    margin-left: 10px;
+    font-size: 22px;
+    color: #fff;
+    border-radius: 10px;
+    background-color: #7ca4ff;
+    white-space: nowrap;
+    vertical-align: top;
   }
 }
 

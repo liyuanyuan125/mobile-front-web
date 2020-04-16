@@ -65,7 +65,8 @@ module.exports = {
           useShortDoctype: true,
           removeAttributeQuotes: true
         },
-        VAR: it
+        VAR: it,
+        env,
       }])
     })
 

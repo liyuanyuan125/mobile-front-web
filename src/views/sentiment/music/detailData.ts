@@ -45,12 +45,26 @@ const bubbleTipInteractCount = bubbleTip(
   '累计互动说明话说：物料的点赞、评论、转发、阅读或播放的累计之和'
 )
 
-const commonBasic = (data: any) => {
+const commonBasic = (data: any, isDigital = false) => {
   const publicPraise = data.publicPraise || {}
   const userAnalysis = data.userAnalysis || {}
   const singerList = data.singerAnalysisList || data.singerList || []
+  const popupList = data.basisDataList || []
 
   const result = {
+    popupData: (popupList as any[]).map(({ name, value }) => ({
+      name,
+      value: isDigital && name == '专辑类型'
+        ? `<div class="with-digital">
+            <em>${value}</em>
+            <i class="is-digital">数字专辑销售中</i>
+          </div>`
+        : value != null && value !== ''
+        ? value
+        : '-',
+      html: isDigital && name == '专辑类型',
+    })),
+
     publicPraise: {
       appraiseList: publicPraise.appraiseList || [],
       hotWordList: publicPraise.hotWordList || [],
@@ -82,6 +96,7 @@ const songBasic = async (id: number) => {
   const platformList = rankAnalysis.platformList || []
 
   const {
+    popupData,
     publicPraise,
     userAnalysis,
     singerList,
@@ -100,7 +115,7 @@ const songBasic = async (id: number) => {
     },
 
     // 基础信息弹出窗
-    popupData: data.basisDataList || [],
+    popupData,
 
     // 气泡
     bubbleData: [
@@ -172,14 +187,14 @@ const albumBasic = async (id: number) => {
   const releaseDate = info.albumReleaseDate || ''
   const platform = info.releasePlatform || ''
   const overview = data.albumOverView || {}
+  const isDigital = info.hasDigital || false
 
   const {
+    popupData,
     publicPraise,
     userAnalysis,
     singerList,
-  } = commonBasic(data)
-
-  const isDigital = info.hasDigital || false
+  } = commonBasic(data, isDigital)
 
   const result = {
     // 是否为数字专辑
@@ -199,7 +214,7 @@ const albumBasic = async (id: number) => {
     },
 
     // 基础信息弹出窗
-    popupData: data.basisDataList || [],
+    popupData,
 
     // 气泡
     bubbleData: [

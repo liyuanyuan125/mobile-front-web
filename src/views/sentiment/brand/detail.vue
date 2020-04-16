@@ -168,7 +168,7 @@ export default class BrandPage extends ViewBase {
       this.publicPraise = publicPraise // 口碑
       this.userAnalysis = userAnalysis // 用户分析
     } catch (ex) {
-      toast(ex)
+      toast(ex.msg)
     }
   }
 
@@ -185,7 +185,7 @@ export default class BrandPage extends ViewBase {
       this.overAllHeatList = overAllHeatList || []
       this.platformHeatList = platformHeatList || []
     } catch (ex) {
-      toast(ex)
+      // toast(ex)
     }
   }
 
@@ -209,7 +209,7 @@ export default class BrandPage extends ViewBase {
       this.rivalList = data || []
       this.rivalIds = (data || []).map((it: any) => it.rivalId)
     } catch (ex) {
-      toast(ex)
+      // toast(ex.msg)
     }
   }
 

@@ -1,7 +1,7 @@
 <template>
   <div class="compet-content">
     <ModuleHeader title="竞品分析" />
-    <div v-if="getRivalList.length">
+    <div v-if="getRivalList.length > 1">
       <ul>
         <li
           class="flex-box"

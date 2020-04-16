@@ -5,17 +5,15 @@
     <TabNav class="tab-nav"/>
 
     <UserPortrait
-      :sexData="portrait.sexData"
-      :ageData="portrait.ageData"
+      :sexData="sexData"
+      :ageData="ageData"
       class="user-portrait"
-      v-if="portrait"
     />
 
     <UserArea
-      :data="area"
+      :data="areaData"
       :moreLink="`/sentiment/common/userRegion?src=${isAlbum ? 6 : 5}&id=${id}&type=1`"
       class="user-area"
-      v-if="area"
     />
   </main>
 </template>
@@ -42,25 +40,38 @@ export default class extends ViewBase {
 
   @Prop({ type: Boolean, default: false }) isAlbum!: boolean
 
-  portrait: any = null
+  sexData: any[] | null = null
 
-  area: any = null
+  ageData: any[] | null = null
+
+  areaData: any[] | null = null
 
   created() {
     this.init()
   }
 
+  reset() {
+    this.sexData = null
+    this.ageData = null
+    this.areaData = null
+  }
+
   init() {
+    this.reset()
     this.getBasic()
   }
 
   async getBasic() {
     try {
-      const { portrait, area } = await getBasic(this.id, this.isAlbum)
-      this.portrait = portrait
-      this.area = area
+      const { sexData, ageData, areaData } = await getBasic(this.id, this.isAlbum)
+      this.sexData = sexData
+      this.ageData = ageData
+      this.areaData = areaData
     } catch (ex) {
-      this.handleError(ex)
+      this.logError(ex)
+      this.sexData = []
+      this.ageData = []
+      this.areaData = []
     }
   }
 }
@@ -68,7 +79,7 @@ export default class extends ViewBase {
 
 <style lang="less" scoped>
 .main-page {
-  padding: 1px 0 8px;
+  padding: 1px 0 0;
   background-color: #f2f3f6;
 }
 

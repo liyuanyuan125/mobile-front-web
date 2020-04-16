@@ -135,7 +135,7 @@ export default class Main extends Vue {
       this.ageRangeList = (ageList || []).map((it: any) => {
         return {
           ...it,
-          value: (it.value / 100).toFixed(1)
+          value: (it.value / 100)
         }
       }) // 年龄占比
       this.promotionList = promotionList || [] // 促销敏感度

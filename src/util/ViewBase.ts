@@ -45,4 +45,16 @@ export default class ViewBase extends Vue {
       console.error(msg)
     }
   }
+
+  /**
+   * 统一处理 ajax catch 异常，不再 alert，只 log
+   * @param ex 错误对象
+   */
+  logError(ex: any = {}) {
+    if (ex && !(ex.code in ignoreCodes)) {
+      const msg = this.formatError(ex)
+      // tslint:disable-next-line
+      console.error(msg)
+    }
+  }
 }

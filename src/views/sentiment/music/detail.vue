@@ -66,6 +66,7 @@
     <section class="pane" id="play" v-if="isSong || isDigital">
       <ModuleHeader :title="isAlbum ? '销量分析' : '播放量分析'" />
       <PlayStats
+        :id="id"
         :fetch="playFetch"
         :isAlbum="isAlbum"
         :chartTitle="isAlbum ? '分日销量' : '分日播放量'"
@@ -476,7 +477,7 @@ export default class extends ViewBase {
       this.userAnalysis = userAnalysis
       this.singerList = singerList
     } catch (ex) {
-      this.handleError(ex)
+      this.logError(ex)
     }
   }
 
@@ -492,7 +493,7 @@ export default class extends ViewBase {
       this.overAllHeatList = overAllHeatList
       this.platformHeatList = platformHeatList
     } catch (ex) {
-      this.handleError(ex)
+      this.logError(ex)
     }
   }
 
@@ -501,7 +502,7 @@ export default class extends ViewBase {
       const data = await getEventList(this.id, this.isAlbum)
       this.eventData = data
     } catch (ex) {
-      this.handleError(ex)
+      this.logError(ex)
     }
   }
 
@@ -510,16 +511,16 @@ export default class extends ViewBase {
       const list = await getRivalList(this.id, this.isAlbum)
       this.rivalList = list
     } catch (ex) {
-      this.handleError(ex)
+      this.logError(ex)
     }
   }
 
   async playFetch(query: PlayQuery) {
     try {
-      const data = await getPlay(this.id, query, this.isAlbum)
+      const data = await getPlay(query, this.isAlbum)
       return data
     } catch (ex) {
-      this.handleError(ex)
+      this.logError(ex)
     }
   }
 

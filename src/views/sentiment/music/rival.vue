@@ -45,6 +45,7 @@
     <section class="pane pane-play" id="play">
       <ModuleHeader :title="isAlbum ? '销量对比' : '播放量对比'"/>
       <PlayStats
+        :id="id"
         :fetch="playFetch"
         :isAlbum="isAlbum"
         :alignMode="isAlbum"

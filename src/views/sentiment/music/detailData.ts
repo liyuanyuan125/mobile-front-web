@@ -390,8 +390,7 @@ const albumPlay = async (query: AlbumIdTime) => {
 }
 
 export async function getPlay(
-  id: number,
-  { startTime, endTime }: PlayQuery,
+  { id, startTime, endTime }: PlayQuery,
   isAlbum: boolean
 ) {
   const result = isAlbum

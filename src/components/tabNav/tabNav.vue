@@ -139,6 +139,7 @@ export default class TabNav extends Vue {
   background-color: #fff;
   margin-top: 130px;
   z-index: 888;
+  transform: translate3d(0, 0, 0);
 
   &::before {
     content: '';

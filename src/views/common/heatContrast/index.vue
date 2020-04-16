@@ -97,7 +97,7 @@ export default class Main extends Vue {
         // yDate数据重新处理
         const yDateval: any[] = []
         this.selectDaysList.map((t: any) => {
-          yDateval.push(obj[t] || null) // date匹配后台给的value值，无则为null
+          yDateval.push(obj[t] || 0) // date匹配后台给的value值，无则为0
         })
 
         return {
@@ -133,7 +133,7 @@ export default class Main extends Vue {
         // yDate数据重新处理
         const yDateval: any[] = []
         this.selectDaysList.map((t: any) => {
-          yDateval.push(obj[t] || null) // date匹配后台给的value值，无则为null
+          yDateval.push(obj[t] || 0) // date匹配后台给的value值，无则为0, null 则会出现x轴不显示
         })
 
         return {

@@ -4,7 +4,7 @@
 
     <section class="header">
       <figure class="header-fig">
-        <Cover :src="basic.cover" v-if="basic.cover"/>
+        <Cover :src="basic.cover"/>
         <div class="header-price" v-if="basic.price">{{basic.price}}</div>
       </figure>
       <div class="header-main">
@@ -622,6 +622,9 @@ export default class extends ViewBase {
       border-radius: 10px;
       overflow: hidden;
       z-index: 8;
+      /deep/ .van-image__error {
+        border: 1px solid #e0e0e0;
+      }
     }
   }
 
@@ -683,6 +686,7 @@ export default class extends ViewBase {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+
   img {
     max-width: 100%;
     max-height: 100%;

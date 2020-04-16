@@ -75,13 +75,13 @@
       <Event :eventList="eventList" :link="getApplink('eventMarketingList')" />
     </section>
 
-    <section v-if="showuser && pkUserList.length > 0" class="pane" id="part">
+    <section v-if="showuser" class="pane" id="part">
       <!-- 相似艺人 -->
       <Competing :pkUserList="pkUserList" :pkIdList="pkIdList" />
     </section>
 
     <section
-      v-if="show && worksAnalysis.movieAnalysis != null && worksAnalysis.tvAnalysis != null && worksAnalysis.musicAnalysis != null && worksAnalysis.brandAnalysis != null"
+      v-if="show"
       class="pane"
       id="work"
     >
@@ -372,6 +372,7 @@ export default class KolPage extends ViewBase {
       businessType: '2',
       businessObjectIdList: String(this.$route.params.actorId)
     }
+    this.day = 7
     this.getHotList()
     this.getActorDetail()
     this.getPkUser()

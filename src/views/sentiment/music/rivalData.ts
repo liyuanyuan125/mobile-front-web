@@ -24,13 +24,14 @@ const toPercent = (list: any[], percentKey = 'percent') =>
 
 const commonBasic = (data: any) => {
   const rivalList = data.rivalList || []
-  const basisDataList = data.basisDataList || []
+  const basisData = data.basisDataList || []
   const ageRangeList = data.ageRangeList || []
 
   const result = {
     rivalList,
 
-    basisDataList,
+    basisData,
+    basisEmpty: basisData.length == 0,
 
     ageRangeList,
 
@@ -85,42 +86,44 @@ const commonBasic = (data: any) => {
 const songBasic = async (ids: string) => {
   const { data } = await songGetReport(ids)
 
+  const rankTable = ((list: any[]) => {
+    const columns: TableColumn[] = [
+      { name: 'name', title: '单曲', width: 9, align: 'left', lines: 2, fixed: 'left' },
+      { name: 'count', title: '上榜数量', width: 5 },
+      { name: 'best', title: '最高排名', width: 5 },
+      { name: 'type', title: '上榜类型', width: 5 },
+    ]
+    if (list.length > 0) {
+      const platList = list[0].platformList as any[] || []
+      platList.forEach(
+        ({ platformName: name, platformNotice: title }) => {
+          columns.push({ name, title: `${name}<br>${title}`, width: 9 })
+        }
+      )
+    }
+    const body = (list || []).map(item => {
+      const row: any = {
+        name: item.rivalName,
+        count: item.rankCount,
+        best: item.rankBest,
+        type: item.rankType,
+      }
+      const platList = item.platformList as any[] || []
+      platList.forEach(
+        ({ platformName: name, platformValue: value }) => {
+          row[name] = value
+        }
+      )
+      return row
+    })
+    const ret = { columns, data: body }
+    return ret
+  })(data.rankAnalysis || [])
+
   const result = {
     ...commonBasic(data),
 
-    rankTable: ((list: any[]) => {
-      const columns: TableColumn[] = [
-        { name: 'name', title: '单曲', width: 9, align: 'left', lines: 2, fixed: 'left' },
-        { name: 'count', title: '上榜数量', width: 5 },
-        { name: 'best', title: '最高排名', width: 5 },
-        { name: 'type', title: '上榜类型', width: 5 },
-      ]
-      if (list.length > 0) {
-        const platList = list[0].platformList as any[] || []
-        platList.forEach(
-          ({ platformName: name, platformNotice: title }) => {
-            columns.push({ name, title: `${name}<br>${title}`, width: 9 })
-          }
-        )
-      }
-      const body = (list || []).map(item => {
-        const row: any = {
-          name: item.rivalName,
-          count: item.rankCount,
-          best: item.rankBest,
-          type: item.rankType,
-        }
-        const platList = item.platformList as any[] || []
-        platList.forEach(
-          ({ platformName: name, platformValue: value }) => {
-            row[name] = value
-          }
-        )
-        return row
-      })
-      const ret = { columns, data: body }
-      return ret
-    })(data.rankAnalysis || []),
+    rankTable: rankTable.data.length > 0 ? rankTable : null,
   }
 
   return result
@@ -235,10 +238,10 @@ const albumPlayAlign = async (query: AlbumIdListDays, dayNames: string[]) => {
 }
 
 export async function getPlay(
-  ids: string,
-  { startTime, endTime, days, isAlign, dayNames }: PlayQuery,
+  { id, startTime, endTime, days, isAlign, dayNames }: PlayQuery,
   isAlbum: boolean
 ) {
+  const ids = id as string
   const result = isAlbum
     ? isAlign
     ? await albumPlayAlign({ albumIdList: ids, days }, dayNames)

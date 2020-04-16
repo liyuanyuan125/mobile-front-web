@@ -1,43 +1,47 @@
 <template>
   <section class="user-area-module">
-    <ModuleHeader title="用户地域分布" class="module-header"/>
+    <ModuleHeader title="用户地域分布" class="module-header" />
 
-    <ChinaMap
-      :data="data"
-      :colorRange="colorRange"
-      class="china-map"
-    />
+    <template v-if="data && data.length > 0">
+      <ChinaMap
+        :data="data"
+        :colorRange="colorRange"
+        class="china-map"
+      />
 
-    <div class="legend">
-      <div class="legend-title">关注的用户量占比</div>
-      <div class="legend-bar">
-        <em class="legend-high">高</em>
-        <ul class="legend-list">
-          <li
-            v-for="color in colorRange.slice().reverse()"
-            :key="color"
-            class="legend-item"
-            :style="{ backgroundColor: color }"
-          >
-          </li>
-        </ul>
-        <em class="legend-low">低</em>
+      <div class="legend">
+        <div class="legend-title">关注的用户量占比</div>
+        <div class="legend-bar">
+          <em class="legend-high">高</em>
+          <ul class="legend-list">
+            <li
+              v-for="color in colorRange.slice().reverse()"
+              :key="color"
+              class="legend-item"
+              :style="{ backgroundColor: color }"
+            >
+            </li>
+          </ul>
+          <em class="legend-low">低</em>
+        </div>
       </div>
-    </div>
 
-    <div class="van-hairline--top hairline"></div>
+      <div class="van-hairline--top hairline"></div>
 
-    <ModuleHeader
-      title="TOP5 省份"
-      tag="h4"
-      moreText="查看更多"
-      :link="moreLink"
-      class="top-5-header"
-    />
+      <ModuleHeader
+        title="TOP5 省份"
+        tag="h4"
+        moreText="查看更多"
+        :link="moreLink"
+        class="top-5-header"
+      />
 
-    <ol class="top-5" :class="{ 'top-5-less': top5.length < 5 }">
-      <li v-for="it in top5" :key="it">{{it}}</li>
-    </ol>
+      <ol class="top-5" :class="{ 'top-5-less': top5.length < 5 }">
+        <li v-for="it in top5" :key="it">{{it}}</li>
+      </ol>
+    </template>
+
+    <DataEmpty v-if="data && data.length == 0" />
   </section>
 </template>
 
@@ -46,16 +50,18 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import ModuleHeader from '@/components/moduleHeader'
 import ChinaMap, { ChinaMapItem } from '@/components/chinaMap'
 import { RawLocation } from 'vue-router'
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
 
 @Component({
   components: {
     ModuleHeader,
-    ChinaMap
+    ChinaMap,
+    DataEmpty
   }
 })
 export default class UserArea extends Vue {
   /** 数据 */
-  @Prop({ type: Array, default: () => [] }) data!: ChinaMapItem[]
+  @Prop({ type: Array, default: null }) data!: ChinaMapItem[]
 
   /** 颜色列表，从浅色到深色变化，最小包含 2 种颜色 */
   @Prop({
@@ -120,7 +126,7 @@ export default class UserArea extends Vue {
 }
 
 .top-5-header {
-  padding-top: 42px;
+  padding-top: 60px;
 }
 
 .top-5 {
@@ -130,7 +136,7 @@ export default class UserArea extends Vue {
   font-size: 30px;
   font-family: PingFangSC-Light, PingFang SC, sans-serif;
   font-weight: 300;
-  padding-top: 20px;
+  padding-top: 40px;
 }
 
 .top-5-less {

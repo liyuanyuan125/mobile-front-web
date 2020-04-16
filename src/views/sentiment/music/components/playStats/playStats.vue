@@ -282,12 +282,20 @@ export default class PlayStats extends Vue {
     this.init()
   }
 
-  init() {
+  inReset = false
+
+  reset() {
+    this.inReset = true
     this.day = 7
     this.viewIndex = 0
     this.viewList = []
     this.groupIndex = 0
     this.isAlign = false
+    this.$nextTick(() => this.inReset = false)
+  }
+
+  init() {
+    this.reset()
     this.fetchData()
   }
 
@@ -311,12 +319,12 @@ export default class PlayStats extends Vue {
   }
 
   @Watch('day')
-  watchDay() {
-    this.fetchData()
-  }
-
   @Watch('isAlign')
-  watchIsAlign() {
+  watchDay() {
+    if (this.inReset) {
+      this.inReset = false
+      return
+    }
     this.fetchData()
   }
 

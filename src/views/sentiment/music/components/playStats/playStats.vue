@@ -135,7 +135,7 @@ import { isEmpty } from 'lodash'
   }
 })
 export default class PlayStats extends Vue {
-  @Prop({ type: Number, required: true }) id!: number
+  @Prop({ type: [ Number, String ], required: true }) id!: number | string
 
   @Prop({ type: Function, required: true }) fetch!: PlayFetch
 

@@ -47,7 +47,7 @@ export interface PlayItem {
 }
 
 export interface PlayQuery {
-  id: number
+  id: number | string
   startTime: number
   endTime: number
   days: number

@@ -496,7 +496,7 @@ export function getPercentFieldValue(
   }: PercentFieldOptions = {}
 ) {
   const isArray = Array.isArray(list)
-  const trueList = (isArray ? list : [ list ]) as any[]
+  const trueList = (isArray ? list : list != null ? [ list ] : []) as any[]
 
   const valueList = trueList.map(item => {
     const value = (item || {})[percentKey]
@@ -522,7 +522,7 @@ export function transformPercentField(
   options: PercentFieldOptions = {}
 ) {
   const isArray = Array.isArray(list)
-  const trueList = (isArray ? list : [ list ]) as any[]
+  const trueList = (isArray ? list : list != null ? [ list ] : []) as any[]
 
   // 注意，这里 percentKey 的默认值，一定要与 getPercentFieldValue 保持一致
   const { percentKey = 'value' } = options

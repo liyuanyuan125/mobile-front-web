@@ -196,6 +196,13 @@ const albumBasic = async (id: number) => {
     singerList,
   } = commonBasic(data, isDigital)
 
+  const songList = (data.musicList as any[] || []).map((it, i) => ({
+    id: it.musicId,
+    name: (i < 3 ? `<em>NO.${i + 1}</em>` : `${i + 1}.`) + ' ' + it.musicName,
+    heatCount: it.heatCount,
+    commentCount: it.commentCount,
+  }))
+
   const result = {
     // 是否为数字专辑
     isDigital,
@@ -247,12 +254,8 @@ const albumBasic = async (id: number) => {
     ],
 
     // 专辑：歌曲热度
-    songList: (data.musicList as any[] || []).map((it, i) => ({
-      id: it.musicId,
-      name: (i < 3 ? `<em>NO.${i + 1}</em>` : `${i + 1}.`) + ' ' + it.musicName,
-      heatCount: it.heatCount,
-      commentCount: it.commentCount,
-    })),
+    songList,
+    songEmpty: songList.length == 0,
 
     // 口碑评论
     praiseData: {
@@ -394,8 +397,8 @@ export async function getPlay(
   isAlbum: boolean
 ) {
   const result = isAlbum
-    ? await albumPlay({ albumId: id, startTime, endTime })
-    : await songPlay({ songId: id, startTime, endTime })
+    ? await albumPlay({ albumId: id as number, startTime, endTime })
+    : await songPlay({ songId: id as number, startTime, endTime })
   return result
 }
 

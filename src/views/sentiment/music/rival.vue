@@ -5,23 +5,27 @@
   >
     <SentimentBar title="竞品分析详细报告" titleShow/>
 
-    <RivalList
-      :type="isAlbum ? '6' : '5'"
-      :rivalList="rivalList"
-      class="rival-list"
-      @setRival="changeIds"
-      v-if="rivalList && rivalList.length"
-    />
+    <section class="rival-wrap">
+      <RivalList
+        :type="isAlbum ? '6' : '5'"
+        :rivalList="rivalList"
+        class="rival-list"
+        @setRival="changeIds"
+        v-if="rivalList && rivalList.length"
+      />
+    </section>
 
     <TabNav :list="navList" class="tab-nav" normal/>
 
     <section class="pane pane-basic" id="basic">
       <ModuleHeader title="基础数据"/>
       <Table
-        :data="basisDataList"
+        :data="basisData"
         :columns="basicColumns"
         class="basic-table"
+        v-if="basisData"
       />
+      <DataEmpty v-if="basisEmpty" />
     </section>
 
     <section class="pane pane-heat" id="hot" v-if="isSong">
@@ -39,13 +43,13 @@
         :daysNum="heatDay"
         v-if="heatData"
       />
-      <DataEmpty v-if="heatEmpty"/>
+      <DataEmpty v-if="heatEmpty" />
     </section>
 
     <section class="pane pane-play" id="play">
       <ModuleHeader :title="isAlbum ? '销量对比' : '播放量对比'"/>
       <PlayStats
-        :id="id"
+        :id="ids"
         :fetch="playFetch"
         :isAlbum="isAlbum"
         :alignMode="isAlbum"
@@ -54,13 +58,12 @@
       />
     </section>
 
-    <section class="pane pane-rank" v-if="isSong">
+    <section class="pane pane-rank" v-if="isSong && rankTable">
       <ModuleHeader title="榜单表现对比"/>
       <Table
         :data="rankTable.data"
         :columns="rankTable.columns"
         class="rank-table"
-        v-if="rankTable"
       />
     </section>
 
@@ -162,7 +165,9 @@ export default class extends ViewBase {
     return list
   }
 
-  basisDataList: any[] = []
+  basisData: any[] | null = null
+
+  basisEmpty = false
 
   get basicColumns() {
     const isAlbum = this.isAlbum
@@ -230,18 +235,31 @@ export default class extends ViewBase {
   }
 
   changeIds(ids: string) {
-    this.ids = ids
-    this.init()
+    this.init(ids)
   }
 
   created() {
-    this.ids = this.$route.query.ids as string
     this.init()
   }
 
-  async init() {
-    const isSong = this.isSong
+  reset() {
+    this.rivalList = []
+    this.basisData = null
+    this.basisEmpty = false
+    this.heatDay = 7
+    this.heatData = null
+    this.heatEmpty = false
+    this.rankTable = null
+    this.ageRangeList = []
+    this.sexData = []
+    this.areaList = []
+  }
+
+  async init(ids = '') {
+    this.ids = ids || this.$route.query.ids as string
+    this.reset()
     this.getBasic()
+    const isSong = this.isSong
     isSong && this.getHeat()
   }
 
@@ -249,20 +267,23 @@ export default class extends ViewBase {
     try {
       const {
         rivalList,
-        basisDataList,
+        basisData,
+        basisEmpty,
         rankTable,
         ageRangeList,
         sexData,
         areaList
       } = await getBasic(this.ids, this.isAlbum) as any
       this.rivalList = rivalList
-      this.basisDataList = basisDataList
+      this.basisData = basisData
+      this.basisEmpty = basisEmpty
       this.rankTable = rankTable
       this.ageRangeList = ageRangeList
       this.sexData = sexData
       this.areaList = areaList
     } catch (ex) {
-      this.handleError(ex)
+      this.logError(ex)
+      this.basisEmpty = true
     }
   }
 
@@ -277,7 +298,7 @@ export default class extends ViewBase {
       this.heatData = heatData
       this.heatEmpty = allEmpty
     } catch (ex) {
-      this.handleError(ex)
+      this.logError(ex)
       this.heatData = null
       this.heatEmpty = true
     }
@@ -285,10 +306,10 @@ export default class extends ViewBase {
 
   async playFetch(query: PlayQuery) {
     try {
-      const data = await getPlay(this.ids, query, this.isAlbum)
+      const data = await getPlay(query, this.isAlbum)
       return data
     } catch (ex) {
-      this.handleError(ex)
+      this.logError(ex)
     }
   }
 
@@ -297,8 +318,13 @@ export default class extends ViewBase {
       const data = await getPraise(this.ids, query, this.isAlbum)
       return data
     } catch (ex) {
-      this.handleError(ex)
+      this.logError(ex)
     }
+  }
+
+  @Watch('$route.query.ids')
+  watchId(ids: string) {
+    this.init(ids)
   }
 
   @Watch('heatDay')
@@ -312,6 +338,10 @@ export default class extends ViewBase {
 .main-page {
   padding-top: 1px;
   background-color: #f2f3f6;
+}
+
+.rival-wrap {
+  min-height: 88px;
 }
 
 .tab-nav {

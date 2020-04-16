@@ -126,7 +126,7 @@ export default class UserArea extends Vue {
 }
 
 .top-5-header {
-  padding-top: 42px;
+  padding-top: 60px;
 }
 
 .top-5 {
@@ -136,7 +136,7 @@ export default class UserArea extends Vue {
   font-size: 30px;
   font-family: PingFangSC-Light, PingFang SC, sans-serif;
   font-weight: 300;
-  padding-top: 20px;
+  padding-top: 40px;
 }
 
 .top-5-less {

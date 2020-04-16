@@ -1,10 +1,11 @@
 <template>
-  <div class="compet-content">
-    <ModuleHeader title="作品分析" :link="link" />
-    <Movie v-if='movieAnalysis.movieCount' :data='movieAnalysis' />
-    <Series v-if='tvAnalysis.tvCount' :data='tvAnalysis' />
-    <Music v-if='musicAnalysis.musicCount' :data='musicAnalysis' />
-    <Brand v-if='brandAnalysis.brandCount' :data='brandAnalysis' />
+  <div class="compet-content" >
+    <ModuleHeader title="作品分析" :link="Object.keys(worksAnalysis).length > 0 ? link : null" />
+    <Movie v-if='Object.keys(worksAnalysis).length > 0 && movieAnalysis.movieCount' :data='movieAnalysis' />
+    <Series v-if='Object.keys(worksAnalysis).length > 0 && tvAnalysis.tvCount' :data='tvAnalysis' />
+    <Music v-if='Object.keys(worksAnalysis).length > 0 && musicAnalysis.musicCount' :data='musicAnalysis' />
+    <Brand v-if='Object.keys(worksAnalysis).length > 0 && brandAnalysis.brandCount' :data='brandAnalysis' />
+    <dataEmpty v-if='Object.keys(worksAnalysis).length == 0' />
   </div>
 </template>
 
@@ -17,6 +18,8 @@ import Series from './series.vue'
 import Music from './music.vue'
 import Brand from './brand.vue'
 import ModuleHeader from '@/components/moduleHeader'
+import dataEmpty from '@/views/common/dataEmpty/index.vue'
+
 
 
 @Component({
@@ -26,7 +29,8 @@ import ModuleHeader from '@/components/moduleHeader'
     Series,
     Music,
     Brand,
-    ModuleHeader
+    ModuleHeader,
+    dataEmpty
   }
 })
 export default class Main extends Vue {

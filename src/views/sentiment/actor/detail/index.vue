@@ -264,8 +264,8 @@ export default class KolPage extends ViewBase {
       this.bubbleData = [
         {
           type: '1',
-          value: actorOverView.interactCount,
-          trend: actorOverView.interactTrend,
+          value: actorOverView == null ? ' ' : actorOverView.interactCount,
+          trend: actorOverView == null ? 0 : actorOverView.interactTrend,
           renderTitle: (h: any) => {
             return h(Title, {
               props: {
@@ -280,26 +280,26 @@ export default class KolPage extends ViewBase {
         {
           type: '2',
           title: '全网粉丝数',
-          value: actorOverView.fansCount,
-          trend: actorOverView.fansTrend,
+          value: actorOverView == null ? ' ' : actorOverView.fansCount,
+          trend: actorOverView == null ? 0 : actorOverView.fansTrend,
           showdown: true
         },
         {
           type: '3',
           title: '实时热度',
-          value: actorOverView.heatCount,
-          trend: actorOverView.heatTrend,
+          value: actorOverView == null ? ' ' : actorOverView.heatCount,
+          trend: actorOverView == null ? 0 : actorOverView.heatTrend,
           showdown: true
         },
         {
           type: '4',
           title: '好感度',
-          value: actorInfo.favorable == null ? '-' : actorInfo.favorable
+          value: actorOverView == null ? '-' : (actorInfo.favorable == null ? '-' : actorInfo.favorable)
         }
       ]
       this.publicPraise = publicPraise
-      this.userAnalysis = userAnalysis
-      this.worksAnalysis = worksAnalysis
+      this.userAnalysis = userAnalysis || {}
+      this.worksAnalysis = worksAnalysis || {}
     } catch (ex) {
       toast(ex)
     } finally {

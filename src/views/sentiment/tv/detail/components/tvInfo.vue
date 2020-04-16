@@ -5,8 +5,10 @@
       <div class="moviebox">
         <img :src="movieCover" :alt="baseInfo.tvName" class="img" />
         <h3 class="van-ellipsis">{{baseInfo.tvName}}</h3>
-        <p>{{baseInfo.episodes}}{{!baseInfo.episodes ? '' : ' / '}}{{baseInfo.genreName}}</p>
-        <p v-if="baseInfo.releaseDate">{{baseInfo.releaseDate}}</p>
+        <p
+          class="van-ellipsis"
+        >{{baseInfo.episodes}}{{!baseInfo.episodes ? '' : ' / '}}{{baseInfo.genreName}}</p>
+        <p v-if="baseInfo.releaseDate" class="van-ellipsis">{{baseInfo.releaseDate}}</p>
         <p v-if="platformList.length" class="platlist">
           播放平台
           <img v-for="(img,i) in platformList.slice(0,6)" :key="img.url+i" :src="img.logoUrl" />
@@ -108,7 +110,7 @@ export default class BaseInfoArea extends ViewBase {
     color: #303030;
 
     .img {
-      background: url('.././../../../../assets/moviedefault.png') no-repeat center;
+      background: url('.././../../../../assets/tvdefault.png') no-repeat center;
       background-size: cover;
       position: absolute;
       left: 0;

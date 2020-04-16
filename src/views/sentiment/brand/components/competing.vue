@@ -14,6 +14,7 @@
             <img :src="item.rivalCover.url" alt />
             <p>{{item.rivalName}}</p>
           </div>
+
           <div class="parse-right flex-box">
             <!-- 当前品牌 -->
             <div v-if="!item.eventName">
@@ -90,6 +91,7 @@ export default class Main extends Vue {
   }
 
   get getRivalList() {
+    this.ids = []
     const list = (this.rivalList || []).map((it: any, index: number) => {
       this.ids.push(it.rivalId)
 

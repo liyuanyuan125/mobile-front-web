@@ -2,54 +2,60 @@
   <main class="main-page" :class="isAlbum ? 'main-page-album' : 'main-page-song'">
     <SentimentBar :title="basic.name" :sidebar="topbarSidebar" />
 
-    <section class="header">
-      <figure class="header-fig">
-        <Cover :src="basic.cover"/>
-        <div class="header-price" v-if="basic.price">{{basic.price}}</div>
-      </figure>
-      <div class="header-main">
-        <h1 class="header-title van-ellipsis">{{basic.name}}</h1>
-        <div class="header-singer van-ellipsis">{{basic.singer}}</div>
-        <div class="header-release" @click="popupShow = true">
-          <div class="header-release-in van-ellipsis">{{basic.release}}</div>
+    <section class="header-wrap">
+      <div class="header">
+        <figure class="header-fig">
+          <Cover :src="basic.cover"/>
+          <div class="header-price" v-if="basic.price">{{basic.price}}</div>
+        </figure>
+        <div class="header-main">
+          <h1 class="header-title van-ellipsis">{{basic.name}}</h1>
+          <div class="header-singer van-ellipsis">{{basic.singer}}</div>
+          <div class="header-release" @click="popupShow = true">
+            <div class="header-release-in van-ellipsis">{{basic.release}}</div>
+          </div>
+          <div class="header-ranking">
+            <em>{{basic.rankingNum}}</em>
+            <router-link
+              :to="{
+                name: 'sentimenteventmarketing',
+                params: { eventId: basic.rankingId },
+                query: { title: basic.rankingName },
+              }"
+              class="header-event van-ellipsis"
+              v-if="basic.rankingId"
+            >#{{basic.rankingName}}</router-link>
+          </div>
         </div>
-        <div class="header-ranking">
-          <em>{{basic.rankingNum}}</em>
-          <router-link
-            :to="{
-              name: 'sentimenteventmarketing',
-              params: { eventId: basic.rankingId },
-              query: { title: basic.rankingName },
-            }"
-            class="header-event van-ellipsis"
-            v-if="basic.rankingId"
-          >#{{basic.rankingName}}</router-link>
+      </div>
+
+      <Popup v-model="popupShow" position="bottom" round closeable class="popup-props">
+        <div class="popup-wrap">
+          <div class="popup-title">简介</div>
+          <CellGroup class="popup-list" v-if="popupData">
+            <Cell
+              v-for="{ name, value, html } in popupData"
+              :key="name"
+              :title="name"
+              class="popup-cell"
+            >
+              <div v-html="value" v-if="html"></div>
+              <div v-else>{{ value }}</div>
+            </Cell>
+          </CellGroup>
+        </div>
+      </Popup>
+
+      <div class="bubble-wrap">
+        <BubbleBottom :data="bubbleData" class="bubble-bottom" />
+        <div class="curve">
+          <div class="curve-top"></div>
+          <div class="curve-bottom"></div>
         </div>
       </div>
     </section>
 
-    <Popup v-model="popupShow" position="bottom" round closeable class="popup-props">
-      <div class="popup-wrap">
-        <div class="popup-title">简介</div>
-        <CellGroup class="popup-list" v-if="popupData">
-          <Cell
-            v-for="{ name, value, html } in popupData"
-            :key="name"
-            :title="name"
-            class="popup-cell"
-          >
-            <div v-html="value" v-if="html"></div>
-            <div v-else>{{ value }}</div>
-          </Cell>
-        </CellGroup>
-      </div>
-    </Popup>
-
-    <div class="bubble-wrap">
-      <BubbleBottom :data="bubbleData" class="bubble-bottom" />
-    </div>
-
-    <TabNav :list="navList" class="tab-nav" />
+    <TabNav :list="navList" class="tab-nav" hideHeader />
 
     <section class="pane pane-heat" id="heat" v-if="isSong">
       <SelectTime v-model="heatDay" class="select-time" />
@@ -669,9 +675,9 @@ export default class extends ViewBase {
 
 .header {
   display: flex;
-  height: 480px;
+  min-height: 244px;
   background-color: #f2f3f6;
-  padding: 40px 0 40px 40px;
+  padding: 40px 0 18px 40px;
 }
 
 .header-fig {
@@ -818,15 +824,9 @@ export default class extends ViewBase {
 }
 
 .bubble-wrap {
-  position: absolute;
-  top: 338px;
-  width: 100%;
-  z-index: 999;
+  position: relative;
+  height: 370px;
   overflow: hidden;
-  pointer-events: none;
-  /deep/ .title {
-    pointer-events: all;
-  }
 }
 
 .bubble-bottom {
@@ -834,8 +834,37 @@ export default class extends ViewBase {
   left: 32px;
 }
 
+.curve {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.curve-top {
+  background-color: #fff;
+  &::before {
+    content: '';
+    display: block;
+    height: 60px;
+    border-radius: 0 0 60px 0;
+    background-color: #f2f3f6;
+  }
+}
+
+.curve-bottom {
+  background-color: #f2f3f6;
+  &::before {
+    content: '';
+    display: block;
+    height: 60px;
+    border-radius: 60px 0 0 0;
+    background-color: #fff;
+  }
+}
+
 .tab-nav {
-  top: 100px;
+  top: 88px;
 }
 
 .pane {

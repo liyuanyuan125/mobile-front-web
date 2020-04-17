@@ -160,7 +160,7 @@ export default class TabNav extends Vue {
     color: #303030;
     font-size: 30px;
     font-weight: 500;
-    padding: 10px 0 6px 0;
+    padding: 14px 0 2px 0;
     flex-basis: 16.66666% !important;
   }
 
@@ -207,13 +207,8 @@ export default class TabNav extends Vue {
 
 .tab-nav-hide-header {
   margin-top: 0;
-  padding-top: 5px;
-
   &::before {
-    content: '';
-    top: -5px;
-    height: 5px;
-    background: #fff;
+    display: none;
   }
 }
 

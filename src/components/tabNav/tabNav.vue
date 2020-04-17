@@ -6,6 +6,7 @@
       'tab-nav-hide-header': hideHeader,
       [`tab-nav-count-${list.length}`]: true
     }"
+    :style="style"
   >
     <Tabs
       v-model="model"
@@ -45,6 +46,12 @@ export default class TabNav extends Vue {
   /** 去掉头部的装饰 */
   @Prop({ type: Boolean, default: false }) hideHeader!: boolean
 
+  /**
+   * 吸顶 top，默认 0，750 设计稿宽度下的像素数，最终在内部按照 top / 750 * 100 转换成 vw
+   * 并且，为了保持更好的兼容性，当该 prop 为 0 时，不输出 style，从而可以通过 .class 样式控制 top
+   */
+  @Prop({ type: Number, default: 0 }) top!: number
+
   /** 触顶调节量，默认 30 */
   @Prop({ type: Number, default: 30 }) topThreshold!: number
 
@@ -52,6 +59,16 @@ export default class TabNav extends Vue {
   @Prop({ type: Number, default: 50 }) bottomThreshold!: number
 
   model = 0
+
+  get style() {
+    if (this.top > 0) {
+      const vw = +(this.top / 750 * 100).toFixed(5)
+      return { top: `${vw}vw` }
+    }
+    // 为了保持更好的兼容性，对于 0，不输出任何 inline style，
+    // 以免通过 .class 样式控制的 top 会因为优先级的原因失效
+    return null
+  }
 
   clickedScroll = false
 
@@ -138,7 +155,7 @@ export default class TabNav extends Vue {
   width: 100%;
   background-color: #fff;
   margin-top: 130px;
-  z-index: 12;
+  z-index: 888;
   transform: translate3d(0, 0, 0);
 
   &::before {

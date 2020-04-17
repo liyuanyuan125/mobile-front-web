@@ -55,7 +55,7 @@
       </div>
     </section>
 
-    <TabNav :list="navList" class="tab-nav" hideHeader />
+    <TabNav :list="navList" :top="88" hideHeader />
 
     <section class="pane pane-heat" id="heat" v-if="isSong">
       <SelectTime v-model="heatDay" class="select-time" />
@@ -861,10 +861,6 @@ export default class extends ViewBase {
     border-radius: 60px 0 0 0;
     background-color: #fff;
   }
-}
-
-.tab-nav {
-  top: 88px;
 }
 
 .pane {

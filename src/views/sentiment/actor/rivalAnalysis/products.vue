@@ -248,7 +248,8 @@ export default class KolPage extends ViewBase {
       this.combinedHeat.interactList = fansCountList || []
       this.combinedHeat.materialList = interactList || []
     } catch (ex) {
-      toast(ex)
+      // toast(ex.msg)
+      throw ex
     }
   }
 
@@ -290,7 +291,8 @@ export default class KolPage extends ViewBase {
         }
       }
     } catch (ex) {
-      toast(ex)
+      // toast(ex.msg)
+      throw ex
     } finally {
       this.showpraise = true
     }
@@ -325,7 +327,8 @@ export default class KolPage extends ViewBase {
        this.userRegion = userRegion
        this.regionObj.tableItem = userRegion.cityList
     } catch (ex) {
-      toast(ex)
+      // toast(ex.msg)
+      throw ex
     }
   }
   // 用户地域分布对比

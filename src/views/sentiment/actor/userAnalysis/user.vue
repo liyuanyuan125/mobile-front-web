@@ -110,7 +110,8 @@ export default class KolPage extends ViewBase {
       })
       this.platformFansList.data = platformFansList || []
     } catch (ex) {
-      toast(ex)
+      // toast(ex.msg)
+      throw ex
     } finally {
       this.show = true
     }

@@ -93,10 +93,10 @@ export default class UserPortrait extends Vue {
 }
 
 .age-rate {
-  padding-top: 45px;
+  padding-top: 70px;
 }
 
 .age-chart {
-  margin-top: 40px;
+  margin-top: 70px;
 }
 </style>

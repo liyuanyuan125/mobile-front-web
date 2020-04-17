@@ -1,8 +1,6 @@
 <template>
   <main class="main-page">
-    <SentimentBar title="用户分析" titleShow/>
-
-    <TabNav class="tab-nav"/>
+    <SentimentBar title="用户分析" titleShow />
 
     <UserPortrait
       :sexData="sexData"
@@ -22,7 +20,6 @@
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
-import TabNav from '@/components/tabNav'
 import UserPortrait, { VerticalBarItem, NameValue } from '@/views/common/userPortrait'
 import UserArea, { ChinaMapItem } from '@/views/common/userArea'
 import { getBasic } from './userData'
@@ -30,7 +27,6 @@ import { getBasic } from './userData'
 @Component({
   components: {
     SentimentBar,
-    TabNav,
     UserPortrait,
     UserArea,
   }
@@ -84,7 +80,7 @@ export default class extends ViewBase {
 }
 
 .user-portrait {
-  padding-top: 30px;
+  padding-top: 158px;
 }
 
 .user-area {

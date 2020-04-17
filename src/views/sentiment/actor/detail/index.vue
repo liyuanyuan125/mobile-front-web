@@ -242,7 +242,8 @@ export default class KolPage extends ViewBase {
       this.overAllHeatList = overAllHeatList || []
       this.platformHeatList = platformHeatList || []
     } catch (ex) {
-      toast(ex)
+      // toast(ex.msg)
+      throw ex
     }
   }
 
@@ -301,7 +302,8 @@ export default class KolPage extends ViewBase {
       this.userAnalysis = userAnalysis || {}
       this.worksAnalysis = worksAnalysis || {}
     } catch (ex) {
-      toast(ex)
+      // toast(ex.msg)
+      throw ex
     } finally {
       this.show = true
     }
@@ -328,7 +330,8 @@ export default class KolPage extends ViewBase {
         }
       }
     } catch (ex) {
-      toast(ex)
+      // toast(ex.msg)
+      throw ex
     } finally {
       this.showuser = true
     }
@@ -343,7 +346,8 @@ export default class KolPage extends ViewBase {
       })
       this.eventList = event.data
     } catch (ex) {
-      toast(ex)
+      // toast(ex.msg)
+      throw ex
     } finally {
       this.showevent = true
     }

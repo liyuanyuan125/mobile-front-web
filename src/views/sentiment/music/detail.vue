@@ -2,54 +2,60 @@
   <main class="main-page" :class="isAlbum ? 'main-page-album' : 'main-page-song'">
     <SentimentBar :title="basic.name" :sidebar="topbarSidebar" />
 
-    <section class="header">
-      <figure class="header-fig">
-        <Cover :src="basic.cover" v-if="basic.cover"/>
-        <div class="header-price" v-if="basic.price">{{basic.price}}</div>
-      </figure>
-      <div class="header-main">
-        <h1 class="header-title van-ellipsis">{{basic.name}}</h1>
-        <div class="header-singer van-ellipsis">{{basic.singer}}</div>
-        <div class="header-release" @click="popupShow = true">
-          <div class="header-release-in van-ellipsis">{{basic.release}}</div>
+    <section class="header-wrap">
+      <div class="header">
+        <figure class="header-fig">
+          <Cover :src="basic.cover"/>
+          <div class="header-price" v-if="basic.price">{{basic.price}}</div>
+        </figure>
+        <div class="header-main">
+          <h1 class="header-title van-ellipsis">{{basic.name}}</h1>
+          <div class="header-singer van-ellipsis">{{basic.singer}}</div>
+          <div class="header-release" @click="popupShow = true">
+            <div class="header-release-in van-ellipsis">{{basic.release}}</div>
+          </div>
+          <div class="header-ranking">
+            <em>{{basic.rankingNum}}</em>
+            <router-link
+              :to="{
+                name: 'sentimenteventmarketing',
+                params: { eventId: basic.rankingId },
+                query: { title: basic.rankingName },
+              }"
+              class="header-event van-ellipsis"
+              v-if="basic.rankingId"
+            >#{{basic.rankingName}}</router-link>
+          </div>
         </div>
-        <div class="header-ranking">
-          <em>{{basic.rankingNum}}</em>
-          <router-link
-            :to="{
-              name: 'sentimenteventmarketing',
-              params: { eventId: basic.rankingId },
-              query: { title: basic.rankingName },
-            }"
-            class="header-event van-ellipsis"
-            v-if="basic.rankingId"
-          >#{{basic.rankingName}}</router-link>
+      </div>
+
+      <Popup v-model="popupShow" position="bottom" round closeable class="popup-props">
+        <div class="popup-wrap">
+          <div class="popup-title">简介</div>
+          <CellGroup class="popup-list" v-if="popupData">
+            <Cell
+              v-for="{ name, value, html } in popupData"
+              :key="name"
+              :title="name"
+              class="popup-cell"
+            >
+              <div v-html="value" v-if="html"></div>
+              <div v-else>{{ value }}</div>
+            </Cell>
+          </CellGroup>
+        </div>
+      </Popup>
+
+      <div class="bubble-wrap">
+        <BubbleBottom :data="bubbleData" class="bubble-bottom" />
+        <div class="curve">
+          <div class="curve-top"></div>
+          <div class="curve-bottom"></div>
         </div>
       </div>
     </section>
 
-    <Popup v-model="popupShow" position="bottom" round closeable class="popup-props">
-      <div class="popup-wrap">
-        <div class="popup-title">简介</div>
-        <CellGroup class="popup-list" v-if="popupData">
-          <Cell
-            v-for="{ name, value, html } in popupData"
-            :key="name"
-            :title="name"
-            class="popup-cell"
-          >
-            <div v-html="value" v-if="html"></div>
-            <div v-else>{{ value }}</div>
-          </Cell>
-        </CellGroup>
-      </div>
-    </Popup>
-
-    <div class="bubble-wrap">
-      <BubbleBottom :data="bubbleData" class="bubble-bottom" />
-    </div>
-
-    <TabNav :list="navList" class="tab-nav" />
+    <TabNav :list="navList" :top="88" hideHeader />
 
     <section class="pane pane-heat" id="heat" v-if="isSong">
       <SelectTime v-model="heatDay" class="select-time" />
@@ -66,6 +72,7 @@
     <section class="pane" id="play" v-if="isSong || isDigital">
       <ModuleHeader :title="isAlbum ? '销量分析' : '播放量分析'" />
       <PlayStats
+        :id="id"
         :fetch="playFetch"
         :isAlbum="isAlbum"
         :chartTitle="isAlbum ? '分日销量' : '分日播放量'"
@@ -100,7 +107,7 @@
         v-if="songList && songList.length > 5"
       >{{ songUnfold ? '收起更多' : '展开更多' }}</a>
 
-      <DataEmpty v-if="songList && songList.length == 0" />
+      <DataEmpty v-if="songEmpty" />
     </section>
 
     <section class="pane" v-if="isSong">
@@ -229,7 +236,7 @@
         </li>
       </ul>
 
-      <DataEmpty v-if="rivalList && rivalList.length == 0" />
+      <DataEmpty v-if="rivalEmpty" />
 
       <div class="rival-more" v-if="rivalList && rivalList.length > 0">
         <router-link :to="rivalRoute" class="rival-button">查看详细报告</router-link>
@@ -371,6 +378,8 @@ export default class extends ViewBase {
 
   songList: any[] | null = null
 
+  songEmpty = false
+
   songUnfold = false
 
   songInitHeight = 0
@@ -392,6 +401,8 @@ export default class extends ViewBase {
   singerList: any = null
 
   rivalList: any = null
+
+  rivalEmpty = false
 
   get rivalIds() {
     if (this.rivalList == null) {
@@ -421,7 +432,32 @@ export default class extends ViewBase {
     this.init()
   }
 
+  reset() {
+    this.isDigital = false
+    this.basic = basicEmpty()
+    this.popupShow = false
+    this.popupData = null
+    this.bubbleData = []
+    this.heatDay = 7
+    this.overAllHeatList = []
+    this.platformHeatList = []
+    this.songList = null
+    this.songEmpty = false
+    this.songUnfold = false
+    this.songInitHeight = 0
+    this.rankAnalysis = null
+    this.rankAnnularData = null
+    this.rankAnnularEmpty = false
+    this.praiseData = null
+    this.userAnalysis = null
+    this.eventData = null
+    this.singerList = null
+    this.rivalList = null
+    this.rivalEmpty = false
+  }
+
   init() {
+    this.reset()
     const isSong = this.isSong
     this.getBasic()
     isSong && this.getHeat()
@@ -444,6 +480,7 @@ export default class extends ViewBase {
 
         // 专辑：歌曲热度
         songList,
+        songEmpty,
 
         // 单曲：榜单表现
         rankAnalysis,
@@ -468,6 +505,9 @@ export default class extends ViewBase {
       this.popupData = popupData
       this.bubbleData = bubbleData
       this.songList = songList
+      this.songEmpty = songEmpty
+      this.songUnfold = false
+      this.songInitHeight = 0
       this.rankAnalysis = rankAnalysis
       // this.rankAnalysisEmpty = rankAnalysisEmpty
       this.rankAnnularData = rankAnnularData
@@ -476,14 +516,16 @@ export default class extends ViewBase {
       this.userAnalysis = userAnalysis
       this.singerList = singerList
     } catch (ex) {
-      this.handleError(ex)
+      this.logError(ex)
+      this.songEmpty = true
+      this.rankAnnularEmpty = true
     }
   }
 
   // 单曲：热度分析
   async getHeat() {
     try {
-      const [startTime, endTime] = lastDays(this.heatDay)
+      const [ startTime, endTime ] = lastDays(this.heatDay)
       const { overAllHeatList = [], platformHeatList = [] } = await getHeat({
         songId: this.id,
         startTime,
@@ -492,7 +534,9 @@ export default class extends ViewBase {
       this.overAllHeatList = overAllHeatList
       this.platformHeatList = platformHeatList
     } catch (ex) {
-      this.handleError(ex)
+      this.logError(ex)
+      this.overAllHeatList = []
+      this.platformHeatList = []
     }
   }
 
@@ -501,7 +545,7 @@ export default class extends ViewBase {
       const data = await getEventList(this.id, this.isAlbum)
       this.eventData = data
     } catch (ex) {
-      this.handleError(ex)
+      this.logError(ex)
     }
   }
 
@@ -509,17 +553,19 @@ export default class extends ViewBase {
     try {
       const list = await getRivalList(this.id, this.isAlbum)
       this.rivalList = list
+      this.rivalEmpty = (list || []).length == 0
     } catch (ex) {
-      this.handleError(ex)
+      this.logError(ex)
+      this.rivalEmpty = true
     }
   }
 
   async playFetch(query: PlayQuery) {
     try {
-      const data = await getPlay(this.id, query, this.isAlbum)
+      const data = await getPlay(query, this.isAlbum)
       return data
     } catch (ex) {
-      this.handleError(ex)
+      this.logError(ex)
     }
   }
 
@@ -582,6 +628,9 @@ export default class extends ViewBase {
       border-radius: 10px;
       overflow: hidden;
       z-index: 8;
+      /deep/ .van-image__error {
+        border: 1px solid #e0e0e0;
+      }
     }
   }
 
@@ -626,9 +675,9 @@ export default class extends ViewBase {
 
 .header {
   display: flex;
-  height: 480px;
+  min-height: 244px;
   background-color: #f2f3f6;
-  padding: 40px 0 40px 40px;
+  padding: 40px 0 18px 40px;
 }
 
 .header-fig {
@@ -643,6 +692,7 @@ export default class extends ViewBase {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+
   img {
     max-width: 100%;
     max-height: 100%;
@@ -774,15 +824,9 @@ export default class extends ViewBase {
 }
 
 .bubble-wrap {
-  position: absolute;
-  top: 338px;
-  width: 100%;
-  z-index: 999;
+  position: relative;
+  height: 370px;
   overflow: hidden;
-  pointer-events: none;
-  /deep/ .title {
-    pointer-events: all;
-  }
 }
 
 .bubble-bottom {
@@ -790,8 +834,33 @@ export default class extends ViewBase {
   left: 32px;
 }
 
-.tab-nav {
-  top: 100px;
+.curve {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.curve-top {
+  background-color: #fff;
+  &::before {
+    content: '';
+    display: block;
+    height: 60px;
+    border-radius: 0 0 60px 0;
+    background-color: #f2f3f6;
+  }
+}
+
+.curve-bottom {
+  background-color: #f2f3f6;
+  &::before {
+    content: '';
+    display: block;
+    height: 60px;
+    border-radius: 60px 0 0 0;
+    background-color: #fff;
+  }
 }
 
 .pane {

@@ -135,6 +135,8 @@ import { isEmpty } from 'lodash'
   }
 })
 export default class PlayStats extends Vue {
+  @Prop({ type: [ Number, String ], required: true }) id!: number | string
+
   @Prop({ type: Function, required: true }) fetch!: PlayFetch
 
   @Prop({ type: Boolean, default: false }) isAlbum!: boolean
@@ -276,13 +278,31 @@ export default class PlayStats extends Vue {
     return names
   }
 
-  mounted() {
+  created() {
+    this.init()
+  }
+
+  inReset = false
+
+  reset() {
+    this.inReset = true
+    this.day = 7
+    this.viewIndex = 0
+    this.viewList = []
+    this.groupIndex = 0
+    this.isAlign = false
+    this.$nextTick(() => this.inReset = false)
+  }
+
+  init() {
+    this.reset()
     this.fetchData()
   }
 
   async fetchData() {
     const [ startTime, endTime ] = lastDays(this.day)
     const query = {
+      id: this.id,
       startTime,
       endTime,
       days: this.day,
@@ -299,13 +319,18 @@ export default class PlayStats extends Vue {
   }
 
   @Watch('day')
+  @Watch('isAlign')
   watchDay() {
+    if (this.inReset) {
+      this.inReset = false
+      return
+    }
     this.fetchData()
   }
 
-  @Watch('isAlign')
-  watchIsAlign() {
-    this.fetchData()
+  @Watch('id')
+  watchId() {
+    this.init()
   }
 }
 </script>

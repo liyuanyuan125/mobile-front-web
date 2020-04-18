@@ -1,7 +1,7 @@
 <template>
   <div class="compet-content">
     <div class="title">相似艺人</div>
-    <ul v-if='pkUserListData.length > 0'>
+    <ul v-if='pkUserList.length > 0 && pkUserListData.length > 0'>
       <li class='li-item'>
         <div class='li-left'>
           <div>
@@ -53,11 +53,11 @@
         </div>
       </li>
     </ul>
-    <div class="submit-button" v-if='pkUserListData.length > 0'>
+    <div class="submit-button" v-if='pkUserList.length > 0 && pkUserListData.length > 0'>
       <!-- 查看详细报告 -->
       <router-link :to="{ name:'sentimentkolproducts', query: { ids: this.pkIdList.join(',') } }" class="to-link" >查看详细报告</router-link>
     </div>
-    <dataEmpty v-if='pkUserListData.length == 0' />
+    <dataEmpty v-if='pkUserList.length == 0 || pkUserListData.length == 0' />
   </div>
 </template>
 
@@ -86,21 +86,23 @@ export default class Main extends Vue {
   coverImg: any = ''
 
   created() {
-    this.pkDate = this.pkUserList[0]
-    this.coverImg = imgFixed(this.pkUserList[0].rivalCover, 200, 200 , 4)
-    this.pkUserListData = (this.pkUserList.slice(1, 3) || []).map((it: any) => {
-      return {
-        ...it,
-        coverImg: imgFixed(it.rivalCover, 200, 260 , 4),
-        eventCreatTimeDate: it.eventCreatTime == null ? '' : moment(it.eventCreatTime).format(format),
-        yesterHeatTrend: (it.yesterHeatTrend == 0 || it.yesterHeatTrend == null) ? '-' : (it.yesterHeatTrend > 0 ?
-        '高' + String(roleNumber(it.yesterHeatTrend)) : '低' + String(roleNumber(it.yesterHeatTrend)).substr(1)),
-        interFansTrend: (it.interFansTrend == 0 || it.interFansTrend == null) ? '-' : (it.interFansTrend > 0 ?
-        '高' + String(roleNumber(it.interFansTrend)) : '低' + String(roleNumber(it.interFansTrend)).substr(1)),
-        chgyesterHeatTrend: it.yesterHeatTrend == null ? 0 : it.yesterHeatTrend,
-        chginterFansTrend: it.interFansTrend == null ? 0 : it.interFansTrend,
-      }
-    })
+    if (this.pkUserList.length > 0) {
+      this.pkDate = this.pkUserList[0]
+      this.coverImg = imgFixed(this.pkUserList[0].rivalCover, 200, 200 , 4)
+      this.pkUserListData = (this.pkUserList.slice(1, 3) || []).map((it: any) => {
+        return {
+          ...it,
+          coverImg: imgFixed(it.rivalCover, 200, 260 , 4),
+          eventCreatTimeDate: it.eventCreatTime == null ? '' : moment(it.eventCreatTime).format(format),
+          yesterHeatTrend: (it.yesterHeatTrend == 0 || it.yesterHeatTrend == null) ? '-' : (it.yesterHeatTrend > 0 ?
+          '高' + String(roleNumber(it.yesterHeatTrend)) : '低' + String(roleNumber(it.yesterHeatTrend)).substr(1)),
+          interFansTrend: (it.interFansTrend == 0 || it.interFansTrend == null) ? '-' : (it.interFansTrend > 0 ?
+          '高' + String(roleNumber(it.interFansTrend)) : '低' + String(roleNumber(it.interFansTrend)).substr(1)),
+          chgyesterHeatTrend: it.yesterHeatTrend == null ? 0 : it.yesterHeatTrend,
+          chginterFansTrend: it.interFansTrend == null ? 0 : it.interFansTrend,
+        }
+      })
+    }
   }
 
   // 影人详情页跳转

@@ -85,6 +85,7 @@ export default class VerticalBar extends Vue {
         extraCssText: cssifyObject({
           boxShadow: '0 2px 10px 1px rgba(212, 212, 212, .5)',
           borderRadius: '8px',
+          zIndex: 38,
         }),
       },
 

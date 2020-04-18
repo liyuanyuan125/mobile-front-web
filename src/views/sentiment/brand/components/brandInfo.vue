@@ -1,8 +1,7 @@
 <template>
   <div class="header-info">
     <div class="header">
-      <img v-if="coverImg" :src="coverImg" alt="brandInfo.brandName"  class="img"  />
-      <img v-else src="@/assets/branddefault.png" alt="brandInfo.brandName" class="img" />
+      <van-image :src="coverImg" class="img" :error-icon="defaultImg" />
       <div>
         <p class="brand-name">{{brandInfo.brandName}}</p>
         <p v-if="brandInfo.rankingName && !brandInfo.rankingId " class="event-name">{{brandInfo.rankingName}}</p>
@@ -24,14 +23,15 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 // import { toast } from '@/util/toast'
 import { alert } from '@/util/toast'
-import { Icon } from 'vant'
+import { Icon, Image } from 'vant'
 import {BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
 import { imgFixed } from '@/fn/imgProxy'
 
 @Component({
   components: {
     BubbleBottom,
-    Icon
+    Icon,
+    [Image.name]: Image
   }
 })
 export default class Main extends Vue {
@@ -40,12 +40,14 @@ export default class Main extends Vue {
   /** 气泡数据信息 */
   @Prop({ type: Object}) bubbleData!: any
 
-  // 处理 piaoshen http格式 url
+  // 默认图
+  defaultImg = require('./assets/default.png')
 
   get coverImg() {
     if (this.brandInfo.brandLogo) {
       return imgFixed(this.brandInfo.brandLogo, 210, 210)
     }
+    return ''
   }
 
   get bubbleDataList() {
@@ -101,6 +103,12 @@ export default class Main extends Vue {
 </script>
 
 <style lang='less' scoped>
+/deep/ .van-image__error {
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
 .header-info {
   position: relative;
   padding-top: 100px;

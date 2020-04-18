@@ -72,6 +72,7 @@ export default class PlayTrend extends ViewBase {
   fetch!: (query?: any) => Promise<any>
   @Prop({ type: String }) query!: string
   @Prop({ type: Object }) link!: AppLink
+  @Prop({ type: Boolean }) pageErr!: boolean
 
   lineDatas: any = {}
   dates = {
@@ -93,16 +94,18 @@ export default class PlayTrend extends ViewBase {
 
   // 接口获取数据
   async apiGetData() {
-    try {
-      const res: any = await this.fetch({
-        tvId: this.query,
-        ...this.dates
-      })
-      //   console.log('data', data)
-      this.response = res
-      this.formatDatas(this.response.playDataList)
-    } catch (ex) {
-      // toast(ex)
+    if (this.pageErr) {
+      try {
+        const res: any = await this.fetch({
+          tvId: this.query,
+          ...this.dates
+        })
+        //   console.log('data', data)
+        this.response = res
+        this.formatDatas(this.response.playDataList)
+      } catch (ex) {
+        // toast(ex)
+      }
     }
   }
 
@@ -167,6 +170,12 @@ export default class PlayTrend extends ViewBase {
   // 监测id
   @Watch('query', { deep: true })
   watchID(val: any) {
+    this.apiGetData()
+  }
+
+  // 监测id
+  @Watch('pageErr', { deep: true })
+  watchpageErr(val: any) {
     this.apiGetData()
   }
 }

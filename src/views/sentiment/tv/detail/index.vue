@@ -12,7 +12,7 @@
     </div>
     <PlayTrend
       :fetch="playTrendFetch"
-      :pageErr="pageErr"
+      :pageErr="isError"
       :query="tvId"
       v-if="tvId"
       :link="getApplink('tvPlayCountDetail')"
@@ -80,7 +80,7 @@ export default class TVPage extends ViewBase {
     rivalIds: {} // 竞争对手的 url
   }
   // 用来判断接口是否有错，例如10404 例如500 例发58
-  pageErr: boolean = false
+  isError: boolean = false
   // 电视剧id
   tvId: string = ''
   // 电视剧详细信息
@@ -158,7 +158,7 @@ export default class TVPage extends ViewBase {
       await this.getHeat90()
       await this.getEventList()
       await this.getRivalList()
-      this.pageErr = true
+      this.isError = true
     } catch (ex) {
       throw ex
     }

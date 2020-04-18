@@ -3,7 +3,7 @@
   <div class="viewpage">
     <div class="movieinfo">
       <div class="moviebox">
-        <img :src="movieCover" :alt="baseInfo.tvName" class="img" />
+        <img :src="tvCover" :alt="baseInfo.tvName" class="img" />
         <h3 class="van-ellipsis">{{baseInfo.tvName}}</h3>
         <p
           class="van-ellipsis"
@@ -70,9 +70,9 @@ export default class BaseInfoArea extends ViewBase {
     return bubble
   }
   // 封面图
-  get movieCover() {
+  get tvCover() {
     const url: any = this.baseInfo.coverUrl
-      ? imgFixed(this.baseInfo.coverUrl, 180, 240)
+      ? imgFixed(this.baseInfo.coverUrl, 180, 240, 4)
       : ''
     return url
   }

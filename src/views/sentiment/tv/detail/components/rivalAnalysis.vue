@@ -76,7 +76,7 @@ export default class RivalAnalysis extends ViewBase {
   get list() {
     const list = this.rivalList || []
     const ids: any[] = []
-    if (list && list.length) {
+    if (list && list.length > 1) {
       for (const item of this.rivalList) {
         item.eventCreatTime = moment(item.eventCreatTime).format('YYYY-MM-DD')
         item.coverImg = imgFixed(item.rivalCover, 200, 260, 4)

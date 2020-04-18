@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <SentimentBar :title="movieInfo.movieNameCn" :sidebar="sidebar" />
+    <SentimentBar :title="movieInfo ? movieInfo.movieNameCn : '电影详情'" :sidebar="sidebar" />
     <BaseInfoArea :baseInfo="movieInfo" :overView="movieOverView" />
     <TabNav :list="tabList" class="formattab" />
     <div class="hotanalysis" id="hot">
@@ -13,7 +13,7 @@
     <WantSeeTrend :fetch="wantSeeTrendFetch" :query="movieId" />
     <BoxOffice :boxoffice="boxOffice" :link="getApplink('movieBoxOffice')" id="boxoffice" />
     <PraiseComment
-      :favorable="movieInfo.favorable"
+      :favorable="movieInfo ? movieInfo.favorable : null"
       :publicPraise="publicPraise"
       :link="getApplink('praiseHotWordsList')"
       id="praise"
@@ -122,7 +122,7 @@ export default class MoviePage extends ViewBase {
     return {
       type: 3, // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
       id: this.movieId, // 详情页id
-      name: this.movieInfo.movieNameCn,
+      name: this.movieInfo ? this.movieInfo.movieNameCn : '电影详情',
       startTime,
       endTime
     }
@@ -197,7 +197,7 @@ export default class MoviePage extends ViewBase {
     const res: any = await getRivalList(this.movieId)
     this.rivalAnalysis = res
     const ids = []
-    if (res && res.length) {
+    if (res && res.length > 1) {
       for (const el of res) {
         ids.push(el.rivalId)
       }

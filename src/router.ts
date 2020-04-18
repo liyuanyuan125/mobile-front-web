@@ -15,6 +15,11 @@ export default new Router({
       name: 'home',
       component: () => import('./views/downLoad/download.vue')
     },
+    {
+      path: '/404',
+      name: 'page404',
+      component: () => import('./components/404/404.vue')
+    },
     // jssdk 联调用
     {
       path: '/jssdk',

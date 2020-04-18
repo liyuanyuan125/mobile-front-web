@@ -1,12 +1,40 @@
 <template>
-  <div></div>
+  <div>
+    <SentimentBar :title="title" titleShow />
+    <div class="page403" v-if="code === 10403">
+      <span></span>
+      <p @click="handleTelphone">
+        你还未开通该模块的服务
+        <br />请联系客服开通
+        <i>400-605-0606</i>
+      </p>
+    </div>
+    <div class="page404" v-if="code !== 10403 && code !== 10405">
+      <span></span>
+      <p>报歉，你查找的信息不存在</p>
+    </div>
+    <div class="page405" v-if="code === 10405">
+      <span></span>
+      <p>
+        该信息已经后台关闭
+        <br />暂时无法查看
+      </p>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { handleGoBack } from '@/util/native'
+import SentimentBar from '@/views/common/sentimentBar/index.vue'
+import { handleDialTel } from '@/util/native'
+import { isJyApp } from '@/fn/ua'
 
-@Component({})
+@Component({
+  components: {
+    SentimentBar
+  }
+})
 export default class TopBar extends Vue {
   /**
    * 属性示例
@@ -15,71 +43,65 @@ export default class TopBar extends Vue {
    * 10405  页面被禁用
    * 10403  无权限
    */
-  @Prop({ type: String, default: '' }) code!: string
+  @Prop({ type: Number, default: 10403 }) code!: number
+
+  title: string = '' // 页面 title
+  pageCode: number = 0 // 页面码
 
   created() {
     switch (this.code) {
-      case '10404':
+      case 10403:
+        this.title = '未开通服务'
         break
-      case '10405':
+      case 10405:
+        this.title = '信息已被关闭'
         break
       default:
+        this.title = '信息不存在'
     }
   }
-  // barColor:string = 'white'
-  async goBack() {
-    const objectData = {
-      isCloseWindow: true,
-      refreshWindow: true
+
+  // 播打电话
+  async handleTelphone() {
+    if (isJyApp()) {
+      const obj = { params: { data: { phoneNumber: '4006050606' } } }
+      await handleDialTel(obj)
     }
-    const obj = { params: objectData }
-    await handleGoBack(obj)
   }
 }
 </script>
 
 <style scoped lang="less">
-.topbar {
-  height: 88px;
-  line-height: 88px;
-  position: relative;
-}
-.title {
-  color: #fff;
-  font-size: 32px;
+.page403,
+.page404,
+.page405 {
+  padding-top: 400px;
   text-align: center;
-  font-weight: normal;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  padding: 0 88px;
-  overflow: hidden;
-}
-.reBack {
-  width: 88px;
-  height: 88px;
-  position: absolute;
-  left: 0;
-  top: 0;
-  &::after {
-    content: '';
-    width: 22px;
-    height: 22px;
-    border-left: 4px solid #fff;
-    border-bottom: 4px solid #fff;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%) rotate(45deg);
+  span {
+    display: inline-block;
+    width: 100%;
+    background: no-repeat center center;
+    background-size: contain;
+    height: 350px;
   }
-}
-.black {
-  .title {
-    color: #1e386f;
-  }
-  .reBack {
-    &::after {
-      border-color: #1e386f;
+  p {
+    font-size: 32px;
+    line-height: 1.5;
+    color: #8f8f8f;
+    margin-top: 30px;
+    i {
+      color: #88aaf6;
+      text-decoration: underline;
     }
   }
+}
+.page403 span {
+  background-image: url('../../assets/sentiment/event-deny.png');
+}
+.page404 span {
+  background-image: url('../../assets/sentiment/event-null.png');
+}
+.page405 span {
+  background-image: url('../../assets/sentiment/event-close.png');
 }
 </style>

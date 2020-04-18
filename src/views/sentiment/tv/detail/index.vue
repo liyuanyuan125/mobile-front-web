@@ -12,6 +12,7 @@
     </div>
     <PlayTrend
       :fetch="playTrendFetch"
+      :pageErr="isError"
       :query="tvId"
       v-if="tvId"
       :link="getApplink('tvPlayCountDetail')"
@@ -78,6 +79,8 @@ export default class TVPage extends ViewBase {
     diggId: '',
     rivalIds: {} // 竞争对手的 url
   }
+  // 用来判断接口是否有错，例如10404 例如500 例发58
+  isError: boolean = false
   // 电视剧id
   tvId: string = ''
   // 电视剧详细信息
@@ -139,24 +142,26 @@ export default class TVPage extends ViewBase {
       businessType: '4',
       businessObjectIdList: String(this.tvId)
     }
-    if (this.tvId) {
-      await this.getTVInfo()
-      await this.getHeat90()
-      await this.getEventList()
-      await this.getRivalList()
-    }
+    await this.getTVInfo()
   }
 
   // api获取电影详情页
   async getTVInfo() {
-    const res: any = await getTvDetail(this.tvId)
-    this.tvInfo = res.tvInfo
-    this.tvOverView = res.tvOverView
-    this.publicPraise = res.publicPraise
-    this.userAnalysis = res.userAnalysis
-    this.actorList = res.actorList ? res.actorList : []
-    this.produceList = res.produceList ? res.produceList : []
-    // document.title = res.tvInfo.tvName
+    try {
+      const res: any = await getTvDetail(this.tvId)
+      this.tvInfo = res.tvInfo
+      this.tvOverView = res.tvOverView
+      this.publicPraise = res.publicPraise
+      this.userAnalysis = res.userAnalysis
+      this.actorList = res.actorList || []
+      this.produceList = res.produceList || []
+      await this.getHeat90()
+      await this.getEventList()
+      await this.getRivalList()
+      this.isError = true
+    } catch (ex) {
+      throw ex
+    }
   }
 
   // api获取最近90天的热度
@@ -185,7 +190,7 @@ export default class TVPage extends ViewBase {
     const res: any = await getRivalList(this.tvId)
     this.rivalAnalysis = res || []
     const ids = []
-    if (res && this.rivalAnalysis) {
+    if (res && res.length > 1) {
       for (const el of res) {
         ids.push(el.rivalId)
       }

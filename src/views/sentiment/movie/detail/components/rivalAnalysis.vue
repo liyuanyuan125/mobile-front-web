@@ -76,7 +76,7 @@ export default class RivalAnalysis extends ViewBase {
   get list() {
     const list = this.rivalList
     const ids = []
-    if (list && list.length) {
+    if (list && list.length > 1) {
       for (const item of this.rivalList) {
         ids.push(item.rivalId)
         item.eventCreatTime = moment(item.eventCreatTime).format('YYYY-MM-DD')

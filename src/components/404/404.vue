@@ -1,12 +1,37 @@
 <template>
-  <div></div>
+  <div>
+    <SentimentBar :title="title" titleShow />
+    <div class="page403" v-if="pageCode === 10403">
+      <span></span>
+      <p>
+        你还未开通该模块的服务
+        <br />请联系客服开通 4006050606
+      </p>
+    </div>
+    <div class="page404" v-if="pageCode !== 10403 || pageCode !== 10405">
+      <span></span>
+      <p>报歉，你查找的信息不存在</p>
+    </div>
+    <div class="page405" v-if="pageCode === 10405">
+      <span></span>
+      <p>
+        该信息已经后台关闭
+        <br />暂时无法查看
+      </p>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { handleGoBack } from '@/util/native'
+import SentimentBar from '@/views/common/sentimentBar/index.vue'
 
-@Component({})
+@Component({
+  components: {
+    SentimentBar
+  }
+})
 export default class TopBar extends Vue {
   /**
    * 属性示例
@@ -15,25 +40,22 @@ export default class TopBar extends Vue {
    * 10405  页面被禁用
    * 10403  无权限
    */
-  @Prop({ type: String, default: '' }) code!: string
+  @Prop({ type: Number, default: 10404 }) code!: number
+
+  title: string = '' // 页面 title
+  pageCode: number = 0 // 页面码
 
   created() {
     switch (this.code) {
-      case '10404':
+      case 10403:
+        this.title = '未开通服务'
         break
-      case '10405':
+      case 10405:
+        this.title = '信息已被关闭'
         break
       default:
+        this.title = '信息不存在'
     }
-  }
-  // barColor:string = 'white'
-  async goBack() {
-    const objectData = {
-      isCloseWindow: true,
-      refreshWindow: true
-    }
-    const obj = { params: objectData }
-    await handleGoBack(obj)
   }
 }
 </script>

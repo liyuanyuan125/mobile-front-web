@@ -185,7 +185,7 @@ export default class TVPage extends ViewBase {
     const res: any = await getRivalList(this.tvId)
     this.rivalAnalysis = res || []
     const ids = []
-    if (res && this.rivalAnalysis) {
+    if (res && res.length > 1) {
       for (const el of res) {
         ids.push(el.rivalId)
       }

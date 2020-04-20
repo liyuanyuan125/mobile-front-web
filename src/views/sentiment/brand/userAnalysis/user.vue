@@ -149,7 +149,7 @@ export default class Main extends Vue {
       this.consumRegion = consumRegion || {} //  消费区域分布
       this.cityConsumList = cityConsumList || [] // 分城市购买力
     } catch (ex) {
-      toast(ex)
+      // toast(ex)
     }
   }
 }

@@ -168,7 +168,7 @@ export default class BrandPage extends ViewBase {
       this.publicPraise = publicPraise // 口碑
       this.userAnalysis = userAnalysis // 用户分析
     } catch (ex) {
-      toast(ex.msg)
+      // toast(ex.msg)
     }
   }
 
@@ -197,7 +197,7 @@ export default class BrandPage extends ViewBase {
       })
       this.brandEventList = data
     } catch (ex) {
-      toast(ex)
+      // toast(ex)
     }
   }
 

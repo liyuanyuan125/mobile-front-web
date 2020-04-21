@@ -43,7 +43,7 @@ export default class TopBar extends Vue {
    * 10405  页面被禁用
    * 10403  无权限
    */
-  @Prop({ type: Number, default: 10403 }) code!: number
+  @Prop({ type: Number, default: 10404 }) code!: number
 
   title: string = '' // 页面 title
   pageCode: number = 0 // 页面码

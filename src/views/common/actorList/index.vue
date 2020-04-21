@@ -44,7 +44,10 @@ export default class ActorList extends Vue {
     const list = this.actorList
     if (list && list.length) {
       for (const it of list) {
-        it.coverImg = imgFixed(it.actorCover, 150, 210, 4)
+        it.coverImg =
+          it.actorCover && it.actorCover.url
+            ? imgFixed(it.actorCover, 150, 210, 4)
+            : require('../../../assets/actordefault.png')
       }
     }
     return list

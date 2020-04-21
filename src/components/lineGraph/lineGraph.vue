@@ -177,7 +177,8 @@ export default class LineGrap extends Vue {
             }
           },
           color: '#908b88',
-          splitNumber: 5
+          splitNumber: 5,
+          triggerEvent: false
         },
         axisLine: {
           lineStyle: {

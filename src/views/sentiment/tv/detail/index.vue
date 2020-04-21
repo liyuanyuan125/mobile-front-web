@@ -24,8 +24,8 @@
       id="praise"
     />
     <UserPortrait
-      :ageRangeList="userAnalysis.ageRangeList"
-      :genderList="userAnalysis.genderList"
+      :ageRangeList="userAnalysis && userAnalysis.ageRangeList"
+      :genderList="userAnalysis && userAnalysis.genderList"
       id="user"
       :link="getApplink('userAnalysis')"
     />

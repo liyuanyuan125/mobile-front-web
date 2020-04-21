@@ -7,7 +7,7 @@
         <h3 class="van-ellipsis">{{baseInfo.tvName}}</h3>
         <p
           class="van-ellipsis"
-        >{{baseInfo.episodes}}{{!baseInfo.episodes ? '' : ' / '}}{{baseInfo.genreName}}</p>
+        >{{baseInfo.episodes}}{{!baseInfo.genreName ? '' : ' / '}}{{baseInfo.genreName}}</p>
         <p v-if="baseInfo.releaseDate" class="van-ellipsis">{{baseInfo.releaseDate}}</p>
         <p v-if="platformList.length" class="platlist">
           播放平台
@@ -43,37 +43,36 @@ export default class BaseInfoArea extends ViewBase {
   // 数据概览
   get bubbleData() {
     let bubble: any[] = []
-    if (this.overView) {
-      bubble = [
-        {
-          type: '1',
-          title: '累计媒体物料',
-          value: this.overView.materialsCount,
-          trend: this.overView.materialsTrend
-        },
-        {
-          type: '2',
-          title: '累计评论数',
-          value: this.overView.commentCount,
-          trend: this.overView.commnetTrend
-        },
-        {
-          type: '3',
-          title: '行业实时热度',
-          value: this.overView.heatRanking,
-          trend: this.overView.heatTrend || 0,
-          showdown: true
-        },
-        { type: '4', title: '好感度', value: this.baseInfo.favorable }
-      ]
-    }
+    bubble = [
+      {
+        type: '1',
+        title: '累计媒体物料',
+        value: this.overView ? this.overView.materialsCount : null,
+        trend: this.overView ? this.overView.materialsTrend : null
+      },
+      {
+        type: '2',
+        title: '累计评论数',
+        value: this.overView ? this.overView.commentCount : null,
+        trend: this.overView ? this.overView.commnetTrend : null
+      },
+      {
+        type: '3',
+        title: '行业实时热度',
+        value: this.overView ? this.overView.heatRanking : null,
+        trend: this.overView ? this.overView.heatTrend : null,
+        showdown: true
+      },
+      { type: '4', title: '好感度', value: this.baseInfo.favorable || '' }
+    ]
     return bubble
   }
   // 封面图
   get tvCover() {
-    const url: any = this.baseInfo.coverUrl
-      ? imgFixed(this.baseInfo.coverUrl, 180, 240, 4)
-      : ''
+    const url: any =
+      this.baseInfo.coverUrl && this.baseInfo.coverUrl.url
+        ? imgFixed(this.baseInfo.coverUrl, 180, 240, 4)
+        : require('../../../../../assets/tvdefault.png')
     return url
   }
 
@@ -82,7 +81,9 @@ export default class BaseInfoArea extends ViewBase {
     const list = this.baseInfo.platformLogoList || []
     if (list.length) {
       for (const it of list) {
-        it.logoUrl = it.url ? imgFixed(it, 40, 40, 4) : ''
+        it.logoUrl = it.url
+          ? imgFixed(it, 40, 40, 4)
+          : require('../../../../../assets/alldefault.png')
       }
     }
     return list

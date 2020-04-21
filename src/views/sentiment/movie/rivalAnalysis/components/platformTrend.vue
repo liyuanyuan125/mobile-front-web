@@ -36,6 +36,7 @@ import { toast } from '@/util/toast'
 import moment from 'moment'
 import { Button } from 'vant'
 import dataEmpty from '@/views/common/dataEmpty/index.vue'
+import { formatCharts } from '@/fn/handleChart'
 
 @Component({
   components: {
@@ -66,9 +67,11 @@ export default class PlatformTrend extends ViewBase {
   lineDatas: any = {}
   dates: any = {}
   response: any[] = []
+  count: number = 7 // 筛选的天数
 
   @Watch('dates', { deep: true })
   watchDays(val: any) {
+    this.count = val.count
     this.uplist()
   }
 
@@ -84,20 +87,8 @@ export default class PlatformTrend extends ViewBase {
 
   // 综合热度数据处理 title，xdata，ydata
   formatDatas(dataObj: any[]) {
-    let xDate: any[] = []
-    const yDate = (dataObj || []).map((it: any) => {
-      const { rivalName, data } = it
-      xDate = (data || []).map((ite: any) => ite.date)
-      return {
-        name: rivalName,
-        list: (data || []).map((ite: any) => ite.value)
-      }
-    })
-    this.lineDatas = {
-      title: '',
-      xDate,
-      yDate
-    }
+    const newValue = formatCharts(dataObj, this.count)
+    this.lineDatas = newValue
   }
 
   // tab 切换
@@ -111,7 +102,8 @@ export default class PlatformTrend extends ViewBase {
     try {
       const { data } = await this.fetch({
         movieIdList: this.query,
-        ...this.dates
+        startTime: this.dates.startTime,
+        endTime: this.dates.endTime
       })
       // 处理平台名称
       let index: number = 0

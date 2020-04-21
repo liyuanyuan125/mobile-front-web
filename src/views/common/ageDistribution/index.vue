@@ -14,7 +14,9 @@
         <div v-if="indexs == index">
           <div v-if="it.rivalList && (it.rivalList || []).length > 0">
             <div class="contrast-progress" v-for="(item, ins) in it.rivalList" :key="ins">
-              <span>{{item.rivalName}}</span>
+              <span>
+                <label class="van-multi-ellipsis--l2">{{item.rivalName}}</label>
+              </span>
               <div class="progress">
                 <Progress :percentage="item.rivalPercent" color="#88aaf6" stroke-width="10" />
                 <div class="contrast-message">
@@ -60,15 +62,16 @@ export default class Options extends Vue {
   }
 
   get ageList() {
-      const list: any = this.ageRangeList
-      if (list && list.length) {
-        for (const it of list) {
-            for (const el of it.rivalList) {
-                el.rivalPercent = el.rivalPercent ? (el.rivalPercent / 100).toFixed(1) : 0
-            }
+    const list: any = this.ageRangeList
+    if (list && list.length) {
+      for (const it of list) {
+        for (const el of it.rivalList) {
+          const per = el.rivalPercent ? el.rivalPercent : 0
+          el.rivalPercent = per > 10000 ? 100 : (el.rivalPercent / 100).toFixed(1)
         }
       }
-      return list
+    }
+    return list
   }
 }
 </script>

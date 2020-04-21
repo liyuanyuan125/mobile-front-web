@@ -251,7 +251,7 @@ export default class Main extends Vue {
       // this.highProvinceList = hightConsume.provinceList ? hightConsume.provinceList : []
 
     } catch (ex) {
-      toast(ex)
+      // toast(ex)
     }
   }
 
@@ -273,7 +273,7 @@ export default class Main extends Vue {
       this.interactList = interactList || []
       this.materialList = materialList || []
     } catch (ex) {
-      toast(ex)
+      // toast(ex)
     }
   }
 

@@ -15,11 +15,6 @@ export default new Router({
       name: 'home',
       component: () => import('./views/downLoad/download.vue')
     },
-    {
-      path: '/404',
-      name: 'page404',
-      component: () => import('./components/404/404.vue')
-    },
     // jssdk 联调用
     {
       path: '/jssdk',
@@ -334,7 +329,20 @@ export default new Router({
       path: '/demo/tableForFixed',
       name: 'demo-tableForFixed',
       component: () => import('./views/demo/tableForFixed.vue')
-    }
+    },
+
+    {
+      path: '/error/:code(\\d+)',
+      name: 'error',
+      component: () => import('./components/404/404.vue'),
+      props: paramTypes({ code: Number })
+    },
+
+    // 放在最后
+    {
+      path: '*',
+      component: () => import('./components/404/404.vue'),
+    },
   ],
   scrollBehavior(to, from, savedPosition) {
     return {

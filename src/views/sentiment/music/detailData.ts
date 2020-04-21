@@ -334,6 +334,9 @@ const platformNames = (formList: PlayForm[]) => {
 const weekDays = [ '日', '一', '二', '三', '四', '五', '六' ]
 
 const dealPlayView = (view: any, isAlbum = false) => {
+  if (view == null) {
+    return null
+  }
   const formList: PlayForm[] = view.dailyFormList || []
   const fixedColumns: TableColumn[] = [
     { name: 'date', title: '日期', align: 'left', width: 9, html: true, fixed: 'left' },
@@ -382,8 +385,8 @@ const dealPlayView = (view: any, isAlbum = false) => {
 const songPlay = async (query: SongIdTime) => {
   const { data: { songMusicView, videoView } } = await songGetPlay(query)
   const result = []
-  songMusicView && result.push({ label: '单曲', view: dealPlayView(songMusicView) })
-  videoView && result.push({ label: '视频', view: dealPlayView(videoView) })
+  result.push({ label: '单曲', view: dealPlayView(songMusicView) })
+  result.push({ label: '视频', view: dealPlayView(videoView) })
   return result
 }
 

@@ -222,8 +222,8 @@ const dealPlayView = (
 const songPlay = async (query: SongIdListTime, dayNames: string[]) => {
   const { data: { rivalPlay, videoView } } = await songGetPlay(query)
   const result = []
-  rivalPlay && result.push({ label: '单曲', view: dealPlayView(rivalPlay, dayNames) })
-  videoView && result.push({ label: '视频', view: dealPlayView(videoView, dayNames) })
+  result.push({ label: '单曲', view: dealPlayView(rivalPlay, dayNames) })
+  result.push({ label: '视频', view: dealPlayView(videoView, dayNames) })
   return result
 }
 

@@ -3,7 +3,7 @@
     <SentimentBar :title="basic.name" :sidebar="topbarSidebar" />
 
     <section class="header-wrap">
-      <div class="header">
+      <div class="header" v-if="basicCode == 0">
         <figure class="header-fig">
           <Cover :src="basic.cover"/>
           <div class="header-price" v-if="basic.price">{{basic.price}}</div>
@@ -28,6 +28,8 @@
           </div>
         </div>
       </div>
+
+      <DataEmpty :code="basicCode" :retry="getBasic" v-if="basicCode > 0" />
 
       <Popup v-model="popupShow" position="bottom" round closeable class="popup-props">
         <div class="popup-wrap">
@@ -66,7 +68,9 @@
         :params="platformParams(basic.name)"
         lineTitle
         class="heat-line-com"
+        v-if="heatCode == 0"
       />
+      <DataEmpty :code="heatCode" :retry="getHeat" v-if="heatCode > 0" />
     </section>
 
     <section class="pane" id="play" v-if="isSong || isDigital">
@@ -79,7 +83,9 @@
         :moreDateLink="detailPage(isAlbum ? 'albumSaleCountDetail' : 'songPlayCountDetail')"
         showLegend
         class="play-stats"
+        v-if="playCode == 0"
       />
+      <DataEmpty :code="playCode" :retry="getPlay" v-if="playCode > 0" />
     </section>
 
     <section class="pane" id="song" v-if="isAlbum">
@@ -164,7 +170,9 @@
         eventName="营销事件"
         :eventList="eventData"
         :link="businessPage('eventMarketingList')"
+        v-if="eventCode == 0"
       />
+      <DataEmpty :code="eventCode" :retry="getEvent" v-if="eventCode > 0" />
     </section>
 
     <section class="pane" v-if="singerList && singerList.length > 0">
@@ -236,7 +244,7 @@
         </li>
       </ul>
 
-      <DataEmpty v-if="rivalEmpty" />
+      <DataEmpty :code="rivalCode" :retry="getRival" v-if="rivalEmpty" />
 
       <div class="rival-more" v-if="rivalList && rivalList.length > 0">
         <router-link :to="rivalRoute" class="rival-button">查看详细报告</router-link>
@@ -351,6 +359,8 @@ export default class extends ViewBase {
 
   basic: any = basicEmpty()
 
+  basicCode = 0
+
   popupShow = false
 
   popupData: any = null
@@ -360,6 +370,8 @@ export default class extends ViewBase {
   // 热度分析+平台信息
   heatDay = 7
 
+  heatCode = 0
+
   overAllHeatList: any = []
 
   platformHeatList: any = []
@@ -367,7 +379,7 @@ export default class extends ViewBase {
   platformParams(name: any) {
     const [startTime, endTime] = lastDays(this.heatDay)
     return {
-      // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
+      // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑 4 剧集 100=全网事件 101=营销事件
       type: this.isAlbum ? 6 : 5,
       id: this.id, // 详情页id
       name,
@@ -375,6 +387,8 @@ export default class extends ViewBase {
       endTime
     }
   }
+
+  playCode = 0
 
   songList: any[] | null = null
 
@@ -398,9 +412,13 @@ export default class extends ViewBase {
 
   eventData: any = null
 
+  eventCode = 0
+
   singerList: any = null
 
   rivalList: any = null
+
+  rivalCode = 0
 
   rivalEmpty = false
 
@@ -515,8 +533,10 @@ export default class extends ViewBase {
       this.praiseData = praiseData
       this.userAnalysis = userAnalysis
       this.singerList = singerList
+      this.basicCode = 0
     } catch (ex) {
-      this.logError(ex)
+      const { code } = this.handlePageError(ex)
+      this.basicCode = code
       this.songEmpty = true
       this.rankAnnularEmpty = true
     }
@@ -533,10 +553,10 @@ export default class extends ViewBase {
       })
       this.overAllHeatList = overAllHeatList
       this.platformHeatList = platformHeatList
+      this.heatCode = 0
     } catch (ex) {
-      this.logError(ex)
-      this.overAllHeatList = []
-      this.platformHeatList = []
+      const { code } = this.handleModuleError(ex)
+      this.heatCode = code
     }
   }
 
@@ -544,8 +564,10 @@ export default class extends ViewBase {
     try {
       const data = await getEventList(this.id, this.isAlbum)
       this.eventData = data
+      this.eventCode = 0
     } catch (ex) {
-      this.logError(ex)
+      const { code } = this.handleModuleError(ex)
+      this.eventCode = code
     }
   }
 
@@ -554,8 +576,10 @@ export default class extends ViewBase {
       const list = await getRivalList(this.id, this.isAlbum)
       this.rivalList = list
       this.rivalEmpty = (list || []).length == 0
+      this.rivalCode = 0
     } catch (ex) {
-      this.logError(ex)
+      const { code } = this.handleModuleError(ex)
+      this.rivalCode = code
       this.rivalEmpty = true
     }
   }
@@ -563,9 +587,11 @@ export default class extends ViewBase {
   async playFetch(query: PlayQuery) {
     try {
       const data = await getPlay(query, this.isAlbum)
+      this.playCode = 0
       return data
     } catch (ex) {
-      this.logError(ex)
+      const { code } = this.handleModuleError(ex)
+      this.playCode = code
     }
   }
 

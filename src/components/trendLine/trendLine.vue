@@ -123,9 +123,9 @@ export default class TrendLine extends Vue {
               <p class="tooltip-item">
                 <i class="tooltip-dot" style="background-color: ${it.color}"></i>
                 <span class="tooltip-name">${it.seriesName}</span>
-                <span class="tooltip-value" style="color: ${it.color}">${roleNumber(
-              it.value
-            )}</span>
+                <span class="tooltip-value" style="color: ${it.color}">${
+              it.value ? roleNumber(it.value) : '-'
+            }</span>
               </p>
             `
             htmlArr.push(itemHtml)

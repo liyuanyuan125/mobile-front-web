@@ -7,7 +7,7 @@
         <h3 class="van-ellipsis">{{baseInfo.tvName}}</h3>
         <p
           class="van-ellipsis"
-        >{{baseInfo.episodes}}{{!baseInfo.episodes ? '' : ' / '}}{{baseInfo.genreName}}</p>
+        >{{baseInfo.episodes}}{{!baseInfo.genreName ? '' : ' / '}}{{baseInfo.genreName}}</p>
         <p v-if="baseInfo.releaseDate" class="van-ellipsis">{{baseInfo.releaseDate}}</p>
         <p v-if="platformList.length" class="platlist">
           播放平台

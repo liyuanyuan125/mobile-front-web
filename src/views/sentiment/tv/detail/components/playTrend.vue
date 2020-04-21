@@ -59,6 +59,7 @@ import moment from 'moment'
 import dataEmpty from '@/views/common/dataEmpty/index.vue'
 import { openAppLink, AppLink } from '@/util/native'
 import { lastDays } from '@/util/timeSpan'
+import { formatCharts } from '@/fn/handleChart'
 
 @Component({
   components: {
@@ -91,6 +92,7 @@ export default class PlayTrend extends ViewBase {
   ]
   weekDays = ['日', '一', '二', '三', '四', '五', '六']
   response: any = {}
+  count: number = 7
 
   // 接口获取数据
   async apiGetData() {
@@ -140,20 +142,8 @@ export default class PlayTrend extends ViewBase {
 
   // 处理数据
   formatDatas(dataObj: any[]) {
-    let xDate: any = []
-    const yDate = (dataObj || []).map((it: any) => {
-      const { platformName, dataList } = it
-      xDate = (dataList || []).map((ite: any) => ite.date)
-      return {
-        name: platformName,
-        list: (dataList || []).map((ite: any) => ite.value)
-      }
-    })
-    this.lineDatas = {
-      title: '',
-      xDate,
-      yDate
-    }
+    const last = formatCharts(dataObj, this.count)
+    this.lineDatas = last
   }
 
   // applink 跳转
@@ -164,6 +154,7 @@ export default class PlayTrend extends ViewBase {
   // 监测日期选择
   @Watch('dates', { deep: true })
   watchDays(val: any) {
+    this.count = val.count || 7
     this.apiGetData()
   }
 

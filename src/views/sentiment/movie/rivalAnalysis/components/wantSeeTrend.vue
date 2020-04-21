@@ -26,6 +26,7 @@ import { devLog, devInfo } from '@/util/dev'
 import trendLines from '@/components/trendLine'
 import { toast } from '@/util/toast'
 import moment from 'moment'
+import { formatCharts } from '@/fn/handleChart'
 import dataEmpty from '@/views/common/dataEmpty/index.vue'
 
 @Component({
@@ -72,33 +73,29 @@ export default class WantSeeTrend extends ViewBase {
 
   // 综合热度数据处理 title，xdata，ydata
   formatDatas(dataObj: any[]) {
-    // this.formatData(dataObj,this.count)
+    const lastData = formatCharts(dataObj, this.count)
     // 处理日期
-    const lastDate: any[] = []
-    const nowDate = moment(new Date()).format('YYYY-MM-DD 00:00:00')
-    const now = new Date(nowDate).getTime()
-    for (let i = 0; i < this.count; i++) {
-      lastDate.unshift(now - i * 24 * 60 * 60 * 1000)
-    }
-    // 处理数据
-    const lastValue = (dataObj || []).map((it: any) => {
-      const { rivalName, data } = it
-      const yVal = new Array(this.count).fill(null)
-      data.map((ite: any) => {
-        const mapIndex = lastDate.indexOf(ite.date)
-        yVal[mapIndex] = ite.value
-      })
-      return {
-        name: rivalName,
-        list: yVal
-      }
-    })
+    // const lastDate: any[] = []
+    // const nowDate = moment(new Date()).format('YYYY-MM-DD 00:00:00')
+    // const now = new Date(nowDate).getTime()
+    // for (let i = 0; i < this.count; i++) {
+    //   lastDate.unshift(now - i * 24 * 60 * 60 * 1000)
+    // }
+    // // 处理数据
+    // const lastValue = (dataObj || []).map((it: any) => {
+    //   const { rivalName, data } = it
+    //   const yVal = new Array(this.count).fill(null)
+    //   data.map((ite: any) => {
+    //     const mapIndex = lastDate.indexOf(ite.date)
+    //     yVal[mapIndex] = ite.value
+    //   })
+    //   return {
+    //     name: rivalName,
+    //     list: yVal
+    //   }
+    // })
 
-    this.lineDatas = {
-      title: '',
-      xDate: lastDate,
-      yDate: lastValue
-    }
+    this.lineDatas = lastData
   }
 
   async uplist() {

@@ -15,7 +15,7 @@
     <div>
       <LineGrap
         :lineData="lineDatas"
-        v-if="lineDatas.xDate&&lineDatas.xDate.length"
+        v-if="dataTrend.dailyGainList && dataTrend.dailyGainList.length"
         :key="lineDatas.title"
         class="wantchart"
         :formatterHtml="formatterHtml"
@@ -56,16 +56,17 @@ export default class WantSeeTrend extends ViewBase {
   }
   dates: any = {}
   dataTrend: any = {}
+  count: number = 7 // 日期筛选
 
   // 接口获取数据
   async apiGetData() {
     try {
       const res: any = await this.fetch({
         movieId: this.query,
-        ...this.city,
-        ...this.dates
+        startTime: this.dates.startTime,
+        endTime: this.dates.endTime,
+        ...this.city
       })
-      // console.log('data', res)
       this.dataTrend = res
       this.formatDatas(this.dataTrend.dailyGainList)
     } catch (ex) {
@@ -82,6 +83,7 @@ export default class WantSeeTrend extends ViewBase {
   // 监控日期变化
   @Watch('dates', { deep: true })
   watchDays(val: any) {
+    this.count = val.count
     this.apiGetData()
   }
 
@@ -93,16 +95,28 @@ export default class WantSeeTrend extends ViewBase {
 
   // 处理数据
   formatDatas(data: any[]) {
-    const xDate = (data || []).map((it: any) => it.date)
-    const yDate = (data || []).map((it: any) => it.value)
-    const eventList = (data || []).map((it: any) => it.eventList)
+    // 处理 X 轴日期
+    const lastDate: any[] = []
+    const nowDate = moment(new Date()).format('YYYY-MM-DD 00:00:00')
+    const now = new Date(nowDate).getTime()
+    for (let i = 1; i < this.count + 1; i++) {
+      lastDate.unshift(now - i * 24 * 60 * 60 * 1000)
+    }
+    // 处理 Y 轴数据
+    const lastValue = new Array(this.count).fill(null)
+    const eventList = new Array(this.count).fill([])
+    data.map((ite: any) => {
+      const mapIndex = lastDate.indexOf(ite.date)
+      lastValue[mapIndex] = ite.value
+      eventList[mapIndex] = ite.eventList
+    })
 
     this.lineDatas = {
-      xDate,
+      xDate: lastDate,
       eventList,
       yDate: [
         {
-          data: yDate,
+          data: lastValue,
           name: '想看数'
         }
       ]

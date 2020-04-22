@@ -72,7 +72,7 @@ export default class TabNav extends Vue {
 
   clickedScroll = false
 
-  clickedTimeout = 0
+  clickedTimer = 0
 
   // 不做成 get children() 是因为涉及 dom 节点，在 vue 中「易失」
   getChildren() {
@@ -86,10 +86,10 @@ export default class TabNav extends Vue {
     const nav = document.getElementById(name)
     if (nav) {
       this.clickedScroll = true
-      clearTimeout(this.clickedTimeout)
+      clearTimeout(this.clickedTimer)
       scrollIntoView(nav, this.$el as HTMLElement)
       .then(() => {
-        this.clickedTimeout = setTimeout(() => this.clickedScroll = false, 200) as any
+        this.clickedTimer = setTimeout(() => this.clickedScroll = false, 200) as any
       })
     }
     this.model = index

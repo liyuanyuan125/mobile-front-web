@@ -2,7 +2,7 @@
   <div class="content">
     <SentimentBar :title="actorInfo.actorName" :sidebar="sidebar" />
     <section class="info">
-      <div class="header" v-if="show">
+      <div class="header" v-if="show && basicCode == 0">
         <div class="left">
           <div>
             <img :src="coverImg" class="img" />
@@ -18,7 +18,7 @@
           </p>
           <p v-if="actorInfo.rankingName && actorInfo.rankingId">
             <router-link
-              :to="{name: 'sentimenteventmarketing', params: {eventId: actorInfo.rankingId} , query: {title: actorInfo.actorName}}"
+              :to="{name: 'sentimenteventmarketing', params: {eventId: actorInfo.rankingId} , query: {title: actorInfo.rankingName}}"
               class="event-name flex-box"
             >
               <span style="    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
@@ -30,6 +30,7 @@
           </p>
         </div>
       </div>
+      <DataEmpty :code="basicCode" :retry="getActorDetail" v-if="basicCode > 0" />
       <div class="dubble">
         <BubbleBottom :data="bubbleData" />
       </div>
@@ -47,7 +48,9 @@
         :overAllList="overAllHeatList"
         :platformList="platformHeatList"
         :params="platformParams(actorInfo.actorName)"
+        v-if="heatCode == 0"
       />
+      <DataEmpty :code="heatCode" :retry="getHotList" v-if="heatCode > 0" />
     </section>
 
     <section class="pane" id="praise">
@@ -72,12 +75,23 @@
 
     <section v-if="showevent" class="pane" id="event">
       <!-- 营销事件 -->
-      <Event :eventList="eventList" :link="getApplink('eventMarketingList')" />
+      <Event 
+        :eventList="eventList" 
+        :link="getApplink('eventMarketingList')"
+        v-if="eventCode == 0"
+      />
+      <DataEmpty :code="eventCode" :retry="getEventList" v-if="eventCode > 0" />
     </section>
 
     <section v-if="showuser" class="pane" id="part">
       <!-- 相似艺人 -->
-      <Competing :pkUserList="pkUserList" :pkIdList="pkIdList" />
+      <ModuleHeader 
+        title="相似艺人"
+        style='padding: 40px 15px 0 15px;'
+      />
+      <Competing :pkUserList="pkUserList" :pkIdList="pkIdList" v-if="rivalCode == 0" />
+      <DataEmpty :code="rivalCode" :retry="getPkUser" v-if="rivalCode > 0" />
+
     </section>
 
     <section
@@ -110,6 +124,8 @@ import { BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble
 import { getList, getActorDetail, getPkUser, getEventList } from '@/api/kol'
 import { alert } from '@/util/toast'
 import { imgFixed } from '@/fn/imgProxy'
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
+import ModuleHeader from '@/components/moduleHeader'
 
 @Component({
   components: {
@@ -125,7 +141,9 @@ import { imgFixed } from '@/fn/imgProxy'
     Event,
     Competing,
     Works,
-    TabNav
+    TabNav,
+    DataEmpty,
+    ModuleHeader
   }
 })
 export default class KolPage extends ViewBase {
@@ -134,6 +152,15 @@ export default class KolPage extends ViewBase {
   showevent: any = false
 
   title: any = '用户分析'
+
+  // 详情
+  basicCode = 0
+  // 热度
+  heatCode = 0
+  // 事件
+  eventCode = 0
+  // 对比
+  rivalCode = 0
 
   sidebar = {
     diggType: '2',
@@ -241,9 +268,10 @@ export default class KolPage extends ViewBase {
       })
       this.overAllHeatList = overAllHeatList || []
       this.platformHeatList = platformHeatList || []
+      this.heatCode = 0
     } catch (ex) {
-      // toast(ex.msg)
-      throw ex
+      const { code } = this.handleModuleError(ex)
+      this.heatCode = code
     }
   }
 
@@ -301,9 +329,12 @@ export default class KolPage extends ViewBase {
       this.publicPraise = publicPraise
       this.userAnalysis = userAnalysis || {}
       this.worksAnalysis = worksAnalysis || {}
+      this.basicCode = 0
     } catch (ex) {
-      // toast(ex.msg)
-      throw ex
+      const { code } = this.handlePageError(ex)
+      this.basicCode = code
+      // this.songEmpty = true
+      // this.rankAnnularEmpty = true
     } finally {
       this.show = true
     }
@@ -329,9 +360,11 @@ export default class KolPage extends ViewBase {
           }
         }
       }
+      this.rivalCode = 0
+      this.showuser = true
     } catch (ex) {
-      // toast(ex.msg)
-      throw ex
+      const { code } = this.handleModuleError(ex)
+      this.rivalCode = code
     } finally {
       this.showuser = true
     }
@@ -345,9 +378,10 @@ export default class KolPage extends ViewBase {
         type: 2
       })
       this.eventList = event.data
+      this.eventCode = 0
     } catch (ex) {
-      // toast(ex.msg)
-      throw ex
+      const { code } = this.handleModuleError(ex)
+      this.eventCode = code
     } finally {
       this.showevent = true
     }

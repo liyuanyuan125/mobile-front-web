@@ -40,7 +40,7 @@ export default class ApiHelper {
                 }
             } else {
                 if (param[key]) {
-                    strArr.push(key + '=' + encodeURIComponent(param[key]))
+                    strArr.push(key + '=' + param[key])
                 }
             }
         }

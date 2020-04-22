@@ -55,12 +55,6 @@ export default class Main extends Vue {
     return {
       click,
       ...obj,
-      // '03-05': [
-      //   {eventName: '事件名字事件名字', eventId: 12938},
-      //   {eventName: 'eventname-2', eventId: 12938},
-      //   {eventName: '事件名字事件名字', eventId: 12938},
-      //   {eventName: 'eventname-2', eventId: 12938},
-      // ],
     }
   }
 

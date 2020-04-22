@@ -56,7 +56,7 @@ import EventList from '@/views/common/eventList/event.vue' // 事件跟踪
 import RivalAnalysis from './components/rivalAnalysis.vue' // 竞品分析
 import ActorList from '@/views/common/actorList/index.vue' // 主创人员
 import ProduceList from '@/views/common/produceList/index.vue' // 出品发行
-// import hotLine from '@/components/hotLine'
+import { talkingdataHandle } from '@/util/TDEvent'
 
 @Component({
   components: {

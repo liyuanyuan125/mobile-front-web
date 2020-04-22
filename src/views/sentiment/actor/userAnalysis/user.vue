@@ -1,32 +1,35 @@
 <template>
   <div class='pages'>
       <SentimentBar :title="title" :titleShow="true" />
-      <div v-if='show' class='agelist'>
-        <div class='title'>用户画像</div>
-        <div class='sex'>
-          <!-- <div class='item-title'>性别占比</div> -->
-          <sexChart :width='375' :data='genderList' ></sexChart>
+      <div v-if='show && basicCode == 0'>
+        <div class='agelist'>
+          <div class='title'>用户画像</div>
+          <div class='sex'>
+            <!-- <div class='item-title'>性别占比</div> -->
+            <sexChart :width='375' :data='genderList' ></sexChart>
+          </div>
+          <div class='age'>
+            <div class='item-title'>年龄占比</div>
+            <VerticalBar
+              :data="ageRangeList"
+              class="chart"
+            />
+          </div>
         </div>
-        <div class='age'>
-          <div class='item-title'>年龄占比</div>
-          <VerticalBar
-            :data="ageRangeList"
-            class="chart"
+        <div class='userlist'>
+          <div class='item-title' >粉丝平台分布
+            <Icon @click.native='showNote()' name="question-o" size="18" class="icon-arrow"/>
+          </div>
+          <annularChart :width='375' :height='300' :data='platformFansList'></annularChart>
+        </div>
+        <div class='userlist'>
+          <UserArea 
+            :data="userRegionList"
+            :moreLink="`/sentiment/common/userRegion?src=2&id=${$route.params.actorId}&type=1`"
           />
         </div>
       </div>
-      <div v-if='show' class='userlist'>
-        <div class='item-title' >粉丝平台分布
-          <Icon @click.native='showNote()' name="question-o" size="18" class="icon-arrow"/>
-        </div>
-        <annularChart :width='375' :height='300' :data='platformFansList'></annularChart>
-      </div>
-      <div v-if='show' class='userlist'>
-        <UserArea 
-          :data="userRegionList"
-          :moreLink="`/sentiment/common/userRegion?src=2&id=${$route.params.actorId}&type=1`"
-        />
-      </div>
+      <DataEmpty :code="basicCode" :retry="getDetail" v-if="basicCode > 0" />
   </div>
 </template>
 
@@ -42,6 +45,8 @@ import annularChart from '@/components/cakeChart/annularChart.vue'
 import VerticalBar, { VerticalBarItem } from '@/components/verticalBar'
 import UserArea, { ChinaMapItem } from '@/views/common/userArea'
 import { getPeople } from '@/api/kol'
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
+
 
 @Component({
   components: {
@@ -50,11 +55,14 @@ import { getPeople } from '@/api/kol'
     sexChart,
     annularChart,
     VerticalBar,
-    Icon
+    Icon,
+    DataEmpty
   }
 })
 export default class KolPage extends ViewBase {
   show: any = false
+
+  basicCode: any = 0
 
   genderList: any = {
     data: [],
@@ -110,8 +118,8 @@ export default class KolPage extends ViewBase {
       })
       this.platformFansList.data = platformFansList || []
     } catch (ex) {
-      // toast(ex.msg)
-      throw ex
+      const { code } = this.handlePageError(ex)
+      this.basicCode = code
     } finally {
       this.show = true
     }

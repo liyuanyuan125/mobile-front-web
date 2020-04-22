@@ -12,16 +12,17 @@
         <SelectDate v-model="dates" />
       </div>
     </div>
-    <div>
+    <div v-if="!wantSeeCode">
       <LineGrap
         :lineData="lineDatas"
-        v-if="dataTrend.dailyGainList && dataTrend.dailyGainList.length"
+        v-if="lineDatas.xDate && lineDatas.xDate.length"
         :key="lineDatas.title"
         class="wantchart"
         :formatterHtml="formatterHtml"
       />
       <dataEmpty v-else />
     </div>
+    <dataEmpty :code="basicCode" :retry="apiGetData" v-else />
   </div>
 </template>
 
@@ -55,8 +56,9 @@ export default class WantSeeTrend extends ViewBase {
     type: 1
   }
   dates: any = {}
-  dataTrend: any = {}
+  // dataTrend: any = {}
   count: number = 7 // 日期筛选
+  wantSeeCode: number = 0
 
   // 接口获取数据
   async apiGetData() {
@@ -67,10 +69,12 @@ export default class WantSeeTrend extends ViewBase {
         endTime: this.dates.endTime,
         ...this.city
       })
-      this.dataTrend = res
-      this.formatDatas(this.dataTrend.dailyGainList)
+      // this.dataTrend = res
+      this.wantSeeCode = 0
+      this.formatDatas(res.dailyGainList)
     } catch (ex) {
-      // toast(ex)
+      const { code } = this.handleModuleError(ex)
+      this.wantSeeCode = code
     }
   }
 
@@ -97,7 +101,7 @@ export default class WantSeeTrend extends ViewBase {
   formatDatas(data: any[]) {
     // 处理 X 轴日期
     const lastDate: any[] = []
-    const nowDate = moment(new Date()).format('YYYY-MM-DD 00:00:00')
+    const nowDate = moment(new Date()).format('YYYY/MM/DD 00:00:00')
     const now = new Date(nowDate).getTime()
     for (let i = 1; i < this.count + 1; i++) {
       lastDate.unshift(now - i * 24 * 60 * 60 * 1000)

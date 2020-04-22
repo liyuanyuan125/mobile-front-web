@@ -3,7 +3,7 @@
     class="main-page"
     :class="isAlbum ? 'main-page-album' : 'main-page-song'"
   >
-    <SentimentBar title="竞品分析详细报告" titleShow/>
+    <SentimentBar title="竞品分析详细报告" titleShow />
 
     <section class="rival-wrap">
       <RivalList
@@ -15,21 +15,21 @@
       />
     </section>
 
-    <TabNav :list="navList" class="tab-nav" normal/>
+    <TabNav :list="navList" class="tab-nav" normal />
 
     <section class="pane pane-basic" id="basic">
-      <ModuleHeader title="基础数据"/>
+      <ModuleHeader title="基础数据" />
       <Table
         :data="basisData"
         :columns="basicColumns"
         class="basic-table"
         v-if="basisData"
       />
-      <DataEmpty v-if="basisEmpty" />
+      <DataEmpty :code="basicCode" :retry="getBasic" v-if="basisEmpty" />
     </section>
 
     <section class="pane pane-heat" id="hot" v-if="isSong">
-      <SelectTime v-model="heatDay" class="select-time"/>
+      <SelectTime v-model="heatDay" class="select-time" />
       <HeatContrast
         lineTitle="综合热度对比"
         :colors="['#88aaf6', '#4cc8d0', '#c965dd']"
@@ -43,11 +43,11 @@
         :daysNum="heatDay"
         v-if="heatData"
       />
-      <DataEmpty v-if="heatEmpty" />
+      <DataEmpty :code="heatCode" :retry="getHeat" v-if="heatEmpty" />
     </section>
 
     <section class="pane pane-play" id="play">
-      <ModuleHeader :title="isAlbum ? '销量对比' : '播放量对比'"/>
+      <ModuleHeader :title="isAlbum ? '销量对比' : '播放量对比'" />
       <PlayStats
         :id="ids"
         :fetch="playFetch"
@@ -55,7 +55,9 @@
         :alignMode="isAlbum"
         autoColor
         class="play-stats"
+        v-if="playCode == 0"
       />
+      <DataEmpty :code="playCode" :retry="playFetch" v-if="playCode > 0" />
     </section>
 
     <section class="pane pane-rank" v-if="isSong && rankTable">
@@ -68,11 +70,16 @@
     </section>
 
     <section class="pane pane-praise" id="praise">
-      <MarketContrast :fetch="praiseFetch" :businessType="isAlbum ? 6 : 5"/>
+      <MarketContrast
+        :fetch="praiseFetch"
+        :businessType="isAlbum ? 6 : 5"
+        v-if="praiseCode == 0"
+      />
+      <DataEmpty :code="praiseCode" :retry="praiseFetch" v-if="praiseCode > 0" />
     </section>
 
     <section class="pane pane-user" id="user">
-      <ModuleHeader title="用户对比"/>
+      <ModuleHeader title="用户对比" />
 
       <Age
         :ageRangeList="ageRangeList"
@@ -91,7 +98,7 @@
       <template v-if="!areaEmpty">
         <div class="van-hairline--top" v-if="!ageRangeEmpty || !sexEmpty"></div>
 
-        <ModuleHeader title="用户地域分布对比" tag="h4" class="area-header"/>
+        <ModuleHeader title="用户地域分布对比" tag="h4" class="area-header" />
 
         <MultiTable
           :list="areaList"
@@ -100,7 +107,7 @@
         />
       </template>
 
-      <DataEmpty v-if="ageRangeEmpty && sexEmpty && areaEmpty"/>
+      <DataEmpty v-if="ageRangeEmpty && sexEmpty && areaEmpty" />
     </section>
   </main>
 </template>
@@ -149,10 +156,6 @@ export default class extends ViewBase {
     return !this.isAlbum
   }
 
-  ids = ''
-
-  rivalList: any[] = []
-
   get navList(): TabNavItem[] {
     const list = [
       { name: 'basic', label: '基础数据' },
@@ -165,9 +168,15 @@ export default class extends ViewBase {
     return list
   }
 
+  ids = ''
+
+  rivalList: any[] = []
+
   basisData: any[] | null = null
 
   basisEmpty = false
+
+  basicCode = 0
 
   get basicColumns() {
     const isAlbum = this.isAlbum
@@ -198,10 +207,16 @@ export default class extends ViewBase {
   // 热度分析天数
   heatDay = 7
 
+  heatCode = 0
+
   // 单曲：热度分析数据
   heatData: any = null
 
   heatEmpty = false
+
+  playCode = 0
+
+  praiseCode = 0
 
   rankTable: any = null
 
@@ -281,8 +296,10 @@ export default class extends ViewBase {
       this.ageRangeList = ageRangeList
       this.sexData = sexData
       this.areaList = areaList
+      this.basicCode = 0
     } catch (ex) {
-      this.logError(ex)
+      const { code } = this.handlePageError(ex)
+      this.basicCode = code
       this.basisEmpty = true
     }
   }
@@ -297,8 +314,10 @@ export default class extends ViewBase {
       })
       this.heatData = heatData
       this.heatEmpty = allEmpty
+      this.heatCode = 0
     } catch (ex) {
-      this.logError(ex)
+      const { code } = this.handleModuleError(ex)
+      this.heatCode = code
       this.heatData = null
       this.heatEmpty = true
     }
@@ -307,18 +326,22 @@ export default class extends ViewBase {
   async playFetch(query: PlayQuery) {
     try {
       const data = await getPlay(query, this.isAlbum)
+      this.playCode = 0
       return data
     } catch (ex) {
-      this.logError(ex)
+      const { code } = this.handleModuleError(ex)
+      this.playCode = code
     }
   }
 
   async praiseFetch(query: any) {
     try {
       const data = await getPraise(this.ids, query, this.isAlbum)
+      this.praiseCode = 0
       return data
     } catch (ex) {
-      this.logError(ex)
+      const { code } = this.handleModuleError(ex)
+      this.praiseCode = code
     }
   }
 

@@ -1,6 +1,6 @@
 <template>
   <div class="compet-content">
-    <div class="title">相似艺人</div>
+    <!-- <div class="title">相似艺人</div> -->
     <ul v-if='pkUserList.length > 0 && pkUserListData.length > 0'>
       <li class='li-item'>
         <div class='li-left'>

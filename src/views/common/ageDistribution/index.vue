@@ -78,7 +78,4 @@ export default class Options extends Vue {
 
 <style lang="less" scoped>
 @import url(./index.less);
-.module-header {
-  padding-bottom: 30px;
-}
 </style>

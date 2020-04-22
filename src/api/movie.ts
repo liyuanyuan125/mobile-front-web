@@ -1,4 +1,4 @@
-import { get, post, put, del } from '@/fn/ajax'
+import { get, post, put, del } from '@/fn/ajaxFix'
 
 // 营销事件
 export interface EventItem {

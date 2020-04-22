@@ -270,6 +270,17 @@ export default class PlayStats extends Vue {
     return table
   }
 
+  get finalMoreDateLink() {
+    if (this.isAlbum) {
+      return this.moreDateLink
+    }
+    const link = {
+      ...this.moreDateLink,
+      songType: this.viewIndex + 1
+    }
+    return link
+  }
+
   getDayList(format = 'YYYY-MM-DD') {
     const day = this.day
     const names = this.isAlign
@@ -315,7 +326,7 @@ export default class PlayStats extends Vue {
   }
 
   handleFormMore() {
-    openAppLink(this.moreDateLink)
+    openAppLink(this.finalMoreDateLink)
   }
 
   @Watch('day')

@@ -85,7 +85,7 @@ export default class TabNav extends Vue {
     if (nav) {
       this.clickedScroll = true
       scrollIntoView(nav, this.$el as HTMLElement)
-      .then(() => this.clickedScroll = false)
+      .then(() => setTimeout(() => this.clickedScroll = false, 200))
     }
     this.model = index
   }

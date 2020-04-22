@@ -1,7 +1,12 @@
 <template>
   <div class="content">
     <SentimentBar :title="brandInfo.brandName" :sidebar="sidebar" />
-    <brandInfoArea :brandInfo="brandInfo" :bubbleData="bubbleData" />
+
+    <div class="brand-wrap">
+      <brandInfoArea :brandInfo="brandInfo" :bubbleData="bubbleData" v-if="basicCode == 0" />
+      <DataEmpty :code="basicCode" :retry="brandDetail" v-if="basicCode > 0" />
+    </div>
+
     <TabNav :list="navList" class="tab-nav" />
 
     <section class="brand-hot bg_fff" id="hot">
@@ -10,7 +15,9 @@
         :overAllList="overAllHeatList"
         :platformList="platformHeatList"
         :params="platformParams"
+        v-if="heatCode == 0"
       />
+      <DataEmpty :code="heatCode" :retry="getHotList" v-if="heatCode > 0" />
     </section>
 
     <section id="praise">
@@ -36,11 +43,14 @@
         :params="eventParams"
         :link="getApplink('eventMarketingList')"
         class="bg_fff"
+        v-if="eventCode == 0"
       />
+      <DataEmpty :code="eventCode" :retry="eventAnalysis" v-if="eventCode > 0" />
     </section>
 
     <section id="part">
-      <Competing :rivalList="rivalList" />
+      <Competing :rivalList="rivalList" v-if="rivalCode == 0" />
+      <DataEmpty :code="rivalCode" :retry="analysisList" v-if="rivalCode > 0" />
     </section>
   </div>
 </template>
@@ -60,6 +70,7 @@ import UserPortrait from '@/views/common/user/userPortrait.vue' // 用户分析
 import eventList from '@/views/common/eventList/event.vue' // 事件分析
 import heatLineCom from '@/views/common/heatLineCom/index.vue' // 热度分析
 import Competing from './components/competing.vue' // 竞品分析
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
 
 @Component({
   components: {
@@ -71,7 +82,8 @@ import Competing from './components/competing.vue' // 竞品分析
     UserPortrait,
     eventList,
     Competing,
-    TabNav
+    TabNav,
+    DataEmpty
   }
 })
 export default class BrandPage extends ViewBase {
@@ -85,11 +97,14 @@ export default class BrandPage extends ViewBase {
     { name: 'part', label: '竞品' }
   ]
 
+  basicCode = 0
+
   // 气泡
   bubbleData: any = {}
   brandInfo: any = {}
 
   // 热度分析+平台信息
+  heatCode = 0
   day = 7
   overAllHeatList: any = []
   platformHeatList: any = []
@@ -107,12 +122,17 @@ export default class BrandPage extends ViewBase {
 
   // 口碑评论 数据
   publicPraise = {}
+
   // 用户分析
   userAnalysis = {}
+
   // 事件
+  eventCode = 0
   eventParams = {}
   brandEventList: any = {}
+
   // 竞品分析
+  rivalCode = 0
   rivalList = []
   rivalIds = []
 
@@ -141,19 +161,20 @@ export default class BrandPage extends ViewBase {
     }
   }
 
-  mounted() {
+  init() {
     this.brandDetail() // 品牌详情页
     this.getHotList() // 热度分析数据
     this.eventAnalysis() // 事件分析
     this.analysisList() // 竞品分析
   }
 
+  mounted() {
+    this.init()
+  }
+
   @Watch('$route', { deep: true })
   watchRoute() {
-    this.brandDetail() // 品牌详情页
-    this.getHotList() // 热度分析数据
-    this.eventAnalysis() // 事件分析
-    this.analysisList() // 竞品分析
+    this.init()
   }
 
   async brandDetail() {
@@ -164,11 +185,13 @@ export default class BrandPage extends ViewBase {
       } = await brandList({ brandId })
 
       this.brandInfo = brandInfo || {} // 头部基础信息
-      this.bubbleData = brandOverView // 气泡数据
-      this.publicPraise = publicPraise // 口碑
-      this.userAnalysis = userAnalysis // 用户分析
+      this.bubbleData = brandOverView || {} // 气泡数据
+      this.publicPraise = publicPraise || {} // 口碑
+      this.userAnalysis = userAnalysis || {} // 用户分析
+      this.basicCode = 0
     } catch (ex) {
-      // toast(ex.msg)
+      const { code } = this.handlePageError(ex)
+      this.basicCode = code
     }
   }
 
@@ -184,8 +207,10 @@ export default class BrandPage extends ViewBase {
       })
       this.overAllHeatList = overAllHeatList || []
       this.platformHeatList = platformHeatList || []
+      this.heatCode = 0
     } catch (ex) {
-      // toast(ex)
+      const { code } = this.handleModuleError(ex)
+      this.heatCode = code
     }
   }
 
@@ -196,8 +221,10 @@ export default class BrandPage extends ViewBase {
         objectId: this.id
       })
       this.brandEventList = data
+      this.eventCode = 0
     } catch (ex) {
-      // toast(ex)
+      const { code } = this.handleModuleError(ex)
+      this.eventCode = code
     }
   }
 
@@ -208,8 +235,10 @@ export default class BrandPage extends ViewBase {
       })
       this.rivalList = data || []
       this.rivalIds = (data || []).map((it: any) => it.rivalId)
+      this.rivalCode = 0
     } catch (ex) {
-      // toast(ex.msg)
+      const { code } = this.handleModuleError(ex)
+      this.rivalCode = code
     }
   }
 

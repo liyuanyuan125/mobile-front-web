@@ -1,7 +1,11 @@
 <template>
   <!-- 电影电视剧详情页 出品发行公司 -->
   <div class="producemod">
-    <ModuleHeader title="出品发行" :link="produceList.length ? link : null" />
+    <ModuleHeader
+      title="出品发行"
+      :link="produceList.length ? link : null"
+      @click.native="talkingData"
+    />
     <dl class="companylist" v-if="produceList.length">
       <dd v-for="(item,index) in produceList" :key="item + index" class="van-ellipsis">{{item}}</dd>
     </dl>
@@ -15,6 +19,7 @@ import { DetailItem } from './types'
 import ModuleHeader from '@/components/moduleHeader'
 import { AppLink } from '@/util/native'
 import dataEmpty from '@/views/common/dataEmpty/index.vue'
+import { talkingdataHandle } from '@/util/TDEvent'
 
 @Component({
   components: {
@@ -26,6 +31,14 @@ export default class ProduceList extends Vue {
   /** 发行公司 */
   @Prop({ type: Array }) produceList!: string[]
   @Prop({ type: Object }) link!: AppLink
+
+  // talkingdata 埋点统计
+  talkingData() {
+    if (this.produceList.length) {
+      const eventId = this.link.businessType === 3 ? '电影详情页' : '电视剧详情页'
+      talkingdataHandle(eventId, '出品发行_查看更多')
+    }
+  }
 }
 </script>
 

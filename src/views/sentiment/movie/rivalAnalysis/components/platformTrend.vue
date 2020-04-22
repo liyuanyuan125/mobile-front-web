@@ -20,6 +20,7 @@
       </div>
       <div>
         <trendLines :lineData="lineDatas" :colors="colors" v-if="lineDatas.xDate" />
+        <dataEmpty v-else />
       </div>
     </div>
     <dataEmpty v-else />
@@ -72,6 +73,7 @@ export default class PlatformTrend extends ViewBase {
   @Watch('dates', { deep: true })
   watchDays(val: any) {
     this.count = val.count
+    this.tabIndex = 1
     this.uplist()
   }
 
@@ -87,8 +89,12 @@ export default class PlatformTrend extends ViewBase {
 
   // 综合热度数据处理 title，xdata，ydata
   formatDatas(dataObj: any[]) {
-    const newValue = formatCharts(dataObj, this.count)
-    this.lineDatas = newValue
+    if (dataObj.length) {
+      const newValue = formatCharts(dataObj, this.count)
+      this.lineDatas = newValue
+    } else {
+      this.lineDatas = {}
+    }
   }
 
   // tab 切换

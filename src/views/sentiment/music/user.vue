@@ -6,12 +6,21 @@
       :sexData="sexData"
       :ageData="ageData"
       class="user-portrait"
+      v-if="basicCode == 0"
     />
 
     <UserArea
       :data="areaData"
       :moreLink="`/sentiment/common/userRegion?src=${isAlbum ? 6 : 5}&id=${id}&type=1`"
       class="user-area"
+      v-if="basicCode == 0"
+    />
+
+    <DataEmpty
+      :code="basicCode"
+      :retry="getBasic"
+      class="data-empty"
+      v-if="basicCode > 0"
     />
   </main>
 </template>
@@ -23,18 +32,22 @@ import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import UserPortrait, { VerticalBarItem, NameValue } from '@/views/common/userPortrait'
 import UserArea, { ChinaMapItem } from '@/views/common/userArea'
 import { getBasic } from './userData'
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
 
 @Component({
   components: {
     SentimentBar,
     UserPortrait,
     UserArea,
+    DataEmpty,
   }
 })
 export default class extends ViewBase {
   @Prop({ type: Number }) id!: number
 
   @Prop({ type: Boolean, default: false }) isAlbum!: boolean
+
+  basicCode = 0
 
   sexData: any[] | null = null
 
@@ -63,11 +76,10 @@ export default class extends ViewBase {
       this.sexData = sexData
       this.ageData = ageData
       this.areaData = areaData
+      this.basicCode = 0
     } catch (ex) {
-      this.logError(ex)
-      this.sexData = []
-      this.ageData = []
-      this.areaData = []
+      const { code } = this.handlePageError(ex)
+      this.basicCode = code
     }
   }
 }
@@ -85,5 +97,10 @@ export default class extends ViewBase {
 
 .user-area {
   margin-top: 20px;
+}
+
+.data-empty {
+  background-color: #fff;
+  padding-top: 50%;
 }
 </style>

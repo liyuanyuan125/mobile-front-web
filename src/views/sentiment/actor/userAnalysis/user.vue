@@ -1,7 +1,7 @@
 <template>
-  <div class='pages' v-if='show'>
+  <div class='pages'>
       <SentimentBar :title="title" :titleShow="true" />
-      <div class='agelist'>
+      <div v-if='show' class='agelist'>
         <div class='title'>用户画像</div>
         <div class='sex'>
           <!-- <div class='item-title'>性别占比</div> -->
@@ -15,13 +15,13 @@
           />
         </div>
       </div>
-      <div class='userlist'>
+      <div v-if='show' class='userlist'>
         <div class='item-title' >粉丝平台分布
           <Icon @click.native='showNote()' name="question-o" size="18" class="icon-arrow"/>
         </div>
         <annularChart :width='375' :height='300' :data='platformFansList'></annularChart>
       </div>
-      <div class='userlist'>
+      <div v-if='show' class='userlist'>
         <UserArea 
           :data="userRegionList"
           :moreLink="`/sentiment/common/userRegion?src=2&id=${$route.params.actorId}&type=1`"
@@ -84,7 +84,7 @@ export default class KolPage extends ViewBase {
   created() {
     this.title = this.$route.query.title + '用户分析'
     this.getDetail()
-    document.body.style.background = '#FBFBFB'
+    // document.body.style.background = '#'
   }
 
   async getDetail() {

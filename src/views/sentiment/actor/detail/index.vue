@@ -18,7 +18,7 @@
           </p>
           <p v-if="actorInfo.rankingName && actorInfo.rankingId">
             <router-link
-              :to="{name: 'sentimenteventmarketing', params: {eventId: actorInfo.rankingId} , query: {title: ''}}"
+              :to="{name: 'sentimenteventmarketing', params: {eventId: actorInfo.rankingId} , query: {title: actorInfo.rankingName}}"
               class="event-name flex-box"
             >
               <span style="    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
@@ -89,7 +89,7 @@
         title="相似艺人"
         style='padding: 40px 15px 0 15px;'
       />
-      <Competing :pkUserList="pkUserList" :pkIdList="pkIdList" />
+      <Competing :pkUserList="pkUserList" :pkIdList="pkIdList" v-if="rivalCode == 0" />
       <DataEmpty :code="rivalCode" :retry="getPkUser" v-if="rivalCode > 0" />
 
     </section>
@@ -361,6 +361,7 @@ export default class KolPage extends ViewBase {
         }
       }
       this.rivalCode = 0
+      this.showuser = true
     } catch (ex) {
       const { code } = this.handleModuleError(ex)
       this.rivalCode = code

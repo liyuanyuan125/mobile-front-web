@@ -42,7 +42,7 @@ const bubbleTip = (title: string, message: string) => {
 
 const bubbleTipInteractCount = bubbleTip(
   '累计互动量',
-  '累计互动说明话说：物料的点赞、评论、转发、阅读或播放的累计之和'
+  '累计互动量是指：相关物料的点赞、评论、转发、阅读或播放的累计之和'
 )
 
 const commonBasic = (data: any, isDigital = false) => {

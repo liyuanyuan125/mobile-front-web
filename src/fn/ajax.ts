@@ -83,6 +83,9 @@ const request = async (url: string, opts: object) => {
     lastHeader = Object.assign({}, config.headers, xhrClient)
   }
   finalConfig = Object.assign({}, config, { headers: lastHeader })
+  finalConfig.paramsSerializer = (params: any) => {
+    return qs.stringify(params)
+  }
   let res: any
   try {
     res = await axios(finalConfig)

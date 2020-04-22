@@ -1,7 +1,7 @@
 <template>
   <div class="header-info">
     <div class="header">
-      <van-image :src="coverImg" class="img" :error-icon="defaultImg" />
+      <van-image :src="coverImg" class="img" :class="{'errorImg': !coverImg}" :error-icon="defaultImg" />
       <div>
         <p class="brand-name">{{brandInfo.brandName}}</p>
         <p v-if="brandInfo.rankingName && !brandInfo.rankingId " class="event-name">{{brandInfo.rankingName}}</p>
@@ -15,6 +15,10 @@
     </div>
     <div class="bubble">
       <BubbleBottom :data="bubbleDataList" />
+    </div>
+    <div class="curve">
+      <div class="curvetop"></div>
+      <div class="curvebot"></div>
     </div>
   </div>
 </template>
@@ -122,6 +126,9 @@ export default class Main extends Vue {
     width: 210px;
     height: 210px;
     margin-right: 30px;
+    overflow: hidden;
+  }
+  .errorImg {
     border: solid 1px #d4d4d4;
   }
   .brand-name {
@@ -149,5 +156,31 @@ export default class Main extends Vue {
   z-index: 12;
   height: 410px;
   overflow: hidden;
+}
+.curve {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+}
+.curvetop {
+  background: #fff;
+  &::before {
+    content: '';
+    display: block;
+    background-color: #f2f3f6;
+    height: 60px;
+    border-radius: 0 0 60px 0;
+  }
+}
+.curvebot {
+  background: #f2f3f6;
+  &::before {
+    content: '';
+    display: block;
+    background-color: #fff;
+    height: 60px;
+    border-radius: 60px 0 0 0;
+  }
 }
 </style>

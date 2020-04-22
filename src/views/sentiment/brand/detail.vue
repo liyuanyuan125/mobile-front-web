@@ -4,10 +4,10 @@
 
     <div class="brand-wrap">
       <brandInfoArea :brandInfo="brandInfo" :bubbleData="bubbleData" v-if="basicCode == 0" />
-      <DataEmpty :code="basicCode" :retry="brandDetail" v-if="basicCode > 0" />
+      <DataEmpty class="data-empty" :code="basicCode" :retry="brandDetail" v-if="basicCode > 0" />
     </div>
 
-    <TabNav :list="navList" class="tab-nav" />
+    <TabNav :list="navList" class="tab-nav" hideHeader />
 
     <section class="brand-hot bg_fff" id="hot">
       <selectTime v-model="day" class="select-time" />
@@ -288,21 +288,16 @@ export default class BrandPage extends ViewBase {
 }
 /deep/ .tab-nav {
   margin-top: 0;
-  top: 100px;
+  top: 88px;
   z-index: 11;
   /deep/ .van-tab {
     flex-basis: 20% !important;
   }
 }
-// /deep/ nav.formattab {
-//   margin-top: 0;
-//   top: 88px;
-//   z-index: 11;
-// }
-// /deep/ nav.formattab .van-tab {
-//   flex-basis: 20% !important;
-// }
 .bg_fff {
   background: #fff;
+}
+/deep/ .data-empty {
+  padding-bottom: 200px;
 }
 </style>

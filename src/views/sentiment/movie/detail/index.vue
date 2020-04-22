@@ -1,14 +1,17 @@
 <template>
   <div class="page">
     <SentimentBar :title="movieInfo ? movieInfo.movieNameCn : '电影详情'" :sidebar="sidebar" />
-    <BaseInfoArea :baseInfo="movieInfo" :overView="movieOverView" />
+    <BaseInfoArea :baseInfo="movieInfo" :overView="movieOverView" v-if="!basicCode" />
+    <DataEmpty :code="basicCode" :retry="getMovieInfo" v-if="basicCode > 0" />
     <TabNav :list="tabList" class="formattab" />
     <div class="hotanalysis" id="hot">
       <heatLineCom
         :overAllList="overAllHeat"
         :platformList="platformHeat"
         :params="platformParams"
+        v-if="!heatCode"
       />
+      <DataEmpty :code="heatCode" :retry="getHeatAnalysis" v-if="heatCode > 0" />
     </div>
     <WantSeeTrend :fetch="wantSeeTrendFetch" :query="movieId" />
     <BoxOffice :boxoffice="boxOffice" :link="getApplink('movieBoxOffice')" id="boxoffice" />
@@ -19,13 +22,20 @@
       id="praise"
     />
     <UserPortrait
-      :ageRangeList="userAnalysis.ageRangeList"
-      :genderList="userAnalysis.genderList"
+      :ageRangeList="userAnalysis && userAnalysis.ageRangeList"
+      :genderList="userAnalysis && userAnalysis.genderList"
       id="user"
       :link="getApplink('userAnalysis')"
     />
-    <EventList :eventList="eventList" id="event" :link="getApplink('eventMarketingList')" />
-    <RivalAnalysis :rivalList="rivalAnalysis" id="rival" />
+    <EventList
+      :eventList="eventList"
+      id="event"
+      :link="getApplink('eventMarketingList')"
+      v-if="!eventCode"
+    />
+    <DataEmpty :code="eventCode" :retry="getEventList" v-if="eventCode > 0" />
+    <RivalAnalysis :rivalList="rivalAnalysis" id="rival" v-if="!rivalCode" />
+    <DataEmpty :code="rivalCode" :retry="getRivalList" v-if="rivalCode > 0" />
     <ActorList :actorList="actorList" id="actor" :link="getApplink('actorList')" />
     <ProduceList :produceList="produceList" :link="getApplink('produceDistribute')" />
   </div>
@@ -57,9 +67,11 @@ import RivalAnalysis from './components/rivalAnalysis.vue' // 竞品分析
 import ActorList from '@/views/common/actorList/index.vue' // 主创人员
 import ProduceList from '@/views/common/produceList/index.vue' // 出品发行
 import { talkingdataHandle } from '@/util/TDEvent'
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
 
 @Component({
   components: {
+    DataEmpty,
     SentimentBar,
     BaseInfoArea,
     TabNav,
@@ -82,6 +94,12 @@ export default class MoviePage extends ViewBase {
     diggId: '',
     rivalIds: {} // 竞争对手的 url
   }
+  // 错误码
+  basicCode: number = 0 // 基本信息
+  heatCode: number = 0 // 热度分析
+  eventCode: number = 0 // 营销事件
+  rivalCode: number = 0 // 竞品分析
+  wantSeeCode: number = 0 // 想看
   // 电影id
   movieId: string = ''
   // 电影详细信息
@@ -153,27 +171,37 @@ export default class MoviePage extends ViewBase {
 
   // api获取电影详情页
   async getMovieInfo() {
-    const res: any = await getMovieDetail(this.movieId)
-    this.movieInfo = res.movieInfo
-    this.movieOverView = res.movieOverView
-    this.boxOffice = res.boxOffice
-    this.publicPraise = res.publicPraise
-    this.userAnalysis = res.userAnalysis
-    this.actorList = res.actorList ? res.actorList : []
-    this.produceList = res.produceList ? res.produceList : []
+    try {
+      const res: any = await getMovieDetail(this.movieId)
+      this.movieInfo = res.movieInfo
+      this.movieOverView = res.movieOverView
+      this.boxOffice = res.boxOffice
+      this.publicPraise = res.publicPraise
+      this.userAnalysis = res.userAnalysis
+      this.actorList = res.actorList ? res.actorList : []
+      this.produceList = res.produceList ? res.produceList : []
+      this.basicCode = 0
+    } catch (ex) {
+      const { code } = this.handlePageError(ex)
+      this.basicCode = code
+    }
   }
 
   // api获取热度分析
   async getHeatAnalysis() {
-    const [startTime, endTime] = lastDays(90)
-    const res: any = await getMovieHeat({
-      movieId: this.movieId,
-      startTime,
-      endTime
-    })
-    if (res && res.code === 0) {
-      this.overAllHeat = res.overAllHeatList
-      this.platformHeat = res.platformHeatList
+    try {
+      const [startTime, endTime] = lastDays(90)
+      const res: any = await getMovieHeat({
+        movieId: this.movieId,
+        startTime,
+        endTime
+      })
+      this.overAllHeat = res.overAllHeatList || []
+      this.platformHeat = res.platformHeatList || []
+      this.heatCode = 0
+    } catch (ex) {
+      const { code } = this.handleModuleError(ex)
+      this.heatCode = code
     }
   }
 
@@ -185,29 +213,41 @@ export default class MoviePage extends ViewBase {
 
   // api获取营销事件
   async getEventList() {
-    const res: any = await getEventList({
-      type: 3,
-      objectId: this.movieId
-    })
-    this.eventList = res
+    try {
+      const res: any = await getEventList({
+        type: 3,
+        objectId: this.movieId
+      })
+      this.eventList = res
+      this.eventCode = 0
+    } catch (ex) {
+      const { code } = this.handleModuleError(ex)
+      this.eventCode = code
+    }
   }
 
   // api获取竞品对手
   async getRivalList() {
-    const res: any = await getRivalList(this.movieId)
-    this.rivalAnalysis = res
-    const ids = []
-    if (res && res.length > 1) {
-      for (const el of res) {
-        ids.push(el.rivalId)
-      }
-      // 有竞品数据跳竞品报告页
-      this.sidebar.rivalIds = {
-        name: 'sentimentmovierivalanalysis',
-        query: {
-          ids: ids.slice(0, 3).join(',')
+    try {
+      const res: any = await getRivalList(this.movieId)
+      this.rivalAnalysis = res
+      this.rivalCode = 0
+      const ids = []
+      if (res && res.length > 1) {
+        for (const el of res) {
+          ids.push(el.rivalId)
+        }
+        // 有竞品数据跳竞品报告页
+        this.sidebar.rivalIds = {
+          name: 'sentimentmovierivalanalysis',
+          query: {
+            ids: ids.slice(0, 3).join(',')
+          }
         }
       }
+    } catch (ex) {
+      const { code } = this.handleModuleError(ex)
+      this.rivalCode = code
     }
   }
 

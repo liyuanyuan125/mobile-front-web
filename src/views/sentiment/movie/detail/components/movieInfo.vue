@@ -41,30 +41,28 @@ export default class BaseInfoArea extends ViewBase {
   // 数据概览
   get bubbleData() {
     let bubble: any[] = []
-    if (this.overView) {
-      bubble = [
-        {
-          type: '1',
-          title: '累计媒体物料',
-          value: this.overView.materialsCount,
-          trend: this.overView.materialsTrend
-        },
-        {
-          type: '2',
-          title: '累计评论数',
-          value: this.overView.commentCount,
-          trend: this.overView.commentTrend
-        },
-        {
-          type: '3',
-          title: '行业实时热度',
-          value: this.overView.heatCount,
-          trend: this.overView.heatTrend,
-          showdown: true
-        },
-        { type: '4', title: '好感度', value: this.baseInfo.favorable }
-      ]
-    }
+    bubble = [
+      {
+        type: '1',
+        title: '累计媒体物料',
+        value: this.overView ? this.overView.materialsCount : null,
+        trend: this.overView ? this.overView.materialsTrend : null
+      },
+      {
+        type: '2',
+        title: '累计评论数',
+        value: this.overView ? this.overView.commentCount : null,
+        trend: this.overView ? this.overView.commentTrend : null
+      },
+      {
+        type: '3',
+        title: '行业实时热度',
+        value: this.overView ? this.overView.heatCount : null,
+        trend: this.overView ? this.overView.heatTrend : null,
+        showdown: true
+      },
+      { type: '4', title: '好感度', value: this.baseInfo.favorable }
+    ]
     return bubble
   }
   // 封面图

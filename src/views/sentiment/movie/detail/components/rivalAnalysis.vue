@@ -11,15 +11,13 @@
             <div class="params">
               <div class="flex">
                 <p class="tit">热度</p>
-                <strong
-                  style="font-family: DIN Alternate;"
-                >{{item.heatCount ? item.heatCount : '-'}}</strong>
+                <strong style="font-family: DIN Alternate;">{{item.yesterHeatCount || '-'}}</strong>
                 <div v-if="index > 0">
                   <p
                     class="trend"
                     v-if="item.heatTrend"
-                    :style="{color:item.heatTrend > 0 ? '#FF6262': '#88AAF6'}"
-                  >{{item.heatTrend > 0 ? '高'+item.heatTrendShow : '低' + item.heatTrendShow}}</p>
+                    :style="{color:item.yesterHeatTrend > 0 ? '#FF6262': '#88AAF6'}"
+                  >{{item.yesterHeatTrend > 0 ? '高'+item.heatTrendShow : '低' + item.heatTrendShow}}</p>
                   <p v-else class="trend">-</p>
                 </div>
               </div>
@@ -79,9 +77,11 @@ export default class RivalAnalysis extends ViewBase {
     if (list && list.length > 1) {
       for (const item of this.rivalList) {
         ids.push(item.rivalId)
-        item.eventCreatTime = moment(item.eventCreatTime).format('YYYY-MM-DD')
+        item.eventCreatTime = item.eventCreatTime
+          ? moment(item.eventCreatTime).format('YYYY-MM-DD')
+          : null
         item.coverImg = imgFixed(item.rivalCover, 200, 260, 4)
-        item.heatTrendShow = roleNumber(Math.abs(item.heatTrend))
+        item.heatTrendShow = roleNumber(Math.abs(item.yesterHeatTrend))
         item.materialsTrendShow = roleNumber(Math.abs(item.materialsTrend))
       }
       this.rivalIds = ids.slice(0, 3).join(',')

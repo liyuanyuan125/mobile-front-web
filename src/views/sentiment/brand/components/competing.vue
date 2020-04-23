@@ -47,7 +47,7 @@
                   <i v-else>-</i>
                 </span>
               </h5>
-              <p class="event-name">
+              <p class="event-name" v-if="item.eventName">
                 <span>{{item.eventNameStr}}</span>
                 <i>{{item.eventCreatTime}}</i>
               </p>

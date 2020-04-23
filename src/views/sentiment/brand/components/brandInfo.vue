@@ -1,7 +1,13 @@
 <template>
   <div class="header-info">
     <div class="header">
-      <van-image :src="coverImg" class="img" :class="{'errorImg': !coverImg}" :error-icon="defaultImg" />
+      <van-image
+        fit="cover"
+        :src="coverImg" 
+        class="img" 
+        :class="{'errorImg': !coverImg}" 
+        :error-icon="defaultImg" 
+      />
       <div>
         <p class="brand-name">{{brandInfo.brandName}}</p>
         <p v-if="brandInfo.rankingName && !brandInfo.rankingId " class="event-name">{{brandInfo.rankingName}}</p>

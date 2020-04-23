@@ -7,7 +7,7 @@
       <DataEmpty class="data-empty" :code="basicCode" :retry="brandDetail" v-if="basicCode > 0" />
     </div>
 
-    <TabNav :list="navList" class="tab-nav" hideHeader />
+    <TabNav :list="navList" :top="88" hideHeader />
 
     <section class="brand-hot bg_fff" id="hot">
       <selectTime v-model="day" class="select-time" />
@@ -286,14 +286,14 @@ export default class BrandPage extends ViewBase {
 .praise {
   overflow: hidden;
 }
-/deep/ .tab-nav {
-  margin-top: 0;
-  top: 88px;
-  z-index: 11;
-  /deep/ .van-tab {
-    flex-basis: 20% !important;
-  }
-}
+// /deep/ .tab-nav {
+//   margin-top: 0;
+//   top: 88px;
+//   z-index: 11;
+//   /deep/ .van-tab {
+//     flex-basis: 20% !important;
+//   }
+// }
 .bg_fff {
   background: #fff;
 }

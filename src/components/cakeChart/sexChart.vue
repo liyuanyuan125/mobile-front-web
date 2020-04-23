@@ -1,7 +1,7 @@
 <template>
   <div >
     <div v-if="data.data && data.data.length > 0&&(this.data.data[0].value || this.data.data[1].value)" class="china-map">
-        <div ref="annular" :style="{width:width+'px',height:height+'px'}" class="chart-wrap"></div>
+        <div ref="annular" :style="{width:sizeWidth+'px',height:sizeWidth+'px'}" class="chart-wrap"></div>
     </div> 
     <DataEmpty v-if="!data.data || (data.data&&data.data.length == 0) || (!this.data.data[0].value && !this.data.data[1].value)" />
   </div>
@@ -24,10 +24,10 @@ export default class ChinaMap extends Vue {
   /** 数据 */
   @Prop({ type: Object, default: () => [] }) data!: DataItem
   /** 长宽 */
-  @Prop({ type: Number, default: 375 }) width!: number
-  @Prop({ type: Number, default: 300 }) height!: number
+  @Prop({ type: Number, default: 0 }) width!: number
 
-
+ // 组件宽度
+  sizeWidth: number = this.getSize(this.width)
   mounted() {
     this.getcherts()
   }
@@ -63,19 +63,24 @@ export default class ChinaMap extends Vue {
         }
       }
   })
-  if (!woman.value) {
-      woman.value = 0
-  }
+  if ((man.value && woman.value) || (woman.value && !man.value)) {
     if (!man.value) {
-      woman.value = 0
-  }
-  if ((man.value + woman.value) / 100 != 100) {
-    if (woman.value / 100 < 100) {
-            man.value = (100 - woman.value / 100) * 100
-        } else {
-          woman.value = 10000
-          man.value = 0
+      man.value = 0
+    }
+    if ((man.value + woman.value) / 100 != 100) {
+      if (woman.value / 100 < 100) {
+            man.value = 10000 - woman.value
+          } else {
+            woman.value = 10000
+            man.value = 0
+          }
+    }
+
+  } else if (!woman.value && man.value) {
+        if (man.value > 10000) {
+          man.value = 10000
         }
+        woman.value = 10000 - man.value
     }
 
   sexData = [man, woman]
@@ -107,6 +112,16 @@ export default class ChinaMap extends Vue {
   })
   const option: object = getSexOption(data)
   eChart.setOption(option)
+  }
+
+  getSize(width: number) {
+    const w = document.documentElement.clientWidth
+        if (width >= w || width < 300) {
+            this.sizeWidth = w
+        } else {
+            this.sizeWidth = width
+        }
+        return this.sizeWidth
   }
 }
 </script>

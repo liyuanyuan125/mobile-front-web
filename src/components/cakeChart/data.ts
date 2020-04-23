@@ -20,7 +20,7 @@ export function getSexOption(data: any) {
     // 展示的数据
     legend: {
         orient: 'vertical',
-        left: '70%',
+        left: '71%',
         itemWidth : 6,
         itemHeight: 6,
         icon: 'circle',
@@ -264,7 +264,7 @@ export function getRingOption(data: any) {
                     labelLine: {  // 指示线状态
                         show: true,
                         smooth: 0,
-                        length: 14,
+                        length: 15,
                         length2: 3,
                         lineStyle: {
                           width: 1,

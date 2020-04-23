@@ -25,7 +25,7 @@ export default class Apply extends Vue {
 
   data1: any = {
     data: [{value: null, name: '女性'},
-      {value: null, name: '男性'}
+      {value: 3578, name: '男性'}
       ],
     title: '性别占比',
     emphasisShow: true

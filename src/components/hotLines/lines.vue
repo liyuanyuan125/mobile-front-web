@@ -172,18 +172,18 @@ export default class Main extends Vue {
 
 /deep/ .tooltip-dot {
   position: relative;
-  display: inline-block;
+  display: block;
   top: 10px;
   width: 14px;
   height: 14px;
-  border-radius: 100%;
-  margin-right: 10px;
+  border-radius: 50%;
 }
 /deep/ .tooltip-name {
   font-size: 22px;
   color: #303030;
   display: block;
   width: 160px;
+  margin-left: 8px;
 }
 /deep/ .tooltip-value {
   color: #303030;

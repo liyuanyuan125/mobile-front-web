@@ -45,7 +45,12 @@ export default class Main extends Vue {
   get getEvents() {
     // 定义eventList数据
     const click = ({ id, name }: any) => {
-      this.$router.push({name: 'sentimenteventmarketing', params: {eventId: id}})
+      this.$router.push({
+        name: 'sentimenteventmarketing',
+        params: {eventId: id},
+        query: {title: name}
+        }
+      )
     }
     const obj: any = {}
     const result = (this.overAllList || []).map( (it: any ) => {

@@ -27,7 +27,7 @@
         :fetch="fetch" 
         :query="query"
         :businessType="1"
-        v-if="query.brandIdList"
+        v-if="brandIdList"
       />
     </section>
     <section class="user-model" id="user">
@@ -119,7 +119,7 @@ export default class Main extends Vue {
   // 口碑评论补充数据
   get query() {
     return {
-      brandIdList: this.$route.query.ids,
+      brandIdList: this.brandIdList ,
     }
   }
 

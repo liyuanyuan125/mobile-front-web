@@ -26,7 +26,8 @@
         class="items-market" 
         :fetch="fetch" 
         :query="query"
-        v-if="brandIdList"
+        :businessType="1"
+        v-if="query.brandIdList"
       />
     </section>
     <section class="user-model" id="user">

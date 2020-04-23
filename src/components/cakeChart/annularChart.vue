@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="china-map"  >
+    <div class="china-map"  v-if="data.data && data.data.length > 0" >
         <div ref="annular" :style="{width:sizeWidth+'px',height:sizeWidth+'px'}" class="chart-wrap"></div>
           <div class="chart-mask">
             <div class="chart-text">
@@ -10,16 +10,21 @@
             </div>
           </div>
       </div>
+      <DataEmpty v-if="!data.data || (data.data&&data.data.length == 0)" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
-
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
 import {DataItem} from './types'
 import { getRingOption} from './data'
 import eCharts from 'echarts'
-@Component({})
+@Component({
+  components: {
+    DataEmpty
+  }
+})
 
 export default class ChinaMap extends Vue {
   /** 数据 */
@@ -59,6 +64,9 @@ export default class ChinaMap extends Vue {
     return this.sizeWidth
   }
   getcherts() {
+    if (!this.data.data || this.data.data.length == 0 ) {
+      return
+    }
   const myEcharts = this.$refs.annular as HTMLDivElement
   let colorIndex = -1
   let maxValue = 0

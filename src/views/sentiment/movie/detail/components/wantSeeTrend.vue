@@ -99,31 +99,33 @@ export default class WantSeeTrend extends ViewBase {
 
   // 处理数据
   formatDatas(data: any[]) {
-    // 处理 X 轴日期
-    const lastDate: any[] = []
-    const nowDate = moment(new Date()).format('YYYY/MM/DD 00:00:00')
-    const now = new Date(nowDate).getTime()
-    for (let i = 1; i < this.count + 1; i++) {
-      lastDate.unshift(now - i * 24 * 60 * 60 * 1000)
-    }
-    // 处理 Y 轴数据
-    const lastValue = new Array(this.count).fill(null)
-    const eventList = new Array(this.count).fill([])
-    data.map((ite: any) => {
-      const mapIndex = lastDate.indexOf(ite.date)
-      lastValue[mapIndex] = ite.value
-      eventList[mapIndex] = ite.eventList
-    })
+    if (data.length) {
+      // 处理 X 轴日期
+      const lastDate: any[] = []
+      const nowDate = moment(new Date()).format('YYYY/MM/DD 00:00:00')
+      const now = new Date(nowDate).getTime()
+      for (let i = 1; i < this.count + 1; i++) {
+        lastDate.unshift(now - i * 24 * 60 * 60 * 1000)
+      }
+      // 处理 Y 轴数据
+      const lastValue = new Array(this.count).fill(null)
+      const eventList = new Array(this.count).fill([])
+      data.map((ite: any) => {
+        const mapIndex = lastDate.indexOf(ite.date)
+        lastValue[mapIndex] = ite.value
+        eventList[mapIndex] = ite.eventList
+      })
 
-    this.lineDatas = {
-      xDate: lastDate,
-      eventList,
-      yDate: [
-        {
-          data: lastValue,
-          name: '想看数'
-        }
-      ]
+      this.lineDatas = {
+        xDate: lastDate,
+        eventList,
+        yDate: [
+          {
+            data: lastValue,
+            name: '想看数'
+          }
+        ]
+      }
     }
   }
 

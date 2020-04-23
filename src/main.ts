@@ -8,7 +8,7 @@ import store from './store'
 import VueCookies from 'vue-cookies'
 import vconsole from 'vconsole'
 import event from '@/fn/event'
-import { openAppLink } from '@/util/native'
+import { handleUserAccountLogout } from '@/util/native'
 
 import './mock'
 
@@ -25,11 +25,17 @@ Vue.config.productionTip = false
 event.on(
   {
     'ajax-10000'() {
-      openAppLink('loginPage')
+      const obj = { params: { data: { code: '-10000' } } }
+      handleUserAccountLogout(obj)
+    },
+
+    'ajax-10001'() {
+      const obj = { params: { data: { phoneNumber: '-10001' } } }
+      handleUserAccountLogout(obj)
     },
 
     ajax401() {
-      openAppLink('loginPage')
+      handleUserAccountLogout('loginPage')
     },
   },
   false

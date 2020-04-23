@@ -7,7 +7,7 @@
         <ul>
           <li>影片名称</li>
           <li>累计票房</li>
-          <li>鲸鱼评分</li>
+          <!-- <li>鲸鱼评分</li> -->
           <li>想看人数</li>
         </ul>
       </dt>
@@ -15,7 +15,7 @@
         <ul>
           <li>{{item.rivalName}}</li>
           <li>{{item.boxOfficeCount ? item.boxOfficeCount : '-'}}</li>
-          <li>{{item.jydataGrade ? item.jydataGrade + '分' : '-'}}</li>
+          <!-- <li>{{item.jydataGrade ? item.jydataGrade + '分' : '-'}}</li> -->
           <li>{{item.wantSeeCount ? item.wantSeeCount + '人' : '-'}}</li>
         </ul>
       </dd>

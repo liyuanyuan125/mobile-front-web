@@ -25,17 +25,18 @@ Vue.config.productionTip = false
 event.on(
   {
     'ajax-10000'() {
-      const obj = { params: { data: { code: '-10000' } } }
+      const obj = { params: { data: { code: -10000 } } }
       handleUserAccountLogout(obj)
     },
 
     'ajax-10001'() {
-      const obj = { params: { data: { phoneNumber: '-10001' } } }
+      const obj = { params: { data: { phoneNumber: -10001 } } }
       handleUserAccountLogout(obj)
     },
 
     ajax401() {
-      handleUserAccountLogout('loginPage')
+      const obj = { params: { data: { code: 401 } } }
+      handleUserAccountLogout(obj)
     },
   },
   false

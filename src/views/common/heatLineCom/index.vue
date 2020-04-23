@@ -45,7 +45,12 @@ export default class Main extends Vue {
   get getEvents() {
     // 定义eventList数据
     const click = ({ id, name }: any) => {
-      this.$router.push({name: 'sentimenteventmarketing', params: {eventId: id}})
+      this.$router.push({
+        name: 'sentimenteventmarketing',
+        params: {eventId: id},
+        query: {title: name}
+        }
+      )
     }
     const obj: any = {}
     const result = (this.overAllList || []).map( (it: any ) => {
@@ -60,7 +65,7 @@ export default class Main extends Vue {
 
   get lineDatas() {
     const xDate = (this.overAllList || []).map((it: any) => it.date)
-    const yDate = (this.overAllList || []).map((it: any) => it.value)
+    const yDate = (this.overAllList || []).map((it: any) => it.value || 0)
     return {
       title: this.lineTitle,
       xDate,

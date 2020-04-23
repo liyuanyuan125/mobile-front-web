@@ -22,7 +22,13 @@
       />
     </section>
     <section class="market-model" id="praise">
-      <MarketContrast class="items-market" :fetch="fetch" :query="query" />
+      <MarketContrast 
+        class="items-market" 
+        :fetch="fetch" 
+        :query="query"
+        :businessType="1"
+        v-if="brandIdList"
+      />
     </section>
     <section class="user-model" id="user">
       <ModuleHeader title="用户对比" class="items"/>
@@ -113,7 +119,7 @@ export default class Main extends Vue {
   // 口碑评论补充数据
   get query() {
     return {
-      brandIdList: this.$route.query.ids,
+      brandIdList: this.brandIdList ,
     }
   }
 
@@ -326,7 +332,7 @@ export default class Main extends Vue {
 
 .tab-nav {
   margin-top: 0;
-  top: 88px;
+  top: 87px;
   z-index: 11;
   /deep/ .van-tabs__nav {
     padding-left: 90px;

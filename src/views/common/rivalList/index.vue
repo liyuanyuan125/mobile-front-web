@@ -62,7 +62,7 @@ export default class RivalList extends Vue {
           case '2':
             // 艺人
             it.coverImg = it.coverUrl
-              ? imgFixed(it.coverUrl, 150, 195, 4)
+              ? imgFixed(it.coverUrl, 150, 150, 4)
               : require('@/assets/actordefault.png')
             break
           case '3':

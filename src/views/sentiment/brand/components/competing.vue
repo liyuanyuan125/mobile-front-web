@@ -17,7 +17,7 @@
 
           <div class="parse-right flex-box">
             <!-- 当前品牌 -->
-            <div v-if="!item.eventName">
+            <div v-if="index == 0">
               <p class="col_8f flex-box">
                 <span class="pad-right">昨日热度</span>
                 <span>昨日互动量</span>
@@ -47,7 +47,7 @@
                   <i v-else>-</i>
                 </span>
               </h5>
-              <p class="event-name">
+              <p class="event-name" v-if="item.eventName">
                 <span>{{item.eventNameStr}}</span>
                 <i>{{item.eventCreatTime}}</i>
               </p>

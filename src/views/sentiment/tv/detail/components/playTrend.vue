@@ -8,43 +8,43 @@
       </div>
     </div>
 
-    <div>
+    <div v-if="!playCode">
       <trendLines
         :lineData="lineDatas"
-        v-if="(response.dailyFormList || []).length"
+        v-if="lineDatas.yDate && lineDatas.yDate.length"
         class="wantchart"
         :colors="colors"
-        :isGrad="true"
       />
       <dataEmpty v-else />
-    </div>
-    <div class="daily-form" v-if="platName.length && platData.length ">
-      <div class="daily-table-wrap">
-        <table class="daily-table">
-          <thead>
-            <th class="col-date">日期</th>
-            <th v-for="(name,ind) in platName" :key="name + ind" class="col-cell">{{name}}</th>
-          </thead>
-          <tbody>
-            <tr v-for="(it,i) in platData" :key="it.date + i">
-              <td class="col-date">
-                <span class="date">{{it.date}}</span>
-                <span class="week">
-                  {{it.day}}
-                  <i v-if="it.markName">{{it.markName}}</i>
-                </span>
-              </td>
-              <td
-                v-for="(plat,index) in it.value"
-                :key="plat.platformName + index"
-                class="col-cell"
-              >{{plat.platformValue || '-'}}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="daily-form" v-if="platName.length && platData.length ">
+        <div class="daily-table-wrap">
+          <table class="daily-table">
+            <thead>
+              <th class="col-date">日期</th>
+              <th v-for="(name,ind) in platName" :key="name + ind" class="col-cell">{{name}}</th>
+            </thead>
+            <tbody>
+              <tr v-for="(it,i) in platData" :key="it.date + i">
+                <td class="col-date">
+                  <span class="date">{{it.date}}</span>
+                  <span class="week">
+                    {{it.day}}
+                    <i v-if="it.markName">{{it.markName}}</i>
+                  </span>
+                </td>
+                <td
+                  v-for="(plat,index) in it.value"
+                  :key="plat.platformName + index"
+                  class="col-cell"
+                >{{plat.platformValue || '-'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <a class="daily-form-more" @click="goLink">查看全部日期</a>
       </div>
-      <a class="daily-form-more" @click="goLink">查看全部日期</a>
     </div>
+    <dataEmpty :code="playCode" :retry="apiGetData" v-if="playCode > 0" />
   </div>
 </template>
 
@@ -73,8 +73,8 @@ export default class PlayTrend extends ViewBase {
   fetch!: (query?: any) => Promise<any>
   @Prop({ type: String }) query!: string
   @Prop({ type: Object }) link!: AppLink
-  @Prop({ type: Boolean }) pageErr!: boolean
 
+  playCode: number = 0
   lineDatas: any = {}
   dates = {
     startTime: lastDays(7)[0],
@@ -96,18 +96,17 @@ export default class PlayTrend extends ViewBase {
 
   // 接口获取数据
   async apiGetData() {
-    if (this.pageErr) {
-      try {
-        const res: any = await this.fetch({
-          tvId: this.query,
-          ...this.dates
-        })
-        //   console.log('data', data)
-        this.response = res
-        this.formatDatas(this.response.playDataList)
-      } catch (ex) {
-        // toast(ex)
-      }
+    try {
+      const res: any = await this.fetch({
+        tvId: this.query,
+        ...this.dates
+      })
+      this.response = res
+      this.playCode = 0
+      this.formatDatas(this.response.playDataList)
+    } catch (ex) {
+      const { code } = this.handleModuleError(ex)
+      this.playCode = code
     }
   }
 
@@ -142,8 +141,12 @@ export default class PlayTrend extends ViewBase {
 
   // 处理数据
   formatDatas(dataObj: any[]) {
-    const last = formatCharts(dataObj, this.count)
-    this.lineDatas = last
+    if (dataObj.length) {
+      const last = formatCharts(dataObj, this.count)
+      this.lineDatas = last
+    } else {
+      this.lineDatas = {}
+    }
   }
 
   // applink 跳转

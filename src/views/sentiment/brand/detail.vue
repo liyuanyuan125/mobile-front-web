@@ -7,7 +7,7 @@
       <DataEmpty class="data-empty" :code="basicCode" :retry="brandDetail" v-if="basicCode > 0" />
     </div>
 
-    <TabNav :list="navList" :top="88" hideHeader />
+    <TabNav :list="navList" :top="87" hideHeader />
 
     <section class="brand-hot bg_fff" id="hot">
       <selectTime v-model="day" class="select-time" />
@@ -276,9 +276,11 @@ export default class BrandPage extends ViewBase {
 <style lang="less" scoped>
 @import '~@/views/sentiment/brand/less/lib.less';
 @import './less/com.less';
+// /deep/ .van-hairline--top-bottom:after {
+//   margin-top: -8px;
+// }
 .content {
   background: #f2f3f6;
-  // overflow: hidden;
 }
 .select-time {
   padding: 60px 30px 30px;
@@ -286,14 +288,6 @@ export default class BrandPage extends ViewBase {
 .praise {
   overflow: hidden;
 }
-// /deep/ .tab-nav {
-//   margin-top: 0;
-//   top: 88px;
-//   z-index: 11;
-//   /deep/ .van-tab {
-//     flex-basis: 20% !important;
-//   }
-// }
 .bg_fff {
   background: #fff;
 }

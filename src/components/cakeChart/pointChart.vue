@@ -1,11 +1,13 @@
 <template>
-  <div class="china-map">
+  <div>
+    <div class="china-map" v-if="data.data && data.data.length > 0">
       <div ref="annular" :style="{width:sizeWidth+'px',height:sizeWidth+'px'}"  class="chart-wrap"></div>
         <div class="chart-mask" :style="{width:sizeWidth+'px',height:sizeWidth+'px'}">
-
-          <div class="chart-text" :style="{color:nameColor}">{{sesnsitivity}}</div>
+        <div class="chart-text" :style="{color:nameColor}">{{sesnsitivity}}</div>
       </div>
   </div>
+  <DataEmpty v-if="!data.data || (data.data&&data.data.length == 0)" />
+</div>
 </template>
 
 <script lang="ts">
@@ -14,7 +16,13 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import {DataItem} from './types'
 import { getPointOption} from './data'
 import eCharts from 'echarts'
-@Component({})
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
+
+@Component({
+  components: {
+      DataEmpty
+  }
+})
 
 export default class ChinaMap extends Vue {
   /** 数据 */
@@ -31,6 +39,9 @@ export default class ChinaMap extends Vue {
     this.getcherts()
   }
   getcherts() {
+  if (!this.data.data || this.data.data.length == 0 ) {
+    return
+  }
   const myEcharts = this.$refs.annular as HTMLDivElement
   const myChart = eCharts.init(myEcharts)
   const openData: any = {

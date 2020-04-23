@@ -65,6 +65,7 @@ export default class UserPortrait extends ViewBase {
     const rait = this.ageRangeList
     if (rait && rait.length) {
       for (const item of this.ageRangeList) {
+        item.value = item.value > 10000 ? 10000 : item.value
         xData.push((item.value / 100).toFixed(1))
         yData.push(item.name)
       }
@@ -79,7 +80,7 @@ export default class UserPortrait extends ViewBase {
   get genderListData() {
     const xData: any[] = []
     const yData: any[] = []
-    const rait: any = this.genderList.slice(0, 2)
+    const rait: any = (this.genderList || []).slice(0, 2)
     let gender: any = null
     if (rait && rait.length) {
       // 当接口只返回一条数据的时候，补齐另一条
@@ -95,6 +96,7 @@ export default class UserPortrait extends ViewBase {
       raitList[0].name = '男'
       raitList[1].name = '女'
       // 如果其中一个有值，另一个则补齐 如果两个 value 都是 0 或 null 是走不到这里的
+      raitList[0].value = raitList[0].value > 10000 ? 10000 : raitList[0].value
       if (raitList[0].value > 0) {
         raitList[1].value = 10000 - raitList[0].value
       } else {

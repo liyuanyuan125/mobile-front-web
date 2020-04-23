@@ -229,3 +229,12 @@ export async function handleSetRival(obj: any) {
   return data
 }
 
+/**
+ * 处理用户账号退出
+ * @param  obj app需要的内部参数
+ */
+export async function handleUserAccountLogout(obj: any) {
+  const data = await callNative('handleUserAccountLogout', obj)
+  return data
+}
+

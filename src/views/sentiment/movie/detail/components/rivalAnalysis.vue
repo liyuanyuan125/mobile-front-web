@@ -15,7 +15,7 @@
                 <div v-if="index > 0">
                   <p
                     class="trend"
-                    v-if="item.heatTrend"
+                    v-if="item.yesterHeatTrend"
                     :style="{color:item.yesterHeatTrend > 0 ? '#FF6262': '#88AAF6'}"
                   >{{item.yesterHeatTrend > 0 ? '高'+item.heatTrendShow : '低' + item.heatTrendShow}}</p>
                   <p v-else class="trend">-</p>

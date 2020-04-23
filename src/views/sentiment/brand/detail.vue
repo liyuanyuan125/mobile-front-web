@@ -114,7 +114,7 @@ export default class BrandPage extends ViewBase {
     return {
       type: 1, // 1 品牌 2 艺人 3 电影 5 音乐-单曲 6 音乐-专辑  4 剧集 100=全网事件 101=营销事件
       id: this.id, // 详情页id
-      name: '奔驰',
+      name: this.brandInfo.brandName,
       startTime,
       endTime
     }

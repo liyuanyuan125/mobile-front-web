@@ -1,6 +1,9 @@
 <template>
-  <div class="china-map">
-      <div ref="annular" :style="{width:width+'px',height:height+'px'}" class="chart-wrap"></div>
+  <div >
+    <div v-if="data.data && data.data.length > 0&&(this.data.data[0].value || this.data.data[1].value)" class="china-map">
+        <div ref="annular" :style="{width:width+'px',height:height+'px'}" class="chart-wrap"></div>
+    </div> 
+    <DataEmpty v-if="!data.data || (data.data&&data.data.length == 0) || (!this.data.data[0].value && !this.data.data[1].value)" />
   </div>
 </template>
 
@@ -10,7 +13,12 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import {DataItem , ObjData} from './types'
 import {getSexOption , getRingOption} from './data'
 import eCharts from 'echarts'
-@Component({})
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
+@Component({
+  components: {
+    DataEmpty
+  }
+})
 
 export default class ChinaMap extends Vue {
   /** 数据 */
@@ -24,6 +32,12 @@ export default class ChinaMap extends Vue {
     this.getcherts()
   }
   getcherts() {
+    if (!this.data.data || this.data.data.length == 0 ) {
+      return
+    }
+    if (!this.data.data[0].value && !this.data.data[1].value) {
+      return
+    }
   const myEcharts = this.$refs.annular as HTMLDivElement
   const eChart = eCharts.init(myEcharts)
   let sexData: ObjData[] = []
@@ -49,6 +63,12 @@ export default class ChinaMap extends Vue {
         }
       }
   })
+  if (!woman.value) {
+      woman.value = 0
+  }
+    if (!man.value) {
+      woman.value = 0
+  }
   if ((man.value + woman.value) / 100 != 100) {
     if (woman.value / 100 < 100) {
             man.value = (100 - woman.value / 100) * 100

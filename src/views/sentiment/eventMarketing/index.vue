@@ -1,52 +1,55 @@
 <template>
-  <div class="content" v-if="show">
+  <div class="content">
     <SentimentBar title="营销事件详情" :titleShow="true" />
-    <div v-if="eventStatus === 1 || !eventStatus" class="unevent">
-      <span></span>
-      <h6>暂无数据</h6>
-      <p>
-        该事件的分析报告将于分析周期开始的第二天展示，
-        <br />分析周期内分析报告每日更新，请耐心等待！
-      </p>
-    </div>
-    <div v-if="eventStatus === 2 || eventStatus === 3">
-      <div class="main">
-        <h2 class="van-multi-ellipsis--l2">{{title}}</h2>
-        <div class="show-num">
-          <div class="left">
-            <span class="s1">{{eventInfo.interactCount}}</span>
-            <span class="s2">&nbsp;累计互动</span>
-          </div>
-          <div class="right">今日新增：{{eventInfo.todayInteractAdd}}</div>
-        </div>
-        <div class="show-echarts">
-          <Button
-            class="chg"
-            v-for="(item) in tabList"
-            :key="item.key"
-            :class="{'chgbgc': newPk == item.key}"
-            type="primary"
-            @click="chgnewPk(item)"
-          >{{item.name}}</Button>
-          <div @click="openAnalysisPage" class="eventchart">
-            <LineGrap :lineData="linedata" class="wantchart" :formatterHtml="formatterHtml" />
-          </div>
-        </div>
+    <div v-if="!basicCode">
+      <div v-if="!eventStatus" class="unevent">
+        <span></span>
+        <h6>暂无数据</h6>
+        <p>
+          该事件的分析报告将于分析周期开始的第二天展示，
+          <br />分析周期内分析报告每日更新，请耐心等待！
+        </p>
       </div>
-      <platForm
-        :platformList="platformHeatList"
-        v-if="platformHeatList.length"
-        :params="platformParams"
-        class="platform"
-      />
-      <SpreadList :dataList="spreadList" :link="getApplink('eventSpreadPathList')" />
-      <!-- 口碑评论 -->
-      <PraiseComment
-        :favorable="publicPraise.favorable"
-        :publicPraise="publicPraise"
-        :link="getApplink('eventPraiseHotWordsList')"
-      />
+      <div v-else>
+        <div class="main">
+          <h2 class="van-multi-ellipsis--l2">{{title}}</h2>
+          <div class="show-num">
+            <div class="left">
+              <span class="s1">{{eventInfo.interactCount}}</span>
+              <span class="s2">&nbsp;累计互动</span>
+            </div>
+            <div class="right">今日新增：{{eventInfo.todayInteractAdd}}</div>
+          </div>
+          <div class="show-echarts">
+            <Button
+              class="chg"
+              v-for="(item) in tabList"
+              :key="item.key"
+              :class="{'chgbgc': newPk == item.key}"
+              type="primary"
+              @click="chgnewPk(item)"
+            >{{item.name}}</Button>
+            <div @click="openAnalysisPage" class="eventchart">
+              <LineGrap :lineData="linedata" class="wantchart" :formatterHtml="formatterHtml" />
+            </div>
+          </div>
+        </div>
+        <platForm
+          :platformList="platformHeatList"
+          v-if="platformHeatList.length"
+          :params="platformParams"
+          class="platform"
+        />
+        <SpreadList :dataList="spreadList" :link="getApplink('eventSpreadPathList')" />
+        <!-- 口碑评论 -->
+        <PraiseComment
+          :favorable="publicPraise.favorable"
+          :publicPraise="publicPraise"
+          :link="getApplink('eventPraiseHotWordsList')"
+        />
+      </div>
     </div>
+    <DataEmpty :code="basicCode" :retry="geteventDetail" v-if="basicCode > 0" class="empty" />
   </div>
 </template>
 
@@ -63,11 +66,12 @@ import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import PraiseComment from '@/views/common/praiseComment/index.vue' // 口碑评论
 import SpreadList from '@/views/common/spreadList/index.vue' // 事件
 import { platForm } from '@/components/hotLine'
-
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
 import { openAppLink, AppLink } from '@/util/native'
 
 @Component({
   components: {
+    DataEmpty,
     Tab,
     Tabs,
     Icon,
@@ -82,7 +86,7 @@ import { openAppLink, AppLink } from '@/util/native'
 export default class KolPage extends ViewBase {
   title!: string
   eventId: string = ''
-  eventStatus: number = 1
+  eventStatus: number = 0
 
   // 热度分析
   linedata: any = {}
@@ -100,6 +104,7 @@ export default class KolPage extends ViewBase {
   }
 
   show: any = false
+  basicCode: number = 0
   newPk: any = 'newsList'
   newCode: any = 'news'
   newPkName: any = '新闻'
@@ -151,16 +156,20 @@ export default class KolPage extends ViewBase {
         data: { eventInfo, platformList, spreadList, publicPraise, eventStatus }
       } = await eventDetail({ eventId: this.$route.params.eventId })
       this.publicPraise = publicPraise
-      this.eventStatus = eventStatus
       this.spreadList = spreadList
-      this.eventInfo = eventInfo
-      this.overAllHeatList = eventInfo.newsList
-      this.formatDatas(eventInfo.newsList)
+      if (eventInfo) {
+        // 当有没有数据的时候 eventInfo接口会返回 Null,我们就当没有数据处理
+        // eventStatus  1未开始 2进行中 3已完成
+        this.eventStatus = eventStatus === 1 ? 0 : eventStatus
+        this.eventInfo = eventInfo
+        this.overAllHeatList = eventInfo.newsList
+        this.formatDatas(eventInfo.newsList)
+      }
+      this.basicCode = 0
       this.platformHeatList = platformList || []
     } catch (ex) {
-      toast(ex)
-    } finally {
-      this.show = true
+      const { code } = this.handlePageError(ex)
+      this.basicCode = code
     }
   }
 
@@ -237,7 +246,9 @@ export default class KolPage extends ViewBase {
 
 <style lang="less" scoped>
 @import '~@/views/sentiment/brand/less/lib.less';
-
+.empty {
+  margin-top: 150px;
+}
 .main {
   padding: 140px 30px 0 30px;
   h2 {

@@ -53,14 +53,34 @@ export default class RivalList extends Vue {
       for (const it of list) {
         ids.push(it.rivalId)
         switch (this.type) {
+          case '1':
+            // 品牌
+            it.coverImg = it.coverUrl
+              ? imgFixed(it.coverUrl, 150, 150, 4)
+              : require('@/assets/branddefault.png')
+            break
+          case '2':
+            // 艺人
+            it.coverImg = it.coverUrl
+              ? imgFixed(it.coverUrl, 150, 195, 4)
+              : require('@/assets/actordefault.png')
+            break
           case '3':
-            it.coverImg = imgFixed(it.coverUrl, 150, 195, 4)
+            // 电影
+            it.coverImg = it.coverUrl
+              ? imgFixed(it.coverUrl, 150, 195, 4)
+              : require('@/assets/moviedefault.png')
             break
           case '4':
-            it.coverImg = imgFixed(it.coverUrl, 150, 195, 4)
+            // 电视剧
+            it.coverImg = it.coverUrl
+              ? imgFixed(it.coverUrl, 150, 195, 4)
+              : require('@/assets/tvdefault.png')
             break
           default:
-            it.coverImg = imgFixed(it.coverUrl, 150, 150, 4)
+            it.coverImg = it.coverUrl
+              ? imgFixed(it.coverUrl, 150, 150, 4)
+              : require('@/assets/musicdefault.png')
         }
       }
     }

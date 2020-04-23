@@ -126,6 +126,8 @@ export default class WantSeeTrend extends ViewBase {
           }
         ]
       }
+    } else {
+      this.lineDatas = {}
     }
   }
 

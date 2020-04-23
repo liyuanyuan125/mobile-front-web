@@ -11,7 +11,8 @@ export function formatCharts(object: any, count: number) {
     // console.log('object', object)
     // 处理数据
     const lastValue = (object || []).map((it: any) => {
-        const { rivalName, data } = it
+        const rivalName = it.rivalName
+        const data = it.data || it.dataList
         const yVal = new Array(count).fill(null)
         data.map((ite: any) => {
             const mapIndex = lastDate.indexOf(ite.date)

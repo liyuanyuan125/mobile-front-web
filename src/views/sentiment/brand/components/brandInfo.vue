@@ -157,10 +157,10 @@ export default class Main extends Vue {
 }
 .bubble {
   padding: 0 30px;
-  margin-top: -35px;
+  margin-top: -30px;
   position: relative;
   z-index: 12;
-  height: 410px;
+  height: 415px;
   overflow: hidden;
 }
 .curve {

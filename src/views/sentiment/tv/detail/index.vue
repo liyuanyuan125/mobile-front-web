@@ -1,18 +1,20 @@
 <template>
   <div class="page">
-    <SentimentBar :title="tvInfo.tvName" :sidebar="sidebar" />
-    <BaseInfoArea :baseInfo="tvInfo" :overView="tvOverView" />
+    <SentimentBar :title="tvInfo ? tvInfo.tvName : '电视剧详情'" :sidebar="sidebar" />
+    <BaseInfoArea :baseInfo="tvInfo" :overView="tvOverView" v-if="!basicCode" />
+    <DataEmpty :code="basicCode" :retry="getTVInfo" v-if="basicCode > 0" />
     <TabNav :list="tabList" class="formattab" />
     <div class="hotanalysis" id="hot">
       <heatLineCom
         :overAllList="overAllHeat"
         :platformList="platformHeat"
         :params="platformParams"
+        v-if="!heatCode"
       />
+      <DataEmpty :code="heatCode" :retry="getHeat90" v-if="heatCode > 0" />
     </div>
     <PlayTrend
       :fetch="playTrendFetch"
-      :pageErr="isError"
       :query="tvId"
       v-if="tvId"
       :link="getApplink('tvPlayCountDetail')"
@@ -29,8 +31,15 @@
       id="user"
       :link="getApplink('userAnalysis')"
     />
-    <EventList :eventList="eventList" id="event" :link="getApplink('eventMarketingList')" />
-    <RivalAnalysis :rivalList="rivalAnalysis" id="rival" />
+    <EventList
+      :eventList="eventList"
+      id="event"
+      :link="getApplink('eventMarketingList')"
+      v-if="!eventCode"
+    />
+    <DataEmpty :code="eventCode" :retry="getEventList" v-if="eventCode > 0" />
+    <RivalAnalysis :rivalList="rivalAnalysis" id="rival" v-if="!rivalCode" />
+    <DataEmpty :code="rivalCode" :retry="getRivalList" v-if="rivalCode > 0" />
     <ActorList :actorList="actorList" id="actor" :link="getApplink('actorList')" />
     <ProduceList :produceList="produceList" :link="getApplink('produceDistribute')" />
   </div>
@@ -54,10 +63,11 @@ import EventList from '@/views/common/eventList/event.vue' // 事件跟踪
 import RivalAnalysis from './components/rivalAnalysis.vue' // 竞品分析
 import ActorList from '@/views/common/actorList/index.vue' // 主创人员
 import ProduceList from '@/views/common/produceList/index.vue' // 出品发行
-// import hotLine from '@/components/hotLine'
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
 
 @Component({
   components: {
+    DataEmpty,
     SentimentBar,
     BaseInfoArea,
     TabNav,
@@ -79,8 +89,12 @@ export default class TVPage extends ViewBase {
     diggId: '',
     rivalIds: {} // 竞争对手的 url
   }
-  // 用来判断接口是否有错，例如10404 例如500 例发58
-  isError: boolean = false
+  // 错误码
+  basicCode: number = 0 // 基本信息
+  heatCode: number = 0 // 热度分析
+  eventCode: number = 0 // 营销事件
+  rivalCode: number = 0 // 竞品分析
+  wantSeeCode: number = 0 // 想看
   // 电视剧id
   tvId: string = ''
   // 电视剧详细信息
@@ -143,6 +157,9 @@ export default class TVPage extends ViewBase {
       businessObjectIdList: String(this.tvId)
     }
     await this.getTVInfo()
+    await this.getHeat90()
+    await this.getEventList()
+    await this.getRivalList()
   }
 
   // api获取电影详情页
@@ -155,52 +172,68 @@ export default class TVPage extends ViewBase {
       this.userAnalysis = res.userAnalysis
       this.actorList = res.actorList || []
       this.produceList = res.produceList || []
-      await this.getHeat90()
-      await this.getEventList()
-      await this.getRivalList()
-      this.isError = true
+      this.basicCode = 0
     } catch (ex) {
-      throw ex
+      const { code } = this.handlePageError(ex)
+      this.basicCode = code
     }
   }
 
   // api获取最近90天的热度
   async getHeat90() {
-    const [startTime, endTime] = lastDays(90)
-    const res: any = await getTvHeat({
-      tvId: this.tvId,
-      startTime,
-      endTime
-    })
-    this.overAllHeat = res.overAllHeat
-    this.platformHeat = res.platformHeat
+    try {
+      const [startTime, endTime] = lastDays(90)
+      const res: any = await getTvHeat({
+        tvId: this.tvId,
+        startTime,
+        endTime
+      })
+      this.overAllHeat = res.overAllHeat
+      this.platformHeat = res.platformHeat
+      this.heatCode = 0
+    } catch (ex) {
+      const { code } = this.handleModuleError(ex)
+      this.heatCode = code
+    }
   }
 
   // api获取营销事件
   async getEventList() {
-    const res: any = await getEventList({
-      type: 4,
-      objectId: this.tvId
-    })
-    this.eventList = res
+    try {
+      const res: any = await getEventList({
+        type: 4,
+        objectId: this.tvId
+      })
+      this.eventList = res
+      this.eventCode = 0
+    } catch (ex) {
+      const { code } = this.handleModuleError(ex)
+      this.eventCode = code
+    }
   }
 
   // api获取竞品对手
   async getRivalList() {
-    const res: any = await getRivalList(this.tvId)
-    this.rivalAnalysis = res || []
-    const ids = []
-    if (res && res.length > 1) {
-      for (const el of res) {
-        ids.push(el.rivalId)
-      }
-      // 有竞品数据跳竞品报告页
-      this.sidebar.rivalIds = {
-        name: 'sentimenttvrivalanalysis',
-        query: {
-          ids: ids.slice(0, 3).join(',')
+    try {
+      const res: any = await getRivalList(this.tvId)
+      this.rivalAnalysis = res || []
+      this.rivalCode = 0
+      const ids = []
+      if (res && res.length > 1) {
+        for (const el of res) {
+          ids.push(el.rivalId)
+        }
+        // 有竞品数据跳竞品报告页
+        this.sidebar.rivalIds = {
+          name: 'sentimenttvrivalanalysis',
+          query: {
+            ids: ids.slice(0, 3).join(',')
+          }
         }
       }
+    } catch (ex) {
+      const { code } = this.handleModuleError(ex)
+      this.rivalCode = code
     }
   }
 

@@ -1,7 +1,7 @@
 <template>
   <!--数据为空 -->
   <div class="datanull" @click="handleClick">
-    <img src="@/assets/sentiment/event-null.png" :alt="text"/>
+    <img src="@/assets/sentiment/event-null.png" :alt="text" />
     <p>{{finalText}}</p>
   </div>
 </template>
@@ -19,10 +19,10 @@ const codeMap: MapType = {
   10403: '无权限',
   10404: '不存在',
   10405: '已禁用',
-  default: '加载失败，点击重试',
+  default: '加载失败，点击重试'
 }
 
-const nonRetryList = [ 0, 403, 404, 10403, 10404, 10405 ]
+const nonRetryList = [0, 403, 404, 10403, 10404, 10405]
 
 @Component({
   components: {}

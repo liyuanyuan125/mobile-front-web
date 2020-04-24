@@ -4,7 +4,7 @@
        <p class="hot-title">{{lineTitle}}</p>
        <dubline 
           :lineData="lineDatas" 
-          v-if="lineDatas.xDate.length" 
+          v-if="lineDatas.xDate && lineDatas.xDate.length" 
           :key="lineDatas.title"
           :events="getEvents"
         />

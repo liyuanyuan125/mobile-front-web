@@ -289,7 +289,8 @@ export default class KolPage extends ViewBase {
       } = await getActorDetail({ actorId: this.$route.params.actorId })
       this.actorInfo = actorInfo
       this.title = actorInfo.actorName
-      this.coverImg = imgFixed(actorInfo.coverUrl, 172, 172, 4)
+      this.coverImg = actorInfo.coverUrl ? imgFixed(actorInfo.coverUrl, 172, 172, 4)
+      : require('@/assets/actordefault.png')
       this.bubbleData = [
         {
           type: '1',

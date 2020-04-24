@@ -52,7 +52,7 @@ export default class Main extends Vue {
     this.dataList = (this.data.musicList.slice(0, 10) || []).map((it: any) => {
       return {
         ...it,
-        coverImg: imgFixed(it.coverUrl, 200, 200 , 4),
+        coverImg: it.coverUrl ? imgFixed(it.coverUrl, 200, 200 , 4) : require('@/assets/musicdefault.png'),
       }
     })
   }

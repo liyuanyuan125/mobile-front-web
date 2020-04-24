@@ -92,7 +92,7 @@ export default class Main extends Vue {
       this.pkUserListData = (this.pkUserList.slice(1, 3) || []).map((it: any) => {
         return {
           ...it,
-          coverImg: imgFixed(it.rivalCover, 200, 260 , 4),
+          coverImg: it.rivalCover ? imgFixed(it.rivalCover, 200, 260 , 4) : require('@/assets/actordefault.png'),
           eventCreatTimeDate: it.eventCreatTime == null ? '' : moment(it.eventCreatTime).format(format),
           yesterHeatTrend: (it.yesterHeatTrend == 0 || it.yesterHeatTrend == null) ? '-' : (it.yesterHeatTrend > 0 ?
           '高' + String(roleNumber(it.yesterHeatTrend)) : '低' + String(roleNumber(it.yesterHeatTrend)).substr(1)),

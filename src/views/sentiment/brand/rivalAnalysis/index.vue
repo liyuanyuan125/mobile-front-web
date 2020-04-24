@@ -26,11 +26,12 @@
     <section class="market-model" id="praise">
       <MarketContrast 
         class="items-market" 
-        :fetch="fetch" 
+        :fetch="fetch"
         :query="query"
         :businessType="1"
-        v-if="brandIdList"
+        v-if="brandIdList && praiseCode == 0"
       />
+      <DataEmpty :code="praiseCode" :retry="fetch" v-if="praiseCode > 0" />
     </section>
     <section class="user-model" id="user">
       <ModuleHeader title="用户对比" class="items"/>
@@ -60,7 +61,7 @@
           @chgregionPk='userTabs'
           v-if="userTableItem && userTableItem.length > 0"
         />
-        <DataEmpty v-if="tableEmpty" />
+        <DataEmpty v-else />
       </section>
       <!-- <div class="van-hairline--top item-hairline"></div>
       <Table
@@ -89,8 +90,8 @@ import heatContrast from '@/views/common/heatContrast/index.vue' // 热度分析
 import Table from '@/views/common/table/table.vue' // table 分布图
 import { selectTime } from '@/components/hotLine' // 日期选择
 import TabNav, { TabNavItem } from '@/components/tabNav'
-import {rivalHeatAnalysis, rivalPraise } from '@/api/brand'
-import {reportDetail} from '../data'
+import {rivalHeatAnalysis } from '@/api/brand'
+import {reportDetail, rivalPraiseList} from '../data'
 import DataEmpty from '@/views/common/dataEmpty/index.vue'
 
 
@@ -129,6 +130,7 @@ export default class Main extends ViewBase {
   ]
 
   // 口碑评论补充数据
+  praiseCode = 0
   get query() {
     return {
       brandIdList: this.brandIdList ,
@@ -210,35 +212,16 @@ export default class Main extends ViewBase {
   }
 
   async fetch(query: any) {
-    // {goodList, badList, neutralList}
-    const {code, data, msg} = await rivalPraise(query)
-    const goodList = (data.goodList || []).map((it: any) => {
-      return {
-        ...it,
-        percent: (it.percent / 100).toFixed(1)
-      }
-    })
-    const badList = (data.badList || []).map((it: any) => {
-      return {
-        ...it,
-        percent: (it.percent / 100).toFixed(1)
-      }
-    })
-    const neutralList = (data.neutralList || []).map((it: any) => {
-      return {
-        ...it,
-        percent: (it.percent / 100).toFixed(1)
-      }
-    })
-
-    return {
-      code,
-      data: {
-        goodList,
-        badList,
-        neutralList
-      },
-      msg,
+    try {
+      const data = await rivalPraiseList({
+        ...query,
+        brandIdList: this.brandIdList
+      })
+      this.praiseCode = 0
+      return data
+    } catch (ex) {
+      const { code } = this.handleModuleError(ex)
+      this.praiseCode = code
     }
   }
 

@@ -1,4 +1,4 @@
-import {rivalreportDetail } from '@/api/brand'
+import {rivalreportDetail, rivalPraise } from '@/api/brand'
 import { keyBy } from 'lodash'
 import { getPercentFieldValue } from '@/util/dealData'
 
@@ -28,4 +28,34 @@ export async function reportDetail(query: any) {
   }
 }
 
+
+// 获取口碑评论对比 接口处理
+export async function rivalPraiseList(query: any) {
+  const res = await rivalPraise(query)
+  const data = res.data || {}
+  const goodList = (data.goodList || []).map((it: any) => {
+    return {
+      ...it,
+      percent: (it.percent / 100).toFixed(1)
+    }
+  })
+  const badList = (data.badList || []).map((it: any) => {
+    return {
+      ...it,
+      percent: (it.percent / 100).toFixed(1)
+    }
+  })
+  const neutralList = (data.neutralList || []).map((it: any) => {
+    return {
+      ...it,
+      percent: (it.percent / 100).toFixed(1)
+    }
+  })
+  res.data = {
+    goodList,
+    badList,
+    neutralList
+  }
+  return res
+}
 

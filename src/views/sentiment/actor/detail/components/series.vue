@@ -59,7 +59,7 @@ export default class Main extends Vue {
     this.dataList = (this.data.tvList.slice(0, 10) || []).map((it: any) => {
       return {
         ...it,
-        coverImg: imgFixed(it.coverUrl, 200, 260 , 4),
+        coverImg: it.coverUrl ? imgFixed(it.coverUrl, 200, 260 , 4) : require('@/assets/tvdefault.png'),
       }
     })
   }

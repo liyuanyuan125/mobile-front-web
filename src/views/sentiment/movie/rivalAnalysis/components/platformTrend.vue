@@ -105,16 +105,16 @@ export default class PlatformTrend extends ViewBase {
   }
 
   async uplist() {
-    try {
-      const { data } = await this.fetch({
-        movieIdList: this.query,
-        startTime: this.dates.startTime,
-        endTime: this.dates.endTime
-      })
+    const data = await this.fetch({
+      movieIdList: this.query,
+      startTime: this.dates.startTime,
+      endTime: this.dates.endTime
+    })
+    if (data && data.length) {
       // 处理平台名称
       let index: number = 0
       const navList: any[] = []
-      for (const it of data) {
+      for (const it of data || []) {
         index += 1
         navList.push({
           key: index,
@@ -124,8 +124,8 @@ export default class PlatformTrend extends ViewBase {
       this.tabList = navList
       this.response = data
       this.formatDatas(data[0].dataList)
-    } catch (ex) {
-      toast(ex)
+    } else {
+      this.response = []
     }
   }
 }

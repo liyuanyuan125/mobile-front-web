@@ -78,16 +78,12 @@ export default class WantSeeTrend extends ViewBase {
   }
 
   async uplist() {
-    try {
-      const { data } = await this.fetch({
-        movieIdList: this.query,
-        ...this.dates
-      })
-      this.response = data
-      this.formatDatas(this.response.newDataList)
-    } catch (ex) {
-      toast(ex)
-    }
+    const data = await this.fetch({
+      movieIdList: this.query,
+      ...this.dates
+    })
+    this.response = data
+    this.formatDatas(data.newDataList || [])
   }
 }
 </script>

@@ -1,28 +1,20 @@
 <template>
   <div class="pages">
     <SentimentBar title="用户分析" :titleShow="true" />
-    <div class="agelist">
-      <moduleHeaer title="用户画像" />
-      <div class="item-title">性别占比</div>
-      <div class="sex">
-        <sexChart :width="annularWid" :data="sexdata" v-if="sexdata.data.length"></sexChart>
+    <div v-if="!basicCode">
+      <UserPortrait :sexData="sexData" :ageData="ageData" class="user-portrait" />
+      <div class="education" v-if="educationList.data.length">
+        <moduleHeaer title="教育程度" />
+        <annularChart :data="educationList" :width="annularWid"></annularChart>
       </div>
-      <div class="age">
-        <div class="item-title">年龄占比</div>
-        <VerticalBar :data="agedata" v-if="agedata.length" class="chart" />
+      <div class="work" v-if="workList.data.length">
+        <moduleHeaer title="职业信息" />
+        <annularChart :data="workList" :width="annularWid"></annularChart>
       </div>
+      <ProgressList :progressData="userRegionList" title="活跃地区" />
+      <ProgressList :progressData="moviePrefer" title="观影偏好" />
     </div>
-    <div class="education" v-if="educationList.data.length">
-      <moduleHeaer title="教育程度" />
-      <annularChart :data="educationList" :width="annularWid"></annularChart>
-    </div>
-    <div class="work" v-if="workList.data.length">
-      <moduleHeaer title="职业信息" />
-      <annularChart :data="workList" :width="annularWid"></annularChart>
-    </div>
-    <ProgressList :progressData="userRegionList" title="活跃地区" />
-    <!-- <ProgressList :progressData="consumePrefer" title="消费偏好" /> -->
-    <ProgressList :progressData="moviePrefer" title="观影偏好" />
+    <DataEmpty :code="basicCode" :retry="userAnalysis" class="empty" v-if="basicCode > 0" />
   </div>
 </template>
 
@@ -30,35 +22,31 @@
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import { userAnalysisData } from './data'
-import ChinaMap, { ChinaMapItem } from '@/components/chinaMap'
-import { toast } from '@/util/toast'
-import sexChart from '@/components/cakeChart/sexChart.vue'
 import annularChart from '@/components/cakeChart/annularChart.vue'
-import VerticalBar, { VerticalBarItem } from '@/components/verticalBar'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import ProgressList from './components/progress.vue'
 import moduleHeaer from '@/components/moduleHeader'
+import { transformPercentField } from '@/util/dealData'
+import UserPortrait, { VerticalBarItem, NameValue } from '@/views/common/userPortrait'
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
 
 @Component({
   components: {
     SentimentBar,
-    sexChart,
     annularChart,
-    VerticalBar,
+    UserPortrait,
     ProgressList,
-    moduleHeaer
+    moduleHeaer,
+    DataEmpty
   }
 })
 export default class MovieUserAnalysisPage extends ViewBase {
   annularWid: number = document.documentElement.clientWidth - 60
+  basicCode: number = 0
   // 性别
-  sexdata: any = {
-    data: [],
-    title: '性别占比',
-    emphasisShow: true
-  }
+  sexData: any = []
   // 年龄
-  agedata: VerticalBarItem[] = []
+  ageData: VerticalBarItem[] = []
   // 教育
   educationList: any = {
     data: [],
@@ -84,16 +72,18 @@ export default class MovieUserAnalysisPage extends ViewBase {
   async userAnalysis(movieId: string) {
     try {
       const res: any = await userAnalysisData(movieId)
+      this.basicCode = 0
       // 性别
-      this.sexdata.data = res.genderList
-      this.agedata = res.ageRangeList
+      this.sexData = res.genderList || []
+      this.ageData = transformPercentField(res.ageRangeList)
       this.educationList.data = res.educationList
       this.workList.data = res.workList
       this.userRegionList = res.userRegionList
       this.consumePrefer = res.consumePrefer
       this.moviePrefer = res.moviePrefer
     } catch (ex) {
-      toast(ex)
+      const { code } = this.handlePageError(ex)
+      this.basicCode = code
     }
   }
 }
@@ -103,6 +93,12 @@ export default class MovieUserAnalysisPage extends ViewBase {
 .pages {
   width: 100%;
   padding-top: 148px;
+}
+.empty {
+  margin-top: 150px;
+}
+.user-portrait {
+  padding-top: 0;
 }
 .agelist {
   padding: 0 30px;

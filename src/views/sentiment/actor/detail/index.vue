@@ -30,14 +30,14 @@
           </p>
         </div>
       </div>
-      <DataEmpty :code="basicCode" :retry="getActorDetail" v-if="basicCode > 0" />
-      <div class="dubble">
+      <div v-if='basicCode == 0' class="dubble">
         <BubbleBottom :data="bubbleData" />
       </div>
-      <div class="curve">
+      <div v-if='basicCode == 0' class="curve">
         <div class="curvetop"></div>
         <div class="curvebot"></div>
       </div>
+      <DataEmpty :code="basicCode" :retry="getActorDetail" v-if="basicCode > 0" />
     </section>
 
     <TabNav :list="list" class="formattab" />

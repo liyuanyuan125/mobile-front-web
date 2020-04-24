@@ -130,6 +130,7 @@ import VsList, { VsItem } from '@/components/vsList'
 import MultiTable, { MultiTableItem } from '@/components/multiTable'
 import { getBasic, getHeat, getPlay, getPraise } from './rivalData'
 import { lastDays } from '@/util/timeSpan'
+import Avatar from '@/components/avatar'
 import DataEmpty from '@/views/common/dataEmpty/index.vue'
 import { isEmpty } from 'lodash'
 
@@ -147,6 +148,7 @@ import { isEmpty } from 'lodash'
     Age,
     VsList,
     MultiTable,
+    Avatar,
     DataEmpty,
   }
 })

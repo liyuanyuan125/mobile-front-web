@@ -73,6 +73,7 @@
       <MarketContrast
         :fetch="praiseFetch"
         :businessType="isAlbum ? 6 : 5"
+        :query="{ ids }"
         v-if="praiseCode == 0"
       />
       <DataEmpty :code="praiseCode" :retry="praiseFetch" v-if="praiseCode > 0" />
@@ -129,6 +130,7 @@ import VsList, { VsItem } from '@/components/vsList'
 import MultiTable, { MultiTableItem } from '@/components/multiTable'
 import { getBasic, getHeat, getPlay, getPraise } from './rivalData'
 import { lastDays } from '@/util/timeSpan'
+import Avatar from '@/components/avatar'
 import DataEmpty from '@/views/common/dataEmpty/index.vue'
 import { isEmpty } from 'lodash'
 
@@ -146,6 +148,7 @@ import { isEmpty } from 'lodash'
     Age,
     VsList,
     MultiTable,
+    Avatar,
     DataEmpty,
   }
 })
@@ -336,7 +339,7 @@ export default class extends ViewBase {
 
   async praiseFetch(query: any) {
     try {
-      const data = await getPraise(this.ids, query, this.isAlbum)
+      const data = await getPraise(query, this.isAlbum)
       this.praiseCode = 0
       return data
     } catch (ex) {

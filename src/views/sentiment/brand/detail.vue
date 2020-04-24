@@ -16,6 +16,7 @@
         :platformList="platformHeatList"
         :params="platformParams"
         v-if="heatCode == 0"
+        :overLoading="overLoading"
       />
       <DataEmpty :code="heatCode" :retry="getHotList" v-if="heatCode > 0" />
     </section>
@@ -104,6 +105,7 @@ export default class BrandPage extends ViewBase {
   brandInfo: any = {}
 
   // 热度分析+平台信息
+  overLoading = false
   heatCode = 0
   day = 7
   overAllHeatList: any = []
@@ -207,10 +209,12 @@ export default class BrandPage extends ViewBase {
       })
       this.overAllHeatList = overAllHeatList || []
       this.platformHeatList = platformHeatList || []
+      this.overLoading = true
       this.heatCode = 0
     } catch (ex) {
       const { code } = this.handleModuleError(ex)
       this.heatCode = code
+      this.overLoading = true
     }
   }
 

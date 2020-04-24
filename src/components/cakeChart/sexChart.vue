@@ -49,6 +49,27 @@ export default class ChinaMap extends Vue {
       name: '',
       value: 0
   }
+
+  if (this.data.data[0].value) {
+    if (!this.data.data[1].value) {
+      this.data.data[1].value = 0
+    }
+    if ((this.data.data[0].value + this.data.data[1].value) / 100 != 100) {
+      if (this.data.data[0].value / 100 < 100) {
+          this.data.data[1].value = 10000 - this.data.data[0].value
+          } else {
+            this.data.data[0].value = 10000
+            this.data.data[1].value = 0
+          }
+    }
+  } else {
+    if (this.data.data[1].value > 10000) {
+      this.data.data[1].value = 10000
+    }
+    this.data.data[0].value = 10000 - this.data.data[1].value
+
+
+  }
   this.data.data.forEach((it: any) => {
       if ( RegExp(/男/).test(it.name)) {
         man = {
@@ -63,25 +84,6 @@ export default class ChinaMap extends Vue {
         }
       }
   })
-  if ((man.value && woman.value) || (woman.value && !man.value)) {
-    if (!man.value) {
-      man.value = 0
-    }
-    if ((man.value + woman.value) / 100 != 100) {
-      if (woman.value / 100 < 100) {
-            man.value = 10000 - woman.value
-          } else {
-            woman.value = 10000
-            man.value = 0
-          }
-    }
-
-  } else if (!woman.value && man.value) {
-        if (man.value > 10000) {
-          man.value = 10000
-        }
-        woman.value = 10000 - man.value
-    }
 
   sexData = [man, woman]
   const data: any = {

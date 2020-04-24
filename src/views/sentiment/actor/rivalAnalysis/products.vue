@@ -36,6 +36,7 @@
           :fetch="publicPraise.fetch" 
           :query="publicPraise.query"
           :businessType='2'
+          v-if="praiseCode == 0"
         />
       <DataEmpty :code="praiseCode" :retry="getPublicPraise" v-if="praiseCode > 0" />
 

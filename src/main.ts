@@ -30,7 +30,7 @@ event.on(
     },
 
     'ajax-10001'() {
-      const obj = { params: { phoneNumber: -10001 } }
+      const obj = { params: { code: -10001 } }
       handleUserAccountLogout(obj)
     },
 

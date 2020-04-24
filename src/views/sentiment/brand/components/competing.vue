@@ -47,10 +47,12 @@
                   <i v-else>-</i>
                 </span>
               </h5>
-              <p class="event-name" v-if="item.eventName">
-                <span>{{item.eventNameStr}}</span>
-                <i>{{item.eventCreatTime}}</i>
-              </p>
+              <div class="event-min-height">
+                <p class="event-name" v-show="item.eventName">
+                  <span>{{item.eventNameStr}}</span>
+                  <i>{{item.eventCreatTime}}</i>
+                </p>
+              </div>
             </div>
           </div>
         </li>
@@ -130,7 +132,6 @@ export default class Main extends Vue {
 <style lang='less' scoped>
 @import '~@/views/sentiment/brand/less/lib.less';
 @import '~@/components/hotLine/com.less';
-
 .compet-content {
   margin-bottom: 20px;
   background-color: #fff;
@@ -185,23 +186,26 @@ li {
       color: #ff6262;
     }
   }
+  .event-min-height {
+    height: 70px;
+    margin-top: 15px;
+    position: relative;
+  }
   .event-name {
     background-color: #f9f9f9;
     border-radius: 20px;
     font-size: 26px;
     padding: 17px 10px 17px 36px;
-    margin-top: 30px;
-    position: relative;
     &::before {
       display: block;
       width: 16px;
       height: 16px;
       content: '';
       background: #f7a345;
-      border-radius: 50%;
+      border-radius: 100%;
       position: absolute;
       left: 10px;
-      top: 26px;
+      top: 28px;
       z-index: 2;
     }
   }

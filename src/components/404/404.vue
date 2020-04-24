@@ -64,7 +64,7 @@ export default class TopBar extends Vue {
   // 播打电话
   async handleTelphone() {
     if (isJyApp()) {
-      const obj = { params: { data: { phoneNumber: '4006050606' } } }
+      const obj = { params: { phoneNumber: '4006050606' } }
       await handleDialTel(obj)
     }
   }

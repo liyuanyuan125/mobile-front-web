@@ -46,6 +46,7 @@ import { FetchResult, FetchData } from './type'
 import { toast } from '@/util/toast'
 import dataEmpty from '@/views/common/dataEmpty/index.vue'
 import { openAppLink, AppLink } from '@/util/native'
+import { isEqual } from 'lodash'
 
 const list = ['负面评论', '正面评论', '中性评论']
 const optionsList = {
@@ -77,13 +78,6 @@ export default class MarketContrast extends Vue {
 
   optionsList: any = optionsList
   days = 'last_7_day'
-
-  get newQuery() {
-    return {
-      day: this.days,
-      query: this.query
-    }
-  }
 
   // 接口传入数据
   get startTime() {
@@ -118,6 +112,7 @@ export default class MarketContrast extends Vue {
   list: any = list
 
   optionsMessage = this.optionsList.goodList || []
+
   changeAge(ins: number) {
     if (ins == 0) {
       this.optionsMessage = this.optionsList.badList || []
@@ -148,20 +143,23 @@ export default class MarketContrast extends Vue {
   }
 
   async uplist() {
-    try {
-      const { data } = await this.fetch({
-        ...this.query,
-        startTime: this.startTime,
-        endTime: this.endTime
-      })
-      this.optionsList = data
-    } catch (ex) {
-      toast(ex)
+    const { data } = await this.fetch({
+      ...this.query,
+      startTime: this.startTime,
+      endTime: this.endTime
+    })
+    this.optionsList = data
+  }
+
+  @Watch('query', { deep: true })
+  watchquery(val: any, old: any) {
+    if (!isEqual(val, old)) {
+      this.uplist()
     }
   }
 
-  @Watch('newQuery', { immediate: true })
-  watchdays(val: any) {
+  @Watch('days', { immediate: true })
+  watchdays(val: any, old: any) {
     this.uplist()
   }
 

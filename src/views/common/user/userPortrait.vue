@@ -43,7 +43,6 @@ export default class UserPortrait extends ViewBase {
   // genderListData: any = null
 
   arr: any = []
-  raitList: any = []
 
   get itemlist() {
     const inx = this.ageRangeList ? this.ageRangeList.length : 0
@@ -66,6 +65,7 @@ export default class UserPortrait extends ViewBase {
     const rait = this.ageRangeList
     if (rait && rait.length) {
       for (const item of this.ageRangeList) {
+        item.value = item.value > 10000 ? 10000 : item.value
         xData.push((item.value / 100).toFixed(1))
         yData.push(item.name)
       }
@@ -80,17 +80,30 @@ export default class UserPortrait extends ViewBase {
   get genderListData() {
     const xData: any[] = []
     const yData: any[] = []
-    const rait: any = this.genderList
+    const rait: any = (this.genderList || []).slice(0, 2)
     let gender: any = null
     if (rait && rait.length) {
-      this.raitList =
-        this.genderList[0].name == '女'
-          ? [this.genderList[1], this.genderList[0]]
-          : this.genderList
-    }
+      // 当接口只返回一条数据的时候，补齐另一条
+      if (rait.length === 1) {
+        rait.push({ name: '', value: 0 })
+      }
+      // 如果返回的值里 value 都是0或 null，则不显示性别
+      if (!rait[0].value && !rait[1].value) {
+        return null
+      }
+      // 判断先回来的是男还是女
+      const raitList = rait[0].name.indexOf('女') > -1 ? [rait[1], rait[0]] : rait
+      raitList[0].name = '男'
+      raitList[1].name = '女'
+      // 如果其中一个有值，另一个则补齐 如果两个 value 都是 0 或 null 是走不到这里的
+      raitList[0].value = raitList[0].value > 10000 ? 10000 : raitList[0].value
+      if (raitList[0].value > 0) {
+        raitList[1].value = 10000 - raitList[0].value
+      } else {
+        raitList[0].value = 10000 - raitList[1].value
+      }
 
-    if (this.raitList && this.raitList.length) {
-      for (const item of this.raitList) {
+      for (const item of raitList) {
         xData.push(item.name)
         yData.push((item.value / 100).toFixed(1))
       }

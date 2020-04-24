@@ -1,62 +1,65 @@
 <template>
   <div class="page">
     <SentimentBar :title="title" :titleShow="true" />
-    <div v-if="eventStatus === 1 || !eventStatus" class="unevent">
-      <span></span>
-      <h6>暂无数据</h6>
-      <p>
-        该事件的分析报告将于分析周期开始的第二天展示，
-        <br />分析周期内分析报告每日更新，请耐心等待！
-      </p>
-    </div>
-    <div v-if="eventStatus === 2 || eventStatus === 3">
-      <div class="bubble">
-        <BubbleLeft :data="bubbleData">
-          <template>
-            <!-- 示例 -->
-            <div slot="right">
-              <div class="content">
-                <h5>{{bubbleTotal.overallHot? bubbleTotal.overallHot :'-'}}</h5>
-                <p>综合热度</p>
+    <div v-if="!basicCode">
+      <div v-if="eventStatus === 1 || !eventStatus" class="unevent">
+        <span></span>
+        <h6>暂无数据</h6>
+        <p>
+          该事件的分析报告将于分析周期开始的第二天展示，
+          <br />分析周期内分析报告每日更新，请耐心等待！
+        </p>
+      </div>
+      <div v-if="eventStatus === 2 || eventStatus === 3">
+        <div class="bubble">
+          <BubbleLeft :data="bubbleData">
+            <template>
+              <!-- 示例 -->
+              <div slot="right">
+                <div class="content">
+                  <h5>{{bubbleTotal.overallHot? bubbleTotal.overallHot :'-'}}</h5>
+                  <p>综合热度</p>
+                </div>
+                <div class="content">
+                  <h5>{{bubbleTotal.materials ?bubbleTotal.materials : '-'}}</h5>
+                  <p>累计媒体物料</p>
+                </div>
+                <div class="content">
+                  <h5>{{bubbleTotal.interact ? bubbleTotal.interact :'-'}}</h5>
+                  <p @click="showNote">
+                    累计互动数
+                    <Icon name="question-o" size="16" color="#303030" />
+                  </p>
+                </div>
               </div>
-              <div class="content">
-                <h5>{{bubbleTotal.materials ?bubbleTotal.materials : '-'}}</h5>
-                <p>累计媒体物料</p>
-              </div>
-              <div class="content">
-                <h5>{{bubbleTotal.interact ? bubbleTotal.interact :'-'}}</h5>
-                <p @click="showNote">
-                  累计互动数
-                  <Icon name="question-o" size="16" color="#303030" />
-                </p>
-              </div>
-            </div>
-          </template>
-        </BubbleLeft>
-        <div class="curve">
-          <div class="curvetop"></div>
-          <div class="curvebot"></div>
+            </template>
+          </BubbleLeft>
+          <div class="curve">
+            <div class="curvetop"></div>
+            <div class="curvebot"></div>
+          </div>
         </div>
+        <TabNav :list="tabList" class="tab-nav-hide-header formattab" />
+        <div class="hotanalysis" id="hot">
+          <ModuleHeader title="热度分析" class="heat" />
+          <heatLineCom :overAllList="overAllHeat" :platformList="platformHeat" :params="params" />
+        </div>
+        <SpreadList :dataList="spreadList" :link="getApplink('eventSpreadPathList')" id="spread" />
+        <PraiseComment
+          :favorable="publicPraise.favorable"
+          :publicPraise="publicPraise"
+          :link="getApplink('eventPraiseHotWordsList')"
+          v-if="publicPraise.appraiseList"
+          id="praise"
+        />
       </div>
-      <TabNav :list="tabList" class="tab-nav-hide-header formattab" />
-      <div class="hotanalysis" id="hot">
-        <ModuleHeader title="热度分析" class="heat" />
-        <heatLineCom :overAllList="overAllHeat" :platformList="platformHeat" :params="params" />
+      <div v-if="eventStatus === 4" class="eventclose">
+        <span></span>
+        <h6>该事件已在后台关闭</h6>
+        <p>如有问题 请联系客服 400-605-0606</p>
       </div>
-      <SpreadList :dataList="spreadList" :link="getApplink('eventSpreadPathList')" id="spread" />
-      <PraiseComment
-        :favorable="publicPraise.favorable"
-        :publicPraise="publicPraise"
-        :link="getApplink('eventPraiseHotWordsList')"
-        v-if="publicPraise.appraiseList"
-        id="praise"
-      />
     </div>
-    <div v-if="eventStatus === 4" class="eventclose">
-      <span></span>
-      <h6>该事件已在后台关闭</h6>
-      <p>如有问题 请联系客服 400-605-0606</p>
-    </div>
+    <DataEmpty :code="basicCode" :retry="getEventData" v-if="basicCode > 0" class="empty" />
   </div>
 </template>
 
@@ -73,9 +76,11 @@ import PraiseComment from '@/views/common/praiseComment/index.vue' // 口碑评�
 import ModuleHeader from '@/components/moduleHeader'
 import SpreadList from '@/views/common/spreadList/index.vue' // 传播路径
 import { alert } from '@/util/toast'
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
 
 @Component({
   components: {
+    DataEmpty,
     Icon,
     SentimentBar,
     ModuleHeader,
@@ -88,7 +93,8 @@ import { alert } from '@/util/toast'
 })
 export default class NetworkEventPage extends ViewBase {
   eventId: string = ''
-  eventStatus: number = 1
+  eventStatus: number = 0
+  basicCode: number = 0
   title: string = ''
   bubbleData: BubbleItem[] = [] // 概览数据左
   bubbleTotal: any = {} // 概览数据右
@@ -122,17 +128,27 @@ export default class NetworkEventPage extends ViewBase {
   }
 
   async getEventData() {
-    const res: any = await eventDetail(this.eventId)
-    this.eventStatus = res.eventStatus
-    this.bubbleData = res.eventOverView.paltformList
-    this.overAllHeat = res.overAllHeatList
-    this.platformHeat = res.platformHeatList
-    this.publicPraise = res.publicPraise
-    this.spreadList = res.spreadList || []
-    this.bubbleTotal = {
-      overallHot: res.eventOverView.overallHot,
-      materials: res.eventOverView.materials,
-      interact: res.eventOverView.interact
+    try {
+      const res: any = await eventDetail(this.eventId)
+      this.eventStatus = res.eventStatus
+      this.basicCode = 0
+      if (!res.eventOverView) {
+        this.eventStatus = 0
+      } else {
+        this.bubbleData = res.eventOverView.paltformList
+        this.overAllHeat = res.overAllHeatList
+        this.platformHeat = res.platformHeatList
+        this.publicPraise = res.publicPraise
+        this.spreadList = res.spreadList || []
+        this.bubbleTotal = {
+          overallHot: res.eventOverView.overallHot,
+          materials: res.eventOverView.materials,
+          interact: res.eventOverView.interact
+        }
+      }
+    } catch (ex) {
+      const { code } = this.handlePageError(ex)
+      this.basicCode = code
     }
   }
 
@@ -166,6 +182,9 @@ export default class NetworkEventPage extends ViewBase {
 </script>
 
 <style lang="less" scoped>
+.empty {
+  margin-top: 150px;
+}
 .page {
   color: #303030;
 }

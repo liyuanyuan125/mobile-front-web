@@ -111,11 +111,11 @@ export default class PlatformTrend extends ViewBase {
   }
 
   async uplist() {
-    try {
-      const { data } = await this.fetch({
-        tvIdList: this.query,
-        ...this.dates
-      })
+    const data = await this.fetch({
+      tvIdList: this.query,
+      ...this.dates
+    })
+    if (data && data.length) {
       // 处理平台名称
       let index = 0
       const navlist = []
@@ -129,8 +129,8 @@ export default class PlatformTrend extends ViewBase {
       this.tabList = navlist
       this.response = data
       this.formatDatas(data[0].dataList)
-    } catch (ex) {
-      toast(ex)
+    } else {
+      this.response = []
     }
   }
 }

@@ -4,7 +4,7 @@
     <RivalList 
       type="2" 
       :rivalList="rivalList" 
-      v-if="rivalList.length"
+      v-if="rivalList && rivalList.length"
       class="movierival"
       @setRival="changeIds"
     />
@@ -22,7 +22,11 @@
         :materialList="combinedHeat.materialList"
         :tabs="combinedHeat.tabs"
         :daysNum="day"
+        v-if="heatCode == 0"
         />
+      <DataEmpty :code="heatCode" :retry="getLineData" v-if="heatCode > 0" />
+      <DataEmpty :code="basicCode" :retry="getDetail" v-if="basicCode > 0" />
+
     </section>
 
     <section v-if='showpraise' class="pane" id="praise" style='padding-top:15px;padding-right:15px;padding-bottom:15px;'>
@@ -87,6 +91,8 @@ import { keyBy, groupBy } from 'lodash'
 import { getPercentFieldValue, transformPercentField } from '@/util/dealData'
 import { toast } from '@/util/toast'
 import { Tab, Tabs } from 'vant'
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
+
 
 @Component({
   components: {
@@ -100,7 +106,8 @@ import { Tab, Tabs } from 'vant'
     Table,
     TabNav,
     SentimentBar,
-    RivalList
+    RivalList,
+    DataEmpty,
   }
 })
 export default class KolPage extends ViewBase {
@@ -115,6 +122,11 @@ export default class KolPage extends ViewBase {
 
   show: any = false
   showpraise: any = false
+
+  // 热度
+  heatCode = 0
+  // 详情
+  basicCode = 0
 
   item: any = null
 
@@ -247,9 +259,10 @@ export default class KolPage extends ViewBase {
       this.combinedHeat.overAllHeat = overAllHeat || []
       this.combinedHeat.interactList = fansCountList || []
       this.combinedHeat.materialList = interactList || []
+      this.heatCode = 0
     } catch (ex) {
-      // toast(ex.msg)
-      throw ex
+      const { code } = this.handleModuleError(ex)
+      this.heatCode = code
     }
   }
 
@@ -326,9 +339,10 @@ export default class KolPage extends ViewBase {
        })
        this.userRegion = userRegion
        this.regionObj.tableItem = userRegion.cityList
+       this.basicCode = 0
     } catch (ex) {
-      // toast(ex.msg)
-      throw ex
+      const { code } = this.handlePageError(ex)
+      this.basicCode = code
     }
   }
   // 用户地域分布对比

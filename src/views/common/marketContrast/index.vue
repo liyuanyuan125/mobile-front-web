@@ -148,16 +148,12 @@ export default class MarketContrast extends Vue {
   }
 
   async uplist() {
-    try {
-      const { data } = await this.fetch({
-        ...this.query,
-        startTime: this.startTime,
-        endTime: this.endTime
-      })
-      this.optionsList = data
-    } catch (ex) {
-      toast(ex)
-    }
+    const { data } = await this.fetch({
+      ...this.query,
+      startTime: this.startTime,
+      endTime: this.endTime
+    })
+    this.optionsList = data
   }
 
   @Watch('newQuery', { immediate: true })

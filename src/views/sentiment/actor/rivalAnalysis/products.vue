@@ -37,6 +37,8 @@
           :query="publicPraise.query"
           :businessType='2'
         />
+      <DataEmpty :code="praiseCode" :retry="getPublicPraise" v-if="praiseCode > 0" />
+
       </div>
     </section>
 
@@ -127,6 +129,8 @@ export default class KolPage extends ViewBase {
   heatCode = 0
   // 详情
   basicCode = 0
+  // 口碑
+  praiseCode = 0
 
   item: any = null
 
@@ -278,6 +282,7 @@ export default class KolPage extends ViewBase {
       }
       this.publicPraise.fetch = async (query: any) => { // query: 查询参数
         const datas = await rivalPraise(query)
+        this.praiseCode = 0
         return {
           code: datas.code,
           data: {
@@ -304,8 +309,8 @@ export default class KolPage extends ViewBase {
         }
       }
     } catch (ex) {
-      // toast(ex.msg)
-      throw ex
+      const { code } = this.handleModuleError(ex)
+      this.praiseCode = code
     } finally {
       this.showpraise = true
     }

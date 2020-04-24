@@ -76,9 +76,11 @@ import PraiseComment from '@/views/common/praiseComment/index.vue' // 口碑评�
 import ModuleHeader from '@/components/moduleHeader'
 import SpreadList from '@/views/common/spreadList/index.vue' // 传播路径
 import { alert } from '@/util/toast'
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
 
 @Component({
   components: {
+    DataEmpty,
     Icon,
     SentimentBar,
     ModuleHeader,
@@ -180,6 +182,9 @@ export default class NetworkEventPage extends ViewBase {
 </script>
 
 <style lang="less" scoped>
+.empty {
+  margin-top: 150px;
+}
 .page {
   color: #303030;
 }

@@ -41,7 +41,7 @@ const bubbleTip = (title: string, message: string) => {
 }
 
 const bubbleTipInteractCount = bubbleTip(
-  '累计互动量',
+  '90天内累计互动',
   '累计互动量是指：相关物料的点赞、评论、转发、阅读或播放的累计之和'
 )
 

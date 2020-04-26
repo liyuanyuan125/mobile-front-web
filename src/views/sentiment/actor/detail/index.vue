@@ -30,14 +30,14 @@
           </p>
         </div>
       </div>
-      <DataEmpty :code="basicCode" :retry="getActorDetail" v-if="basicCode > 0" />
-      <div class="dubble">
+      <div v-if='basicCode == 0' class="dubble">
         <BubbleBottom :data="bubbleData" />
       </div>
-      <div class="curve">
+      <div v-if='basicCode == 0' class="curve">
         <div class="curvetop"></div>
         <div class="curvebot"></div>
       </div>
+      <DataEmpty :code="basicCode" :retry="getActorDetail" v-if="basicCode > 0" />
     </section>
 
     <TabNav :list="list" class="formattab" />
@@ -83,8 +83,8 @@
       <DataEmpty :code="eventCode" :retry="getEventList" v-if="eventCode > 0" />
     </section>
 
-    <section v-if="showuser" class="pane" id="part">
-      <!-- 相似艺人 -->
+    <!-- 相似艺人 -->
+    <!-- <section v-if="showuser" class="pane" id="part">
       <ModuleHeader 
         title="相似艺人"
         style='padding: 40px 15px 0 15px;'
@@ -92,7 +92,7 @@
       <Competing :pkUserList="pkUserList" :pkIdList="pkIdList" v-if="rivalCode == 0" />
       <DataEmpty :code="rivalCode" :retry="getPkUser" v-if="rivalCode > 0" />
 
-    </section>
+    </section> -->
 
     <section
       v-if="show"
@@ -148,7 +148,7 @@ import ModuleHeader from '@/components/moduleHeader'
 })
 export default class KolPage extends ViewBase {
   show: any = false
-  showuser: any = false
+  // showuser: any = false
   showevent: any = false
 
   title: any = '用户分析'
@@ -178,7 +178,7 @@ export default class KolPage extends ViewBase {
     { name: 'praise', label: '口碑' },
     { name: 'user', label: '用户' },
     { name: 'event', label: '事件' },
-    { name: 'part', label: '竞品' },
+    // { name: 'part', label: '竞品' },
     { name: 'work', label: '作品' }
   ]
 
@@ -218,7 +218,7 @@ export default class KolPage extends ViewBase {
     }
     this.getActorDetail()
     this.getHotList()
-    this.getPkUser()
+    // this.getPkUser()
     this.getEventList()
     // document.body.style.background = '#FBFBFB'
   }
@@ -289,7 +289,8 @@ export default class KolPage extends ViewBase {
       } = await getActorDetail({ actorId: this.$route.params.actorId })
       this.actorInfo = actorInfo
       this.title = actorInfo.actorName
-      this.coverImg = imgFixed(actorInfo.coverUrl, 172, 172, 4)
+      this.coverImg = actorInfo.coverUrl ? imgFixed(actorInfo.coverUrl, 172, 172, 4)
+      : require('@/assets/actordefault.png')
       this.bubbleData = [
         {
           type: '1',
@@ -340,35 +341,35 @@ export default class KolPage extends ViewBase {
     }
   }
 
-  async getPkUser() {
-    this.showuser = false
-    this.pkIdList = []
-    try {
-      const pkUser = await getPkUser({ actorId: this.$route.params.actorId })
-      this.pkUserList = pkUser.data || []
-      this.pkIdList = (pkUser.data || [])
-        .map((it: any) => {
-          return it.rivalId
-        })
-        .slice(0, 3)
-      if (this.pkIdList.length) {
-        // 有竞品数据跳竞品报告页
-        this.sidebar.rivalIds = {
-          name: 'sentimentkolproducts',
-          query: {
-            ids: this.pkIdList.join(',')
-          }
-        }
-      }
-      this.rivalCode = 0
-      this.showuser = true
-    } catch (ex) {
-      const { code } = this.handleModuleError(ex)
-      this.rivalCode = code
-    } finally {
-      this.showuser = true
-    }
-  }
+  // async getPkUser() {
+  //   this.showuser = false
+  //   this.pkIdList = []
+  //   try {
+  //     const pkUser = await getPkUser({ actorId: this.$route.params.actorId })
+  //     this.pkUserList = pkUser.data || []
+  //     this.pkIdList = (pkUser.data || [])
+  //       .map((it: any) => {
+  //         return it.rivalId
+  //       })
+  //       .slice(0, 3)
+  //     if (this.pkIdList.length) {
+  //       // 有竞品数据跳竞品报告页
+  //       this.sidebar.rivalIds = {
+  //         name: 'sentimentkolproducts',
+  //         query: {
+  //           ids: this.pkIdList.join(',')
+  //         }
+  //       }
+  //     }
+  //     this.rivalCode = 0
+  //     this.showuser = true
+  //   } catch (ex) {
+  //     const { code } = this.handleModuleError(ex)
+  //     this.rivalCode = code
+  //   } finally {
+  //     this.showuser = true
+  //   }
+  // }
 
   async getEventList() {
     this.showevent = false
@@ -413,7 +414,7 @@ export default class KolPage extends ViewBase {
     this.day = 7
     this.getHotList()
     this.getActorDetail()
-    this.getPkUser()
+    // this.getPkUser()
     this.getEventList()
   }
 }
@@ -557,6 +558,13 @@ export default class KolPage extends ViewBase {
   z-index: 11;
   &::before {
     display: none;
+  }
+  /deep/ .van-tabs__nav {
+    padding-left: 130px;
+    padding-right: 30px;
+  }
+  /deep/ .van-tab {
+    flex-basis: auto !important;
   }
 }
 /deep/ nav.formattab .van-tab {

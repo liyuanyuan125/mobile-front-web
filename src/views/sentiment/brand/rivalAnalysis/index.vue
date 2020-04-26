@@ -19,23 +19,29 @@
         :materialList="materialList"
         :tabs="tabs"
         :daysNum="day"
+        v-if="heatCode == 0"
       />
+      <DataEmpty :code="heatCode" :retry="getLineData" v-if="heatCode > 0" />
     </section>
     <section class="market-model" id="praise">
       <MarketContrast 
         class="items-market" 
-        :fetch="fetch" 
+        :fetch="fetch"
         :query="query"
         :businessType="1"
-        v-if="brandIdList"
+        v-if="brandIdList && praiseCode == 0"
       />
+      <DataEmpty :code="praiseCode" :retry="fetch" v-if="praiseCode > 0" />
     </section>
     <section class="user-model" id="user">
       <ModuleHeader title="用户对比" class="items"/>
-      <AgeDistribution :ageRangeList='ageRangeList' v-if="ageRangeList.length" />
-      <div class="van-hairline--top item-hairline"></div>
-      <SexVs :data="genderList" v-if="genderList.length" class="genderbox" />
-      <div class="van-hairline--top item-hairline"></div>
+      <section v-if="userCode == 0">
+        <AgeDistribution :ageRangeList='ageRangeList' v-if="ageRangeList.length" />
+        <div class="van-hairline--top item-hairline"></div>
+        <SexVs :data="genderList" v-if="genderList.length" class="genderbox" />
+        <div class="van-hairline--top item-hairline"></div>
+      </section>
+      <DataEmpty :code="userCode" :retry="portDetail" v-if="userCode > 0" />
       <!-- <Table 
         class="item-high"
         :title='sensTitle' 
@@ -45,14 +51,18 @@
         @chgregionPk='changeTabs'
       />
       <div class="van-hairline--top item-hairline"></div> -->
-      <Table 
-        class="item-user"
-        :title='userTitle' 
-        :tabList='userTabList' 
-        :tableTitle='userTableTitle' 
-        :tableItem='userTableItem'
-        @chgregionPk='userTabs'
-      />
+      <section>
+        <Table 
+          class="item-user"
+          :title='userTitle' 
+          :tabList='userTabList' 
+          :tableTitle='userTableTitle' 
+          :tableItem='userTableItem'
+          @chgregionPk='userTabs'
+          v-if="userTableItem && userTableItem.length > 0"
+        />
+        <DataEmpty v-else />
+      </section>
       <!-- <div class="van-hairline--top item-hairline"></div>
       <Table
         class="item-high"
@@ -68,7 +78,7 @@
 </template>
 <script lang='ts'>
 import { Component, Vue, Watch } from 'vue-property-decorator'
-import { toast } from '@/util/toast'
+import ViewBase from '@/util/ViewBase'
 import { lastDays } from '@/util/timeSpan'
 import ModuleHeader from '@/components/moduleHeader'
 import SentimentBar from '@/views/common/sentimentBar/index.vue' // topbar
@@ -80,8 +90,9 @@ import heatContrast from '@/views/common/heatContrast/index.vue' // 热度分析
 import Table from '@/views/common/table/table.vue' // table 分布图
 import { selectTime } from '@/components/hotLine' // 日期选择
 import TabNav, { TabNavItem } from '@/components/tabNav'
-import {rivalHeatAnalysis, rivalPraise } from '@/api/brand'
-import {reportDetail} from '../data'
+import {rivalHeatAnalysis } from '@/api/brand'
+import {reportDetail, rivalPraiseList} from '../data'
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
 
 
 @Component({
@@ -95,10 +106,11 @@ import {reportDetail} from '../data'
     RivalList,
     SentimentBar,
     Table,
-    TabNav
+    TabNav,
+    DataEmpty
   }
 })
-export default class Main extends Vue {
+export default class Main extends ViewBase {
   list: TabNavItem[] = [
     { name: 'hot', label: '热度' },
     { name: 'praise', label: '口碑' },
@@ -108,6 +120,7 @@ export default class Main extends Vue {
   brandIdList: any = ''
   // 综合对比数据值, 新增互动, 新增物料
   day = 7
+  heatCode = 0
   overAllHeat = []
   interactList = []
   materialList = []
@@ -117,6 +130,7 @@ export default class Main extends Vue {
   ]
 
   // 口碑评论补充数据
+  praiseCode = 0
   get query() {
     return {
       brandIdList: this.brandIdList ,
@@ -154,6 +168,7 @@ export default class Main extends Vue {
   // sensTableItem = []
 
   // 用户地域分布
+  userCode = 0
   userTitle = '用户地域分布'
   userTabList = [
     { name: '城市分布', key: 'city'},
@@ -168,6 +183,7 @@ export default class Main extends Vue {
     {key: 'top5', value: 'TOP5'},
   ]
   userTableItem = []
+  tableEmpty = false
 
   // 高消费用户地域分布
   // highTitle = '高消费用户地域分布'
@@ -196,35 +212,16 @@ export default class Main extends Vue {
   }
 
   async fetch(query: any) {
-    // {goodList, badList, neutralList}
-    const {code, data, msg} = await rivalPraise(query)
-    const goodList = (data.goodList || []).map((it: any) => {
-      return {
-        ...it,
-        percent: (it.percent / 100).toFixed(1)
-      }
-    })
-    const badList = (data.badList || []).map((it: any) => {
-      return {
-        ...it,
-        percent: (it.percent / 100).toFixed(1)
-      }
-    })
-    const neutralList = (data.neutralList || []).map((it: any) => {
-      return {
-        ...it,
-        percent: (it.percent / 100).toFixed(1)
-      }
-    })
-
-    return {
-      code,
-      data: {
-        goodList,
-        badList,
-        neutralList
-      },
-      msg,
+    try {
+      const data = await rivalPraiseList({
+        ...query,
+        brandIdList: this.brandIdList
+      })
+      this.praiseCode = 0
+      return data
+    } catch (ex) {
+      const { code } = this.handleModuleError(ex)
+      this.praiseCode = code
     }
   }
 
@@ -255,9 +252,12 @@ export default class Main extends Vue {
       // this.highTableItem = hightConsume.cityList ? hightConsume.cityList : []
       // this.highCityList = hightConsume.cityList ? hightConsume.cityList : []
       // this.highProvinceList = hightConsume.provinceList ? hightConsume.provinceList : []
-
+      this.userCode = 0
+      this.tableEmpty = false
     } catch (ex) {
-      // toast(ex)
+      const { code } = this.handleModuleError(ex)
+      this.userCode = code
+      this.tableEmpty = true
     }
   }
 
@@ -278,8 +278,10 @@ export default class Main extends Vue {
       this.overAllHeat = overAllHeat || []
       this.interactList = interactList || []
       this.materialList = materialList || []
+      this.heatCode = 0
     } catch (ex) {
-      // toast(ex)
+      const { code } = this.handleModuleError(ex)
+      this.heatCode = code
     }
   }
 

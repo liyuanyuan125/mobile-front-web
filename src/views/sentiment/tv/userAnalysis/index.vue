@@ -1,17 +1,8 @@
 <template>
   <div class="pages">
     <SentimentBar title="用户分析" :titleShow="true" />
-    <div class="agelist">
-      <moduleHeaer title="用户画像" />
-      <div class="item-title">性别占比</div>
-      <div class="sex">
-        <sexChart :width="annularWid" :data="sexdata" v-if="sexdata.data.length"></sexChart>
-      </div>
-      <div class="age">
-        <div class="item-title">年龄占比</div>
-        <VerticalBar :data="agedata" v-if="agedata.length" class="chart" />
-      </div>
-    </div>
+    <UserPortrait :sexData="sexData" :ageData="ageData" class="user-portrait" v-if="!basicCode" />
+    <DataEmpty :code="basicCode" :retry="userAnalysis" class="data-empty" v-if="basicCode > 0" />
   </div>
 </template>
 
@@ -19,36 +10,27 @@
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import { userAnalysisData } from './data'
-import ChinaMap, { ChinaMapItem } from '@/components/chinaMap'
 import { toast } from '@/util/toast'
-import sexChart from '@/components/cakeChart/sexChart.vue'
-import annularChart from '@/components/cakeChart/annularChart.vue'
-import VerticalBar, { VerticalBarItem } from '@/components/verticalBar'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
-import ProgressList from './components/progress.vue'
 import moduleHeaer from '@/components/moduleHeader'
+import { transformPercentField } from '@/util/dealData'
+import UserPortrait, { VerticalBarItem, NameValue } from '@/views/common/userPortrait'
+import DataEmpty from '@/views/common/dataEmpty/index.vue'
 
 @Component({
   components: {
     SentimentBar,
-    sexChart,
-    annularChart,
-    VerticalBar,
-    ProgressList,
-    moduleHeaer
+    moduleHeaer,
+    UserPortrait,
+    DataEmpty
   }
 })
 export default class MovieUserAnalysisPage extends ViewBase {
-  // canvas的宽高
-  annularWid: number = document.documentElement.clientWidth - 60
   // 性别
-  sexdata: any = {
-    data: [],
-    title: '性别占比',
-    emphasisShow: true
-  }
+  sexData: any = null
+  basicCode: number = 0
   // 年龄
-  agedata: VerticalBarItem[] = []
+  ageData: VerticalBarItem[] = []
 
   created() {
     const tvId: string = this.$route.params.tvId
@@ -58,11 +40,13 @@ export default class MovieUserAnalysisPage extends ViewBase {
   async userAnalysis(tvId: string) {
     try {
       const res: any = await userAnalysisData(tvId)
+      this.basicCode = 0
       // 性别
-      this.sexdata.data = res.genderList
-      this.agedata = res.ageRangeList
+      this.sexData = res.genderList || []
+      this.ageData = transformPercentField(res.ageRangeList)
     } catch (ex) {
-      toast(ex)
+      const { code } = this.handlePageError(ex)
+      this.basicCode = code
     }
   }
 }
@@ -73,28 +57,7 @@ export default class MovieUserAnalysisPage extends ViewBase {
   width: 100%;
   padding-top: 148px;
 }
-.agelist {
-  padding: 0 30px;
-  .item-title {
-    margin-top: 45px;
-    margin-bottom: 50px;
-    font-size: 34px;
-    font-weight: 500;
-    color: rgba(48, 48, 48, 1);
-    line-height: 34px;
-  }
-  .age {
-    border-top: solid 1px #d8d8d8;
-    margin: 0 30px;
-    padding-bottom: 50px;
-  }
-}
-.education {
-  border-top: 20px solid rgba(216, 216, 216, 0.2);
-  padding: 50px 30px;
-}
-.work {
-  border-top: 20px solid rgba(216, 216, 216, 0.2);
-  padding: 50px 30px;
+.user-portrait {
+  padding-top: 0;
 }
 </style>

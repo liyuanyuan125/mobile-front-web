@@ -250,7 +250,9 @@ export async function getPlay(
   return result
 }
 
-export async function getPraise(ids: string, query: any, isAlbum: boolean) {
+export async function getPraise(query: any, isAlbum: boolean) {
+  const ids = query.ids
+  delete query.ids
   const ret = isAlbum
     ? await albumGetPraise({ albumIdList: ids, ...query })
     : await songGetPraise({ songIdList: ids, ...query })

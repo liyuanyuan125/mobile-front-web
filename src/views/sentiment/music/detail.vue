@@ -485,7 +485,8 @@ export default class extends ViewBase {
     this.getBasic()
     isSong && this.getHeat()
     this.getEvent()
-    this.getRival()
+    // 产品需求：暂时隐藏竞品分析
+    // this.getRival()
   }
 
   async getBasic() {

@@ -44,6 +44,7 @@ export default class Cover extends Vue {
 .avatar {
   width: 100%;
   height: 100%;
+  vertical-align: top;
   /deep/ .van-image__error {
     img {
       width: 100%;

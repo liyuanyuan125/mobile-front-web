@@ -1099,8 +1099,9 @@ export default class extends ViewBase {
 }
 
 .singer-avatar {
-  width: 130px;
-  height: 130px;
+  // TODO: 加 !important 是为了防止组件样式动态加载导致的优先级问题，可以考虑样式静态加载
+  width: 130px !important;
+  height: 130px !important;
   border-radius: 100%;
   border: 1px solid #d8d8d8;
   overflow: hidden;

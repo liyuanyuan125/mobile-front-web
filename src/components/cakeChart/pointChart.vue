@@ -24,7 +24,7 @@ import DataEmpty from '@/views/common/dataEmpty/index.vue'
   }
 })
 
-export default class ChinaMap extends Vue {
+export default class PointChart extends Vue {
   /** 数据 */
   @Prop({ type: Object, default: () => [] }) data!: DataItem
  /** 长宽 */

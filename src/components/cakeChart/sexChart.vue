@@ -2,7 +2,7 @@
   <div >
     <div v-if="data.data && data.data.length > 0&&(this.data.data[0].value || this.data.data[1].value)" class="china-map">
         <div ref="annular" :style="{width:sizeWidth+'px',height:sizeWidth+'px'}" class="chart-wrap"></div>
-    </div> 
+    </div>
     <DataEmpty v-if="!data.data || (data.data&&data.data.length == 0) || (!this.data.data[0].value && !this.data.data[1].value)" />
   </div>
 </template>
@@ -20,7 +20,7 @@ import DataEmpty from '@/views/common/dataEmpty/index.vue'
   }
 })
 
-export default class ChinaMap extends Vue {
+export default class SexChart extends Vue {
   /** 数据 */
   @Prop({ type: Object, default: () => [] }) data!: DataItem
   /** 长宽 */

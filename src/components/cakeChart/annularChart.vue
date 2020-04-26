@@ -26,7 +26,7 @@ import eCharts from 'echarts'
   }
 })
 
-export default class ChinaMap extends Vue {
+export default class AnnularChart extends Vue {
   /** 数据 */
   @Prop({ type: Object, default: () => [] }) data!: DataItem
    /** 长宽 */

@@ -234,6 +234,18 @@ export default class TabNav extends Vue {
   }
 }
 
+.tab-nav-count-3 {
+  /deep/ .van-tab {
+    flex-basis: 33.33333% !important;
+  }
+}
+
+.tab-nav-count-4 {
+  /deep/ .van-tab {
+    flex-basis: 25% !important;
+  }
+}
+
 .tab-nav-count-5 {
   /deep/ .van-tab {
     flex-basis: 20% !important;

@@ -29,9 +29,11 @@
               type="primary"
               @click="chgnewPk(item)"
             >{{item.name}}</Button>
-            <div @click="openAnalysisPage" class="eventchart">
+
+            <div @click="openAnalysisPage" class="eventchart" v-if="linedata">
               <LineGrap :lineData="linedata" class="wantchart" :formatterHtml="formatterHtml" />
             </div>
+            <DataEmpty v-else />
           </div>
         </div>
         <platForm
@@ -89,7 +91,7 @@ export default class KolPage extends ViewBase {
   eventStatus: number = 0
 
   // 热度分析
-  linedata: any = {}
+  linedata: any = null
   overAllHeatList: any = []
   // 热度平台
   platformHeatList: any = []
@@ -189,6 +191,8 @@ export default class KolPage extends ViewBase {
           }
         ]
       }
+    } else {
+      this.linedata = null
     }
   }
 

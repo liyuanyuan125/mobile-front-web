@@ -258,9 +258,9 @@ export async function getPraise(query: any, isAlbum: boolean) {
     : await songGetPraise({ songIdList: ids, ...query })
   const data = ret.data || {}
   ret.data = {
-    goodList: toPercent(data.goodList),
-    badList: toPercent(data.badList),
-    neutralList: toPercent(data.neutralList),
+    goodList: toPercent(data.goodList) || [],
+    badList: toPercent(data.badList) || [],
+    neutralList: toPercent(data.neutralList) || [],
   }
   return ret
 }

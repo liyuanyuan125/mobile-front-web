@@ -51,6 +51,7 @@ export default class VerticalBar extends Vue {
   /** 是否禁止自动高亮最大值，默认是自动高亮行为 */
   @Prop({ type: Boolean, default: false }) disableAutoHighlightMaxValue!: boolean
 
+  /** 保留的小数位数，默认 1 */
   @Prop({ type: Number, default: 1 }) digits!: number
 
   get chart() {
@@ -65,7 +66,7 @@ export default class VerticalBar extends Vue {
         position: 'top',
         formatter: (params: any) => {
           const { name, value } = params
-          const valueShow = `${value.toFixed(this.digits)}${this.unit}`
+          const valueShow = `${(+value || 0).toFixed(this.digits)}${this.unit}`
           const valueColor = this.tooltipValueColor
           const dotColor = this.hiColor
           const nameColor = this.tooltipNameColor

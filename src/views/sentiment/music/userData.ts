@@ -12,8 +12,8 @@ export async function getBasic(id: number, isAlbum: boolean) {
     : await songGetUser(id)
   const result = {
     sexData: data.genderList || [],
-    ageData: transformPercentField(data.ageRangeList),
-    areaData: transformPercentField(data.userRegionList)
+    ageData: transformPercentField(data.ageRangeList, { digits: 2 }) || [],
+    areaData: transformPercentField(data.userRegionList, { digits: 2 }) || [],
   }
   return result
 }

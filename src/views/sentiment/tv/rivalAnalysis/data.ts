@@ -18,17 +18,17 @@ export const tvRivalPraise = async (query: any) => {
     const { data } = await getRivalPraise(query)
     if (data.goodList && data.goodList.length) {
         for (const el of data.goodList) {
-            el.percent = (el.percent / 100).toFixed(1)
+            el.percent = +(el.percent / 100).toFixed(1)
         }
     }
     if (data.neutralList && data.neutralList.length) {
         for (const el of data.neutralList) {
-            el.percent = (el.percent / 100).toFixed(1)
+            el.percent = +(el.percent / 100).toFixed(1)
         }
     }
     if (data.badList && data.badList.length) {
         for (const el of data.badList) {
-            el.percent = (el.percent / 100).toFixed(1)
+            el.percent = +(el.percent / 100).toFixed(1)
         }
     }
     return data

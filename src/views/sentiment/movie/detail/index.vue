@@ -297,9 +297,6 @@ export default class MoviePage extends ViewBase {
     display: none;
   }
 }
-/deep/ nav.formattab .van-tab {
-  flex-basis: 14.2% !important;
-}
 .hotanalysis {
   margin-top: 40px;
   .heat {

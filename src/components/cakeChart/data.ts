@@ -138,7 +138,7 @@ export function getPointOption(data: any) {
         textStyle: {
             rich: {
                 a: {
-                    fontSize: 16,
+                    fontSize: 14,
                     verticalAlign: 'middle',
                     align: 'center',
                     padding: [0, -10, 0, 0],

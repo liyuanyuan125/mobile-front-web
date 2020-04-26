@@ -49,10 +49,10 @@
       <DataEmpty :code="eventCode" :retry="eventAnalysis" v-if="eventCode > 0" />
     </section>
 
-    <section id="part">
+    <!-- <section id="part">
       <Competing :rivalList="rivalList" v-if="rivalCode == 0" />
       <DataEmpty :code="rivalCode" :retry="analysisList" v-if="rivalCode > 0" />
-    </section>
+    </section> -->
   </div>
 </template>
 
@@ -95,7 +95,7 @@ export default class BrandPage extends ViewBase {
     { name: 'praise', label: '口碑' },
     { name: 'user', label: '用户' },
     { name: 'event', label: '事件' },
-    { name: 'part', label: '竞品' }
+    // { name: 'part', label: '竞品' }
   ]
 
   basicCode = 0
@@ -167,7 +167,7 @@ export default class BrandPage extends ViewBase {
     this.brandDetail() // 品牌详情页
     this.getHotList() // 热度分析数据
     this.eventAnalysis() // 事件分析
-    this.analysisList() // 竞品分析
+    // this.analysisList() // 竞品分析
   }
 
   mounted() {
@@ -232,19 +232,19 @@ export default class BrandPage extends ViewBase {
     }
   }
 
-  async analysisList() {
-    try {
-      const { data } = await brandAnalysisList({
-        brandId: this.id
-      })
-      this.rivalList = data || []
-      this.rivalIds = (data || []).map((it: any) => it.rivalId)
-      this.rivalCode = 0
-    } catch (ex) {
-      const { code } = this.handleModuleError(ex)
-      this.rivalCode = code
-    }
-  }
+  // async analysisList() {
+  //   try {
+  //     const { data } = await brandAnalysisList({
+  //       brandId: this.id
+  //     })
+  //     this.rivalList = data || []
+  //     this.rivalIds = (data || []).map((it: any) => it.rivalId)
+  //     this.rivalCode = 0
+  //   } catch (ex) {
+  //     const { code } = this.handleModuleError(ex)
+  //     this.rivalCode = code
+  //   }
+  // }
 
   /**
    * 获取 applink

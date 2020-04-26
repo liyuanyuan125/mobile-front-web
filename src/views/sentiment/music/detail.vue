@@ -206,7 +206,8 @@
       </Swipe>
     </section>
 
-    <section class="pane" id="rival">
+    <!-- 产品需求：暂时隐藏竞品分析 -->
+    <!-- <section class="pane" id="rival">
       <ModuleHeader :title="isAlbum ? '竞品分析' : '相似歌曲'" />
 
       <ul class="rival-list" v-if="rivalList && rivalList.length > 0">
@@ -249,7 +250,7 @@
       <div class="rival-more" v-if="rivalList && rivalList.length > 0">
         <router-link :to="rivalRoute" class="rival-button">查看详细报告</router-link>
       </div>
-    </section>
+    </section> -->
   </main>
 </template>
 
@@ -316,9 +317,11 @@ export default class extends ViewBase {
   get topbarSidebar() {
     // 有竞品数据，跳转竞品报告页；否则，跳转到设置竞品页
     const type = this.isAlbum ? '6' : '5'
-    const route = (this.rivalList || []).length > 0
-      ? this.rivalRoute
-      : { businessType: type, businessObjectIdList: String(this.id) }
+    // 产品需求：暂时隐藏竞品分析，只当 pk 使用
+    // const route = (this.rivalList || []).length > 0
+    //   ? this.rivalRoute
+    //   : { businessType: type, businessObjectIdList: String(this.id) }
+    const route = { businessType: type, businessObjectIdList: String(this.id) }
     return {
       // 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
       diggType: type,
@@ -343,14 +346,16 @@ export default class extends ViewBase {
           { name: 'praise', label: '口碑' },
           { name: 'user', label: '用户' },
           { name: 'event', label: '事件' },
-          { name: 'rival', label: '竞品' }
+          // 产品需求：暂时隐藏竞品分析
+          // { name: 'rival', label: '竞品' }
         ])
       : [
           { name: 'heat', label: '热度' },
           { name: 'praise', label: '口碑' },
           { name: 'user', label: '用户' },
           { name: 'event', label: '事件' },
-          { name: 'rival', label: '竞品' }
+          // 产品需求：暂时隐藏竞品分析
+          // { name: 'rival', label: '竞品' }
         ]
     return list
   }

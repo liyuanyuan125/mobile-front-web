@@ -49,10 +49,10 @@
       <DataEmpty :code="eventCode" :retry="eventAnalysis" v-if="eventCode > 0" />
     </section>
 
-    <section id="part">
+    <!-- <section id="part">
       <Competing :rivalList="rivalList" v-if="rivalCode == 0" />
       <DataEmpty :code="rivalCode" :retry="analysisList" v-if="rivalCode > 0" />
-    </section>
+    </section> -->
   </div>
 </template>
 
@@ -95,7 +95,7 @@ export default class BrandPage extends ViewBase {
     { name: 'praise', label: '口碑' },
     { name: 'user', label: '用户' },
     { name: 'event', label: '事件' },
-    { name: 'part', label: '竞品' }
+    // { name: 'part', label: '竞品' }
   ]
 
   basicCode = 0

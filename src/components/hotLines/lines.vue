@@ -81,7 +81,7 @@ export default class Main extends Vue {
               <p class="tooltip-item">
                 <i class="tooltip-dot" style="background-color: ${color}"></i>
                 <span class="tooltip-name van-ellipsis" >${seriesName}</span>
-                <span class="tooltip-value">${readableNumber(value)}</span>
+                <span class="tooltip-value">${toThousands(value)}</span>
               </p>
             `
             return itemHtml.trim()

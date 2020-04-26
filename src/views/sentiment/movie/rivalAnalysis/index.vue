@@ -131,9 +131,9 @@ export default class MovieRivalAnalysisPage extends ViewBase {
   // 调取口碑对比的接口
   async praiseFetch(query: any) {
     try {
-      const res: any = await movieRivalPraise(query)
+      const data = await movieRivalPraise(query)
       this.praiseCode = 0
-      return res
+      return { data }
     } catch (ex) {
       const { code } = this.handleModuleError(ex)
       this.praiseCode = code

@@ -10,7 +10,7 @@ import echarts from 'echarts'
 import { cssifyObject } from 'css-in-js-utils'
 import moment from 'moment'
 const format = 'YYYY-MM-DD'
-import { toThousands, readableNumber } from '@/util/dealData'
+import { toThousands, readableThousands, readableNumber } from '@/util/dealData'
 
 
 @Component
@@ -81,7 +81,7 @@ export default class Main extends Vue {
               <p class="tooltip-item">
                 <i class="tooltip-dot" style="background-color: ${color}"></i>
                 <span class="tooltip-name van-ellipsis" >${seriesName}</span>
-                <span class="tooltip-value">${toThousands(value)}</span>
+                <span class="tooltip-value">${readableThousands(value)}</span>
               </p>
             `
             return itemHtml.trim()

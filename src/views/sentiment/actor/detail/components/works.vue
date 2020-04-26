@@ -1,6 +1,6 @@
 <template>
   <div class="compet-content" >
-    <ModuleHeader title="作品分析" :link="(Object.keys(worksAnalysis).length > 0 && brandAnalysis.movieCount && movieAnalysis.movieCount && tvAnalysis.movieCount && musicAnalysis.movieCount) ? link : null" />
+    <ModuleHeader title="作品分析" :link="(Object.keys(worksAnalysis).length > 0 && (brandAnalysis.brandCount || movieAnalysis.movieCount || tvAnalysis.tvCount || musicAnalysis.musicCount)) ? link : null" />
     <Movie v-if='Object.keys(worksAnalysis).length > 0 && movieAnalysis.movieCount' :data='movieAnalysis' />
     <Series v-if='Object.keys(worksAnalysis).length > 0 && tvAnalysis.tvCount' :data='tvAnalysis' />
     <Music v-if='Object.keys(worksAnalysis).length > 0 && musicAnalysis.musicCount' :data='musicAnalysis' />

@@ -5,7 +5,7 @@
     <section class="header-wrap">
       <div class="header" v-if="basicCode == 0">
         <figure class="header-fig">
-          <Cover :src="basic.cover"/>
+          <Avatar :src="basic.cover" />
           <div class="header-price" v-if="basic.price">{{basic.price}}</div>
         </figure>
         <div class="header-main">
@@ -183,7 +183,7 @@
             :to="{ name: 'sentimentactor', params: { actorId: it.singerId } }"
             class="singer-card"
           >
-            <img :src="it.avatar" class="singer-avatar" />
+            <Avatar :src="it.avatar" type="actor" class="singer-avatar" />
             <div class="singer-main">
               <h4 class="singer-name">{{it.singerName}}</h4>
               <div class="singer-bar">
@@ -213,7 +213,7 @@
         <li v-for="it in rivalList" :key="it.id" class="rival-item">
           <router-link :to="it.link" class="rival-item-in">
             <figure class="rival-fig">
-              <img :src="it.cover" />
+              <Avatar :src="it.cover" />
             </figure>
             <div class="rival-main">
               <h4 class="rival-name van-ellipsis">{{it.name}}</h4>
@@ -263,7 +263,7 @@ import ModuleHeader from '@/components/moduleHeader'
 import { BubbleBottom } from '@/components/bubble'
 import { selectTime as SelectTime } from '@/components/hotLine'
 import HeatLineCom from '@/views/common/heatLineCom/index.vue'
-import Cover from './components/cover'
+import Avatar from '@/components/avatar'
 import PlayStats, { PlayQuery } from './components/playStats'
 import PraiseComment from '@/views/common/praiseComment/index.vue'
 import UserPortrait from '@/views/common/user/userPortrait.vue'
@@ -290,7 +290,7 @@ const removeFalsy = (list: any[]) => list.filter(it => !!it)
     BubbleBottom,
     SelectTime,
     HeatLineCom,
-    Cover,
+    Avatar,
     PlayStats,
     AnnularChart,
     PraiseComment,
@@ -649,7 +649,7 @@ export default class extends ViewBase {
       background-color: #000;
     }
 
-    .cover {
+    .avatar {
       position: relative;
       border-radius: 10px;
       overflow: hidden;
@@ -1099,11 +1099,15 @@ export default class extends ViewBase {
 }
 
 .singer-avatar {
-  width: 130px;
-  height: 130px;
+  // TODO: 加 !important 是为了防止组件样式动态加载导致的优先级问题，可以考虑样式静态加载
+  width: 130px !important;
+  height: 130px !important;
   border-radius: 100%;
   border: 1px solid #d8d8d8;
-  object-fit: contain;
+  overflow: hidden;
+  img {
+    object-fit: contain;
+  }
 }
 
 .singer-main {

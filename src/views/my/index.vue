@@ -1,6 +1,6 @@
 <template>
   <div class="viewpage">
-    <SentimentBar title="我的服务" :bgColor="'#88AAF6'" :titleShow="true" />
+    <SentimentBar title="我的服务" :bgColor="'#88AAF6'" :titleShow="true" class="service" />
     <div class="user">
       <p class="img">
         <img :src="services.userAvatar" alt="我开通的服务" />
@@ -74,6 +74,9 @@ export default class MyService extends ViewBase {
 <style lang="less" scoped>
 .viewpage {
   color: #303030;
+}
+/deep/ .service svg {
+  display: none;
 }
 .user {
   background-color: #88aaf6;

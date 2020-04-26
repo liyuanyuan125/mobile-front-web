@@ -34,8 +34,8 @@
       v-if="!eventCode"
     />
     <DataEmpty :code="eventCode" :retry="getEventList" v-if="eventCode > 0" />
-    <RivalAnalysis :rivalList="rivalAnalysis" id="rival" v-if="!rivalCode" />
-    <DataEmpty :code="rivalCode" :retry="getRivalList" v-if="rivalCode > 0" />
+    <!-- <RivalAnalysis :rivalList="rivalAnalysis" id="rival" v-if="!rivalCode" />
+    <DataEmpty :code="rivalCode" :retry="getRivalList" v-if="rivalCode > 0" />-->
     <ActorList :actorList="actorList" id="actor" :link="getApplink('actorList')" />
     <ProduceList :produceList="produceList" :link="getApplink('produceDistribute')" />
   </div>
@@ -131,7 +131,7 @@ export default class MoviePage extends ViewBase {
     { name: 'praise', label: '口碑' },
     { name: 'user', label: '用户' },
     { name: 'event', label: '事件' },
-    { name: 'rival', label: '竞品' },
+    // { name: 'rival', label: '竞品' },
     { name: 'actor', label: '资料' }
   ]
   // 热度分析+平台信息
@@ -166,7 +166,7 @@ export default class MoviePage extends ViewBase {
     await this.getMovieInfo()
     await this.getHeatAnalysis()
     await this.getEventList()
-    await this.getRivalList()
+    // await this.getRivalList()
   }
 
   // api获取电影详情页

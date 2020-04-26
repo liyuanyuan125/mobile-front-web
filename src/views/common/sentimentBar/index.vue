@@ -141,10 +141,11 @@ export default class SentimentBar extends Vue {
   // 去 Pk 页
   goRivalAnalysis() {
     if (this.sidebar && this.sidebar.rivalIds) {
-      const isAppLink = typeof this.sidebar.rivalIds.name === 'string'
-      isAppLink
-        ? this.$router.push(this.sidebar.rivalIds)
-        : this.setRival(this.sidebar.rivalIds)
+      this.setRival(this.sidebar.rivalIds)
+      // const isAppLink = typeof this.sidebar.rivalIds.name === 'string'
+      // isAppLink
+      //   ? this.$router.push(this.sidebar.rivalIds)
+      //   : this.setRival(this.sidebar.rivalIds)
     }
   }
 }

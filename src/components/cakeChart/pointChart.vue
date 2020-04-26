@@ -56,7 +56,7 @@ export default class PointChart extends Vue {
       titleLeft: this.data.titleLeft || 'left', // 标题位置 left center right
       titleSize: this.data.titleSize || 18, // 标题字体大小
       titleWeight: this.data.titleWeight || 'bold', // 标题字体粗细
-      legendtoFixed : this.data.legendtoFixed || 1 // legend显示几位小数
+      legendtoFixed : this.data.legendtoFixed || 2 // legend显示几位小数
   }
 
   this.sesnsitivity = this.data.sesnsitivity || ''

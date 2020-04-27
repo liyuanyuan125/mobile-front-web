@@ -26,7 +26,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
-import { BubbleBottom } from '@/components/bubble'
+import { BubbleBottom, Title } from '@/components/bubble'
 import { imgFixed } from '@/fn/imgProxy'
 
 @Component({
@@ -56,21 +56,42 @@ export default class BaseInfoArea extends ViewBase {
       },
       {
         type: '3',
-        title: '行业实时热度',
         value: this.overView ? this.overView.heatCount : null,
         trend: this.overView ? this.overView.heatTrend : null,
-        showdown: true
+        showdown: true,
+        renderTitle: (h: any) => {
+          return h(Title, {
+            props: {
+              title: `实时热度`
+            },
+            on: {
+              click: this.showNote
+            }
+          })
+        }
       },
       { type: '4', title: '好感度', value: this.baseInfo.favorable }
     ]
     return bubble
   }
+
   // 封面图
   get movieCover() {
     const url: any = this.baseInfo.coverUrl
       ? imgFixed(this.baseInfo.coverUrl, 180, 240)
       : ''
     return url
+  }
+
+  // 显示说明
+  showNote() {
+    alert({
+      title: '',
+      message:
+        '热度值是根据百度、微博、微信三大指数综合计算。热度指数值每日更新2次，分别为12:00和17:30',
+      showConfirmButton: true,
+      className: 'alertwid'
+    })
   }
 }
 </script>

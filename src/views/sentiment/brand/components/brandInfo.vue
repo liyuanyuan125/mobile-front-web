@@ -89,6 +89,16 @@ export default class Main extends Vue {
         value: this.bubbleData.heatCount,
         trend: this.bubbleData.heatTrend,
         showdown: true,
+        renderTitle: (h: any) => {
+          return h(Title, {
+            props: {
+              title: '综合热度'
+            },
+            on: {
+              click: this.handleHeat
+            }
+          })
+        },
         big: true,
       },
       {
@@ -99,11 +109,19 @@ export default class Main extends Vue {
     ]
   }
   demo() {
-    // toast('近90天内，物料新增的点赞、评论、转发、阅读或播放的累计之和')
     alert({
-      title: '提示',
+      // title: '提示',
       message:
         '近90天内，物料新增的点赞、评论、转发、阅读或播放的累计之和',
+      showConfirmButton: true,
+      className: 'alertwid'
+    })
+  }
+  handleHeat() {
+    alert({
+      // title: '提示',
+      message:
+        '热度值是根据百度、微博、微信三大指数综合计算。热度指数值每日更新2次，分别为12:00和17:30',
       showConfirmButton: true,
       className: 'alertwid'
     })

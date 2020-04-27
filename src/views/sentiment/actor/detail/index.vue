@@ -322,7 +322,7 @@ export default class KolPage extends ViewBase {
           renderTitle: (h: any) => {
             return h(Title, {
               props: {
-                title: `实时热度`
+                title: `综合热度`
               },
               on: {
                 click: this.showNoteHeat
@@ -586,16 +586,16 @@ export default class KolPage extends ViewBase {
   &::before {
     display: none;
   }
-  /deep/ .van-tabs__nav {
-    padding-left: 130px;
-    padding-right: 30px;
-  }
-  /deep/ .van-tab {
-    flex-basis: auto !important;
-  }
+  // /deep/ .van-tabs__nav {
+  //   padding-left: 130px;
+  //   padding-right: 30px;
+  // }
+  // /deep/ .van-tab {
+  //   flex-basis: auto !important;
+  // }
 }
 /deep/ nav.formattab .van-tab {
-  flex-basis: 16.6% !important;
+  flex-basis: 20% !important;
 }
 
 .curve {

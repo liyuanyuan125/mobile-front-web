@@ -25,6 +25,7 @@
       :ageRangeList="userAnalysis && userAnalysis.ageRangeList"
       :genderList="userAnalysis && userAnalysis.genderList"
       id="user"
+      type="3"
       :link="getApplink('userAnalysis')"
     />
     <EventList

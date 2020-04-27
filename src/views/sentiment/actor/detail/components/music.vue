@@ -1,32 +1,31 @@
 <template>
-    <div class='scroll'>
-        <div class='title'>音乐({{data.musicCount}})</div>
-        <ul>
-            <li>
-                <p class='p1'>{{data.averagScore == '' ? '-' : data.averagScore}}</p>
-                <p class='p2' @click='showNote()'>作品均分
-                  <Icon name="question-o" size="13" class="icon-arrow"/>
-                </p>
-            </li>
-            <li class='chgli'></li>
-            <li>
-                <p class='p1-3'>{{data.mainGenre == '' ? '-' : data.mainGenre}}</p>
-                <p class='p2'>类型偏好</p>
-            </li>
-        </ul>
-        <div class='movielist'>
-            <div class='rowmovie' v-for='(item, index) in dataList' :key='index + item.musicId'>
-                <div class="img" @click='goDetail(item.musicId)'>
-                  <!-- <img :src=item.coverUrl.url alt=""> -->
-                  <img :src="item.coverImg"  alt="">
-                </div>
-                <div class='name'>
-                  {{item.musicName}}
-                </div>
-                <div class='type'>{{(item.genres == '' || item.genres == null) ? '-' : item.genres}}</div>
-            </div>
-       </div>
+  <div class="scroll">
+    <div class="title">音乐({{data.musicCount}})</div>
+    <ul>
+      <li>
+        <p class="p1">{{data.averagScore == '' ? '-' : data.averagScore}}</p>
+        <p class="p2" @click="showNote()">
+          作品均分
+          <Icon name="question-o" size="13" class="icon-arrow" />
+        </p>
+      </li>
+      <li class="chgli"></li>
+      <li>
+        <p class="p1-3">{{data.mainGenre == '' ? '-' : data.mainGenre}}</p>
+        <p class="p2">类型偏好</p>
+      </li>
+    </ul>
+    <div class="movielist">
+      <div class="rowmovie" v-for="(item, index) in dataList" :key="index + item.musicId">
+        <div class="img" @click="goDetail(item.musicId)">
+          <!-- <img :src=item.coverUrl.url alt=""> -->
+          <img :src="item.coverImg" alt />
+        </div>
+        <div class="name">{{item.musicName}}</div>
+        <div class="type">{{(item.genres == '' || item.genres == null) ? '-' : item.genres}}</div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script lang='ts'>
@@ -35,15 +34,15 @@ import { Icon } from 'vant'
 import moment from 'moment'
 import { alert } from '@/util/toast'
 import { imgFixed } from '@/fn/imgProxy'
-
+import { openWebPage } from '@/fn/openUrlInApp'
 
 @Component({
   components: {
-    Icon,
+    Icon
   }
 })
 export default class Main extends Vue {
-  @Prop({ type: Object, default: []}) data!: any
+  @Prop({ type: Object, default: [] }) data!: any
 
   defaultImg: any = '@/assets/musicdefault.png'
 
@@ -52,34 +51,34 @@ export default class Main extends Vue {
     this.dataList = (this.data.musicList.slice(0, 10) || []).map((it: any) => {
       return {
         ...it,
-        coverImg: it.coverUrl ? imgFixed(it.coverUrl, 200, 200 , 4) : require('@/assets/musicdefault.png'),
+        coverImg: it.coverUrl
+          ? imgFixed(it.coverUrl, 200, 200, 4)
+          : require('@/assets/musicdefault.png')
       }
     })
   }
 
   // 详情页跳转
   goDetail(id: any) {
-    this.$router.push({
-      name: 'sentiment-song',
-      params: {
-        id
-      }
-    })
+    openWebPage(`/sentiment/song/${id}`)
+    // this.$router.push({
+    //   name: 'sentiment-song',
+    //   params: {
+    //     id
+    //   }
+    // })
   }
 
-    // 显示说明
+  // 显示说明
   showNote() {
     alert({
       // title: '提示',
-      message:
-        '作品评分为全网综合评分',
+      message: '作品评分为全网综合评分',
       showConfirmButton: true,
       className: 'alertwid'
     })
   }
-
 }
-
 </script>
 
 <style lang='less' scoped>
@@ -213,5 +212,4 @@ export default class Main extends Vue {
     white-space: nowrap;
   }
 }
-
 </style>

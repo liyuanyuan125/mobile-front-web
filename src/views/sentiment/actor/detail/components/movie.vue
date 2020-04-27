@@ -1,60 +1,62 @@
 <template>
-    <div class='scroll'>
-        <div class='title'>电影({{data.movieCount}})</div>
-        <ul>
-            <li>
-                <p class='p1'>{{data.boxOfficeCount == '' ? '-' : data.boxOfficeCount}}</p>
-                <p class='p2'>累计票房</p>
-            </li>
-            <li class='chgli'></li>
-            <li>
-                <p class='p1'>{{data.averagScore == '' ? '-' : data.averagScore}}</p>
-                <p class='p2' @click='showNote()'>作品均分
-                  <Icon name="question-o" size="13" class="icon-arrow"/>
-                </p>
-            </li>
-            <li class='chgli'></li>
-            <li>
-                <p class='p1-3'>{{data.mainGenre == '' ? '-' : data.mainGenre}}</p>
-                <p class='p2'>类型偏好</p>
-            </li>
-        </ul>
-        <div class='movielist'>
-            <div class='rowmovie' v-for='(item, index) in dataList' :key='index + item.movieId'>
-                <div class="img" @click='goDetail(item.movieId)'>
-                  <!-- <img :src=item.coverUrl.url alt=""> -->
-                  <img :src="item.coverImg"  alt="">
-                </div>
-                <div class='name'>
-                  {{item.movieName}}
-                </div>
-                <div class='type'>{{(item.genres == '' || item.genres == null) ? '-' : item.genres}}</div>
-            </div>
-       </div>
+  <div class="scroll">
+    <div class="title">电影({{data.movieCount}})</div>
+    <ul>
+      <li>
+        <p class="p1">{{data.boxOfficeCount == '' ? '-' : data.boxOfficeCount}}</p>
+        <p class="p2">累计票房</p>
+      </li>
+      <li class="chgli"></li>
+      <li>
+        <p class="p1">{{data.averagScore == '' ? '-' : data.averagScore}}</p>
+        <p class="p2" @click="showNote()">
+          作品均分
+          <Icon name="question-o" size="13" class="icon-arrow" />
+        </p>
+      </li>
+      <li class="chgli"></li>
+      <li>
+        <p class="p1-3">{{data.mainGenre == '' ? '-' : data.mainGenre}}</p>
+        <p class="p2">类型偏好</p>
+      </li>
+    </ul>
+    <div class="movielist">
+      <div class="rowmovie" v-for="(item, index) in dataList" :key="index + item.movieId">
+        <div class="img" @click="goDetail(item.movieId)">
+          <!-- <img :src=item.coverUrl.url alt=""> -->
+          <img :src="item.coverImg" alt />
+        </div>
+        <div class="name">{{item.movieName}}</div>
+        <div class="type">{{(item.genres == '' || item.genres == null) ? '-' : item.genres}}</div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script lang='ts'>
-import { Component, Vue , Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Icon } from 'vant'
 import moment from 'moment'
 import { alert } from '@/util/toast'
 import { imgFixed } from '@/fn/imgProxy'
+import { openWebPage } from '@/fn/openUrlInApp'
 
 @Component({
   components: {
-    Icon,
+    Icon
   }
 })
 export default class Main extends Vue {
-  @Prop({ type: Object, default: []}) data!: any
+  @Prop({ type: Object, default: [] }) data!: any
 
   dataList: any = []
   created() {
     this.dataList = (this.data.movieList.slice(0, 10) || []).map((it: any) => {
       return {
         ...it,
-        coverImg: it.coverUrl ? imgFixed(it.coverUrl, 200, 260 , 4) : require('@/assets/moviedefault.png'),
+        coverImg: it.coverUrl
+          ? imgFixed(it.coverUrl, 200, 260, 4)
+          : require('@/assets/moviedefault.png')
       }
     })
   }
@@ -65,8 +67,7 @@ export default class Main extends Vue {
   showNote() {
     alert({
       // title: '提示',
-      message:
-        '作品评分为全网综合评分',
+      message: '作品评分为全网综合评分',
       showConfirmButton: true,
       className: 'alertwid'
     })
@@ -74,16 +75,15 @@ export default class Main extends Vue {
 
   // 详情页跳转
   goDetail(id: any) {
-    this.$router.push({
-      name: 'sentimentmovie',
-      params: {
-        movieId: id
-      }
-    })
+    openWebPage(`/sentiment/movie/${id}`)
+    // this.$router.push({
+    //   name: 'sentimentmovie',
+    //   params: {
+    //     movieId: id
+    //   }
+    // })
   }
-
 }
-
 </script>
 
 <style lang='less' scoped>
@@ -217,5 +217,4 @@ export default class Main extends Vue {
     white-space: nowrap;
   }
 }
-
 </style>

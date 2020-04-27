@@ -1,18 +1,16 @@
 <template>
-    <div class='scroll'>
-        <div class='title'>品牌({{data.brandCount}})</div>
-        <div class='movielist'>
-            <div class='rowmovie' v-for='(item, index) in dataList' :key='index + item.brandId'>
-                <div class="img" @click='goDetail(item.brandId)'>
-                  <img :src="item.coverImg"  alt="">
-                </div>
-                <div class='name'>
-                  {{item.brandName}}
-                </div>
-                <div class='type'>{{(item.genres == '' || item.genres == null) ? '-' : item.genres}}</div>
-            </div>
-       </div>
+  <div class="scroll">
+    <div class="title">品牌({{data.brandCount}})</div>
+    <div class="movielist">
+      <div class="rowmovie" v-for="(item, index) in dataList" :key="index + item.brandId">
+        <div class="img" @click="goDetail(item.brandId)">
+          <img :src="item.coverImg" alt />
+        </div>
+        <div class="name">{{item.brandName}}</div>
+        <div class="type">{{(item.genres == '' || item.genres == null) ? '-' : item.genres}}</div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script lang='ts'>
@@ -20,15 +18,15 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Icon } from 'vant'
 import moment from 'moment'
 import { imgFixed } from '@/fn/imgProxy'
-
+import { openWebPage } from '@/fn/openUrlInApp'
 
 @Component({
   components: {
-    Icon,
+    Icon
   }
 })
 export default class Main extends Vue {
-  @Prop({ type: Object, default: []}) data!: any
+  @Prop({ type: Object, default: [] }) data!: any
 
   defaultImg: any = '@/assets/branddefault.png'
 
@@ -37,23 +35,24 @@ export default class Main extends Vue {
     this.dataList = (this.data.brandList.slice(0, 10) || []).map((it: any) => {
       return {
         ...it,
-        coverImg: it.coverUrl ? imgFixed(it.coverUrl, 200, 200 , 4) : require('@/assets/branddefault.png'),
+        coverImg: it.coverUrl
+          ? imgFixed(it.coverUrl, 200, 200, 4)
+          : require('@/assets/branddefault.png')
       }
     })
   }
 
   // 详情页跳转
   goDetail(id: any) {
-    this.$router.push({
-      name: 'sentiment-brand',
-      params: {
-        id,
-      }
-    })
+    openWebPage(`/sentiment/brand/${id}`)
+    // this.$router.push({
+    //   name: 'sentiment-brand',
+    //   params: {
+    //     id,
+    //   }
+    // })
   }
-
 }
-
 </script>
 
 <style lang='less' scoped>
@@ -174,5 +173,4 @@ export default class Main extends Vue {
     white-space: nowrap;
   }
 }
-
 </style>

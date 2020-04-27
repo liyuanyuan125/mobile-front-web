@@ -172,7 +172,8 @@ export default class AnnularChart extends Vue {
     justify-content: center;
   }
   .chart-text {
-    width: 20%;
+    width: 25%;
+    min-width: 90px;
     height: 20%;
     text-align: center;
     .proportion {

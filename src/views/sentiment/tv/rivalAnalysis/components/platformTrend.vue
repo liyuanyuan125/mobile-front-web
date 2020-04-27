@@ -36,6 +36,7 @@ import { toast } from '@/util/toast'
 import moment from 'moment'
 import { Button } from 'vant'
 import dataEmpty from '@/views/common/dataEmpty/index.vue'
+import { formatCharts } from '@/fn/handleChart'
 
 @Component({
   components: {
@@ -53,6 +54,7 @@ export default class PlatformTrend extends ViewBase {
   @Prop({ type: String }) query!: string
 
   tabList: any = []
+  count: number = 7
   colors: any[] = [
     '#79DDC5',
     '#8DC3FF',
@@ -72,6 +74,7 @@ export default class PlatformTrend extends ViewBase {
 
   @Watch('dates', { deep: true })
   watchDays(val: any) {
+    this.count = val.count || 7
     this.uplist()
   }
 
@@ -87,19 +90,11 @@ export default class PlatformTrend extends ViewBase {
 
   // 综合热度数据处理 title，xdata，ydata
   formatDatas(dataObj: any[]) {
-    let xDate: any[] = []
-    const yDate = (dataObj || []).map((it: any) => {
-      const { rivalName, data } = it
-      xDate = (data || []).map((ite: any) => ite.date)
-      return {
-        name: rivalName,
-        list: (data || []).map((ite: any) => ite.value)
-      }
-    })
-    this.lineDatas = {
-      title: '',
-      xDate,
-      yDate
+    if (dataObj.length) {
+      const newValue = formatCharts(dataObj, this.count)
+      this.lineDatas = newValue
+    } else {
+      this.lineDatas = {}
     }
   }
 

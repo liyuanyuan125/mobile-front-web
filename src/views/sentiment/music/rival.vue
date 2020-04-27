@@ -362,21 +362,22 @@ export default class extends ViewBase {
 .main-page {
   padding-top: 1px;
   background-color: #f2f3f6;
+
+  // 放在里面为了提高优先级
+  .tab-nav {
+    top: 88px;
+    /deep/ .van-tabs__nav {
+      padding-left: 90px;
+      padding-right: 90px;
+    }
+    /deep/ .van-tab {
+      flex-basis: auto !important;
+    }
+  }
 }
 
 .rival-wrap {
   min-height: 88px;
-}
-
-.tab-nav {
-  top: 88px;
-  /deep/ .van-tabs__nav {
-    padding-left: 90px;
-    padding-right: 90px;
-  }
-  /deep/ .van-tab {
-    flex-basis: auto !important;
-  }
 }
 
 .pane {

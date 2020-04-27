@@ -60,8 +60,8 @@ mockGet('/yuqing/music/song/play/analysis', () => {
         },
       ],
       dailyEventList: [
-        { date: 1585756800000, eventName: '1事件名事件名事件名事件名事件名', eventId: 1 },
-        { date: 1586016000000, eventName: '2事件名事件名事件名事件名事件名', eventId: 2 },
+        { date: 1585756800000, eventName: '', eventId: 1 },
+        { date: 1586016000000, eventName: '2事件名事件名事件名事件名事件名', eventId: null },
         { date: 1586275200000, eventName: '3事件名事件名事件名事件名事件名', eventId: 3 },
       ],
       dailyFormList: [

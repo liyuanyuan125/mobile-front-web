@@ -51,6 +51,7 @@ export default class ChinaMap extends Vue {
 
   @Prop({ type: String, default: '#8798af' }) tooltipNameColor!: string
 
+  /** 保留的小数位数，默认 1 */
   @Prop({ type: Number, default: 1 }) digits!: number
 
   get chartData() {
@@ -65,7 +66,7 @@ export default class ChinaMap extends Vue {
             return null
           }
 
-          const valueShow = `${value.toFixed(this.digits)}${this.unit}`
+          const valueShow = `${(+value || 0).toFixed(this.digits)}${this.unit}`
           const valueColor = this.tooltipValueColor
           const nameColor = this.tooltipNameColor
           const html = `

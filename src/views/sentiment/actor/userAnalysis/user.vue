@@ -12,6 +12,7 @@
             <div class='item-title'>年龄占比</div>
             <VerticalBar
               :data="ageRangeList"
+              :digits='2'
               class="chart"
             />
           </div>
@@ -107,13 +108,13 @@ export default class KolPage extends ViewBase {
       this.userRegionList = (userRegionList || []).map((it: any) => {
         return {
           ...it,
-          value: (it.value / 100).toFixed(1)
+          value: (it.value / 100)
         }
       })
       this.ageRangeList = (ageRangeList || []).map((it: any) => {
         return {
           ...it,
-          value: (it.value / 100).toFixed(1)
+          value: (it.value / 100)
         }
       })
       this.platformFansList.data = platformFansList || []
@@ -129,7 +130,7 @@ export default class KolPage extends ViewBase {
   showNote() {
     // console.log(123)
     alert({
-      title: '提示',
+      // title: '提示',
       message:
         '大数据平台展示的粉丝数是各平台粉丝数的累计之和，粉丝平台分布是大数据平台粉丝数在各平台的占比情况',
       showConfirmButton: true,

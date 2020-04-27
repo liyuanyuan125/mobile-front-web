@@ -66,7 +66,7 @@ export default class UserPortrait extends ViewBase {
     if (rait && rait.length) {
       for (const item of this.ageRangeList) {
         item.value = item.value > 10000 ? 10000 : item.value
-        xData.push((item.value / 100).toFixed(1))
+        xData.push((item.value / 100).toFixed(2))
         yData.push(item.name)
       }
       ageList = {
@@ -105,7 +105,7 @@ export default class UserPortrait extends ViewBase {
 
       for (const item of raitList) {
         xData.push(item.name)
-        yData.push((item.value / 100).toFixed(1))
+        yData.push((item.value / 100).toFixed(2))
       }
       gender = {
         xData,

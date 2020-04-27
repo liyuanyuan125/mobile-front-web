@@ -6,6 +6,8 @@
       <ChinaMap
         :data="data"
         :colorRange="colorRange"
+        :maxValue="maxValue"
+        :digits="2"
         class="china-map"
       />
 
@@ -49,8 +51,9 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import ModuleHeader from '@/components/moduleHeader'
 import ChinaMap, { ChinaMapItem } from '@/components/chinaMap'
-import { RawLocation } from 'vue-router'
 import DataEmpty from '@/views/common/dataEmpty/index.vue'
+import { RawLocation } from 'vue-router'
+import { maxBy } from 'lodash'
 
 @Component({
   components: {
@@ -71,6 +74,12 @@ export default class UserArea extends Vue {
 
   /** 查看更多链接 */
   @Prop({ type: [ String, Object ], default: '' }) moreLink!: RawLocation
+
+  get maxValue() {
+    const item = maxBy(this.data, 'value')
+    const max = item && item.value || 100
+    return max
+  }
 
   get top5() {
     const list = this.data

@@ -67,7 +67,7 @@ export default class Main extends Vue {
     // 显示说明
   showplayCount() {
     alert({
-      title: '提示',
+      // title: '提示',
       message:
         '播放量为腾讯视频、芒果视频和搜狐视频播放量之和',
       showConfirmButton: true,
@@ -78,7 +78,7 @@ export default class Main extends Vue {
     // 显示说明
   showaveragScore() {
     alert({
-      title: '提示',
+      // title: '提示',
       message:
         '作品评分为全网综合评分',
       showConfirmButton: true,

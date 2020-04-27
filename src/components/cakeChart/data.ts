@@ -138,7 +138,7 @@ export function getPointOption(data: any) {
         textStyle: {
             rich: {
                 a: {
-                    fontSize: 16,
+                    fontSize: 14,
                     verticalAlign: 'middle',
                     align: 'center',
                     padding: [0, -10, 0, 0],
@@ -222,7 +222,7 @@ export function getRingOption(data: any) {
                     // formatter: '{a|{d}%}{b|{b}}\n\n',
                     formatter(a: any) {
                       const arr = [
-                        '{b|' + a.name + '}{a|' + parseFloat(a.percent).toFixed(1) + '%}']
+                        '{b|' + a.name + '}{a|' + parseFloat(a.percent).toFixed(2) + '%}']
                         return arr.join()
                     },
                     borderWidth: 20,

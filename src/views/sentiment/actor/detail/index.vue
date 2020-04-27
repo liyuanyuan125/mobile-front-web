@@ -30,10 +30,10 @@
           </p>
         </div>
       </div>
-      <div v-if='basicCode == 0' class="dubble">
+      <div v-if="basicCode == 0" class="dubble">
         <BubbleBottom :data="bubbleData" />
       </div>
-      <div v-if='basicCode == 0' class="curve">
+      <div v-if="basicCode == 0" class="curve">
         <div class="curvetop"></div>
         <div class="curvebot"></div>
       </div>
@@ -67,6 +67,7 @@
       <!-- 用户分析 -->
       <UserPortrait
         v-if="show"
+        type="2"
         :genderList="userAnalysis.genderList"
         :ageRangeList="userAnalysis.ageRangeList"
         :link="getApplink('userAnalysis')"
@@ -75,11 +76,7 @@
 
     <section v-if="showevent" class="pane" id="event">
       <!-- 营销事件 -->
-      <Event 
-        :eventList="eventList" 
-        :link="getApplink('eventMarketingList')"
-        v-if="eventCode == 0"
-      />
+      <Event :eventList="eventList" :link="getApplink('eventMarketingList')" v-if="eventCode == 0" />
       <DataEmpty :code="eventCode" :retry="getEventList" v-if="eventCode > 0" />
     </section>
 
@@ -92,13 +89,9 @@
       <Competing :pkUserList="pkUserList" :pkIdList="pkIdList" v-if="rivalCode == 0" />
       <DataEmpty :code="rivalCode" :retry="getPkUser" v-if="rivalCode > 0" />
 
-    </section> -->
+    </section>-->
 
-    <section
-      v-if="show"
-      class="pane"
-      id="work"
-    >
+    <section v-if="show" class="pane" id="work">
       <!-- 作品分析 -->
       <Works :worksAnalysis="worksAnalysis" :link="getApplink('actorWorksAnalysis')" />
     </section>
@@ -289,8 +282,9 @@ export default class KolPage extends ViewBase {
       } = await getActorDetail({ actorId: this.$route.params.actorId })
       this.actorInfo = actorInfo
       this.title = actorInfo.actorName
-      this.coverImg = actorInfo.coverUrl ? imgFixed(actorInfo.coverUrl, 172, 172, 4)
-      : require('@/assets/actordefault.png')
+      this.coverImg = actorInfo.coverUrl
+        ? imgFixed(actorInfo.coverUrl, 172, 172, 4)
+        : require('@/assets/actordefault.png')
       this.bubbleData = [
         {
           type: '1',
@@ -341,7 +335,12 @@ export default class KolPage extends ViewBase {
         {
           type: '4',
           title: '好感度',
-          value: actorOverView == null ? '-' : (actorInfo.favorable == null ? '-' : actorInfo.favorable)
+          value:
+            actorOverView == null
+              ? '-'
+              : actorInfo.favorable == null
+              ? '-'
+              : actorInfo.favorable
         }
       ]
       this.publicPraise = publicPraise
@@ -419,7 +418,8 @@ export default class KolPage extends ViewBase {
   showNoteHeat() {
     alert({
       // title: '提示',
-      message: '热度值是根据百度、微博、微信三大指数综合计算。热度指数值每日更新2次，分别为12:00和17:30',
+      message:
+        '热度值是根据百度、微博、微信三大指数综合计算。热度指数值每日更新2次，分别为12:00和17:30',
       showConfirmButton: true,
       className: 'alertwid'
     })

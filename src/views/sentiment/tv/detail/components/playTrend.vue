@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <div v-if="!playCode">
+    <div>
       <trendLines
         :lineData="lineDatas"
         v-if="lineDatas.yDate && lineDatas.yDate.length"
@@ -44,7 +44,6 @@
         <a class="daily-form-more" @click="goLink">查看全部日期</a>
       </div>
     </div>
-    <dataEmpty :code="playCode" :retry="apiGetData" v-if="playCode > 0" />
   </div>
 </template>
 
@@ -74,7 +73,6 @@ export default class PlayTrend extends ViewBase {
   @Prop({ type: String }) query!: string
   @Prop({ type: Object }) link!: AppLink
 
-  playCode: number = 0
   lineDatas: any = {}
   dates = {
     startTime: lastDays(7)[0],
@@ -96,18 +94,12 @@ export default class PlayTrend extends ViewBase {
 
   // 接口获取数据
   async apiGetData() {
-    try {
-      const res: any = await this.fetch({
-        tvId: this.query,
-        ...this.dates
-      })
-      this.response = res
-      this.playCode = 0
-      this.formatDatas(this.response.playDataList)
-    } catch (ex) {
-      const { code } = this.handleModuleError(ex)
-      this.playCode = code
-    }
+    const res: any = await this.fetch({
+      tvId: this.query,
+      ...this.dates
+    })
+    this.response = res
+    this.formatDatas(this.response.playDataList || [])
   }
 
   // 获取平台名称

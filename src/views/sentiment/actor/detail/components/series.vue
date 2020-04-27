@@ -1,39 +1,39 @@
 <template>
-    <div class='scroll'>
-        <div class='title'>剧集({{data.tvCount}})</div>
-        <ul>
-            <li>
-                <p class='p1'>{{data.playCount == '' ? '-' : data.playCount}}</p>
-                <p class='p2' @click='showplayCount()'>累计播放量
-                  <Icon style='right: 10%' name="question-o" size="13" class="icon-arrow"/>
-                </p>
-            </li>
-            <li class='chgli'></li>
-            <li>
-                <p class='p1'>{{data.averagScore == '' ? '-' : data.averagScore}}</p>
-                <p class='p2' @click='showaveragScore()'>作品均分
-                  <Icon name="question-o" size="13" class="icon-arrow"/>
-                </p>
-            </li>
-            <li class='chgli'></li>
-            <li>
-                <p class='p1-3'>{{data.mainGenre == '' ? '-' : data.mainGenre}}</p>
-                <p class='p2'>类型偏好</p>
-            </li>
-        </ul>
-        <div class='movielist'>
-            <div class='rowmovie' v-for='(item, index) in dataList' :key='index + item.tvId'>
-                <div class="img" @click='goDetail(item.tvId)'>
-                  <!-- <img :src=item.coverUrl.url alt=""> -->
-                  <img :src="item.coverImg"  alt="">
-                </div>
-                <div class='name'>
-                  {{item.tvName}}
-                </div>
-                <div class='type'>{{(item.genres == '' || item.genres == null) ? '-' : item.genres}}</div>
-            </div>
-       </div>
+  <div class="scroll">
+    <div class="title">剧集({{data.tvCount}})</div>
+    <ul>
+      <li>
+        <p class="p1">{{data.playCount == '' ? '-' : data.playCount}}</p>
+        <p class="p2" @click="showplayCount()">
+          累计播放量
+          <Icon style="right: 10%" name="question-o" size="13" class="icon-arrow" />
+        </p>
+      </li>
+      <li class="chgli"></li>
+      <li>
+        <p class="p1">{{data.averagScore == '' ? '-' : data.averagScore}}</p>
+        <p class="p2" @click="showaveragScore()">
+          作品均分
+          <Icon name="question-o" size="13" class="icon-arrow" />
+        </p>
+      </li>
+      <li class="chgli"></li>
+      <li>
+        <p class="p1-3">{{data.mainGenre == '' ? '-' : data.mainGenre}}</p>
+        <p class="p2">类型偏好</p>
+      </li>
+    </ul>
+    <div class="movielist">
+      <div class="rowmovie" v-for="(item, index) in dataList" :key="index + item.tvId">
+        <div class="img" @click="goDetail(item.tvId)">
+          <!-- <img :src=item.coverUrl.url alt=""> -->
+          <img :src="item.coverImg" alt />
+        </div>
+        <div class="name">{{item.tvName}}</div>
+        <div class="type">{{(item.genres == '' || item.genres == null) ? '-' : item.genres}}</div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script lang='ts'>
@@ -42,15 +42,15 @@ import { Icon } from 'vant'
 import moment from 'moment'
 import { alert } from '@/util/toast'
 import { imgFixed } from '@/fn/imgProxy'
-
+import { openWebPage } from '@/fn/openUrlInApp'
 
 @Component({
   components: {
-    Icon,
+    Icon
   }
 })
 export default class Main extends Vue {
-  @Prop({ type: Object, default: []}) data!: any
+  @Prop({ type: Object, default: [] }) data!: any
 
   defaultImg: any = '@/assets/tvdefault.png'
 
@@ -59,28 +59,28 @@ export default class Main extends Vue {
     this.dataList = (this.data.tvList.slice(0, 10) || []).map((it: any) => {
       return {
         ...it,
-        coverImg: it.coverUrl ? imgFixed(it.coverUrl, 200, 260 , 4) : require('@/assets/tvdefault.png'),
+        coverImg: it.coverUrl
+          ? imgFixed(it.coverUrl, 200, 260, 4)
+          : require('@/assets/tvdefault.png')
       }
     })
   }
 
-    // 显示说明
+  // 显示说明
   showplayCount() {
     alert({
       // title: '提示',
-      message:
-        '播放量为腾讯视频、芒果视频和搜狐视频播放量之和',
+      message: '播放量为腾讯视频、芒果视频和搜狐视频播放量之和',
       showConfirmButton: true,
       className: 'alertwid'
     })
   }
 
-    // 显示说明
+  // 显示说明
   showaveragScore() {
     alert({
       // title: '提示',
-      message:
-        '作品评分为全网综合评分',
+      message: '作品评分为全网综合评分',
       showConfirmButton: true,
       className: 'alertwid'
     })
@@ -88,16 +88,15 @@ export default class Main extends Vue {
 
   // 详情页跳转
   goDetail(id: any) {
-    this.$router.push({
-      name: 'sentimenttv',
-      params: {
-        tvId: id
-      }
-    })
+    openWebPage(`/sentiment/tv/${id}`)
+    // this.$router.push({
+    //   name: 'sentimenttv',
+    //   params: {
+    //     tvId: id
+    //   }
+    // })
   }
-
 }
-
 </script>
 
 <style lang='less' scoped>
@@ -230,5 +229,4 @@ export default class Main extends Vue {
     white-space: nowrap;
   }
 }
-
 </style>

@@ -1,6 +1,16 @@
 <template>
   <div class="userportrait">
-    <ModuleHeader title="用户分析" :link="genderListData || ageRangeListData ? link : null" />
+    <!-- <ModuleHeader
+      title="用户分析"
+      :link="genderListData || ageRangeListData ? link : null"
+      @click.native="openLink"
+    />-->
+    <div class="titbox" @click="openLink">
+      <h4>用户分析</h4>
+      <div v-if="genderListData || ageRangeListData">
+        <Icon name="arrow" size="20" class="more-icon" />
+      </div>
+    </div>
     <van-row type="flex" class="raitwrap" v-if="genderListData || ageRangeListData">
       <van-col :span="genderListData && ageRangeListData ? 10 :24" v-if="genderListData">
         <BarGraph :dataOption="genderListData" :colorList="colorList" />
@@ -16,16 +26,18 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
-import { Col, Row } from 'vant'
+import { Col, Row, Icon } from 'vant'
 import BarGraph from '@/components/kol/barGraph.vue'
 import barGraphRow from '@/components/kol/barGraphRow.vue'
 import ModuleHeader from '@/components/moduleHeader'
 import dataEmpty from '@/views/common/dataEmpty/index.vue'
+import { openWebPage } from '@/fn/openUrlInApp'
 
 @Component({
   components: {
     [Row.name]: Row,
     [Col.name]: Col,
+    Icon,
     BarGraph,
     barGraphRow,
     ModuleHeader,
@@ -36,13 +48,41 @@ export default class UserPortrait extends ViewBase {
   @Prop({ type: Array }) ageRangeList!: any
   @Prop({ type: Array }) genderList!: any
   @Prop({ type: Object }) link!: any
+  // 业务类型 / 1 品牌 2 艺人 3 电影 4 剧集 5 音乐-单曲 6 音乐-专辑
+  @Prop({ type: String }) type!: string
   // 男女比例颜色信息
   @Prop({ type: Array, default: () => ['#7CA4FF', '#FF6262'] }) colorList!: string[]
 
-  // ageRangeListData: any = null
-  // genderListData: any = null
-
   arr: any = []
+
+  // 处理 link
+  openLink() {
+    if (this.genderListData || this.ageRangeListData) {
+      const link = this.link
+      switch (this.type) {
+        case '1':
+          openWebPage(`/sentiment/branduser/${link.params.brandId}`)
+          break
+        case '2':
+          openWebPage(`/sentiment/actor/userAnalysis/${link.params.actorId}`)
+          break
+        case '3':
+          openWebPage(`/sentiment/movie/userAnalysis/${link.params.movieId}`)
+          break
+        case '4':
+          openWebPage(`/sentiment/tv/userAnalysis/${link.params.tvId}`)
+          break
+        case '5':
+          openWebPage(`/sentiment/song/${link.params.songId}/user`)
+          break
+        case '6':
+          openWebPage(`/sentiment/album/${link.params.albumId}/user`)
+          break
+        default:
+          this.$router.push(link)
+      }
+    }
+  }
 
   get itemlist() {
     const inx = this.ageRangeList ? this.ageRangeList.length : 0
@@ -118,12 +158,24 @@ export default class UserPortrait extends ViewBase {
 </script>
 
 <style lang="less" scoped>
-h4 {
-  font-size: 40px;
-  font-weight: 500;
-  color: rgba(48, 48, 48, 1);
-  line-height: 40px;
-  margin-left: 5%;
+.titbox {
+  display: flex;
+  padding-bottom: 30px;
+  h4 {
+    white-space: nowrap;
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 60px;
+    flex: 1;
+  }
+  > div {
+    text-align: right;
+  }
+  .more-icon {
+    position: relative;
+    top: 5px;
+    color: #c8c6c4;
+  }
 }
 .userportrait {
   // min-height: 500px;

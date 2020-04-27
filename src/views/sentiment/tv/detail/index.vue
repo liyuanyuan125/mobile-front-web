@@ -16,9 +16,11 @@
     <PlayTrend
       :fetch="playTrendFetch"
       :query="tvId"
-      v-if="tvId"
+      v-if="!playCode"
       :link="getApplink('tvPlayCountDetail')"
     />
+    <dataEmpty :code="playCode" :retry="apiGetData" v-if="playCode > 0" />
+
     <PraiseComment
       :favorable="tvInfo.favorable"
       :publicPraise="publicPraise"
@@ -29,6 +31,7 @@
       :ageRangeList="userAnalysis && userAnalysis.ageRangeList"
       :genderList="userAnalysis && userAnalysis.genderList"
       id="user"
+      type="4"
       :link="getApplink('userAnalysis')"
     />
     <EventList
@@ -95,6 +98,7 @@ export default class TVPage extends ViewBase {
   eventCode: number = 0 // 营销事件
   rivalCode: number = 0 // 竞品分析
   wantSeeCode: number = 0 // 想看
+  playCode: number = 0
   // 电视剧id
   tvId: string = ''
   // 电视剧详细信息
@@ -238,9 +242,15 @@ export default class TVPage extends ViewBase {
   }
 
   // api获取播放量监控
-  playTrendFetch = async (query: any) => {
-    const res: any = await getTvPlay(query)
-    return res
+  async playTrendFetch(query: any) {
+    try {
+      const res: any = await getTvPlay(query)
+      this.playCode = 0
+      return res
+    } catch (ex) {
+      const { code } = this.handleModuleError(ex)
+      this.playCode = code
+    }
   }
 
   /**

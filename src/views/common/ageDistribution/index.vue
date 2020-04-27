@@ -22,7 +22,7 @@
                 <div class="contrast-message">
                   <div class="contrast-message-progress" style="fontFamily: 'DIN Alternate'">
                     <span v-if="item.rivalPercent">{{item.rivalPercent}}%</span>
-                    <span v-else style="color:#8f8f8f; font-weight: normal">暂无数据</span>
+                    <span v-else>-</span>
                   </div>
                 </div>
               </div>
@@ -67,7 +67,7 @@ export default class Options extends Vue {
       for (const it of list) {
         for (const el of it.rivalList) {
           const per = el.rivalPercent ? el.rivalPercent : 0
-          el.rivalPercent = per > 10000 ? 100 : (el.rivalPercent / 100).toFixed(1)
+          el.rivalPercent = per > 10000 ? 100 : +(el.rivalPercent / 100).toFixed(1)
         }
       }
     }

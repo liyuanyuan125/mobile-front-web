@@ -130,7 +130,7 @@ export default class MarketContrast extends Vue {
   @Watch('optionsList', { deep: true })
   watchOptionsList(val: any) {
     this.indexs = 0
-    this.optionsMessage = val.badList
+    this.optionsMessage = val ? val.badList : []
   }
 
   // 热词 applink 跳转

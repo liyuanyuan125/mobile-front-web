@@ -322,7 +322,7 @@ export default class KolPage extends ViewBase {
           renderTitle: (h: any) => {
             return h(Title, {
               props: {
-                title: `实时热度`
+                title: `综合热度`
               },
               on: {
                 click: this.showNoteHeat

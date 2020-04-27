@@ -130,7 +130,7 @@ export default class KolPage extends ViewBase {
   showNote() {
     // console.log(123)
     alert({
-      title: '提示',
+      // title: '提示',
       message:
         '大数据平台展示的粉丝数是各平台粉丝数的累计之和，粉丝平台分布是大数据平台粉丝数在各平台的占比情况',
       showConfirmButton: true,

@@ -305,7 +305,8 @@ export default class KolPage extends ViewBase {
                 click: this.showNote
               }
             })
-          }
+          },
+          showdown: true
         },
         {
           type: '2',
@@ -316,11 +317,27 @@ export default class KolPage extends ViewBase {
         },
         {
           type: '3',
-          title: '实时热度',
           value: actorOverView == null ? ' ' : actorOverView.heatCount,
           trend: actorOverView == null ? 0 : actorOverView.heatTrend,
+          renderTitle: (h: any) => {
+            return h(Title, {
+              props: {
+                title: `实时热度`
+              },
+              on: {
+                click: this.showNoteHeat
+              }
+            })
+          },
           showdown: true
         },
+        // {
+        //   type: '3',
+        //   title: '实时热度',
+        //   value: actorOverView == null ? ' ' : actorOverView.heatCount,
+        //   trend: actorOverView == null ? 0 : actorOverView.heatTrend,
+        //   showdown: true
+        // },
         {
           type: '4',
           title: '好感度',
@@ -391,8 +408,18 @@ export default class KolPage extends ViewBase {
   // 显示说明
   showNote() {
     alert({
-      title: '提示',
+      // title: '提示',
       message: '互动数为物料的点赞、转发、阅读及播放数之和',
+      showConfirmButton: true,
+      className: 'alertwid'
+    })
+  }
+
+  // 实时热度显示说明
+  showNoteHeat() {
+    alert({
+      // title: '提示',
+      message: '热度值是根据百度、微博、微信三大指数综合计算。热度指数值每日更新2次，分别为12:00和17:30',
       showConfirmButton: true,
       className: 'alertwid'
     })

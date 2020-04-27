@@ -56,7 +56,7 @@ const commonBasic = (data: any, isDigital = false) => {
       name,
       value: isDigital && name == '专辑类型'
         ? `<div class="with-digital">
-            <em>${value}</em>
+            <em>${value || '-'}</em>
             <i class="is-digital">数字专辑销售中</i>
           </div>`
         : value != null && value !== ''

@@ -40,7 +40,7 @@ const bubbleTip = (title: string, message: string) => {
   }
 }
 
-const bubbleTipInteractCount = bubbleTip(
+const bubbleTipInteract = bubbleTip(
   '90天内累计互动',
   '累计互动量是指：相关物料的点赞、评论、转发、阅读或播放的累计之和'
 )
@@ -128,14 +128,17 @@ const songBasic = async (id: number) => {
       },
       {
         type: 2,
-        renderTitle: bubbleTipInteractCount,
+        renderTitle: bubbleTipInteract,
         value: overview.interactCount || '-',
         trend: overview.interactTrend || 0,
         showdown: true,
       },
       {
         type: 3,
-        title: '综合热度',
+        renderTitle: bubbleTip(
+          '综合热度',
+          '热度值是根据百度、微博、微信三大指数综合计算。热度指数值每日更新2次，分别为12:00和17:30。'
+        ),
         value: overview.heatCount || '-',
         trend: overview.heatTrend || 0,
         showdown: true,
@@ -234,7 +237,7 @@ const albumBasic = async (id: number) => {
       },
       {
         type: 2,
-        renderTitle: bubbleTipInteractCount,
+        renderTitle: bubbleTipInteract,
         value: overview.interactCount || '-',
         trend: overview.interactTrend || 0,
         showdown: true,

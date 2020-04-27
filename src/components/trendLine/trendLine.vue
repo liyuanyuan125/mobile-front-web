@@ -165,6 +165,7 @@ export default class TrendLine extends Vue {
       },
       yAxis: {
         type: 'value',
+        min: 100,
         axisLabel: {
           formatter: (value: number) => {
             switch (this.unit) {
@@ -206,6 +207,12 @@ export default class TrendLine extends Vue {
     myChart.clear() // 清空画布内容，实例可用
 
     myChart.setOption(options)
+    const leng = this.lineData.xDate.length
+    myChart.dispatchAction({
+      type: 'showTip',
+      seriesIndex: 0, // 显示第几个series
+      dataIndex: leng > 2 ? leng - 2 : leng // 显示第几个数据
+    })
   }
   @Watch('lineData', { deep: true })
   watchLineData() {

@@ -1,78 +1,85 @@
 <template>
-  <div class='pages'>
+  <div class="pages">
     <SentimentBar title="竞品分析详细报告" :titleShow="true" />
-    <RivalList 
-      type="2" 
-      :rivalList="rivalList" 
+    <RivalList
+      type="2"
+      :rivalList="rivalList"
       v-if="rivalList && rivalList.length"
       class="movierival"
       @setRival="changeIds"
     />
-    <TabNav
-      :list ="list"
-      class="tab-nav"
-      normal
-    />
-    <section class="pane" id="hot" style='padding-bottom: 30px;border-top: 0px;'>
-      <selectTime v-model="day" class="select-time"  ref="reftimes"/>
-      <heatContrast 
-        style=' background: #FFF;'
+    <TabNav :list="list" class="tab-nav" normal />
+    <section class="pane" id="hot" style="padding-bottom: 30px;border-top: 0px;">
+      <selectTime v-model="day" class="select-time" ref="reftimes" />
+      <heatContrast
+        style=" background: #FFF;"
         :overAllHeat="combinedHeat.overAllHeat"
         :interactList="combinedHeat.interactList"
         :materialList="combinedHeat.materialList"
         :tabs="combinedHeat.tabs"
         :daysNum="day"
         v-if="heatCode == 0"
-        />
+      />
       <DataEmpty :code="heatCode" :retry="getLineData" v-if="heatCode > 0" />
       <DataEmpty :code="basicCode" :retry="getDetail" v-if="basicCode > 0" />
-
     </section>
 
-    <section v-if='showpraise' class="pane" id="praise" style='padding-top:15px;padding-right:15px;padding-bottom:15px;'>
+    <section
+      v-if="showpraise"
+      class="pane"
+      id="praise"
+      style="padding-top:15px;padding-right:15px;padding-bottom:15px;"
+    >
       <!-- 口碑评论 -->
-      <div class='public'>
-        <MarketContrast 
-          :fetch="publicPraise.fetch" 
+      <div class="public">
+        <MarketContrast
+          :fetch="publicPraise.fetch"
           :query="publicPraise.query"
-          :businessType='2'
+          :businessType="2"
           v-if="praiseCode == 0"
         />
-      <DataEmpty :code="praiseCode" :retry="getPublicPraise" v-if="praiseCode > 0" />
-
+        <DataEmpty :code="praiseCode" :retry="getPublicPraise" v-if="praiseCode > 0" />
       </div>
     </section>
 
     <section class="pane" id="user">
       <!-- 用户分析 -->
-      <div class='userpk'>
-        <div class='usertitle'>用户对比</div>
+      <div class="userpk">
+        <div class="usertitle">用户对比</div>
         <!-- 平台分布 -->
-        <Table :title='publicObj.title' :tabList='publicObj.tabList' :tableTitle='publicObj.tableTitle' :tableItem='publicObj.tableItem'/>
+        <Table
+          :title="publicObj.title"
+          :tabList="publicObj.tabList"
+          :tableTitle="publicObj.tableTitle"
+          :tableItem="publicObj.tableItem"
+        />
         <!-- </div> -->
-        <div class='hr' style='margin-top: 50px'>
+        <div class="hr" style="margin-top: 50px">
           <p></p>
         </div>
         <!-- 年龄分布 -->
-        <Age :ageRangeList='ageRangeList' />
-        <div class='hr' style='margin-bottom: 40px'>
+        <Age :ageRangeList="ageRangeList" />
+        <div class="hr" style="margin-bottom: 40px">
           <p></p>
         </div>
         <!-- 性别分布 -->
-        <div class='title'>性别分布</div>
-        <div class='main-show'>
-          <VsList
-            :data="sexdata"
-            class="chart"
-          />
+        <div class="title">性别分布</div>
+        <div class="main-show">
+          <VsList :data="sexdata" class="chart" />
         </div>
-        <div class='hr' style='margin-bottom: 40px'>
+        <div class="hr" style="margin-bottom: 40px">
           <p></p>
         </div>
         <!-- 用户地域分布对比 -->
-        <Table :title='regionObj.title' :tabList='regionObj.tabList' :tableTitle='regionObj.tableTitle' :tableItem='regionObj.tableItem' @chgregionPk='chgregionPk'/>
+        <Table
+          :title="regionObj.title"
+          :tabList="regionObj.tabList"
+          :tableTitle="regionObj.tableTitle"
+          :tableItem="regionObj.tableItem"
+          @chgregionPk="chgregionPk"
+        />
       </div>
-    </section>     
+    </section>
   </div>
 </template>
 
@@ -81,7 +88,7 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import RivalList from '@/views/common/rivalList/index.vue' // 竞品列表
- import { lastDays } from '@/util/timeSpan'
+import { lastDays } from '@/util/timeSpan'
 import { selectTime } from '@/components/hotLine' // 日期选择
 import heatContrast from '@/views/common/heatContrast/index.vue' // 热度分析对比
 import MarketContrast from '@/views/common/marketContrast/index.vue' // 口碑评论对比
@@ -89,13 +96,12 @@ import Age from '@/views/common/ageDistribution/index.vue'
 import VsList, { VsItem } from '@/components/vsList'
 import Table from '@/views/common/table/table.vue'
 import TabNav, { TabNavItem } from '@/components/tabNav'
-import { rivalPraise , rivalanaly , rivalHeatAnalysis } from '@/api/kol'
+import { rivalPraise, rivalanaly, rivalHeatAnalysis } from '@/api/kol'
 import { keyBy, groupBy } from 'lodash'
 import { getPercentFieldValue, transformPercentField } from '@/util/dealData'
 import { toast } from '@/util/toast'
 import { Tab, Tabs } from 'vant'
 import DataEmpty from '@/views/common/dataEmpty/index.vue'
-
 
 @Component({
   components: {
@@ -110,11 +116,10 @@ import DataEmpty from '@/views/common/dataEmpty/index.vue'
     TabNav,
     SentimentBar,
     RivalList,
-    DataEmpty,
+    DataEmpty
   }
 })
 export default class KolPage extends ViewBase {
-
   sidebar = {
     diggType: 'actor',
     diggId: '100038',
@@ -148,8 +153,8 @@ export default class KolPage extends ViewBase {
     // 新增物料
     materialList: [],
     tabs: [
-      {key: 0, text: '粉丝数'},
-      {key: 1, text: '新增互动数'}
+      { key: 0, text: '粉丝数' },
+      { key: 1, text: '新增互动数' }
     ]
   }
   // 口碑评论
@@ -182,7 +187,7 @@ export default class KolPage extends ViewBase {
       {
         key: 'top5',
         value: 'TOP5'
-      },
+      }
     ],
     tableItem: []
   }
@@ -230,14 +235,14 @@ export default class KolPage extends ViewBase {
       {
         key: 'top5',
         value: 'TOP5'
-      },
+      }
     ],
     tableItem: []
   }
   list: TabNavItem[] = [
     { name: 'hot', label: '热度' },
     { name: 'praise', label: '口碑' },
-    { name: 'user', label: '用户' },
+    { name: 'user', label: '用户' }
   ]
 
   created() {
@@ -248,15 +253,14 @@ export default class KolPage extends ViewBase {
   }
 
   async getLineData() {
-    const [ startTime, endTime ] = lastDays(this.day)
+    const [startTime, endTime] = lastDays(this.day)
     try {
-      const { data: {
-        overAllHeat,
-        platform: {
-          interactList,
-          fansCountList
+      const {
+        data: {
+          overAllHeat,
+          platform: { interactList, fansCountList }
         }
-      }} = await rivalHeatAnalysis({
+      } = await rivalHeatAnalysis({
         actorIdList: this.ids,
         startTime,
         endTime
@@ -279,9 +283,10 @@ export default class KolPage extends ViewBase {
       //   endTime: 20200311
       // })
       this.publicPraise.query = {
-        actorIdList: this.ids,
+        actorIdList: this.ids
       }
-      this.publicPraise.fetch = async (query: any) => { // query: 查询参数
+      this.publicPraise.fetch = async (query: any) => {
+        // query: 查询参数
         const datas = await rivalPraise(query)
         this.praiseCode = 0
         return {
@@ -290,23 +295,23 @@ export default class KolPage extends ViewBase {
             goodList: (datas.data.goodList || []).map((it: any) => {
               return {
                 ...it,
-                percent: (it.percent / 100).toFixed(1)
+                percent: +(it.percent / 100).toFixed(1)
               }
             }),
             badList: (datas.data.badList || []).map((it: any) => {
               return {
                 ...it,
-                percent: (it.percent / 100).toFixed(1)
+                percent: +(it.percent / 100).toFixed(1)
               }
             }),
             neutralList: (datas.data.neutralList || []).map((it: any) => {
               return {
                 ...it,
-                percent: (it.percent / 100).toFixed(1)
+                percent: +(it.percent / 100).toFixed(1)
               }
             })
           },
-          msg: datas.msg,
+          msg: datas.msg
         }
       }
     } catch (ex) {
@@ -319,33 +324,31 @@ export default class KolPage extends ViewBase {
 
   async getDetail() {
     try {
-       const {
-         data: {
-           rivalList,
-           platformList,
-           ageRangeList,
-           genderList,
-           userRegion,
-         }
-       } = await rivalanaly({actorIdList: this.ids})
-       this.rivalList = rivalList
-       this.publicObj.tableItem = platformList
-       this.ageRangeList = ageRangeList
-       this.sexdata = (genderList || []).map((it: any , dataList: any) => {
-         const dataMap = keyBy(dataList, 'name')
-         const man = dataMap.男
-         const woman = dataMap.女
-         return {
-           name: it.rivalName,
-           rate1: it.dataList[0].name == '男' ? (it.dataList[0].value / 100)
-           : (it.dataList[1].value / 100),
-           rate2: it.dataList[0].name == '男' ? (it.dataList[1].value / 100)
-           : (it.dataList[0].value / 100),
-         }
-       })
-       this.userRegion = userRegion
-       this.regionObj.tableItem = userRegion.cityList
-       this.basicCode = 0
+      const {
+        data: { rivalList, platformList, ageRangeList, genderList, userRegion }
+      } = await rivalanaly({ actorIdList: this.ids })
+      this.rivalList = rivalList
+      this.publicObj.tableItem = platformList
+      this.ageRangeList = ageRangeList
+      this.sexdata = (genderList || []).map((it: any, dataList: any) => {
+        const dataMap = keyBy(dataList, 'name')
+        const man = dataMap.男
+        const woman = dataMap.女
+        return {
+          name: it.rivalName,
+          rate1:
+            it.dataList[0].name == '男'
+              ? it.dataList[0].value / 100
+              : it.dataList[1].value / 100,
+          rate2:
+            it.dataList[0].name == '男'
+              ? it.dataList[1].value / 100
+              : it.dataList[0].value / 100
+        }
+      })
+      this.userRegion = userRegion
+      this.regionObj.tableItem = userRegion.cityList
+      this.basicCode = 0
     } catch (ex) {
       const { code } = this.handlePageError(ex)
       this.basicCode = code
@@ -456,7 +459,8 @@ export default class KolPage extends ViewBase {
 /deep/ .options-page {
   padding-left: 30px;
 }
-/deep/ .module-title, /deep/ h3 {
+/deep/ .module-title,
+/deep/ h3 {
   height: 34px;
   font-weight: 500;
   font-size: 34px !important;

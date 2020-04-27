@@ -70,7 +70,7 @@ export default class Main extends Vue {
     // 显示说明
   showNote() {
     alert({
-      title: '提示',
+      // title: '提示',
       message:
         '作品评分为全网综合评分',
       showConfirmButton: true,

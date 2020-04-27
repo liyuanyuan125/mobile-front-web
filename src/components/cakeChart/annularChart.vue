@@ -26,7 +26,7 @@ import eCharts from 'echarts'
   }
 })
 
-export default class ChinaMap extends Vue {
+export default class AnnularChart extends Vue {
   /** 数据 */
   @Prop({ type: Object, default: () => [] }) data!: DataItem
    /** 长宽 */
@@ -110,7 +110,7 @@ export default class ChinaMap extends Vue {
       titleLeft: this.data.titleLeft || 'left', // 标题位置 left center right
       titleSize: this.data.titleSize || 18, // 标题字体大小
       titleWeight: this.data.titleWeight || 'bold', // 标题字体粗细
-      legendtoFixed : this.data.legendtoFixed || 1, // legend显示几位小数
+      legendtoFixed : this.data.legendtoFixed || 2, // legend显示几位小数
       length2: this.length2,
       fontsize: fontSize,
       withinProportion ,
@@ -172,7 +172,8 @@ export default class ChinaMap extends Vue {
     justify-content: center;
   }
   .chart-text {
-    width: 20%;
+    width: 25%;
+    min-width: 90px;
     height: 20%;
     text-align: center;
     .proportion {

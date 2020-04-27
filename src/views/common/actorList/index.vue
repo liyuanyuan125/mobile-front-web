@@ -25,10 +25,11 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { ActorItem, DetailItem } from './types'
 import ModuleHeader from '@/components/moduleHeader'
-import { AppLink } from '@/util/native'
 import { imgFixed } from '@/fn/imgProxy'
 import dataEmpty from '@/views/common/dataEmpty/index.vue'
 import { talkingdataHandle } from '@/util/TDEvent'
+import { AppLink } from '@/util/native'
+import { openWebPage } from '@/fn/openUrlInApp'
 
 @Component({
   components: {
@@ -64,12 +65,7 @@ export default class ActorList extends Vue {
 
   // 影人详情页跳转
   goActorDetail(id: string) {
-    this.$router.push({
-      name: 'sentimentactor',
-      params: {
-        actorId: id
-      }
-    })
+    openWebPage(`/sentiment/actor/${id}`)
   }
 }
 </script>

@@ -1,21 +1,20 @@
 <template>
    <div>
-     <div>
+     <div class="over-min-height">
        <p class="hot-title">{{lineTitle}}</p>
        <dubline 
           :lineData="lineDatas" 
-          v-if="lineDatas.xDate.length" 
+          v-if="overLoading && lineDatas.xDate.length" 
           :key="lineDatas.title"
           :events="getEvents"
         />
-       <DataEmpty v-else/>
+       <DataEmpty v-if="overLoading && lineDatas.xDate.length == 0"/>
      </div>
      <div class="heat">
        <platForm 
          :platformList="platformList" 
-         :params="params" 
+         :params="params"
          class="platfrom"/>
-       <!-- <DataEmpty v-else/> v-if="platformList.length"  -->
      </div>
      
    </div>
@@ -40,6 +39,7 @@ export default class Main extends Vue {
   @Prop({ type: Array, default: () => []}) platformList!: any
   @Prop({ type: Object}) params!: any
   @Prop({ type: String, default: '综合热度'}) lineTitle!: string
+  @Prop({ type: Boolean, default: true}) overLoading: any
 
 
   get getEvents() {
@@ -82,6 +82,9 @@ export default class Main extends Vue {
 </script>
 
 <style lang='less' scoped>
+.over-min-height {
+  min-height: 390px;
+}
 .heat {
   padding: 0 30px;
 }

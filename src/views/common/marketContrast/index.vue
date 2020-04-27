@@ -17,14 +17,17 @@
             <Progress :percentage="(item.percent || 0) " color="#88aaf6" stroke-width="10" />
             <div class="contrast-message">
               <div class="contrast-message-progress">
-                <span v-if="item.percent">{{item.percent}}%</span>
-                <span v-else>—</span>
+                <span v-if="item.percent" style="fontFamily: 'DIN Alternate'">{{item.percent}}%</span>
+                <span v-else style="fontFamily: 'DIN Alternate'">-</span>
               </div>
               <div class="contrast-message-text" v-if="(item.hotWordList || []).length > 0">
                 <span>热词</span>
-                <span class="van-ellipsis"
+                <span
+                  class="van-ellipsis"
                   @click="wordLink(it, item.rivalId)"
-                  :key="ins" v-for="(it, ins) in item.hotWordList">{{it}}</span>
+                  :key="ins"
+                  v-for="(it, ins) in item.hotWordList"
+                >{{it}}</span>
               </div>
             </div>
           </div>
@@ -162,7 +165,6 @@ export default class MarketContrast extends Vue {
   watchdays(val: any, old: any) {
     this.uplist()
   }
-
 }
 </script>
 

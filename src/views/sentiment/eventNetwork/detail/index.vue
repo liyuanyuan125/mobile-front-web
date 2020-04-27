@@ -49,8 +49,6 @@
           :favorable="publicPraise.favorable"
           :publicPraise="publicPraise"
           :link="getApplink('eventPraiseHotWordsList')"
-          v-if="publicPraise.appraiseList"
-          id="praise"
         />
       </div>
       <div v-if="eventStatus === 4" class="eventclose">

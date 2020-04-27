@@ -13,7 +13,7 @@ import {
   getRivalList as albumGetRivalList,
   IdTime as AlbumIdTime,
 } from '@/api/album'
-import { arrayMap } from '@jydata/fe-util'
+import { arrayMap, stringIsEmpty } from '@jydata/fe-util'
 import { readableNumber, formatValidDate } from '@/util/dealData'
 import { PlayView, PlayQuery } from './components/playStats'
 import { TableColumn } from '@/components/table'
@@ -56,7 +56,7 @@ const commonBasic = (data: any, isDigital = false) => {
       name,
       value: isDigital && name == '专辑类型'
         ? `<div class="with-digital">
-            <em>${value}</em>
+            <em>${value || '-'}</em>
             <i class="is-digital">数字专辑销售中</i>
           </div>`
         : value != null && value !== ''
@@ -376,7 +376,9 @@ const dealPlayView = (view: any, isAlbum = false) => {
       }
     }],
     eventList: (view.dailyEventList as PlayDailyEvent[] || [])
-      .map(({ eventId: id, eventName: name, date }) => ({ id, name, date })),
+      .map(({ eventId: id, eventName: name, date }) => ({ id, name, date }))
+      // 过滤掉后端返回的脏数据
+      .filter(({ id, name }) => id != null && !stringIsEmpty(name)),
   }
 
   return result

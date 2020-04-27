@@ -5,7 +5,7 @@
     <section class="header-wrap">
       <div class="header" v-if="basicCode == 0">
         <figure class="header-fig">
-          <Cover :src="basic.cover"/>
+          <Avatar :src="basic.cover" />
           <div class="header-price" v-if="basic.price">{{basic.price}}</div>
         </figure>
         <div class="header-main">
@@ -183,7 +183,7 @@
             :to="{ name: 'sentimentactor', params: { actorId: it.singerId } }"
             class="singer-card"
           >
-            <img :src="it.avatar" class="singer-avatar" />
+            <Avatar :src="it.avatar" type="actor" class="singer-avatar" />
             <div class="singer-main">
               <h4 class="singer-name">{{it.singerName}}</h4>
               <div class="singer-bar">
@@ -206,14 +206,15 @@
       </Swipe>
     </section>
 
-    <section class="pane" id="rival">
+    <!-- 产品需求：暂时隐藏竞品分析 -->
+    <!-- <section class="pane" id="rival">
       <ModuleHeader :title="isAlbum ? '竞品分析' : '相似歌曲'" />
 
       <ul class="rival-list" v-if="rivalList && rivalList.length > 0">
         <li v-for="it in rivalList" :key="it.id" class="rival-item">
           <router-link :to="it.link" class="rival-item-in">
             <figure class="rival-fig">
-              <img :src="it.cover" />
+              <Avatar :src="it.cover" />
             </figure>
             <div class="rival-main">
               <h4 class="rival-name van-ellipsis">{{it.name}}</h4>
@@ -249,7 +250,7 @@
       <div class="rival-more" v-if="rivalList && rivalList.length > 0">
         <router-link :to="rivalRoute" class="rival-button">查看详细报告</router-link>
       </div>
-    </section>
+    </section> -->
   </main>
 </template>
 
@@ -263,7 +264,7 @@ import ModuleHeader from '@/components/moduleHeader'
 import { BubbleBottom } from '@/components/bubble'
 import { selectTime as SelectTime } from '@/components/hotLine'
 import HeatLineCom from '@/views/common/heatLineCom/index.vue'
-import Cover from './components/cover'
+import Avatar from '@/components/avatar'
 import PlayStats, { PlayQuery } from './components/playStats'
 import PraiseComment from '@/views/common/praiseComment/index.vue'
 import UserPortrait from '@/views/common/user/userPortrait.vue'
@@ -290,7 +291,7 @@ const removeFalsy = (list: any[]) => list.filter(it => !!it)
     BubbleBottom,
     SelectTime,
     HeatLineCom,
-    Cover,
+    Avatar,
     PlayStats,
     AnnularChart,
     PraiseComment,
@@ -316,9 +317,11 @@ export default class extends ViewBase {
   get topbarSidebar() {
     // 有竞品数据，跳转竞品报告页；否则，跳转到设置竞品页
     const type = this.isAlbum ? '6' : '5'
-    const route = (this.rivalList || []).length > 0
-      ? this.rivalRoute
-      : { businessType: type, businessObjectIdList: String(this.id) }
+    // 产品需求：暂时隐藏竞品分析，只当 pk 使用
+    // const route = (this.rivalList || []).length > 0
+    //   ? this.rivalRoute
+    //   : { businessType: type, businessObjectIdList: String(this.id) }
+    const route = { businessType: type, businessObjectIdList: String(this.id) }
     return {
       // 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑
       diggType: type,
@@ -343,14 +346,16 @@ export default class extends ViewBase {
           { name: 'praise', label: '口碑' },
           { name: 'user', label: '用户' },
           { name: 'event', label: '事件' },
-          { name: 'rival', label: '竞品' }
+          // 产品需求：暂时隐藏竞品分析
+          // { name: 'rival', label: '竞品' }
         ])
       : [
           { name: 'heat', label: '热度' },
           { name: 'praise', label: '口碑' },
           { name: 'user', label: '用户' },
           { name: 'event', label: '事件' },
-          { name: 'rival', label: '竞品' }
+          // 产品需求：暂时隐藏竞品分析
+          // { name: 'rival', label: '竞品' }
         ]
     return list
   }
@@ -480,7 +485,8 @@ export default class extends ViewBase {
     this.getBasic()
     isSong && this.getHeat()
     this.getEvent()
-    this.getRival()
+    // 产品需求：暂时隐藏竞品分析
+    // this.getRival()
   }
 
   async getBasic() {
@@ -649,7 +655,7 @@ export default class extends ViewBase {
       background-color: #000;
     }
 
-    .cover {
+    .avatar {
       position: relative;
       border-radius: 10px;
       overflow: hidden;
@@ -1099,11 +1105,15 @@ export default class extends ViewBase {
 }
 
 .singer-avatar {
-  width: 130px;
-  height: 130px;
+  // TODO: 加 !important 是为了防止组件样式动态加载导致的优先级问题，可以考虑样式静态加载
+  width: 130px !important;
+  height: 130px !important;
   border-radius: 100%;
   border: 1px solid #d8d8d8;
-  object-fit: contain;
+  overflow: hidden;
+  img {
+    object-fit: contain;
+  }
 }
 
 .singer-main {

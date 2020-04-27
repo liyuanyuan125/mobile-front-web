@@ -170,10 +170,10 @@ export default class TrendLine extends Vue {
           formatter: (value: number) => {
             switch (this.unit) {
               case '亿':
-                const yiVal = thousand(value / 100000000)
+                const yiVal = thousand((value / 100000000).toFixed(1))
                 return yiVal + this.unit
               case '万':
-                const wanVal = thousand(value / 10000)
+                const wanVal = thousand((value / 10000).toFixed(1))
                 return wanVal + this.unit
               default:
                 return thousand(value)

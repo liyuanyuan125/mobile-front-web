@@ -28,6 +28,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import { BubbleBottom, Title } from '@/components/bubble'
 import { imgFixed } from '@/fn/imgProxy'
+import { alert } from '@/util/toast'
 
 @Component({
   components: {

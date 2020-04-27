@@ -487,7 +487,7 @@ export interface PercentFieldOptions {
  * @param options 选项
  */
 export function getPercentFieldValue(
-  list: object | object[],
+  list: null | object | object[],
   {
     percentKey = 'value',
     defaultValue = null,
@@ -495,8 +495,12 @@ export function getPercentFieldValue(
     digits = 1,
   }: PercentFieldOptions = {}
 ) {
+  if (list == null) {
+    return null
+  }
+
   const isArray = Array.isArray(list)
-  const trueList = (isArray ? list : list != null ? [ list ] : []) as any[]
+  const trueList = (isArray ? list : [ list ]) as any[]
 
   const valueList = trueList.map(item => {
     const value = (item || {})[percentKey]
@@ -518,11 +522,15 @@ export function getPercentFieldValue(
  * @param options
  */
 export function transformPercentField(
-  list: object | object[],
+  list: null | object | object[],
   options: PercentFieldOptions = {}
 ) {
+  if (list == null) {
+    return null
+  }
+
   const isArray = Array.isArray(list)
-  const trueList = (isArray ? list : list != null ? [ list ] : []) as any[]
+  const trueList = (isArray ? list : [ list ]) as any[]
 
   // 注意，这里 percentKey 的默认值，一定要与 getPercentFieldValue 保持一致
   const { percentKey = 'value' } = options

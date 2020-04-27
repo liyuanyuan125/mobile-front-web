@@ -12,7 +12,12 @@
 
     <div class="age-wrap">
       <ModuleHeader title="年龄占比" tag="h4" class="age-rate"/>
-      <VerticalBar :data="ageData" class="age-chart" v-if="ageData && ageData.length > 0"/>
+      <VerticalBar
+        :data="ageData"
+        :digits="2"
+        class="age-chart"
+        v-if="ageData && ageData.length > 0"
+      />
       <DataEmpty v-if="ageEmpty" />
     </div>
   </section>

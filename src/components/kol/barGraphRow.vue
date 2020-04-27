@@ -70,7 +70,7 @@ export default class BarGraphRow extends ViewBase {
         left: 5,
         top: 15,
         bottom: 5,
-        right: '40px',
+        right: 50,
         containLabel: true,
         show: false,
         borderWidth: 0

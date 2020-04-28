@@ -1,13 +1,14 @@
 <template>
   <div class="header-info">
     <div class="header">
+      <!-- <van-loading color="#1989fa" size="30" /> -->
       <van-image
         fit="cover"
         :src="coverImg" 
         class="img" 
         :class="{'errorImg': !coverImg}" 
-        :error-icon="defaultImg" 
-      />
+        :error-icon="defaultImg" >
+      </van-image>
       <div>
         <p class="brand-name">{{brandInfo.brandName}}</p>
         <p v-if="brandInfo.rankingName && !brandInfo.rankingId " class="event-name">{{brandInfo.rankingName}}</p>
@@ -33,7 +34,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 // import { toast } from '@/util/toast'
 import { alert } from '@/util/toast'
-import { Icon, Image } from 'vant'
+import { Icon, Image, Loading} from 'vant'
 import {BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
 import { imgFixed } from '@/fn/imgProxy'
 
@@ -41,7 +42,8 @@ import { imgFixed } from '@/fn/imgProxy'
   components: {
     BubbleBottom,
     Icon,
-    [Image.name]: Image
+    [Image.name]: Image,
+    [Loading.name]: Loading,
   }
 })
 export default class Main extends Vue {

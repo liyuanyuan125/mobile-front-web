@@ -49,6 +49,7 @@
         :platformList="platformHeatList"
         :params="platformParams(actorInfo.actorName)"
         v-if="heatCode == 0"
+        :overLoading="overLoading"
       />
       <DataEmpty :code="heatCode" :retry="getHotList" v-if="heatCode > 0" />
     </section>
@@ -181,6 +182,7 @@ export default class KolPage extends ViewBase {
   ]
 
   // 热度分析+平台信息
+  overLoading = false
   day = 7
   overAllHeatList: any = []
   platformHeatList: any = []
@@ -266,10 +268,12 @@ export default class KolPage extends ViewBase {
       })
       this.overAllHeatList = overAllHeatList || []
       this.platformHeatList = platformHeatList || []
+      this.overLoading = true
       this.heatCode = 0
     } catch (ex) {
       const { code } = this.handleModuleError(ex)
       this.heatCode = code
+      this.overLoading = true
     }
   }
 

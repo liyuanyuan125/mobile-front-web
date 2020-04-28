@@ -1,9 +1,10 @@
 <template>
-  <div>
+  <div class="plat-min-height">
       <ModuleHeader title="平台热度" class="formatmodule" v-if="dataList.length < 3"/>
       <ModuleHeader title="平台热度"  class="formatmodule" :link="link" v-else/>
-      
-      <ul class="platform-item" v-if="platformList.length">
+
+      <loadingCom v-if="!platLoing" />
+      <ul class="platform-item" v-else-if="platLoing && platformList.length">
         <li
           class="flex-box flex-between"
           v-for="(item, index) in dataList"
@@ -29,7 +30,7 @@
           </div>
         </li>
       </ul>
-    <DataEmpty v-else/>
+    <DataEmpty v-else="platLoing && platformList.length == 0"/>
   </div>
 </template>
 
@@ -40,12 +41,14 @@ import ModuleHeader from '@/components/moduleHeader'
 import DataEmpty from '@/views/common/dataEmpty/index.vue'
 import { openAppLink, AppLink } from '@/util/native'
 import { imgFixed } from '@/fn/imgProxy'
+import loadingCom from '@/components/loading/index.vue'
 
 @Component({
   components: {
     [Icon.name]: Icon,
     ModuleHeader,
-    DataEmpty
+    DataEmpty,
+    loadingCom
   }
 })
 export default class Main extends Vue {
@@ -53,6 +56,7 @@ export default class Main extends Vue {
   @Prop({ type: Array, default: () => [] }) platformList!: any
   /** 类型，id，天数， 开始/结束时间 五个参数 跳转更多二级页 */
   @Prop({ type: Object }) params!: any
+  @Prop({ type: Boolean, default: true}) platLoing: any
 
   get dataList() {
    const list = (this.platformList || []).map((it: any) => {
@@ -99,6 +103,10 @@ export default class Main extends Vue {
 @import '~@/views/sentiment/brand/less/lib.less';
 @import '~@/components/hotLine/com.less';
 @import '~@/components/hotLine/platform.less';
+.plat-min-height {
+  min-height: 360px;
+  position: relative;
+}
 .title {
   padding-top: 50px;
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="event-content">
-    <ModuleHeader title="营销事件" :link="hasMore ? link : null" />
+    <ModuleHeader :title="title" :link="hasMore ? link : null" />
     <ul v-if="list.length" class="eventlist">
       <li
         v-for="(item,index) in list.slice(0,3)"
@@ -55,6 +55,7 @@ export default class EventList extends Vue {
   @Prop({ type: Object }) params!: any
   /** 事件list */
   @Prop({ type: Object, default: {} }) eventList!: any
+  @Prop({ type: String, default: '营销事件' }) title!: any
   @Prop({ type: Object }) link!: AppLink
 
   get list() {

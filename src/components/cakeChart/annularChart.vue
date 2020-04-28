@@ -5,7 +5,6 @@
           <div class="chart-mask">
             <div class="chart-text">
                 <span class="proportion" :style="{color:nameColor}">{{proportion}}</span>
-                <br>
                 <span class="name">{{name}}</span>
             </div>
           </div>
@@ -176,12 +175,18 @@ export default class AnnularChart extends Vue {
     min-width: 90px;
     height: 20%;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     .proportion {
-      font-size: 50px;
+      font-size: 42px;
+      padding-bottom: 2px;
     }
     .name {
       color: #303030;
-      font-size: 24px;
+      font-size: 20px;
+      padding-top: 2px;
     }
   }
 </style>

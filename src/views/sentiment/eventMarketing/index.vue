@@ -245,6 +245,21 @@ export default class KolPage extends ViewBase {
     }
     openAppLink(link)
   }
+
+  @Watch('newPkName', { deep: true })
+  watchnewPkName() {
+    this.formatterHtml = (params: any, time: any) => {
+      const date = moment(time).format('YYYY年MM月DD日')
+      return `
+            <div style="border:2px solid rgba(48,48,48,.1);border-radius:6px; padding:7px 10px;background-color:#fff">
+              <p style="color:#47403B;font-size:13px;line-height:16px">${date}</p>
+              <div style="color:#88AAF6;font-size:14px;line-height:16px;margin-top:5px">
+              ${this.newPkName} ${roleNumber(Math.abs(params.data))}</div>
+            </div>
+            `
+    }
+  }
+
 }
 </script>
 

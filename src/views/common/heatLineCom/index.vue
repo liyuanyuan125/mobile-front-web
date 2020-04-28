@@ -2,18 +2,21 @@
    <div>
      <div class="over-min-height">
        <p class="hot-title">{{lineTitle}}</p>
-       <dubline 
+
+       <loadingCom v-if="!overLoading" />
+       <dubline
           :lineData="lineDatas" 
-          v-if="overLoading && lineDatas.xDate.length" 
+          v-else-if="overLoading && lineDatas.xDate.length" 
           :key="lineDatas.title"
           :events="getEvents"
         />
-       <DataEmpty v-if="overLoading && lineDatas.xDate.length == 0"/>
+       <DataEmpty v-else="overLoading && lineDatas.xDate.length == 0"/>
      </div>
      <div class="heat">
        <platForm 
          :platformList="platformList" 
          :params="params"
+         :platLoing="overLoading"
          class="platfrom"/>
      </div>
      
@@ -24,13 +27,16 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { platForm, dubline } from '@/components/hotLine'
 import DataEmpty from '@/views/common/dataEmpty/index.vue'
+import loadingCom from '@/components/loading/index.vue'
 import moment from 'moment'
+
 
 @Component({
   components: {
     platForm,
     dubline,
-    DataEmpty
+    DataEmpty,
+    loadingCom
   }
 })
 export default class Main extends Vue {
@@ -84,6 +90,7 @@ export default class Main extends Vue {
 <style lang='less' scoped>
 .over-min-height {
   min-height: 390px;
+  position: relative;
 }
 .heat {
   padding: 0 30px;

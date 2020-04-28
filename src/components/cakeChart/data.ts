@@ -222,7 +222,7 @@ export function getRingOption(data: any) {
                     // formatter: '{a|{d}%}{b|{b}}\n\n',
                     formatter(a: any) {
                       const arr = [
-                        '{b|' + a.name + '}{a|' + parseFloat(a.percent).toFixed(2) + '%}']
+                        '{b|' + a.name + '}{a|' + parseFloat(a.percent).toFixed(data.legendtoFixed) + '%}']
                         return arr.join()
                     },
                     borderWidth: 20,

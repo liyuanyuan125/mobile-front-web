@@ -60,7 +60,7 @@ export default class Main extends Vue {
 
   // 详情页跳转
   goDetail(id: any) {
-    openWebPage(`/sentiment/song/${id}`)
+    openWebPage(`/sentiment/album/${id}`)
     // this.$router.push({
     //   name: 'sentiment-song',
     //   params: {

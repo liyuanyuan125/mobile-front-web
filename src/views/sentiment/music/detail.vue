@@ -66,6 +66,7 @@
         :overAllList="overAllHeatList"
         :platformList="platformHeatList"
         :params="platformParams(basic.name)"
+        :overLoading="overLoading"
         lineTitle
         class="heat-line-com"
         v-if="heatCode == 0"
@@ -159,8 +160,9 @@
         :colorList="['#7ca4ff', '#ff6262']"
         :link="{
           name: isAlbum ? 'sentiment-album-user' : 'sentiment-song-user',
-          params: { id }
+          params: { [isAlbum ? 'albumId' :'songId']: id }
         }"
+        :type="isAlbum ? '6' : '5'"
         v-if="userAnalysis"
       />
     </section>
@@ -381,6 +383,8 @@ export default class extends ViewBase {
 
   platformHeatList: any = []
 
+  overLoading = false
+
   platformParams(name: any) {
     const [startTime, endTime] = lastDays(this.heatDay)
     return {
@@ -563,6 +567,8 @@ export default class extends ViewBase {
     } catch (ex) {
       const { code } = this.handleModuleError(ex)
       this.heatCode = code
+    } finally {
+      this.overLoading = true
     }
   }
 

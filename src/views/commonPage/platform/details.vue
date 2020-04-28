@@ -1,7 +1,9 @@
 <template>
   <div class="plat-content">
     <SentimentBar :title="title" :titleShow="true" />
-      <ul class="platform-item" v-if="flag && platformList.length">
+
+      <loadingCom v-if="!flag" />
+      <ul class="platform-item" v-else-if="flag && platformList.length">
         <li class="flex-box flex-between"
           v-for="item in platformList" 
           :key="item.platformId"
@@ -28,7 +30,8 @@
           </router-link>
         </li>
       </ul>
-      <DataEmpty v-if="flag && platformList.length == 0"/>
+      <DataEmpty v-else="flag && platformList.length == 0"/>
+
       <!-- <div class="submit-button">
         <router-link to="" class="to-link" >查看详细报告</router-link>
       </div> -->
@@ -43,6 +46,7 @@ import DataEmpty from '@/views/common/dataEmpty/index.vue'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import { imgFixed } from '@/fn/imgProxy'
 import { toast } from '@/util/toast'
+import loadingCom from '@/components/loading/index.vue'
 import {
   brandPlatList,
   actorPlatList,
@@ -58,7 +62,8 @@ import { openAppLink, AppLink } from '@/util/native'
   components: {
     [Icon.name]: Icon,
     SentimentBar,
-    DataEmpty
+    DataEmpty,
+    loadingCom
   }
 })
 export default class Main extends Vue {

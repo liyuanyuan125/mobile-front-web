@@ -45,6 +45,7 @@ export default class Main extends Vue {
   @Prop({ type: Array, default: () => []}) platformList!: any
   @Prop({ type: Object}) params!: any
   @Prop({ type: String, default: '综合热度'}) lineTitle!: string
+  /** 数据加载loading */
   @Prop({ type: Boolean, default: true}) overLoading: any
 
 

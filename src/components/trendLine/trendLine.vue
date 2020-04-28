@@ -165,7 +165,7 @@ export default class TrendLine extends Vue {
       },
       yAxis: {
         type: 'value',
-        min: 100,
+        // min: 100,
         axisLabel: {
           formatter: (value: number) => {
             switch (this.unit) {

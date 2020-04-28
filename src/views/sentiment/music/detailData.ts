@@ -231,8 +231,8 @@ const albumBasic = async (id: number) => {
       {
         type: 1,
         title: isDigital ? '累计销售量' : '歌曲播放量',
-        value: (isDigital ? overview.playCount : overview.saleCount) || '-',
-        trend: (isDigital ? overview.playTrend : overview.saleTrend) || 0,
+        value: (isDigital ? overview.saleCount : overview.playCount) || '-',
+        trend: (isDigital ? overview.saleTrend : overview.playTrend) || 0,
         showdown: true,
       },
       {

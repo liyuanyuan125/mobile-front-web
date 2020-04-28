@@ -76,7 +76,12 @@
 
     <section v-if="showevent" class="pane" id="event">
       <!-- 营销事件 -->
-      <Event :eventList="eventList" :link="getApplink('eventMarketingList')" v-if="eventCode == 0" />
+      <Event
+        :eventList="eventList"
+        :link="getApplink('eventMarketingList')"
+        v-if="eventCode == 0"
+        title="热点事件"
+      />
       <DataEmpty :code="eventCode" :retry="getEventList" v-if="eventCode > 0" />
     </section>
 

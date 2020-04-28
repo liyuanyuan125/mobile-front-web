@@ -34,6 +34,7 @@
       <UserPortrait
         :ageRangeList="userAnalysis.ageRangeList"
         :genderList="userAnalysis.genderList"
+        type="1"
         :link="getApplink('userAnalysis')"
       />
     </section>

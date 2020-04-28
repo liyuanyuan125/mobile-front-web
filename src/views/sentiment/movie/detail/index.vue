@@ -10,6 +10,7 @@
         :platformList="platformHeat"
         :params="platformParams"
         v-if="!heatCode"
+        :overLoading="overLoading"
       />
       <DataEmpty :code="heatCode" :retry="getHeatAnalysis" v-if="heatCode > 0" />
     </div>
@@ -101,6 +102,7 @@ export default class MoviePage extends ViewBase {
   eventCode: number = 0 // 营销事件
   rivalCode: number = 0 // 竞品分析
   wantSeeCode: number = 0 // 想看
+  overLoading: boolean = false
   // 电影id
   movieId: string = ''
   // 电影详细信息
@@ -200,9 +202,11 @@ export default class MoviePage extends ViewBase {
       this.overAllHeat = res.overAllHeatList || []
       this.platformHeat = res.platformHeatList || []
       this.heatCode = 0
+      this.overLoading = true
     } catch (ex) {
       const { code } = this.handleModuleError(ex)
       this.heatCode = code
+      this.overLoading = true
     }
   }
 

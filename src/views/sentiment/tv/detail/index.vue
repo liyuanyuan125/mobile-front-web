@@ -10,6 +10,7 @@
         :platformList="platformHeat"
         :params="platformParams"
         v-if="!heatCode"
+        :overLoading="overLoading"
       />
       <DataEmpty :code="heatCode" :retry="getHeat90" v-if="heatCode > 0" />
     </div>
@@ -99,6 +100,7 @@ export default class TVPage extends ViewBase {
   rivalCode: number = 0 // 竞品分析
   wantSeeCode: number = 0 // 想看
   playCode: number = 0
+  overLoading: boolean = false
   // 电视剧id
   tvId: string = ''
   // 电视剧详细信息
@@ -195,9 +197,11 @@ export default class TVPage extends ViewBase {
       this.overAllHeat = res.overAllHeat
       this.platformHeat = res.platformHeat
       this.heatCode = 0
+      this.overLoading = true
     } catch (ex) {
       const { code } = this.handleModuleError(ex)
       this.heatCode = code
+      this.overLoading = true
     }
   }
 

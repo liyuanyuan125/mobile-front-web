@@ -29,7 +29,7 @@
           <!-- <img :src=item.coverUrl.url alt=""> -->
           <img :src="item.coverImg" alt />
         </div>
-        <div class="name">{{item.tvName}}</div>
+        <div class="name">{{(item.tvName == null || item.tvName == '') ? '-' : item.tvName}}</div>
         <div class="type">{{(item.genres == '' || item.genres == null) ? '-' : item.genres}}</div>
       </div>
     </div>

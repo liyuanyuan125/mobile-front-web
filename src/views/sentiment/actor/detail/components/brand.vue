@@ -6,7 +6,7 @@
         <div class="img" @click="goDetail(item.brandId)">
           <img :src="item.coverImg" alt />
         </div>
-        <div class="name">{{item.brandName}}</div>
+        <div class="name">{{(item.brandName == null || item.brandName == '') ? '-' : item.brandName}}</div>
         <div class="type">{{(item.genres == '' || item.genres == null) ? '-' : item.genres}}</div>
       </div>
     </div>

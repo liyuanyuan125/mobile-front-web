@@ -11,7 +11,7 @@
       </li> -->
       <!-- <li class="chgli"></li> -->
       <li>
-        <p class="p1-3">{{data.mainGenre == '' ? '-' : data.mainGenre}}</p>
+        <p class="p1-3">{{(data.mainGenre == '' || data.mainGenre == null) ? '-' : data.mainGenre}}</p>
         <p class="p2">类型偏好</p>
       </li>
     </ul>

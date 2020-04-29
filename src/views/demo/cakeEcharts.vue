@@ -24,8 +24,8 @@ import pointChart from '@/components/cakeChart/pointChart.vue'
 export default class Apply extends Vue {
 
   data1: any = {
-    data: [{value: 18934, name: '女性'},
-      {value: 3578, name: '男性'}
+    data: [{value: 7517, name: '女性'},
+      {value: 2483, name: '男性'}
       ],
     title: '性别占比',
     emphasisShow: true
@@ -33,8 +33,8 @@ export default class Apply extends Vue {
 
   data2: any = {
     data: [
-      {value: 120, name: '微博'},
-      {value: 120, name: '抖音'},
+      {value: 123, name: '微博'},
+      {value: 119, name: '抖音'},
       {value: 120, name: '网易云音乐'},
       {value: 120, name: 'QQ音乐'},
       {value: 120, name: '腾讯的视频'}],

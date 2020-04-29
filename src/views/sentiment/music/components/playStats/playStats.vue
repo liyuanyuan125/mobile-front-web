@@ -40,7 +40,7 @@
           <i class="total-no">{{index + 1}}</i>
           <div class="total-name van-multi-ellipsis--l2">{{name}}</div>
           <Progress
-            :percentage="percent"
+            :percentage="Math.min(100, percent)"
             :show-pivot="false"
             color="rgba(48, 48, 48, .8)"
             track-color="#d0d1d2"

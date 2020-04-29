@@ -9,12 +9,6 @@ export const movieRivalList = async (movieIdList: string) => {
     try {
         const res: any = await getMovieRivalList(movieIdList)
         if (res && res.code === 0) {
-            // const data = res.data
-            // if (data.rivalList && data.rivalList.length) {
-            //     for (const it of data.rivalList) {
-            //         it.coverImg = imgFixed(it.coverUrl, 150, 195)
-            //     }
-            // }
             return res.data
         } else {
             toast(res.msg)

@@ -5,7 +5,7 @@ export function formatCharts(object: any, count: number) {
     // 返回的时间戳是  年月日 00：00：00格式
     const nowDate = moment(new Date()).format('YYYY-MM-DD 00:00:00')
     const now = new Date(nowDate).getTime()
-    for (let i = 1; i < count; i++) {
+    for (let i = 1; i < count + 1; i++) {
         lastDate.unshift(now - i * 24 * 60 * 60 * 1000)
     }
     // console.log('object', object)

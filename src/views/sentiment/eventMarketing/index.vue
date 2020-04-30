@@ -1,7 +1,8 @@
 <template>
   <div class="content">
     <SentimentBar title="营销事件详情" :titleShow="true" />
-    <div v-if="!basicCode">
+    <loadingCom v-if="!overLoading" />
+    <div v-if="!basicCode && overLoading">
       <div v-if="!eventStatus" class="unevent">
         <span></span>
         <h6>暂无数据</h6>
@@ -51,7 +52,12 @@
         />
       </div>
     </div>
-    <DataEmpty :code="basicCode" :retry="geteventDetail" v-if="basicCode > 0" class="empty" />
+    <DataEmpty
+      :code="basicCode"
+      :retry="geteventDetail"
+      v-if="basicCode > 0 && overLoading"
+      class="empty"
+    />
   </div>
 </template>
 
@@ -69,6 +75,7 @@ import PraiseComment from '@/views/common/praiseComment/index.vue' // 口碑评�
 import SpreadList from '@/views/common/spreadList/index.vue' // 事件
 import { platForm } from '@/components/hotLine'
 import DataEmpty from '@/views/common/dataEmpty/index.vue'
+import loadingCom from '@/components/loading/index.vue'
 import { openAppLink, AppLink } from '@/util/native'
 
 @Component({
@@ -82,13 +89,15 @@ import { openAppLink, AppLink } from '@/util/native'
     Button,
     LineGrap,
     SpreadList,
-    platForm
+    platForm,
+    loadingCom
   }
 })
 export default class KolPage extends ViewBase {
   title!: string
   eventId: string = ''
   eventStatus: number = 0
+  overLoading: boolean = false
 
   // 热度分析
   linedata: any = null
@@ -135,12 +144,12 @@ export default class KolPage extends ViewBase {
       code: 'forward',
       key: 'forwardList',
       name: '转发'
-    },
-    {
-      code: 'read',
-      key: 'readList',
-      name: '阅读'
     }
+    // {
+    //   code: 'read',
+    //   key: 'readList',
+    //   name: '阅读'
+    // }
   ]
   spreadList: any = []
   eventInfo: any = {}
@@ -169,9 +178,11 @@ export default class KolPage extends ViewBase {
       }
       this.basicCode = 0
       this.platformHeatList = platformList || []
+      this.overLoading = true
     } catch (ex) {
       const { code } = this.handlePageError(ex)
       this.basicCode = code
+      this.overLoading = true
     }
   }
 
@@ -259,7 +270,6 @@ export default class KolPage extends ViewBase {
             `
     }
   }
-
 }
 </script>
 

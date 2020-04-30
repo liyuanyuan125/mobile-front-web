@@ -69,7 +69,6 @@ export default class WantSeeTrend extends ViewBase {
         endTime: this.dates.endTime,
         ...this.city
       })
-      // this.dataTrend = res
       this.wantSeeCode = 0
       this.formatDatas(res.dailyGainList)
     } catch (ex) {

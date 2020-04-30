@@ -70,33 +70,6 @@ export default class WantSeeTrend extends ViewBase {
         ...this.city
       })
       this.wantSeeCode = 0
-      const qg = [
-        {
-          date: 1587657600000,
-          value: 1611381,
-          eventList: []
-        },
-        {
-          date: 1587744000000,
-          value: -5,
-          eventList: []
-        },
-        {
-          date: 1587830400000,
-          value: -2,
-          eventList: []
-        },
-        {
-          date: 1587916800000,
-          value: 0,
-          eventList: []
-        },
-        {
-          date: 1588003200000,
-          value: 2,
-          eventList: []
-        }
-      ]
       this.formatDatas(res.dailyGainList)
     } catch (ex) {
       const { code } = this.handleModuleError(ex)

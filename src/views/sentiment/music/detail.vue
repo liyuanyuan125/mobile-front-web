@@ -951,6 +951,13 @@ export default class extends ViewBase {
 .song-item {
   display: flex;
   margin-bottom: 37px;
+  &:nth-child(2),
+  &:nth-child(3),
+  &:nth-child(4) {
+    .song-name {
+      font-weight: 600;
+    }
+  }
 }
 
 .song-name {

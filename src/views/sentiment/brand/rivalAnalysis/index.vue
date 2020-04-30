@@ -37,9 +37,9 @@
       <ModuleHeader title="用户对比" class="items"/>
       <section v-if="userCode == 0">
         <AgeDistribution :ageRangeList='ageRangeList' v-if="ageRangeList.length" />
-        <div class="van-hairline--top item-hairline" v-if="genderList.length"></div>
+        <div class="van-hairline--top item-hairline" v-if="ageRangeList.length"></div>
         <SexVs :data="genderList" v-if="genderList.length" class="genderbox" />
-        <div class="van-hairline--top item-hairline"></div>
+        <div class="van-hairline--top item-hairline" v-if="genderList.length"></div>
       </section>
       <DataEmpty :code="userCode" :retry="portDetail" v-if="userCode > 0" />
       <!-- <Table 

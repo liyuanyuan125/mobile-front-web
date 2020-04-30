@@ -37,7 +37,7 @@
       <ModuleHeader title="用户对比" class="items"/>
       <section v-if="userCode == 0">
         <AgeDistribution :ageRangeList='ageRangeList' v-if="ageRangeList.length" />
-        <div class="van-hairline--top item-hairline"></div>
+        <div class="van-hairline--top item-hairline" v-if="genderList.length"></div>
         <SexVs :data="genderList" v-if="genderList.length" class="genderbox" />
         <div class="van-hairline--top item-hairline"></div>
       </section>
@@ -346,7 +346,7 @@ export default class Main extends ViewBase {
 }
 .user-model {
   padding-bottom: 10px;
-  border-bottom: solid 20px #f2f3f6;
+  // border-bottom: solid 20px #f2f3f6;
   padding-top: 60px;
   background: #fff;
 }

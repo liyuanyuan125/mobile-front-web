@@ -32,15 +32,6 @@ export default class LineGrap extends Vue {
   unit: string = '' // Y轴单位
 
   get xAxisDate() {
-    const ydate = this.lineData.yDate[0].data
-    const max = Math.max(...ydate)
-    this.maxData = ydate.indexOf(max)
-    const len = max.toString().length
-    if (len >= 5 && len < 9) {
-      this.unit = '万'
-    } else if (len >= 9) {
-      this.unit = '亿'
-    }
     return (this.lineData.xDate || []).map((it: any) => moment(it).format('MM-DD'))
   }
 
@@ -56,9 +47,21 @@ export default class LineGrap extends Vue {
   }
 
   initChart() {
+    // 计算单位
+    const ydate = this.lineData.yDate[0].data
+    const max = Math.max(...ydate)
+    this.maxData = ydate.indexOf(max)
+    const len = max.toString().length
+    if (len >= 5 && len < 9) {
+      this.unit = '万'
+    } else if (len >= 9) {
+      this.unit = '亿'
+    }
+
     const chartEl = this.$refs.refChart as any
     const myChart = echarts.init(chartEl)
-
+    myChart.clear()
+    myChart.resize()
     const linearGradient = {
       normal: {
         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
@@ -200,7 +203,7 @@ export default class LineGrap extends Vue {
       color: this.colors,
       series: seriesItems
     }
-    myChart.clear() // 清空画布内容，实例可用
+    // myChart.clear() // 清空画布内容，实例可用
     myChart.setOption(options)
     myChart.dispatchAction({
       type: 'showTip',

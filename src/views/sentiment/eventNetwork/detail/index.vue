@@ -1,7 +1,8 @@
 <template>
   <div class="page">
     <SentimentBar :title="title" :titleShow="true" />
-    <div v-if="!basicCode">
+    <loadingCom v-if="!overLoading" />
+    <div v-if="!basicCode && overLoading">
       <div v-if="eventStatus === 1 || !eventStatus" class="unevent">
         <span></span>
         <h6>暂无数据</h6>
@@ -57,7 +58,12 @@
         <p>如有问题 请联系客服 400-605-0606</p>
       </div>
     </div>
-    <DataEmpty :code="basicCode" :retry="getEventData" v-if="basicCode > 0" class="empty" />
+    <DataEmpty
+      :code="basicCode"
+      :retry="getEventData"
+      v-if="basicCode > 0 && overLoading"
+      class="empty"
+    />
   </div>
 </template>
 
@@ -66,6 +72,8 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 import ViewBase from '@/util/ViewBase'
 import { eventDetail } from './data'
 import { Icon } from 'vant'
+import { lastDays } from '@/util/timeSpan'
+import loadingCom from '@/components/loading/index.vue'
 import SentimentBar from '@/views/common/sentimentBar/index.vue'
 import { BubbleLeft, BubbleItem } from '@/components/bubble'
 import TabNav, { TabNavItem } from '@/components/tabNav'
@@ -86,6 +94,7 @@ import DataEmpty from '@/views/common/dataEmpty/index.vue'
     TabNav,
     heatLineCom,
     SpreadList,
+    loadingCom,
     PraiseComment
   }
 })
@@ -93,9 +102,11 @@ export default class NetworkEventPage extends ViewBase {
   eventId: string = ''
   eventStatus: number = 0
   basicCode: number = 0
+  overLoading: boolean = false
   title: string = ''
   bubbleData: BubbleItem[] = [] // 概览数据左
   bubbleTotal: any = {} // 概览数据右
+
   // 二级导航
   tabList: TabNavItem[] = [
     { name: 'hot', label: '热度' },
@@ -108,12 +119,14 @@ export default class NetworkEventPage extends ViewBase {
   publicPraise: any = {} // 口碑
   // 热度分析传参
   get params() {
+    // 其实取的是事件监测的起始和结束时间，写90天是为了二级页好看一点
+    const [startTime, endTime] = lastDays(90)
     return {
       type: 100, // 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑 100=全网事件 101=营销事件
       id: this.$route.params.eventId, // 详情页id
       name: this.$route.query.title || '全网事件分析',
-      startTime: 20200304, // this.startTime,
-      endTime: 20200310 // this.endTime
+      startTime, // this.startTime,
+      endTime // this.endTime
     }
   }
 
@@ -130,6 +143,7 @@ export default class NetworkEventPage extends ViewBase {
       const res: any = await eventDetail(this.eventId)
       this.eventStatus = res.eventStatus
       this.basicCode = 0
+      this.overLoading = true
       if (!res.eventOverView) {
         this.eventStatus = 0
       } else {
@@ -147,6 +161,7 @@ export default class NetworkEventPage extends ViewBase {
     } catch (ex) {
       const { code } = this.handlePageError(ex)
       this.basicCode = code
+      this.overLoading = true
     }
   }
 

@@ -229,13 +229,13 @@ const songPlay = async (query: SongIdListTime, dayNames: string[]) => {
 
 const albumPlay = async (query: AlbumIdListTime, dayNames: string[]) => {
   const { data } = await albumGetSale(query)
-  // 产品需求：data 为 null 时，作为空优化
+  // 产品需求：data 为 null 时，作为空处理
   return data != null ? dealPlayView(data, dayNames, true) : null
 }
 
 const albumPlayAlign = async (query: AlbumIdListDays, dayNames: string[]) => {
   const { data } = await albumGetSaleAlign(query)
-  // 产品需求：data 为 null 时，作为空优化
+  // 产品需求：data 为 null 时，作为空处理
   return data != null ? dealPlayView(data, dayNames, true) : null
 }
 

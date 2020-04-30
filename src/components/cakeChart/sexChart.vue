@@ -108,7 +108,7 @@ export default class SexChart extends Vue {
     data.optionName.unshift(it.name)
     const obj = {
       name: it.name,
-      value: Number((Number(it.value + '') / 100).toFixed(1))
+      value: it.value / 100
     }
     data.optionData.unshift(obj)
   })

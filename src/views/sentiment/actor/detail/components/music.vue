@@ -2,16 +2,16 @@
   <div class="scroll">
     <div class="title">音乐({{data.musicCount}})</div>
     <ul>
-      <li>
+      <!-- <li>
         <p class="p1">{{data.averagScore == '' ? '-' : data.averagScore}}</p>
         <p class="p2" @click="showNote()">
           作品均分
           <Icon name="question-o" size="13" class="icon-arrow" />
         </p>
-      </li>
-      <li class="chgli"></li>
+      </li> -->
+      <!-- <li class="chgli"></li> -->
       <li>
-        <p class="p1-3">{{data.mainGenre == '' ? '-' : data.mainGenre}}</p>
+        <p class="p1-3">{{(data.mainGenre == '' || data.mainGenre == null) ? '-' : data.mainGenre}}</p>
         <p class="p2">类型偏好</p>
       </li>
     </ul>
@@ -21,7 +21,7 @@
           <!-- <img :src=item.coverUrl.url alt=""> -->
           <img :src="item.coverImg" alt />
         </div>
-        <div class="name">{{item.musicName}}</div>
+        <div class="name">{{(item.musicName == null || item.musicName == '') ? '-' : item.musicName}}</div>
         <div class="type">{{(item.genres == '' || item.genres == null) ? '-' : item.genres}}</div>
       </div>
     </div>
@@ -60,7 +60,7 @@ export default class Main extends Vue {
 
   // 详情页跳转
   goDetail(id: any) {
-    openWebPage(`/sentiment/song/${id}`)
+    openWebPage(`/sentiment/album/${id}`)
     // this.$router.push({
     //   name: 'sentiment-song',
     //   params: {
@@ -101,7 +101,7 @@ export default class Main extends Vue {
     border-radius: 10px;
     li {
       padding-top: 25px;
-      width: 49.99%;
+      width: 100%;
       text-align: center;
     }
     .chgli {

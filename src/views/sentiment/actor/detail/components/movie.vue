@@ -3,12 +3,12 @@
     <div class="title">电影({{data.movieCount}})</div>
     <ul>
       <li>
-        <p class="p1">{{data.boxOfficeCount == '' ? '-' : data.boxOfficeCount}}</p>
+        <p class="p1">{{(data.boxOfficeCount == '' || data.boxOfficeCount == null) ? '-' : data.boxOfficeCount}}</p>
         <p class="p2">累计票房</p>
       </li>
       <li class="chgli"></li>
       <li>
-        <p class="p1">{{data.averagScore == '' ? '-' : data.averagScore}}</p>
+        <p class="p1">{{(data.averagScore == '' || data.averagScore == null) ? '-' : data.averagScore}}</p>
         <p class="p2" @click="showNote()">
           作品均分
           <Icon name="question-o" size="13" class="icon-arrow" />
@@ -16,7 +16,7 @@
       </li>
       <li class="chgli"></li>
       <li>
-        <p class="p1-3">{{data.mainGenre == '' ? '-' : data.mainGenre}}</p>
+        <p class="p1-3">{{(data.mainGenre == '' || data.mainGenre == null) ? '-' : data.mainGenre}}</p>
         <p class="p2">类型偏好</p>
       </li>
     </ul>
@@ -26,7 +26,7 @@
           <!-- <img :src=item.coverUrl.url alt=""> -->
           <img :src="item.coverImg" alt />
         </div>
-        <div class="name">{{item.movieName}}</div>
+        <div class="name">{{(item.movieName == null || item.movieName == '') ? '-' : item.movieName}}</div>
         <div class="type">{{(item.genres == '' || item.genres == null) ? '-' : item.genres}}</div>
       </div>
     </div>

@@ -3,7 +3,7 @@
     <div class="title">剧集({{data.tvCount}})</div>
     <ul>
       <li>
-        <p class="p1">{{data.playCount == '' ? '-' : data.playCount}}</p>
+        <p class="p1">{{(data.playCount == '' || data.playCount == null) ? '-' : data.playCount}}</p>
         <p class="p2" @click="showplayCount()">
           累计播放量
           <Icon style="right: 10%" name="question-o" size="13" class="icon-arrow" />
@@ -11,7 +11,7 @@
       </li>
       <li class="chgli"></li>
       <li>
-        <p class="p1">{{data.averagScore == '' ? '-' : data.averagScore}}</p>
+        <p class="p1">{{(data.averagScore == '' || data.averagScore == null) ? '-' : data.averagScore}}</p>
         <p class="p2" @click="showaveragScore()">
           作品均分
           <Icon name="question-o" size="13" class="icon-arrow" />
@@ -19,7 +19,7 @@
       </li>
       <li class="chgli"></li>
       <li>
-        <p class="p1-3">{{data.mainGenre == '' ? '-' : data.mainGenre}}</p>
+        <p class="p1-3">{{(data.mainGenre == '' || data.mainGenre == null) ? '-' : data.mainGenre}}</p>
         <p class="p2">类型偏好</p>
       </li>
     </ul>

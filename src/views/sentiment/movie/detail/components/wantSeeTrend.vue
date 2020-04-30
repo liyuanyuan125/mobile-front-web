@@ -69,8 +69,34 @@ export default class WantSeeTrend extends ViewBase {
         endTime: this.dates.endTime,
         ...this.city
       })
-      // this.dataTrend = res
       this.wantSeeCode = 0
+      const qg = [
+        {
+          date: 1587657600000,
+          value: 1611381,
+          eventList: []
+        },
+        {
+          date: 1587744000000,
+          value: -5,
+          eventList: []
+        },
+        {
+          date: 1587830400000,
+          value: -2,
+          eventList: []
+        },
+        {
+          date: 1587916800000,
+          value: 0,
+          eventList: []
+        },
+        {
+          date: 1588003200000,
+          value: 2,
+          eventList: []
+        }
+      ]
       this.formatDatas(res.dailyGainList)
     } catch (ex) {
       const { code } = this.handleModuleError(ex)
@@ -165,7 +191,7 @@ export default class WantSeeTrend extends ViewBase {
     return `
            <div class="tiptool">
              <p class="name"><i class="dot"></i>${date} 周${day} </p>
-             <p class="count">日增${roleNumber(Math.abs(params.data))}人想看</p>
+             <p class="count">新增：${params.data ? roleNumber(params.data) : '-'}人</p>
              ${eventLast}
            </div>
           `

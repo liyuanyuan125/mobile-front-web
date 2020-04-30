@@ -1,36 +1,43 @@
 <template>
   <div class="plat-min-height">
-      <ModuleHeader title="平台热度" class="formatmodule" v-if="dataList.length < 3"/>
-      <ModuleHeader title="平台热度"  class="formatmodule" :link="link" v-else/>
-
-      <loadingCom v-if="!platLoing" />
-      <ul class="platform-item" v-else-if="platLoing && platformList.length">
-        <li
-          class="flex-box flex-between"
-          v-for="(item, index) in dataList"
-          :key="item.platformId"
-          v-if="index < 3"
-          @click="goPlatformDetail(item)"
-        >
-          <div class="flex-box">
-            <div class="plat-left">
-              <img :src="item.coverImg" v-if="item.coverImg" />
-              <img v-else src="@/assets/platform-default-icon.png" width="60" height="60" />
-              <div class="name van-ellipsis">{{item.platformName}}</div>
-            </div>
-            
-            <div class="item-centers">
-              <p class="values flex-box flex-between">
-                <span v-for="(it, index) in item.platformValueList" :key="it.name" v-if="index < 2">
-                  {{it.name}} {{it.value || '-'}}
-                </span>
-              </p>
-              <p class="texts">{{item.platformNotice}}</p>
-            </div>
+    <!-- <ModuleHeader title="平台热度" class="formatmodule" v-if="dataList.length < 3" />
+    <ModuleHeader title="平台热度" class="formatmodule" :link="link" v-else />-->
+    <div class="titbox" @click="openLink">
+      <h4>平台热度</h4>
+      <div v-if="dataList.length >= 3">
+        <Icon name="arrow" size="20" class="more-icon" />
+      </div>
+    </div>
+    <loadingCom v-if="!platLoing" />
+    <ul class="platform-item" v-else-if="platLoing && platformList.length">
+      <li
+        class="flex-box flex-between"
+        v-for="(item, index) in dataList"
+        :key="item.platformId"
+        v-if="index < 3"
+        @click="goPlatformDetail(item)"
+      >
+        <div class="flex-box">
+          <div class="plat-left">
+            <img :src="item.coverImg" v-if="item.coverImg" />
+            <img v-else src="@/assets/platform-default-icon.png" width="60" height="60" />
+            <div class="name van-ellipsis">{{item.platformName}}</div>
           </div>
-        </li>
-      </ul>
-    <DataEmpty v-else="platLoing && platformList.length == 0"/>
+
+          <div class="item-centers">
+            <p class="values flex-box">
+              <span
+                v-for="(it, index) in item.platformValueList"
+                :key="it.name"
+                v-if="index < 2"
+              >{{it.name}} {{it.value || '-'}}</span>
+            </p>
+            <p class="texts">{{item.platformNotice}}</p>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <DataEmpty v-else="platLoing && platformList.length == 0" />
   </div>
 </template>
 
@@ -42,10 +49,11 @@ import DataEmpty from '@/views/common/dataEmpty/index.vue'
 import { openAppLink, AppLink } from '@/util/native'
 import { imgFixed } from '@/fn/imgProxy'
 import loadingCom from '@/components/loading/index.vue'
+import { openWebPage } from '@/fn/openUrlInApp'
 
 @Component({
   components: {
-    [Icon.name]: Icon,
+    Icon,
     ModuleHeader,
     DataEmpty,
     loadingCom
@@ -56,14 +64,14 @@ export default class Main extends Vue {
   @Prop({ type: Array, default: () => [] }) platformList!: any
   /** 类型，id，天数， 开始/结束时间 五个参数 跳转更多二级页 */
   @Prop({ type: Object }) params!: any
-  @Prop({ type: Boolean, default: true}) platLoing: any
+  @Prop({ type: Boolean, default: true }) platLoing: any
 
   get dataList() {
-   const list = (this.platformList || []).map((it: any) => {
-     return {
-       ...it,
-       coverImg: imgFixed(it.platformLogo, 60, 60)
-     }
+    const list = (this.platformList || []).map((it: any) => {
+      return {
+        ...it,
+        coverImg: imgFixed(it.platformLogo, 60, 60)
+      }
     })
     return list
   }
@@ -72,6 +80,15 @@ export default class Main extends Vue {
       name: 'platform-detail',
       params: this.params
     }
+  }
+
+  // 跳转
+  openLink() {
+    if (this.dataList.length < 3) {
+      return
+    }
+    const { id, type, name, startTime, endTime } = this.params
+    openWebPage(`/platform/detail/${id}/${type}/${name}/${startTime}/${endTime}`)
   }
 
   // 去原生app评台详情页
@@ -103,6 +120,28 @@ export default class Main extends Vue {
 @import '~@/views/sentiment/brand/less/lib.less';
 @import '~@/components/hotLine/com.less';
 @import '~@/components/hotLine/platform.less';
+.titbox {
+  display: flex;
+  margin-top: 40px;
+  h4 {
+    white-space: nowrap;
+    font-size: 34px;
+    font-weight: 400;
+    line-height: 60px;
+    flex: 1;
+  }
+  > div {
+    text-align: right;
+  }
+  .more-icon {
+    position: relative;
+    top: 5px;
+    color: #c8c6c4;
+  }
+}
+.flex-box {
+  width: 100%;
+}
 .plat-min-height {
   min-height: 360px;
   position: relative;
@@ -125,5 +164,12 @@ export default class Main extends Vue {
     font-size: 20px;
     color: #4a4a4a;
   }
+}
+.item-centers {
+  flex: 1;
+  padding-right: 30px;
+}
+.values span {
+  flex: 1;
 }
 </style>

@@ -44,6 +44,7 @@ import ModuleHeader from '@/components/moduleHeader'
 import { openAppLink, AppLink } from '@/util/native'
 import { datetimeParse } from '@/fn/dateUtil'
 import DataEmpty from '@/views/common/dataEmpty/index.vue'
+import { openWebPage } from '@/fn/openUrlInApp'
 
 @Component({
   components: {
@@ -100,15 +101,7 @@ export default class EventList extends Vue {
 
   // 去营销事件详情面
   goEventDetail(item: any) {
-    this.$router.push({
-      name: 'sentimenteventmarketing',
-      params: {
-        eventId: item.eventId
-      },
-      query: {
-        title: item.eventName
-      }
-    })
+    openWebPage(`/sentiment/eventMarketing/${item.eventId}`, { title: item.eventName })
   }
 }
 </script>

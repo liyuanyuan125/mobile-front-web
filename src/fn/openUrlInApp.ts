@@ -12,9 +12,10 @@ export function openWebPage(path: string, query?: any) {
     const qus = arr.length == 0 ? '' : '?' + qs.stringify(query)
     if (isJyAdvIos()) {
         // 如果是在 ios 则 applink 里打开二级页
+        const href = (origin + path + qus).replace(/\s+/g, '')
         const link: AppLink = {
             page: 'h5Page',
-            url: encodeURIComponent(`${origin}${path}${qus}`)
+            url: encodeURIComponent(href)
         }
         openAppLink(link)
     } else {

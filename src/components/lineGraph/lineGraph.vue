@@ -108,6 +108,7 @@ export default class LineGrap extends Vue {
         icon: 'circle', // 设置图例标记
         itemHeight: 8,
         itemWidth: 10,
+        selectedMode: false,
         textStyle: {
           color: '#000',
           fontWeight: 100

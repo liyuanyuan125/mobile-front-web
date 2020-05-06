@@ -83,6 +83,7 @@ export default class BarGraphRow extends ViewBase {
           barGap: '-100%',
           // barCategoryGap: '100%',
           smooth: true,
+          silent: true,
           label: {
             show: true,
             position: 'right',
@@ -110,6 +111,7 @@ export default class BarGraphRow extends ViewBase {
           data: this.dataOption.xData,
           type: 'bar',
           smooth: true,
+          silent: true,
           label: {
             show: true,
             position: 'right',

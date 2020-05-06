@@ -1,8 +1,6 @@
 <template>
   <div class="options-page">
-    <ModuleHeader
-      title="口碑评论"
-      :link="show ? link : null" />
+    <ModuleHeader title="口碑评论" :link="show ? link : null" />
     <div v-if="show">
       <div class="options-top">
         <div class="options-left">
@@ -27,9 +25,7 @@
           </div>
         </div>
       </div>
-      <div
-        class="options-bottom"
-      >
+      <div class="options-bottom">
         <div class="hot-box">
           <div class="hot-box-left">
             <p>
@@ -45,7 +41,9 @@
                 @click="wordLink(it,0)"
               >{{it}}</span>
             </div>
-            <div v-else class="nomore"><span>-</span></div>
+            <div v-else class="nomore">
+              <span>-</span>
+            </div>
           </div>
         </div>
         <div class="hot-box">
@@ -63,7 +61,9 @@
                 @click="wordLink(it,3)"
               >{{it}}</span>
             </div>
-            <div v-else class="nomore"><span>-</span></div>
+            <div v-else class="nomore">
+              <span>-</span>
+            </div>
           </div>
         </div>
       </div>
@@ -95,16 +95,18 @@ export default class PraiseComment extends Vue {
   @Prop({ type: Object }) link!: AppLink // app 热词link
 
   praiseList: any[] = []
-  noappraiseList = [{raiseName: '正面评价', raisePercent: 0},
-  {raiseName: '中性评价', raisePercent: 0},
-  {raiseName: '负面评价', raisePercent: 0}]
+  noappraiseList = [
+    { raiseName: '正面评价', raisePercent: 0 },
+    { raiseName: '中性评价', raisePercent: 0 },
+    { raiseName: '负面评价', raisePercent: 0 }
+  ]
 
   get hotWordList() {
-    return this.publicPraise ? (this.publicPraise.hotWordList || []) : []
+    return this.publicPraise ? this.publicPraise.hotWordList || [] : []
   }
 
   get badWordList() {
-    return this.publicPraise ? (this.publicPraise.badWordList || []) : []
+    return this.publicPraise ? this.publicPraise.badWordList || [] : []
   }
 
   get appraiseList() {
@@ -118,8 +120,13 @@ export default class PraiseComment extends Vue {
   }
 
   get show() {
-    return this.favorable ||
-    (this.publicPraise && (this.appraiseList.length > 0 || this.badWordList.length > 0 || this.hotWordList.length > 0))
+    return (
+      this.favorable ||
+      (this.publicPraise &&
+        (this.appraiseList.length > 0 ||
+          this.badWordList.length > 0 ||
+          this.hotWordList.length > 0))
+    )
   }
 
   // 热词 applink 跳转
@@ -128,7 +135,7 @@ export default class PraiseComment extends Vue {
       page: 'praiseHotWordsDetail',
       businessType: this.link.businessType, // 业务类型
       businessObjectId: this.link.businessObjectId, // 业务 id
-      keyword: encodeURIComponent(word),
+      keyword: word,
       markType
     }
     if (
@@ -139,7 +146,7 @@ export default class PraiseComment extends Vue {
         page: 'eventPraiseHotWordsDetail',
         eventType: this.link.eventType, // 业务类型
         eventId: this.link.eventId, // 业务 id
-        keyword: encodeURIComponent(word),
+        keyword: word,
         markType
       }
     }

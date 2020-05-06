@@ -231,6 +231,7 @@ export function getRingOption(data: any) {
                         a: {
                             fontSize: data.fontsize,
                             lineHeight: 2,
+                            padding: [0, 0, 0, 1]
                         },
                         b: {
                             fontSize:  data.fontsize,

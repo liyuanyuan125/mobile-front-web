@@ -69,7 +69,6 @@ export default class WantSeeTrend extends ViewBase {
         endTime: this.dates.endTime,
         ...this.city
       })
-      // this.dataTrend = res
       this.wantSeeCode = 0
       this.formatDatas(res.dailyGainList)
     } catch (ex) {
@@ -165,7 +164,7 @@ export default class WantSeeTrend extends ViewBase {
     return `
            <div class="tiptool">
              <p class="name"><i class="dot"></i>${date} 周${day} </p>
-             <p class="count">日增${roleNumber(Math.abs(params.data))}人想看</p>
+             <p class="count">新增：${params.data ? roleNumber(params.data) : '-'}人</p>
              ${eventLast}
            </div>
           `

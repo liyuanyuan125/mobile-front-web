@@ -175,10 +175,15 @@ interface RivalView {
 }
 
 const dealPlayView = (
-  view: RivalView[],
+  view: RivalView[] | null,
   dayNames: string[],
   isAlbum = false
-): PlayView => {
+): PlayView | null => {
+  // 产品需求：data 为 null 时，作为空处理
+  if (view == null) {
+    return null
+  }
+
   const group = groupBy(view, 'platformName')
 
   const dataGroup = Object.entries(group).map(([ name, list ]) => {

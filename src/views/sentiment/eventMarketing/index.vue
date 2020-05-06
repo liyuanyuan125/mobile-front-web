@@ -250,7 +250,7 @@ export default class KolPage extends ViewBase {
     const link: AppLink = {
       page: 'eventTrendDetail',
       eventId: this.eventId,
-      title: encodeURIComponent(this.title),
+      title: this.title,
       contentCode: this.newCode
       // 表示已选内容的code: 新闻 news，评论 comment,  点赞 praise，转发 forward，阅读 read
     }

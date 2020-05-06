@@ -139,7 +139,7 @@ export default class MarketContrast extends Vue {
       page: 'praiseHotWordsDetail',
       businessType: this.businessType, // 业务类型
       businessObjectId: id, // 业务 id
-      keyword: encodeURIComponent(word),
+      keyword: word,
       markType: this.indexs + 1
     }
     openAppLink(link)

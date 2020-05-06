@@ -15,7 +15,7 @@ export function openWebPage(path: string, query?: any) {
         // const href = (origin + path + qus).replace(/\s+/g, '') // 去掉空格 applink 打不开有空格的 url
         const link: AppLink = {
             page: 'h5Page',
-            url: encodeURIComponent(origin + path + qus)
+            url: origin + path + qus
         }
         openAppLink(link)
     } else {

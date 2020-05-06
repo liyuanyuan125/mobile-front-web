@@ -36,7 +36,8 @@ export default class Main extends Vue {
   mounted() {
     this.initChart()
     const box = this.$refs.box as HTMLDivElement
-    ;['click', 'touchstart'].forEach(name => {
+
+    ['click', 'touchstart'].forEach(name => {
       box.addEventListener(name, ev => {
         const el = ev.target as HTMLDivElement
         const { tooltipEventTipname, tooltipEventName, tooltipEventId } =

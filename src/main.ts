@@ -11,10 +11,10 @@ import event from '@/fn/event'
 import { handleUserAccountLogout } from '@/util/native'
 
 import './mock'
-
-// if (process && process.env && process.env.NODE_ENV !== 'production') {
-new vconsole()
-// }
+const href = location.href
+if (href.indexOf('jydata.com') < 0) {
+  new vconsole()
+}
 
 Vue.use(VueCookies)
 

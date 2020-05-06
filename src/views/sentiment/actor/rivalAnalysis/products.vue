@@ -8,6 +8,7 @@
       class="movierival"
       @setRival="changeIds"
     />
+    <DataEmpty :code="basicCode" :retry="getDetail" v-if="basicCode > 0" />
     <TabNav :list="list" class="tab-nav" normal />
     <section class="pane" id="hot" style="padding-bottom: 30px;border-top: 0px;">
       <selectTime v-model="day" class="select-time" ref="reftimes" />
@@ -21,7 +22,6 @@
         v-if="heatCode == 0"
       />
       <DataEmpty :code="heatCode" :retry="getLineData" v-if="heatCode > 0" />
-      <DataEmpty :code="basicCode" :retry="getDetail" v-if="basicCode > 0" />
     </section>
 
     <section

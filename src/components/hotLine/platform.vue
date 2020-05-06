@@ -88,7 +88,8 @@ export default class Main extends Vue {
       return
     }
     const { id, type, name, startTime, endTime } = this.params
-    openWebPage(`/platform/detail/${id}/${type}/${name}/${startTime}/${endTime}`)
+    const encodeName = encodeURIComponent(name)
+    openWebPage(`/platform/detail/${id}/${type}/${encodeName}/${startTime}/${endTime}`)
   }
 
   // 去原生app评台详情页

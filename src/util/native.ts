@@ -140,10 +140,12 @@ export async function openAppLink(link: AppLink): Promise<any>
 export async function openAppLink(page: string, query?: object): Promise<any>
 export async function openAppLink(p: string | AppLink, query: object = {}) {
   const link = formatAppLink(p as any, query)
+
   const params = {
     applinkData: 'jydataadvertiser://scheme?' + link,
     originUrl: location.href
   }
+  devInfo('openAppLink', link, params)
   const data = await openAppLinkClient({ params })
   return data
 }

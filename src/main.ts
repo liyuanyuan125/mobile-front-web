@@ -12,9 +12,9 @@ import { handleUserAccountLogout } from '@/util/native'
 
 import './mock'
 
-if (process && process.env && process.env.NODE_ENV !== 'production') {
-  new vconsole()
-}
+// if (process && process.env && process.env.NODE_ENV !== 'production') {
+new vconsole()
+// }
 
 Vue.use(VueCookies)
 

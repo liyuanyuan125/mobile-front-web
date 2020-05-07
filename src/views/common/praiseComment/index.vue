@@ -169,7 +169,7 @@ export default class PraiseComment extends Vue {
 <style lang="less" scoped>
 @import url(./index.less);
 .nomore {
-  font-size: 46px;
+  font-size: 28px;
   line-height: 18px;
   text-align: center;
   font-weight: 800;

@@ -12,9 +12,9 @@ import { handleUserAccountLogout } from '@/util/native'
 
 import './mock'
 const href = location.href
-if (href.indexOf('jydata.com') < 0) {
-  new vconsole()
-}
+// if (href.indexOf('jydata.com') < 0) {
+new vconsole()
+// }
 
 Vue.use(VueCookies)
 

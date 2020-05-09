@@ -525,7 +525,7 @@ export default class KolPage extends ViewBase {
 }
 .dubble {
   padding: 0 4vw;
-  margin-top: -4.73333vw;
+  // margin-top: -4.73333vw;
   position: relative;
   z-index: 12;
   height: 49.33333vw;

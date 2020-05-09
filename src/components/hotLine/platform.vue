@@ -88,7 +88,8 @@ export default class Main extends Vue {
       return
     }
     const { id, type, name, startTime, endTime } = this.params
-    openWebPage(`/platform/detail/${id}/${type}/${name}/${startTime}/${endTime}`)
+    const encodeName = encodeURIComponent(name)
+    openWebPage(`/platform/detail/${id}/${type}/${encodeName}/${startTime}/${endTime}`)
   }
 
   // 去原生app评台详情页
@@ -120,6 +121,9 @@ export default class Main extends Vue {
 @import '~@/views/sentiment/brand/less/lib.less';
 @import '~@/components/hotLine/com.less';
 @import '~@/components/hotLine/platform.less';
+.texts {
+  min-height: 50px;
+}
 .titbox {
   display: flex;
   margin-top: 40px;

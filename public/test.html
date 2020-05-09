@@ -52,9 +52,13 @@
       target.disabled = true
       const start = Date.now()
       try {
+        const body = new URLSearchParams({
+          account: '13651207208',
+          password: 'Jy8888'
+        })
         const resp = await fetch('https://api.jydata.com/auth/login', {
           method: 'POST',
-          body: JSON.stringify({ account: '13651207208', password: 'Jy8888' })
+          body
         })
         const text = await resp.text()
         const span = ((Date.now() - start) / 1000).toFixed(3)
@@ -72,9 +76,9 @@
       const start = Date.now()
       try {
         const resp = await fetch(`https://api.jydata.com/yuqing/brand/detail?brandId=10612`)
-        const text = await resp.text()
+        const { code } = await resp.json()
         const span = ((Date.now() - start) / 1000).toFixed(3)
-        alert(`调用成功，耗时：${span}s`)
+        alert(`调用成功，耗时：${span}s，状态码：${code}`)
       } catch (ex) {
         const span = ((Date.now() - start) / 1000).toFixed(3)
         alert(`调用失败，耗时：${span}s`)

@@ -218,7 +218,7 @@ export default class SpreadList extends Vue {
           height: 40px;
           margin-left: 10px;
           vertical-align: middle;
-          border-radius: 50%;
+          // border-radius: 50%;
           margin-top: -2px;
         }
       }

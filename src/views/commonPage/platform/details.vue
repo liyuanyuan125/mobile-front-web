@@ -161,6 +161,9 @@ export default class Main extends Vue {
       border-bottom: solid 1px @c-divider;
     }
   }
+  .texts {
+    min-height: 50px;
+  }
 }
 .plat-left {
   width: 120px;

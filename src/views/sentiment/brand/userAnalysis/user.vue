@@ -9,40 +9,12 @@
       class="pane"
     />
 
-    <!-- <section class="item-sales">
-      <div class="van-hairline--top hairline" />
-      <ModuleHeader title="促销敏感度" class="sales-header" />
-    </section> -->
-
-    <!-- <pointChart :width='375' :height='300' :data='data3' /> -->
-
-    <!-- <section class="item-sales">
-      <div class="van-hairline--top top-hairline" />
-      <ModuleHeader title="评论敏感度" class="sales-header" />
-    </section> -->
-
-    <!-- <pointChart :width='375' :height='300' :data='data3' /> -->
-
     <UserArea 
       :data="userRegionList" 
       v-if="userRegionList.length" 
       class="item-areas"
       :moreLink="userLink"
     />
-    
-    <!-- <section class="item-city">
-      <ModuleHeader 
-        title="高消费偏好地区"
-        moreText="查看更多"
-        :link="linkObj"
-        class="sex-rate"/>
-       <User :consumRegion="consumRegion" v-if="consumRegion.cityList" />
-    </section> -->
-
-    <!-- <section class="items-consum">
-      <ModuleHeader  title="分城市购买力" class="sex-rate"/>
-      <cityConsum :cityConsum="cityConsumList" v-if="cityConsumList.length" />
-    </section> -->
     
   </div>
 </template>
@@ -73,27 +45,11 @@ import { toast } from '@/util/toast'
 export default class Main extends Vue {
   @Prop({ type: Number, default: 0}) id!: number
 
-  // data3: any = {
-  //   data: [
-  //     {value: 335, name: '极度敏感'},
-  //     {value: 310, name: '高度敏感'},
-  //     {value: 234, name: '中度敏感'},
-  //     {value: 135, name: '轻度敏感'},
-  //     {value: 1548, name: '不敏感'}],
-  //   color: '', // 修改颜色
-  //   title: '促销敏感度',
-  //   sesnsitivity: '敏感度高'// 显示的敏感度  这个需要自己计算了
-  // }
-
-
   // 性别+年龄占比
   genderList = []
   ageRangeList = []
-  promotionList = []
-  commentList = []
   userRegionList = []
-  consumRegion = {}
-  cityConsumList = []
+
 
   get linkObj() {
     return {
@@ -126,10 +82,8 @@ export default class Main extends Vue {
   async list() {
     try {
       const { data: {
-        userPortrait: {genderList, ageList, promotionList, commentList},
+        userPortrait: {genderList, ageList},
         userRegionList,
-        consumRegion,
-        cityConsumList,
       }} = await useranalysis({brandId: this.id})
       this.genderList = genderList || [] // 性别占比
       this.ageRangeList = (ageList || []).map((it: any) => {
@@ -138,16 +92,12 @@ export default class Main extends Vue {
           value: (it.value / 100)
         }
       }) // 年龄占比
-      this.promotionList = promotionList || [] // 促销敏感度
-      this.commentList = commentList || [] // 评论敏感度
       this.userRegionList = (userRegionList || []).map((it: any) => {
         return {
           ...it,
           value: it.value / 100
         }
       }) // 用户地域分布
-      this.consumRegion = consumRegion || {} //  消费区域分布
-      this.cityConsumList = cityConsumList || [] // 分城市购买力
     } catch (ex) {
       // toast(ex)
     }

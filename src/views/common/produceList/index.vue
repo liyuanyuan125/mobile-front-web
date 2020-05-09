@@ -19,7 +19,7 @@ import { DetailItem } from './types'
 import ModuleHeader from '@/components/moduleHeader'
 import { AppLink } from '@/util/native'
 import dataEmpty from '@/views/common/dataEmpty/index.vue'
-import { talkingdataHandle } from '@/util/TDEvent'
+import { talkingdataDetailHandle } from '@/util/TDEvent'
 
 @Component({
   components: {
@@ -35,8 +35,7 @@ export default class ProduceList extends Vue {
   // talkingdata 埋点统计
   talkingData() {
     if (this.produceList.length) {
-      const eventId = this.link.businessType === 3 ? '电影详情页' : '电视剧详情页'
-      talkingdataHandle(eventId, '出品发行_查看更多')
+      talkingdataDetailHandle(this.link.businessType, '出品发行_查看更多')
     }
   }
 }

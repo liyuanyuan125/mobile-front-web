@@ -27,7 +27,7 @@ import { ActorItem, DetailItem } from './types'
 import ModuleHeader from '@/components/moduleHeader'
 import { imgFixed } from '@/fn/imgProxy'
 import dataEmpty from '@/views/common/dataEmpty/index.vue'
-import { talkingdataHandle } from '@/util/TDEvent'
+import { talkingdataDetailHandle } from '@/util/TDEvent'
 import { AppLink } from '@/util/native'
 import { openWebPage } from '@/fn/openUrlInApp'
 
@@ -58,8 +58,7 @@ export default class ActorList extends Vue {
   // talkingdata 埋点统计
   talkingData() {
     if (this.personList.length) {
-      const eventId = this.link.businessType === 3 ? '电影详情页' : '电视剧详情页'
-      talkingdataHandle(eventId, '主创人员_查看更多')
+      talkingdataDetailHandle(this.link.businessType, '主创人员_查看更多')
     }
   }
 

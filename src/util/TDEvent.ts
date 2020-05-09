@@ -8,9 +8,42 @@
 export function talkingdataHandle(eventId: string, label?: string, params: any = {}) {
     try {
         const win = window as any
-        win.TDAPP.onEvent(eventId, label, params)
+        win.TDAPP && win.TDAPP.onEvent(eventId, label, params)
     } catch (ex) {
         // tslint:disable-next-line
         console.error(ex)
     }
+}
+
+// 只适用于详情页
+export function talkingdataDetailHandle(businessType: number | string, label?: string, params: any = {}) {
+    let eventId = '未知详情页'
+    // 1=品牌 2=艺人 3=电影 4=电视剧 5=单曲 6=专辑 100=全网事件 101=营销事件
+    switch (Number(businessType)) {
+        case 1:
+            eventId = '品牌详情页'
+            break
+        case 2:
+            eventId = '艺人详情页'
+            break
+        case 3:
+            eventId = '电影详情页'
+            break
+        case 4:
+            eventId = '电视剧详情页'
+            break
+        case 5:
+            eventId = '单曲详情页'
+            break
+        case 6:
+            eventId = '专辑详情页'
+            break
+        case 100:
+            eventId = '全网事件详情页'
+            break
+        case 101:
+            eventId = '营销事件详情页'
+            break
+    }
+    talkingdataHandle(eventId, label, params)
 }

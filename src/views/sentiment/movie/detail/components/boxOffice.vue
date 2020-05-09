@@ -1,7 +1,7 @@
 <template>
   <!--影片票房 -->
   <div class="boxoffice mod">
-    <ModuleHeader title="影片票房" :link="boxoffice ? link : null" />
+    <ModuleHeader title="影片票房" :link="boxoffice ? link : null" @click.native="talkingData" />
     <div v-if="boxoffice">
       <div class="bfstatis">
         <div>
@@ -91,6 +91,7 @@ import { openAppLink, AppLink } from '@/util/native'
 import { roleNumber } from '@/fn/validateRules'
 import moment from 'moment'
 import dataEmpty from '@/views/common/dataEmpty/index.vue'
+import { talkingdataDetailHandle } from '@/util/TDEvent'
 
 @Component({
   components: {
@@ -140,6 +141,13 @@ export default class BoxOffice extends ViewBase {
       this.formatDatas(this.boxoffice.boxOfficeList)
     } else if (val === 2) {
       this.formatDatas(this.boxoffice.scheduleList)
+    }
+  }
+
+  // talkingData
+  talkingData() {
+    if (this.boxoffice) {
+      talkingdataDetailHandle(3, '影片票房_查看更多')
     }
   }
 

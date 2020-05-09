@@ -1,6 +1,6 @@
 <template>
   <div class="options-page">
-    <ModuleHeader title="口碑评论" :link="show ? link : null" />
+    <ModuleHeader title="口碑评论" :link="show ? link : null" @click.native="talkingData" />
     <div v-if="show">
       <div class="options-top">
         <div class="options-left">
@@ -80,6 +80,7 @@ import { alert } from '@/util/toast'
 import { openAppLink, AppLink } from '@/util/native'
 import { DetailItem } from './types'
 import dataEmpty from '@/views/common/dataEmpty/index.vue'
+import { talkingdataDetailHandle } from '@/util/TDEvent'
 
 @Component({
   components: {
@@ -129,8 +130,26 @@ export default class PraiseComment extends Vue {
     )
   }
 
+  // talkingdata 埋点统计
+  talkingData() {
+    if (this.show) {
+      talkingdataDetailHandle(this.link.businessType, '口碑评论_查看更多')
+    }
+  }
+
   // 热词 applink 跳转
   wordLink(word: string, markType: number) {
+    if (markType === 3) {
+      talkingdataDetailHandle(
+        this.link.businessType || this.link.eventType,
+        '口碑评论_点击负面热词'
+      )
+    } else {
+      talkingdataDetailHandle(
+        this.link.businessType || this.link.eventType,
+        '口碑评论_点击全网热词'
+      )
+    }
     let link: AppLink = {
       page: 'praiseHotWordsDetail',
       businessType: this.link.businessType, // 业务类型

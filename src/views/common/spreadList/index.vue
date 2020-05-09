@@ -1,7 +1,11 @@
 <template>
   <!-- 传播路径 营网事件详情页和营销事件详情页 -->
   <div class="eventspread">
-    <ModuleHeader title="传播路径" :link="dataList.length < 3 ? null :link" />
+    <ModuleHeader
+      title="传播路径"
+      :link="dataList.length < 3 ? null :link"
+      @click.native="talkingData"
+    />
     <dl class="spreadlist" v-if="dataList.length">
       <dd
         v-for="(item,index) in list.slice(0,3)"
@@ -58,6 +62,7 @@ import ModuleHeader from '@/components/moduleHeader'
 import dataEmpty from '@/views/common/dataEmpty/index.vue'
 import { imgFixed } from '@/fn/imgProxy'
 import { openAppLink, AppLink } from '@/util/native'
+import { talkingdataDetailHandle } from '@/util/TDEvent'
 
 @Component({
   components: {
@@ -112,6 +117,12 @@ export default class SpreadList extends Vue {
       isOpenByBrowser: 'YES' // 设置 url 是否在 app外打开
     }
     openAppLink(link)
+  }
+
+  talkingData() {
+    if (this.dataList.length >= 3) {
+      talkingdataDetailHandle(this.link.eventType, '传播路径_查看更多')
+    }
   }
 }
 </script>

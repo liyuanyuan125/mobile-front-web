@@ -1,36 +1,25 @@
 <template>
-  <section
-    class="play-stats"
-    :class="{ 'play-stats-align': alignMode }"
-  >
+  <section class="play-stats" :class="{ 'play-stats-align': alignMode }">
     <div class="align-control" v-if="alignMode">
       <label>对齐发行时间</label>
-      <van-switch v-model="isAlign" class="align-switch"/>
+      <van-switch v-model="isAlign" class="align-switch" />
     </div>
 
-    <Select v-model="day" :list="dayList" class="day-list"/>
+    <Select
+      v-model="day"
+      :list="dayList"
+      class="day-list"
+      @click.native="talkingData(isAlbum ? '销量分析_日期筛选' :'播放量分析_日期筛选')"
+    />
 
-    <Tabs
-      v-model="viewIndex"
-      type="card"
-      class="play-nav"
-      v-if="viewList.length > 1"
-    >
-      <Tab
-        v-for="{ label } in viewList"
-        :key="label"
-        :title="label"
-      />
+    <Tabs v-model="viewIndex" type="card" class="play-nav" v-if="viewList.length > 1">
+      <Tab v-for="{ label } in viewList" :key="label" :title="label" />
     </Tabs>
 
-    <DataEmpty v-if="allEmpty"/>
+    <DataEmpty v-if="allEmpty" />
 
     <section class="total-stats" v-if="platformList">
-      <ModuleHeader
-        title="累计分布"
-        tag="h4"
-        class="total-header"
-      />
+      <ModuleHeader title="累计分布" tag="h4" class="total-header" />
       <ul class="total-list">
         <li
           v-for="({ name, countShow, percent }, index) in platformList"
@@ -52,22 +41,10 @@
       </ul>
     </section>
 
-    <ModuleHeader
-      :title="chartTitle"
-      tag="h4"
-      class="daily-header"
-      v-if="chartTitle && dailyData"
-    />
+    <ModuleHeader :title="chartTitle" tag="h4" class="daily-header" v-if="chartTitle && dailyData" />
 
-    <ul
-      class="group-list"
-      v-if="showGroupName"
-    >
-      <li
-        v-for="(name, index) in groupNames"
-        :key="name"
-        class="group-item"
-      >
+    <ul class="group-list" v-if="showGroupName">
+      <li v-for="(name, index) in groupNames" :key="name" class="group-item">
         <Button
           :type="index == groupIndex ? 'info' : 'default'"
           class="group-button"
@@ -86,20 +63,9 @@
       v-if="dailyData"
     />
 
-    <section
-      class="daily-form"
-      v-if="table"
-    >
-      <Table
-        :data="table.data"
-        :columns="table.columns"
-        class="daily-table-wrap"
-      />
-      <a
-        class="daily-form-more"
-        @click="handleFormMore"
-        v-if="moreDateLink"
-      >查看全部日期</a>
+    <section class="daily-form" v-if="table">
+      <Table :data="table.data" :columns="table.columns" class="daily-table-wrap" />
+      <a class="daily-form-more" @click="handleFormMore" v-if="moreDateLink">查看全部日期</a>
     </section>
   </section>
 </template>
@@ -119,6 +85,7 @@ import { openAppLink, AppLink } from '@/util/native'
 import Table from '@/components/table'
 import DataEmpty from '@/views/common/dataEmpty/index.vue'
 import { isEmpty } from 'lodash'
+import { talkingdataDetailHandle } from '@/util/TDEvent'
 
 @Component({
   components: {
@@ -131,18 +98,18 @@ import { isEmpty } from 'lodash'
     Select,
     MultiLine,
     Table,
-    DataEmpty,
+    DataEmpty
   }
 })
 export default class PlayStats extends Vue {
-  @Prop({ type: [ Number, String ], required: true }) id!: number | string
+  @Prop({ type: [Number, String], required: true }) id!: number | string
 
   @Prop({ type: Function, required: true }) fetch!: PlayFetch
 
   @Prop({ type: Boolean, default: false }) isAlbum!: boolean
 
   /** 日期范围列表，数字代表最近几天 */
-  @Prop({ type: Array, default: () => [ 7, 15, 30, 60, 90 ] }) days!: number[]
+  @Prop({ type: Array, default: () => [7, 15, 30, 60, 90] }) days!: number[]
 
   @Prop({ type: String }) chartTitle!: string
 
@@ -182,9 +149,7 @@ export default class PlayStats extends Vue {
   }
 
   get allEmpty() {
-    return this.platformList == null
-      && this.dailyData == null
-      && this.table == null
+    return this.platformList == null && this.dailyData == null && this.table == null
   }
 
   get platformList() {
@@ -242,7 +207,7 @@ export default class PlayStats extends Vue {
       this.$router.push({
         name: 'sentimenteventmarketing',
         params: { eventId: id },
-        query: { title: name },
+        query: { title: name }
       })
     })
     return list
@@ -253,7 +218,7 @@ export default class PlayStats extends Vue {
       // show: true,
       left: 0,
       bottom: -10,
-      padding: [60, 0, 0, 0],
+      padding: [60, 0, 0, 0]
     }
     return options
   }
@@ -302,7 +267,7 @@ export default class PlayStats extends Vue {
     this.viewList = []
     this.groupIndex = 0
     this.isAlign = false
-    this.$nextTick(() => this.inReset = false)
+    this.$nextTick(() => (this.inReset = false))
   }
 
   init() {
@@ -311,21 +276,22 @@ export default class PlayStats extends Vue {
   }
 
   async fetchData() {
-    const [ startTime, endTime ] = lastDays(this.day)
+    const [startTime, endTime] = lastDays(this.day)
     const query = {
       id: this.id,
       startTime,
       endTime,
       days: this.day,
       isAlign: this.isAlign,
-      dayNames: this.getDayList(),
+      dayNames: this.getDayList()
     }
     const view = await this.fetch(query)
-    const list = Array.isArray(view) ? view : [ { label: '', view } ]
+    const list = Array.isArray(view) ? view : [{ label: '', view }]
     this.viewList = list
   }
 
   handleFormMore() {
+    this.talkingData(this.isAlbum ? '销量分析_查看全部日期' : '播放量分析_查看全部日期')
     openAppLink(this.finalMoreDateLink)
   }
 
@@ -342,6 +308,10 @@ export default class PlayStats extends Vue {
   @Watch('id')
   watchId() {
     this.init()
+  }
+
+  talkingData(label: string) {
+    talkingdataDetailHandle(this.isAlbum ? 6 : 5, label)
   }
 }
 </script>
@@ -399,7 +369,7 @@ export default class PlayStats extends Vue {
 
   /deep/ .van-tab {
     min-width: 140px;
-    color: rgba(48, 48, 48, .6);
+    color: rgba(48, 48, 48, 0.6);
     font-size: 26px;
     line-height: 58px;
     border-right: 0;
@@ -414,7 +384,7 @@ export default class PlayStats extends Vue {
 
 .total-stats {
   padding: 30px;
-  background-color: rgba(242, 243, 246, .5);
+  background-color: rgba(242, 243, 246, 0.5);
   border-radius: 10px;
   margin-top: 10px;
 }
@@ -471,7 +441,7 @@ export default class PlayStats extends Vue {
 }
 
 .total-percent {
-  color: rgba(48, 48, 48, .4);
+  color: rgba(48, 48, 48, 0.4);
   margin-left: 8px;
   font-size: 24px;
 }
@@ -518,7 +488,7 @@ export default class PlayStats extends Vue {
 
 .daily-form {
   margin-top: 50px;
-  background: rgba(242, 243, 246, .5);
+  background: rgba(242, 243, 246, 0.5);
   border-radius: 10px;
   border: 2px solid rgba(242, 243, 246, 1);
 }

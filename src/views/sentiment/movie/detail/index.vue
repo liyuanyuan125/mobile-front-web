@@ -15,7 +15,12 @@
       <DataEmpty :code="heatCode" :retry="getHeatAnalysis" v-if="heatCode > 0" />
     </div>
     <WantSeeTrend :fetch="wantSeeTrendFetch" :query="movieId" />
-    <BoxOffice :boxoffice="boxOffice" :link="getApplink('movieBoxOffice')" id="boxoffice" />
+    <BoxOffice
+      :boxoffice="boxOffice"
+      :link="getApplink('movieBoxOffice')"
+      id="boxoffice"
+      v-if="isShowTime"
+    />
     <PraiseComment
       :favorable="movieInfo ? movieInfo.favorable : null"
       :publicPraise="publicPraise"
@@ -103,6 +108,8 @@ export default class MoviePage extends ViewBase {
   rivalCode: number = 0 // 竞品分析
   wantSeeCode: number = 0 // 想看
   overLoading: boolean = false
+  // 是否上映过
+  isShowTime: boolean = false
   // 电影id
   movieId: string = ''
   // 电影详细信息
@@ -130,7 +137,7 @@ export default class MoviePage extends ViewBase {
   // 二级导航
   tabList: TabNavItem[] = [
     { name: 'hot', label: '热度' },
-    { name: 'boxoffice', label: '票房' },
+    //  { name: 'boxoffice', label: '票房' },
     { name: 'praise', label: '口碑' },
     { name: 'user', label: '用户' },
     { name: 'event', label: '事件' },
@@ -176,6 +183,14 @@ export default class MoviePage extends ViewBase {
   async getMovieInfo() {
     try {
       const res: any = await getMovieDetail(this.movieId)
+      const sta = res.movieInfo.releaseStatus
+      if (sta === 3 || sta === 4) {
+        this.isShowTime = true
+        this.tabList.splice(1, 0, {
+          name: 'boxoffice',
+          label: '票房'
+        })
+      }
       this.movieInfo = res.movieInfo
       this.movieOverView = res.movieOverView
       this.boxOffice = res.boxOffice

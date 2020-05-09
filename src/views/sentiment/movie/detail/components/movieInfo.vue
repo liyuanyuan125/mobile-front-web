@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="bubble">
-      <BubbleBottom :data="bubbleData" />
+      <BubbleBottom :data="bubbleData" @click.native="talkingData('互动量说明')" />
     </div>
     <div class="curve">
       <div class="curvetop"></div>
@@ -29,6 +29,7 @@ import ViewBase from '@/util/ViewBase'
 import { BubbleBottom, Title } from '@/components/bubble'
 import { imgFixed } from '@/fn/imgProxy'
 import { alert } from '@/util/toast'
+import { talkingdataHandle } from '@/util/TDEvent'
 
 @Component({
   components: {
@@ -82,6 +83,10 @@ export default class BaseInfoArea extends ViewBase {
       ? imgFixed(this.baseInfo.coverUrl, 180, 240)
       : ''
     return url
+  }
+
+  talkingData(label: string) {
+    talkingdataHandle('电影详情页', label)
   }
 
   // 显示说明

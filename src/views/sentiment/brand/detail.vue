@@ -136,8 +136,8 @@ export default class BrandPage extends ViewBase {
   brandEventList: any = {}
 
   // 竞品分析
-  rivalCode = 0
-  rivalList = []
+  // rivalCode = 0
+  // rivalList = []
   rivalIds = []
 
   // 头部
@@ -286,9 +286,6 @@ export default class BrandPage extends ViewBase {
 <style lang="less" scoped>
 @import '~@/views/sentiment/brand/less/lib.less';
 @import './less/com.less';
-// /deep/ .van-hairline--top-bottom:after {
-//   margin-top: -8px;
-// }
 .content {
   background: #f2f3f6;
 }

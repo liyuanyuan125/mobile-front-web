@@ -42,15 +42,6 @@
         <div class="van-hairline--top item-hairline" v-if="genderList.length"></div>
       </section>
       <DataEmpty :code="userCode" :retry="portDetail" v-if="userCode > 0" />
-      <!-- <Table 
-        class="item-high"
-        :title='sensTitle' 
-        :tabList='sensTabList' 
-        :tableTitle='sensTableTitle' 
-        :tableItem='sensTableItem'
-        @chgregionPk='changeTabs'
-      />
-      <div class="van-hairline--top item-hairline"></div> -->
       <section>
         <Table 
           class="item-user"
@@ -63,15 +54,6 @@
         />
         <DataEmpty v-else />
       </section>
-      <!-- <div class="van-hairline--top item-hairline"></div>
-      <Table
-        class="item-high"
-        :title='highTitle' 
-        :tabList='highTabList' 
-        :tableTitle='highTableTitle' 
-        :tableItem='highTableItem'
-        @chgregionPk='highTabs'
-      /> -->
     </section>
     
  </div>
@@ -151,21 +133,6 @@ export default class Main extends ViewBase {
   highCityList = []
   highProvinceList = []
 
-  // 用户敏感度
-  // sensTitle = '用户敏感度'
-  // sensTabList = [
-  //   { name: '促销敏感度', key: 'sales'},
-  //   { name: '评论敏感度', key: 'comment'}
-  // ]
-  // sensTableTitle = [
-  //   {key: 'brand', value: '品牌'},
-  //   {key: 'extreme', value: '极度敏感'},
-  //   {key: 'high', value: '高度敏感'},
-  //   {key: 'medium', value: '中度敏感'},
-  //   {key: 'mild', value: '轻度敏感'},
-  //   {key: 'no', value: '不敏感'},
-  // ]
-  // sensTableItem = []
 
   // 用户地域分布
   userCode = 0
@@ -184,22 +151,6 @@ export default class Main extends ViewBase {
   ]
   userTableItem = []
   tableEmpty = false
-
-  // 高消费用户地域分布
-  // highTitle = '高消费用户地域分布'
-  // highTabList = [
-  //   { name: '城市分布', key: 'city'},
-  //   { name: '省份分布', key: 'province'}
-  // ]
-  // highTableTitle = [
-  //   {key: 'brand', value: '品牌'},
-  //   {key: 'top1', value: 'TOP1'},
-  //   {key: 'top2', value: 'TOP2'},
-  //   {key: 'top3', value: 'TOP3'},
-  //   {key: 'top4', value: 'TOP4'},
-  //   {key: 'top5', value: 'TOP5'},
-  // ]
-  // highTableItem = []
 
   mounted() {
     this.brandIdList = this.$route.query.ids
@@ -241,17 +192,10 @@ export default class Main extends ViewBase {
       this.ageRangeList = ageRangeList || [] // 年龄
       this.genderList = sexData || [] // 性别
 
-      // this.promotionList = promotionList || []
-      // this.sensTableItem = promotionList || []
-      // this.commentList = commentList || []
-
       this.userTableItem = cityList || []
       this.userCityList = cityList || []
       this.userProvinceList = provinceList || []
 
-      // this.highTableItem = hightConsume.cityList ? hightConsume.cityList : []
-      // this.highCityList = hightConsume.cityList ? hightConsume.cityList : []
-      // this.highProvinceList = hightConsume.provinceList ? hightConsume.provinceList : []
       this.userCode = 0
       this.tableEmpty = false
     } catch (ex) {
@@ -290,13 +234,6 @@ export default class Main extends ViewBase {
     this.init()
   }
 
-  // changeTabs(key: string) {
-  //   if (key == 'sales') {
-  //     this.sensTableItem = this.promotionList
-  //   } else {
-  //     this.sensTableItem = this.commentList
-  //   }
-  // }
 
   userTabs(key: string) {
     if (key == 'city') {
@@ -305,13 +242,6 @@ export default class Main extends ViewBase {
       this.userTableItem = this.userProvinceList
     }
   }
-  // highTabs(key: string) {
-  //   if (key == 'city') {
-  //     this.highTableItem = this.highCityList
-  //   } else {
-  //     this.highTableItem = this.highProvinceList
-  //   }
-  // }
 
   @Watch('day')
   watchDay() {

@@ -126,6 +126,9 @@ export default class Main extends Vue {
 @import '~@/views/sentiment/brand/less/lib.less';
 @import '~@/components/hotLine/com.less';
 @import '~@/components/hotLine/platform.less';
+.texts {
+  min-height: 50px;
+}
 .titbox {
   display: flex;
   margin-top: 40px;

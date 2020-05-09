@@ -14,7 +14,7 @@
           <div class="header-release" @click="popupShow = true">
             <div class="header-release-in van-ellipsis">{{basic.release}}</div>
           </div>
-          <div class="header-ranking">
+          <div class="header-ranking" @click="talkingData('头部事件点击')">
             <em>{{basic.rankingNum}}</em>
             <router-link
               :to="{
@@ -49,7 +49,11 @@
       </Popup>
 
       <div class="bubble-wrap">
-        <BubbleBottom :data="bubbleData" class="bubble-bottom" />
+        <BubbleBottom
+          :data="bubbleData"
+          class="bubble-bottom"
+          @click.native="talkingData('互动量说明')"
+        />
         <div class="curve">
           <div class="curve-top"></div>
           <div class="curve-bottom"></div>
@@ -60,7 +64,7 @@
     <TabNav :list="navList" :top="88" hideHeader />
 
     <section class="pane pane-heat" id="heat" v-if="isSong">
-      <SelectTime v-model="heatDay" class="select-time" />
+      <SelectTime v-model="heatDay" class="select-time" @click.native="talkingData('热度分析_日期筛选')" />
       <ModuleHeader title="综合热度" tag="h4" class="heat-header" />
       <HeatLineCom
         :overAllList="overAllHeatList"
@@ -98,11 +102,7 @@
             <span class="song-comment">评论量</span>
           </li>
           <li v-for="song in songList" :key="song.id" class="song-item">
-            <router-link
-              :to="{ name: 'sentiment-song', params: { id: song.id } }"
-              class="song-name"
-              v-html="song.name"
-            ></router-link>
+            <span class="song-name" v-html="song.name" @click="goSongDetail(song.id)"></span>
             <span class="song-heat">{{song.heatCount || '-'}}</span>
             <span class="song-comment">{{song.commentCount || '-'}}</span>
           </li>
@@ -121,6 +121,7 @@
       <ModuleHeader
         title="榜单表现"
         :link="rankAnnularEmpty ? null : { page: 'songRankPerformance', songId: id }"
+        @click.native="talkingData('榜单表现_查看更多')"
       />
       <ul class="rank-list" v-if="rankAnalysis">
         <li class="rank-item">
@@ -181,10 +182,7 @@
       <ModuleHeader title="音乐人分析" />
       <Swipe class="singer-swipe">
         <SwipeItem v-for="it in singerList" :key="it.singerId">
-          <router-link
-            :to="{ name: 'sentimentactor', params: { actorId: it.singerId } }"
-            class="singer-card"
-          >
+          <a class="singer-card" @click="goActorDetail(it.singerId)">
             <Avatar :src="it.avatar" type="actor" class="singer-avatar" />
             <div class="singer-main">
               <h4 class="singer-name">{{it.singerName}}</h4>
@@ -203,7 +201,7 @@
                 >{{ it.heatTrendText }}</span>
               </div>
             </div>
-          </router-link>
+          </a>
         </SwipeItem>
       </Swipe>
     </section>
@@ -252,7 +250,7 @@
       <div class="rival-more" v-if="rivalList && rivalList.length > 0">
         <router-link :to="rivalRoute" class="rival-button">查看详细报告</router-link>
       </div>
-    </section> -->
+    </section>-->
   </main>
 </template>
 
@@ -282,6 +280,8 @@ import {
   getEventList,
   getRivalList
 } from './detailData'
+import { talkingdataDetailHandle } from '@/util/TDEvent'
+import { openWebPage } from '@/fn/openUrlInApp'
 
 const removeFalsy = (list: any[]) => list.filter(it => !!it)
 
@@ -347,7 +347,7 @@ export default class extends ViewBase {
           { name: 'song', label: '歌曲' },
           { name: 'praise', label: '口碑' },
           { name: 'user', label: '用户' },
-          { name: 'event', label: '事件' },
+          { name: 'event', label: '事件' }
           // 产品需求：暂时隐藏竞品分析
           // { name: 'rival', label: '竞品' }
         ])
@@ -355,7 +355,7 @@ export default class extends ViewBase {
           { name: 'heat', label: '热度' },
           { name: 'praise', label: '口碑' },
           { name: 'user', label: '用户' },
-          { name: 'event', label: '事件' },
+          { name: 'event', label: '事件' }
           // 产品需求：暂时隐藏竞品分析
           // { name: 'rival', label: '竞品' }
         ]
@@ -527,7 +527,7 @@ export default class extends ViewBase {
 
         // 音乐人分析
         singerList
-      } = await getBasic(this.id, this.isAlbum) as any
+      } = (await getBasic(this.id, this.isAlbum)) as any
       this.isDigital = isDigital
       this.basic = basic
       this.popupData = popupData
@@ -555,7 +555,7 @@ export default class extends ViewBase {
   // 单曲：热度分析
   async getHeat() {
     try {
-      const [ startTime, endTime ] = lastDays(this.heatDay)
+      const [startTime, endTime] = lastDays(this.heatDay)
       const { overAllHeatList = [], platformHeatList = [] } = await getHeat({
         songId: this.id,
         startTime,
@@ -608,6 +608,7 @@ export default class extends ViewBase {
   }
 
   handleSongMore() {
+    this.talkingData('歌曲热度_展开更多')
     const wrap = this.$refs.songWrap as HTMLDivElement
     if (this.songInitHeight == 0) {
       const height = (this.songInitHeight = wrap.offsetHeight)
@@ -631,6 +632,22 @@ export default class extends ViewBase {
   @Watch('heatDay')
   watchHeatDay() {
     this.getHeat()
+  }
+
+  // 去往歌曲详情页
+  goSongDetail(id: string) {
+    openWebPage(`/sentiment/song/${id}`)
+  }
+
+  // 影人详情页
+  goActorDetail(id: string) {
+    this.talkingData('音乐人_点击查看')
+    openWebPage(`/sentiment/actor/${id}`)
+  }
+
+  // talkingdata 统计代码
+  talkingData(label: string) {
+    talkingdataDetailHandle(this.isAlbum ? 6 : 5, label)
   }
 }
 </script>

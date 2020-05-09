@@ -19,7 +19,7 @@
               <span class="s1">{{eventInfo.interactCount}}</span>
               <span class="s2">&nbsp;累计互动</span>
             </div>
-            <div class="right">今日新增：{{eventInfo.todayInteractAdd}}</div>
+            <div class="right">昨日新增：{{eventInfo.todayInteractAdd}}</div>
           </div>
           <div class="show-echarts">
             <Button
@@ -77,6 +77,7 @@ import { platForm } from '@/components/hotLine'
 import DataEmpty from '@/views/common/dataEmpty/index.vue'
 import loadingCom from '@/components/loading/index.vue'
 import { openAppLink, AppLink } from '@/util/native'
+import { talkingdataHandle } from '@/util/TDEvent'
 
 @Component({
   components: {
@@ -214,6 +215,7 @@ export default class KolPage extends ViewBase {
     this.newCode = params.code
     this.overAllHeatList = this.eventInfo[params.key] || []
     this.formatDatas(this.overAllHeatList)
+    talkingdataHandle('营销事件详情页', params.name)
   }
 
   /**

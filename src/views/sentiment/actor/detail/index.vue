@@ -16,7 +16,7 @@
               <i class="bor">#{{actorInfo.rankingName}}</i>
             </span>
           </p>
-          <p v-if="actorInfo.rankingName && actorInfo.rankingId">
+          <p v-if="actorInfo.rankingName && actorInfo.rankingId" @click="talkingData('头部事件点击')">
             <router-link
               :to="{name: 'sentimenteventmarketing', params: {eventId: actorInfo.rankingId} , query: {title: actorInfo.rankingName}}"
               class="event-name flex-box"
@@ -31,7 +31,7 @@
         </div>
       </div>
       <div v-if="basicCode == 0" class="dubble">
-        <BubbleBottom :data="bubbleData" />
+        <BubbleBottom :data="bubbleData" @click.native="talkingData('互动量说明')" />
       </div>
       <div v-if="basicCode == 0" class="curve">
         <div class="curvetop"></div>
@@ -43,7 +43,12 @@
     <TabNav :list="list" class="formattab" />
     <section class="pane" id="hot">
       <!-- 热度分析 -->
-      <selectTime ref="refsTime" v-model="day" class="select-time" />
+      <selectTime
+        ref="refsTime"
+        v-model="day"
+        class="select-time"
+        @click.native="talkingData('热度分析_日期筛选')"
+      />
       <heatLineCom
         :overAllList="overAllHeatList"
         :platformList="platformHeatList"
@@ -99,7 +104,11 @@
 
     <section v-if="show" class="pane" id="work">
       <!-- 作品分析 -->
-      <Works :worksAnalysis="worksAnalysis" :link="getApplink('actorWorksAnalysis')" />
+      <Works
+        :worksAnalysis="worksAnalysis"
+        :link="getApplink('actorWorksAnalysis')"
+        @click.native="talkingData('作品分析')"
+      />
     </section>
   </div>
 </template>
@@ -125,6 +134,7 @@ import { alert } from '@/util/toast'
 import { imgFixed } from '@/fn/imgProxy'
 import DataEmpty from '@/views/common/dataEmpty/index.vue'
 import ModuleHeader from '@/components/moduleHeader'
+import { talkingdataHandle } from '@/util/TDEvent'
 
 @Component({
   components: {
@@ -452,6 +462,10 @@ export default class KolPage extends ViewBase {
     this.getActorDetail()
     // this.getPkUser()
     this.getEventList()
+  }
+
+  talkingData(label: string) {
+    talkingdataHandle('艺人详情页', label)
   }
 }
 </script>

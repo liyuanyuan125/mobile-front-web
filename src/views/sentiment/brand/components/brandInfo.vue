@@ -4,24 +4,30 @@
       <!-- <van-loading color="#1989fa" size="30" /> -->
       <van-image
         fit="cover"
-        :src="coverImg" 
-        class="img" 
-        :class="{'errorImg': !coverImg}" 
-        :error-icon="defaultImg" >
-      </van-image>
+        :src="coverImg"
+        class="img"
+        :class="{'errorImg': !coverImg}"
+        :error-icon="defaultImg"
+      ></van-image>
       <div>
         <p class="brand-name">{{brandInfo.brandName}}</p>
-        <p v-if="brandInfo.rankingName && !brandInfo.rankingId " class="event-name">{{brandInfo.rankingName}}</p>
-        <p v-if="brandInfo.rankingName && brandInfo.rankingId">
-          <router-link :to="{name: 'sentimenteventmarketing', params: {eventId: brandInfo.rankingId}}" class="event-name flex-box">
+        <p
+          v-if="brandInfo.rankingName && !brandInfo.rankingId "
+          class="event-name"
+        >{{brandInfo.rankingName}}</p>
+        <p v-if="brandInfo.rankingName && brandInfo.rankingId" @click="talkingData('头部事件点击')">
+          <router-link
+            :to="{name: 'sentimenteventmarketing', params: {eventId: brandInfo.rankingId}}"
+            class="event-name flex-box"
+          >
             <i>{{brandInfo.rankingName}}</i>
             <Icon name="arrow" size="13" class="icon-arrow" />
-          </router-link> 
+          </router-link>
         </p>
       </div>
     </div>
     <div class="bubble">
-      <BubbleBottom :data="bubbleDataList" />
+      <BubbleBottom :data="bubbleDataList" @click.native="talkingData('互动量说明')" />
     </div>
     <div class="curve">
       <div class="curvetop"></div>
@@ -34,23 +40,24 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 // import { toast } from '@/util/toast'
 import { alert } from '@/util/toast'
-import { Icon, Image, Loading} from 'vant'
-import {BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
+import { Icon, Image, Loading } from 'vant'
+import { BubbleLeft, BubbleBottom, BubbleItem, Title } from '@/components/bubble'
 import { imgFixed } from '@/fn/imgProxy'
+import { talkingdataHandle } from '@/util/TDEvent'
 
 @Component({
   components: {
     BubbleBottom,
     Icon,
     [Image.name]: Image,
-    [Loading.name]: Loading,
+    [Loading.name]: Loading
   }
 })
 export default class Main extends Vue {
   /** 品牌基数信息 */
-  @Prop({ type: Object}) brandInfo!: any
+  @Prop({ type: Object }) brandInfo!: any
   /** 气泡数据信息 */
-  @Prop({ type: Object}) bubbleData!: any
+  @Prop({ type: Object }) bubbleData!: any
 
   // 默认图
   defaultImg = require('./assets/default.png')
@@ -84,7 +91,8 @@ export default class Main extends Vue {
               click: this.demo
             }
           })
-      }},
+        }
+      },
       {
         type: '3',
         title: '综合热度',
@@ -101,7 +109,7 @@ export default class Main extends Vue {
             }
           })
         },
-        big: true,
+        big: true
       },
       {
         type: '4',
@@ -113,8 +121,7 @@ export default class Main extends Vue {
   demo() {
     alert({
       // title: '提示',
-      message:
-        '近90天内，物料新增的点赞、评论、转发、阅读或播放的累计之和',
+      message: '近90天内，物料新增的点赞、评论、转发、阅读或播放的累计之和',
       showConfirmButton: true,
       className: 'alertwid'
     })
@@ -128,8 +135,11 @@ export default class Main extends Vue {
       className: 'alertwid'
     })
   }
-}
 
+  talkingData(label: string) {
+    talkingdataHandle('品牌详情页', label)
+  }
+}
 </script>
 
 <style lang='less' scoped>

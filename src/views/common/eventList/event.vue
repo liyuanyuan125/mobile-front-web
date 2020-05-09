@@ -1,6 +1,6 @@
 <template>
   <div class="event-content">
-    <ModuleHeader :title="title" :link="hasMore ? link : null" />
+    <ModuleHeader :title="title" :link="hasMore ? link : null" @click.native="talkingData" />
     <ul v-if="list.length" class="eventlist">
       <li
         v-for="(item,index) in list.slice(0,3)"
@@ -45,6 +45,7 @@ import { openAppLink, AppLink } from '@/util/native'
 import { datetimeParse } from '@/fn/dateUtil'
 import DataEmpty from '@/views/common/dataEmpty/index.vue'
 import { openWebPage } from '@/fn/openUrlInApp'
+import { talkingdataDetailHandle } from '@/util/TDEvent'
 
 @Component({
   components: {
@@ -101,8 +102,18 @@ export default class EventList extends Vue {
 
   // 去营销事件详情面
   goEventDetail(item: any) {
+    talkingdataDetailHandle(this.link.businessType, '事件分析_查看事件详情')
     openWebPage(`/sentiment/eventMarketing/${item.eventId}`, { title: item.eventName })
   }
+
+  // talkingdata 埋点统计
+  talkingData() {
+    if (this.hasMore) {
+      talkingdataDetailHandle(this.link.businessType, '事件分析_查看更多')
+    }
+  }
+
+  //
 }
 </script>
 

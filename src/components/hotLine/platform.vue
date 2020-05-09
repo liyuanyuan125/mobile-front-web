@@ -50,6 +50,7 @@ import { openAppLink, AppLink } from '@/util/native'
 import { imgFixed } from '@/fn/imgProxy'
 import loadingCom from '@/components/loading/index.vue'
 import { openWebPage } from '@/fn/openUrlInApp'
+import { talkingdataDetailHandle } from '@/util/TDEvent'
 
 @Component({
   components: {
@@ -87,8 +88,10 @@ export default class Main extends Vue {
     if (this.dataList.length < 3) {
       return
     }
+
     const { id, type, name, startTime, endTime } = this.params
     const encodeName = encodeURIComponent(name)
+    talkingdataDetailHandle(type, '热度分析_查看更多平台')
     openWebPage(`/platform/detail/${id}/${type}/${encodeName}/${startTime}/${endTime}`)
   }
 
@@ -111,7 +114,9 @@ export default class Main extends Vue {
         platformCode: item.platformId
       }
     }
-
+    talkingdataDetailHandle(this.params.type, '热度分析_查看单平台', {
+      平台名称: item.platformName
+    })
     openAppLink(url)
   }
 }

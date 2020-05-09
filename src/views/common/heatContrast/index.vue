@@ -19,7 +19,7 @@
         <van-swipe class="my-swipe"  
           :show-indicators="false" 
           :loop="false" 
-          :width="300"
+          :width="getClientWei"
           v-if="interactData.length"
         >
           <van-swipe-item v-for="(item, index) in interactData" :key="'a' + index" >
@@ -111,6 +111,11 @@ export default class Main extends Vue {
         yDate, // Y轴数据
       }
     }
+  }
+
+  get getClientWei() {
+    const clientWidth = document.body.clientWidth - 10
+    return this.interactData.length == 1 ? clientWidth : 300
   }
 
   mounted() {

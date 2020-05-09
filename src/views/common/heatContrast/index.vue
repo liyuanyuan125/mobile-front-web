@@ -114,7 +114,7 @@ export default class Main extends Vue {
   }
 
   get getClientWei() {
-    const clientWidth = document.body.clientWidth - 10
+    const clientWidth = (document.documentElement.clientWidth || document.body.clientWidth) - 10
     return this.interactData.length == 1 ? clientWidth : 300
   }
 

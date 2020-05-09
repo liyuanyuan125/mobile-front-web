@@ -8,7 +8,7 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import echarts from 'echarts'
 import { cssifyObject } from 'css-in-js-utils'
-import {readableNumber, readableThousands, toThousands} from '@/util/dealData'
+import { readableNumber, readableThousands, toThousands } from '@/util/dealData'
 import moment from 'moment'
 const format = 'YYYY-MM-DD'
 
@@ -23,7 +23,7 @@ export default class Main extends Vue {
   /** tooltip 文本色 */
   @Prop({ type: String, default: '#8f8f8f' }) textColor!: string
   /** title text */
-  @Prop({type: String}) titleText!: string
+  @Prop({ type: String }) titleText!: string
   /** tooltip 事件处理 */
   @Prop({ type: Object, default: () => ({}) }) events!: any
   /** 自定义 tooltip框 内容 */
@@ -36,14 +36,12 @@ export default class Main extends Vue {
   mounted() {
     this.initChart()
     const box = this.$refs.box as HTMLDivElement
+
     ['click', 'touchstart'].forEach(name => {
       box.addEventListener(name, ev => {
         const el = ev.target as HTMLDivElement
-        const {
-          tooltipEventTipname,
-          tooltipEventName,
-          tooltipEventId
-        } = el && el.dataset
+        const { tooltipEventTipname, tooltipEventName, tooltipEventId } =
+          el && el.dataset
 
         const click = this.events.click
         if (tooltipEventTipname && tooltipEventTipname in this.events) {
@@ -86,7 +84,7 @@ export default class Main extends Vue {
         smooth: true, // 平滑
         name: it.name,
         data: it.data,
-        connectNulls: true, // 是否连接空数据
+        connectNulls: true // 是否连接空数据
       }
     })
 
@@ -110,6 +108,7 @@ export default class Main extends Vue {
         icon: 'circle', // 设置图例标记
         itemHeight: 8,
         itemWidth: 10,
+        selectedMode: false,
         textStyle: {
           color: '#000',
           fontWeight: 100
@@ -133,7 +132,7 @@ export default class Main extends Vue {
         // position: 'inside',
 
         formatter: (params: any) => {
-          const {name, value, dataIndex, seriesName} = params[0]
+          const { name, value, dataIndex, seriesName } = params[0]
           const boxStyle = cssifyObject({
             position: 'relative',
             paddingLeft: '16px',
@@ -146,14 +145,14 @@ export default class Main extends Vue {
             width: '8px',
             height: '8px',
             borderRadius: '100%',
-            backgroundColor: this.dotColor,
+            backgroundColor: this.dotColor
           })
           const nameStyle = cssifyObject({
             color: this.textColor,
-            fontSize: '14px',
+            fontSize: '14px'
           })
           const events = this.events[name] || []
-          const eventHtml = events.map(({eventName, eventId}: any, index: number) => {
+          const eventHtml = events.map(({ eventName, eventId }: any, index: number) => {
             if (index < 3) {
               const eventListHTML = `
               <div style="${boxStyle}" class="tooltip-event"
@@ -222,7 +221,7 @@ export default class Main extends Vue {
         splitLine: {
           lineStyle: {
             type: 'dotted',
-            color: 'rgba(48, 48, 48, .2)',
+            color: 'rgba(48, 48, 48, .2)'
           }
         }
       },
@@ -233,7 +232,6 @@ export default class Main extends Vue {
     myChart.clear() // 清空画布内容，实例可用
     myChart.setOption(options)
   }
-
 }
 </script>
 

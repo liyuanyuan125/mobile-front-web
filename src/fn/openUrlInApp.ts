@@ -12,10 +12,10 @@ export function openWebPage(path: string, query?: any) {
     const qus = arr.length == 0 ? '' : '?' + qs.stringify(query)
     if (isJyAdvIos()) {
         // 如果是在 ios 则 applink 里打开二级页
-        const href = (origin + path + qus).replace(/\s+/g, '')
+        // const href = (origin + path + qus).replace(/\s+/g, '') // 去掉空格 applink 打不开有空格的 url
         const link: AppLink = {
             page: 'h5Page',
-            url: encodeURIComponent(href)
+            url: origin + path + qus
         }
         openAppLink(link)
     } else {

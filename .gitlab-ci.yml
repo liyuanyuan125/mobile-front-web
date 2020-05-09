@@ -23,6 +23,7 @@ build:
     paths:
       - dist
       - Dockerfile
+      - default.conf
     expire_in: 2 hrs
   tags:
     - nodejs

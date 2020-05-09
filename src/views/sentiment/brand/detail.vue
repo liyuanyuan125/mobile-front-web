@@ -10,7 +10,7 @@
     <TabNav :list="navList" :top="87" hideHeader />
 
     <section class="brand-hot bg_fff" id="hot">
-      <selectTime v-model="day" class="select-time" />
+      <selectTime v-model="day" class="select-time" @click.native="talkingData" />
       <heatLineCom
         :overAllList="overAllHeatList"
         :platformList="platformHeatList"
@@ -53,7 +53,7 @@
     <!-- <section id="part">
       <Competing :rivalList="rivalList" v-if="rivalCode == 0" />
       <DataEmpty :code="rivalCode" :retry="analysisList" v-if="rivalCode > 0" />
-    </section> -->
+    </section>-->
   </div>
 </template>
 
@@ -73,6 +73,7 @@ import eventList from '@/views/common/eventList/event.vue' // 事件分析
 import heatLineCom from '@/views/common/heatLineCom/index.vue' // 热度分析
 import Competing from './components/competing.vue' // 竞品分析
 import DataEmpty from '@/views/common/dataEmpty/index.vue'
+import { talkingdataHandle } from '@/util/TDEvent'
 
 @Component({
   components: {
@@ -95,7 +96,7 @@ export default class BrandPage extends ViewBase {
     { name: 'hot', label: '热度' },
     { name: 'praise', label: '口碑' },
     { name: 'user', label: '用户' },
-    { name: 'event', label: '事件' },
+    { name: 'event', label: '事件' }
     // { name: 'part', label: '竞品' }
   ]
 
@@ -274,6 +275,10 @@ export default class BrandPage extends ViewBase {
   @Watch('day', { deep: true })
   watchDay() {
     this.getHotList()
+  }
+
+  talkingData() {
+    talkingdataHandle('品牌详情页', '热度分析_日期筛选')
   }
 }
 </script>

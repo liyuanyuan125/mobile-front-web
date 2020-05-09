@@ -145,7 +145,7 @@ export async function openAppLink(p: string | AppLink, query: object = {}) {
     applinkData: 'jydataadvertiser://scheme?' + link,
     originUrl: location.href
   }
-  devInfo('openAppLink', link, params)
+  // devInfo('openAppLink', link, params)
   const data = await openAppLinkClient({ params })
   return data
 }

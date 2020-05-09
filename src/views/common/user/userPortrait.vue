@@ -32,6 +32,7 @@ import barGraphRow from '@/components/kol/barGraphRow.vue'
 import ModuleHeader from '@/components/moduleHeader'
 import dataEmpty from '@/views/common/dataEmpty/index.vue'
 import { openWebPage } from '@/fn/openUrlInApp'
+import { talkingdataDetailHandle } from '@/util/TDEvent'
 
 @Component({
   components: {
@@ -59,6 +60,7 @@ export default class UserPortrait extends ViewBase {
   openLink() {
     if (this.genderListData || this.ageRangeListData) {
       const link = this.link
+      talkingdataDetailHandle(this.type, '用户分析_查看更多')
       switch (this.type) {
         case '1':
           openWebPage(`/sentiment/branduser/${link.params.brandId}`)

@@ -29,6 +29,7 @@ import { isJyApp } from '@/fn/ua'
 import { hasDigg, diggSubject } from './data'
 import { handleSetRival } from '@/util/native'
 import { devLog, devInfo } from '@/util/dev'
+import { talkingdataDetailHandle } from '@/util/TDEvent'
 
 @Component({})
 export default class SentimentBar extends Vue {
@@ -80,6 +81,7 @@ export default class SentimentBar extends Vue {
   // 关注
   async diggThis() {
     if (this.sidebar && this.sidebar.diggType && this.sidebar.diggId) {
+      talkingdataDetailHandle(this.sidebar.diggType, '顶部关注按钮')
       const res: any = await diggSubject({
         businessType: Number(this.sidebar.diggType) || 0,
         businessId: this.sidebar.diggId || '',
@@ -142,6 +144,8 @@ export default class SentimentBar extends Vue {
   goRivalAnalysis() {
     if (this.sidebar && this.sidebar.rivalIds) {
       this.setRival(this.sidebar.rivalIds)
+      const type = this.sidebar.rivalIds.businessType
+      talkingdataDetailHandle(type, '顶部竞品对比')
       // const isAppLink = typeof this.sidebar.rivalIds.name === 'string'
       // isAppLink
       //   ? this.$router.push(this.sidebar.rivalIds)

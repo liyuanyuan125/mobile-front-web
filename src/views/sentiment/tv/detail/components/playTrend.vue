@@ -59,6 +59,7 @@ import dataEmpty from '@/views/common/dataEmpty/index.vue'
 import { openAppLink, AppLink } from '@/util/native'
 import { lastDays } from '@/util/timeSpan'
 import { formatCharts } from '@/fn/handleChart'
+import { talkingdataDetailHandle } from '@/util/TDEvent'
 
 @Component({
   components: {
@@ -143,6 +144,7 @@ export default class PlayTrend extends ViewBase {
 
   // applink 跳转
   goLink() {
+    talkingdataDetailHandle(4, '播放量分析_查看全部日期')
     openAppLink(this.link)
   }
 

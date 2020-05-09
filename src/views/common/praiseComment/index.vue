@@ -133,7 +133,10 @@ export default class PraiseComment extends Vue {
   // talkingdata 埋点统计
   talkingData() {
     if (this.show) {
-      talkingdataDetailHandle(this.link.businessType, '口碑评论_查看更多')
+      talkingdataDetailHandle(
+        this.link.businessType || this.link.eventType,
+        '口碑评论_查看更多'
+      )
     }
   }
 

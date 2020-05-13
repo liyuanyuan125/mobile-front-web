@@ -83,7 +83,7 @@ export default class UserRegion extends ViewBase {
     const yData = []
     for (const item of dataList) {
       yData.push(item.name)
-      xData.push((item.value / 100).toFixed(1))
+      xData.push((item.value / 100).toFixed(2))
     }
     this.canvasHei = dataList.length * 35 + 'px'
     this.regionData = {

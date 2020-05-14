@@ -158,7 +158,9 @@ export default class MarketContrast extends Vue {
       businessType: this.businessType, // 业务类型
       businessObjectId: id, // 业务 id
       keyword: word,
-      markType: type
+      markType: type,
+      startTime: this.startTime,
+      endTime: this.endTime
     }
     openAppLink(link)
   }

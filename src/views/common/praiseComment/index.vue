@@ -114,7 +114,7 @@ export default class PraiseComment extends Vue {
     const list = this.publicPraise && (this.publicPraise.appraiseList || [])
     if (list && list.length) {
       for (const item of list) {
-        item.raisePercent = item.raisePercent ? (item.raisePercent / 100).toFixed(1) : 0
+        item.raisePercent = item.raisePercent ? (item.raisePercent / 100).toFixed(2) : 0
       }
     }
     return list

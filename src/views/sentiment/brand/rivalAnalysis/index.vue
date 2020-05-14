@@ -106,6 +106,7 @@ export default class Main extends ViewBase {
   overAllHeat = []
   interactList = []
   materialList = []
+
   tabs: any = [
     {key: 0, text: '新增物料数'},
     {key: 1, text: '新增互动数'}

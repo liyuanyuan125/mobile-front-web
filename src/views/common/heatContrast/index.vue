@@ -59,9 +59,9 @@ export default class Main extends Vue {
   /** 线条颜色配置 */
   @Prop({ type: Array, default: () => colors }) colors!: any
   /** 新增物料数data */
-  @Prop({ type: Array, default: () => []}) interactList!: any
-  /** 新增互动数data */
   @Prop({ type: Array, default: () => []}) materialList!: any
+  /** 新增互动数data */
+  @Prop({ type: Array, default: () => []}) interactList!: any
   /** 平台热度对比tab */
   @Prop({ type: Array, default: () => []}) tabs!: any
 
@@ -124,7 +124,7 @@ export default class Main extends Vue {
 
   // 处理公共逻辑
   changeListData() {
-    const list = this.tabIndex == 0 ? this.interactList : this.materialList
+    const list = this.tabIndex == 0 ? this.materialList : this.interactList
     const result = list.map((item: any) => {
       const {platformName, dataList} = item
       const yDate = (dataList || []).map((it: any) => {

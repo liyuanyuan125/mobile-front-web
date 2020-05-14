@@ -135,12 +135,30 @@ export default class MarketContrast extends Vue {
 
   // 热词 applink 跳转
   wordLink(word: string, id: string) {
+    let type = 0
+    switch (this.indexs) {
+      case 0:
+        // 负面
+        type = 3
+        break
+      case 1:
+        // 正面
+        type = 1
+        break
+      case 2:
+        // 中性
+        type = 2
+        break
+      default:
+        // 全部
+        type = 0
+    }
     const link: AppLink = {
       page: 'praiseHotWordsDetail',
       businessType: this.businessType, // 业务类型
       businessObjectId: id, // 业务 id
       keyword: word,
-      markType: this.indexs + 1
+      markType: type
     }
     openAppLink(link)
   }

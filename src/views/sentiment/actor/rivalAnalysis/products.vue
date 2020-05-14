@@ -266,8 +266,9 @@ export default class KolPage extends ViewBase {
         endTime
       })
       this.combinedHeat.overAllHeat = overAllHeat || []
-      this.combinedHeat.interactList = fansCountList || []
-      this.combinedHeat.materialList = interactList || []
+      // 这里做了位置调整 fansCountList粉丝 对应 materialList物料的位置
+      this.combinedHeat.interactList = interactList || []
+      this.combinedHeat.materialList = fansCountList || []
       this.heatCode = 0
     } catch (ex) {
       const { code } = this.handleModuleError(ex)

@@ -17,7 +17,11 @@
         >{{brandInfo.rankingName}}</p>
         <p v-if="brandInfo.rankingName && brandInfo.rankingId" @click="talkingData('头部事件点击')">
           <router-link
-            :to="{name: 'sentimenteventmarketing', params: {eventId: brandInfo.rankingId}}"
+            :to="{
+             name: 'sentimenteventmarketing', 
+             params: {eventId: brandInfo.rankingId},
+             query: { title: brandInfo.rankingName },
+            }"
             class="event-name flex-box"
           >
             <i>{{brandInfo.rankingName}}</i>

@@ -330,14 +330,12 @@ export default new Router({
       name: 'demo-tableForFixed',
       component: () => import('./views/demo/tableForFixed.vue')
     },
-
     {
       path: '/error/:code(\\d+)',
       name: 'error',
       component: () => import('./components/404/404.vue'),
       props: paramTypes({ code: Number })
     },
-
     // 放在最后
     {
       path: '*',
